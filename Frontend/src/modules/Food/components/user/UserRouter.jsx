@@ -73,6 +73,9 @@ const Coupons = lazy(() => import("@food/pages/user/profile/Coupons"))
 const About = lazy(() => import("@food/pages/user/profile/About"))
 const Terms = lazy(() => import("@food/pages/user/profile/Terms"))
 const Privacy = lazy(() => import("@food/pages/user/profile/Privacy"))
+const FAQ = lazy(() => import("@food/pages/user/profile/FAQ"))
+const Nutrition = lazy(() => import("@food/pages/user/profile/Nutrition"))
+const Feedback = lazy(() => import("@food/pages/user/profile/Feedback"))
 const Refund = lazy(() => import("@food/pages/user/profile/Refund"))
 const Shipping = lazy(() => import("@food/pages/user/profile/Shipping"))
 const Cancellation = lazy(() => import("@food/pages/user/profile/Cancellation"))
@@ -309,8 +312,11 @@ export default function UserRouter() {
           />
 
           {/* Public Legal Policies (stay public) */}
-          <Route path="profile/terms" element={<Terms />} />
-          <Route path="profile/privacy" element={<Privacy />} />
+          <Route path="account/terms" element={<Terms />} />
+          <Route path="account/privacy" element={<Privacy />} />
+          <Route path="account/faqs" element={<FAQ />} />
+          <Route path="account/nutrition" element={<Nutrition />} />
+          <Route path="account/feedback" element={<Feedback />} />
           <Route path="profile/refund" element={<Refund />} />
           <Route path="profile/shipping" element={<Shipping />} />
           <Route path="profile/cancellation" element={<Cancellation />} />

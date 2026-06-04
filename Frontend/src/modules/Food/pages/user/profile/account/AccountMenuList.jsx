@@ -19,27 +19,27 @@ export default function AccountMenuList() {
     {
       title: "Terms & Conditions",
       icon: "gavel",
-      route: "/terms",
+      route: "/user/account/terms",
     },
     {
       title: "Privacy Policy",
       icon: "shield",
-      route: "/privacy",
+      route: "/user/account/privacy",
     },
     {
       title: "FAQs",
       icon: "help",
-      route: "/faqs",
+      route: "/user/account/faqs",
     },
     {
       title: "Nutrition Information",
       icon: "restaurant",
-      route: "/nutrition",
+      route: "/user/account/nutrition",
     },
     {
       title: "Give Feedback",
       icon: "rate_review",
-      route: "/feedback",
+      route: "/user/account/feedback",
     },
     {
       title: "Rate Us",
