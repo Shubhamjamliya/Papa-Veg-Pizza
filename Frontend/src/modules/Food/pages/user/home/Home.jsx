@@ -618,10 +618,14 @@ export default function Home() {
       )}
 
       {/* BottomNavBar */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 rounded-t-xl bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-t border-white/10 shadow-lg flex justify-around items-center h-20 pb-safe">
+      <nav className="fixed -bottom-[2px] left-0 w-full z-50 rounded-t-xl bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-t border-white/10 shadow-lg flex justify-around items-center h-[82px] pb-[2px] m-0">
         <button
           onClick={() => {
-            navigate("/user")
+            if (window.location.pathname === "/user" || window.location.pathname === "/user/") {
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            } else {
+              navigate("/user")
+            }
             triggerToast("Opening Home")
           }}
           className="flex flex-col items-center justify-center text-primary dark:text-primary transition-all duration-300 active:scale-90 font-label-sm text-label-sm cursor-pointer bg-transparent border-0 outline-none"
