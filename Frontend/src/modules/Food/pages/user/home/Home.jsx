@@ -4,6 +4,7 @@ import DeliveryMapModal from "@food/components/user/DeliveryMapModal"
 import DeliveryOrCollectionModal from "@food/components/user/DeliveryOrCollectionModal"
 import TakeawayMapModal from "@food/components/user/TakeawayMapModal"
 import DeliverOnTrainModal from "@food/components/user/DeliverOnTrainModal"
+import OrderDetailsFlow from "@food/pages/user/orders/OrderDetailsFlow"
 import { useLocationStore } from "@food/store/locationStore"
 import { useLocationGuard } from "@food/hooks/useLocationGuard"
 const PRODUCTS = [
@@ -398,6 +399,17 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Order Details Flow (Confirmation Bar) */}
+        {locationConfirmed && activeService === "delivery" && (
+          <OrderDetailsFlow 
+            confirmedAddress={deliveryAddress}
+            onOpenMap={() => setShowMapModal(true)}
+            onClearCart={() => setCart({})}
+            isDarkMode={isDarkMode}
+            triggerToast={triggerToast}
+          />
+        )}
+
         {/* Delivery/Takeaway Toggle */}
         <section className="px-margin-mobile grid grid-cols-2 gap-gutter">
           {[
@@ -600,7 +612,7 @@ export default function Home() {
       </main>
 
       {/* Floating Action Button */}
-      {totalCartCount > 0 && (
+      {totalCartCount > 0 && locationConfirmed && (
         <div className="fixed bottom-24 right-4 z-45">
           <button
             onClick={() => {
