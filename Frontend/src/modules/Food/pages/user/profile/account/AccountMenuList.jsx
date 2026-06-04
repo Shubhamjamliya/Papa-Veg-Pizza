@@ -14,7 +14,7 @@ export default function AccountMenuList() {
     {
       title: "Track Order",
       icon: "local_shipping",
-      route: "/track-order",
+      route: "/user/account/track-order",
     },
     {
       title: "Terms & Conditions",
