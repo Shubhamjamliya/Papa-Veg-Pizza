@@ -60,14 +60,14 @@ export default function WelcomeScreen() {
         />
         {/* Shadow overlays and gradients */}
         <div className="absolute inset-0 hero-gradient" />
-        
+
         {/* Floating Brand Badge */}
         <div className="absolute top-8 left-0 right-0 flex justify-center z-10">
           <div className="flex items-center gap-2.5 bg-black/45 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 shadow-lg">
             <div className="w-9 h-9 rounded-xl bg-[#E53935] flex items-center justify-center font-bold text-white tracking-wider text-base shadow-[0_0_15px_rgba(229,57,53,0.4)]">
               PV
             </div>
-            <span 
+            <span
               className="text-lg font-black tracking-tight text-white uppercase"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
@@ -78,9 +78,9 @@ export default function WelcomeScreen() {
       </div>
 
       {/* Welcome Section Bottom Sheet Card */}
-      <div className="flex-1 flex flex-col justify-end welcome-glass rounded-t-[40px] px-6 pt-10 pb-12 -mt-16 z-20 relative max-w-md mx-auto w-full">
+      <div className="flex-1 flex flex-col justify-end welcome-glass px-6 pt-6 pb-12 -mt-8 z-20 relative max-w-md mx-auto w-full">
         <div className="text-center space-y-4 mb-10">
-          <h1 
+          <h1
             className="text-[32px] font-extrabold leading-tight text-white tracking-tight"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
@@ -100,7 +100,7 @@ export default function WelcomeScreen() {
           >
             Sign In to Unlock Offers
           </button>
-          
+
           <button
             onClick={handleContinueAsGuest}
             className="w-full h-14 bg-white/5 hover:bg-white/10 text-white font-extrabold rounded-2xl text-sm uppercase tracking-wider transition-all border border-white/12 active:scale-[0.98] cursor-pointer outline-none flex items-center justify-center"

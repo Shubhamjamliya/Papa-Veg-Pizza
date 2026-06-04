@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function DeliverOnTrain() {
+export default function DeliverOnTrainModal({ show, onClose }) {
   const navigate = useNavigate()
   
   // Theme state synced with local storage or default to dark
@@ -114,9 +114,11 @@ export default function DeliverOnTrain() {
     }, 1000)
   }
 
+  if (!show) return null;
+
   return (
     <div 
-      className={`min-h-screen font-body-md overflow-x-hidden pb-12 transition-colors duration-300 ${isDarkMode ? "dark bg-[#111111] text-[#e5e2e1]" : "bg-[#fbf9f8] text-[#1c1b1b]"}`}
+      className={`fixed inset-0 z-[60] font-body-md overflow-y-auto overflow-x-hidden pb-12 transition-colors duration-300 animate-fadeIn ${isDarkMode ? "dark bg-[#111111] text-[#e5e2e1]" : "bg-[#fbf9f8] text-[#1c1b1b]"}`}
     >
       {/* Styles Injection */}
       <style dangerouslySetInnerHTML={{
@@ -145,7 +147,7 @@ export default function DeliverOnTrain() {
       {/* TopAppBar */}
       <header className="fixed top-0 left-0 w-full z-50 header-glass h-16 flex items-center justify-between px-5">
         <button
-          onClick={() => navigate("/food")}
+          onClick={onClose}
           className={`material-symbols-outlined hover:opacity-80 transition-all active:scale-90 cursor-pointer bg-transparent border-0 outline-none ${isDarkMode ? "text-white" : "text-[#1c1b1b]"}`}
         >
           arrow_back

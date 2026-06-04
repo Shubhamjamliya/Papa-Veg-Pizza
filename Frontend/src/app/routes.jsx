@@ -66,7 +66,6 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Auth Module */}
-      <Route path="/user/auth/*" element={<AuthApp />} />
       <Route path="/delivery/auth/*" element={<AuthApp />} />
       <Route path="/restaurant/auth/*" element={<AuthApp />} />
 
@@ -80,6 +79,7 @@ const AppRoutes = () => {
       <Route path="/superadmin/*" element={<Suspense fallback={<PageLoader />}><SuperAdminRouter /></Suspense>} />
 
       {/* Handle root and other paths via FoodAppWrapper */}
+      <Route path="/" element={<Navigate to="/welcome" replace />} />
       <Route path="/*" element={<FoodAppWrapper />} />
     </Routes>
   )

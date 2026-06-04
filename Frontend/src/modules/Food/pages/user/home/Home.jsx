@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import DeliveryMapModal from "@food/components/user/DeliveryMapModal"
 import DeliveryOrCollectionModal from "@food/components/user/DeliveryOrCollectionModal"
+import TakeawayMapModal from "@food/components/user/TakeawayMapModal"
+import DeliverOnTrainModal from "@food/components/user/DeliverOnTrainModal"
 import { useLocationStore } from "@food/store/locationStore"
 import { useLocationGuard } from "@food/hooks/useLocationGuard"
 const PRODUCTS = [
@@ -74,6 +76,7 @@ export default function Home() {
   const [showServiceSelector, setShowServiceSelector] = useState(false)
   const [showStoreModal, setShowStoreModal] = useState(false)
   const [showCarModal, setShowCarModal] = useState(false)
+  const [showTrainModal, setShowTrainModal] = useState(false)
   const [deliveryAddress, setDeliveryAddress] = useState(() => {
     return locationConfirmed ? (localStorage.getItem("deliveryAddress") || "") : ""
   })
@@ -409,17 +412,13 @@ export default function Home() {
                 key={service.id}
                 onClick={() => {
                   if (service.id === "delivery") {
-                    if (!locationConfirmed) {
-                      setShowServiceSelector(true)
-                    } else {
-                      setShowMapModal(true)
-                    }
+                    setShowMapModal(true)
                   } else if (service.id === "takeaway") {
                     setShowStoreModal(true)
                   } else if (service.id === "incar") {
                     setShowCarModal(true)
                   } else if (service.id === "train") {
-                    navigate("/user/deliver-on-train")
+                    setShowTrainModal(true)
                   } else {
                     setActiveService(service.id)
                     localStorage.setItem("activeService", service.id)
@@ -645,7 +644,7 @@ export default function Home() {
         </button>
         <button
           onClick={() => {
-            navigate("/user/profile")
+            navigate("/user/account")
             triggerToast("Opening Account")
           }}
           className={`flex flex-col items-center justify-center transition-all duration-300 active:scale-90 font-label-sm text-label-sm active:scale-90 transition-transform cursor-pointer bg-transparent border-0 outline-none ${isDarkMode
@@ -687,55 +686,22 @@ export default function Home() {
           } else if (id === "incar") {
             setShowCarModal(true)
           } else if (id === "train") {
-            navigate("/user/deliver-on-train")
+            setShowTrainModal(true)
           }
         }}
         isDarkMode={isDarkMode}
       />
-      {showStoreModal && (<> {/* Takeaway Store Finder Modal */}
-        <div>
-          <p className="text-xs opacity-60 leading-relaxed text-white">
-            We suggested the following Pizza Veg Huts near your coordinates:
-          </p>
-
-          {/* Store List Options */}
-          <div className="space-y-3">
-            {[
-              { id: "hut-cp", name: "Pizza Veg Hut - Connaught Place", dist: "0.8 km", status: "Open Now", hours: "11 AM - 11 PM" },
-              { id: "hut-kb", name: "Pizza Veg Hut - Karol Bagh", dist: "2.1 km", status: "Open Now", hours: "11 AM - 11 PM" },
-              { id: "hut-sk", name: "Pizza Veg Hut - Saket Terminal", dist: "4.5 km", status: "Closed", hours: "Opens tomorrow" }
-            ].map((store) => (
-              <div
-                key={store.id}
-                onClick={() => {
-                  setTakeawayHut(store.name)
-                  confirmLocation({
-                    address: store.name,
-                    serviceType: "takeaway"
-                  })
-                  setShowStoreModal(false)
-                  triggerToast(`Selected outlet: ${store.name}`)
-                }}
-                className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl flex items-center justify-between cursor-pointer active:scale-98 transition-all"
-              >
-                <div className="text-left space-y-1">
-                  <h4 className="text-xs font-bold text-white leading-tight">{store.name}</h4>
-                  <div className="flex gap-2 text-[9px] font-bold">
-                    <span className="text-[#00C853]">{store.status}</span>
-                    <span className="opacity-50">•</span>
-                    <span className="opacity-60">{store.hours}</span>
-                  </div>
-                </div>
-                <div className="text-right flex flex-col items-end gap-1">
-                  <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-black tracking-wide">{store.dist}</span>
-                  <span className="material-symbols-outlined text-xs text-white/40">arrow_forward_ios</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </>
-      )}
+      {/* Takeaway Map Modal Selector */}
+      <TakeawayMapModal
+        show={showStoreModal}
+        onClose={() => setShowStoreModal(false)}
+        takeawayHut={takeawayHut}
+        setTakeawayHut={setTakeawayHut}
+        setActiveService={setActiveService}
+        triggerToast={triggerToast}
+        isDarkMode={isDarkMode}
+        confirmedAddress={deliveryAddress}
+      />
 
       {/* In-Car Details Modal */}
       {showCarModal && (
@@ -794,6 +760,12 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Deliver on Train Modal */}
+      <DeliverOnTrainModal
+        show={showTrainModal}
+        onClose={() => setShowTrainModal(false)}
+      />
     </div>
   )
 }

@@ -12,7 +12,6 @@ const WelcomeScreen = lazy(() => import("@food/pages/user/WelcomeScreen"))
 // Home & Discovery
 const Home = lazy(() => import("@food/pages/user/home/Home"))
 const MenuList = lazy(() => import("@food/pages/user/home/MenuList"))
-const DeliverOnTrain = lazy(() => import("@food/pages/user/home/DeliverOnTrain"))
 const HotDealsPage = lazy(() => import("@food/pages/user/home/HotDealsPage"))
 const Dining = lazy(() => import("@food/pages/user/Dining"))
 const DiningCategory = lazy(() => import("@food/pages/user/DiningCategory"))
@@ -62,6 +61,7 @@ const CollectionDetail = lazy(() => import("@food/pages/user/CollectionDetail"))
 
 // Profile
 const Profile = lazy(() => import("@food/pages/user/profile/Profile"))
+const AccountSettings = lazy(() => import("@food/pages/user/AccountSettings"))
 const EditProfile = lazy(() => import("@food/pages/user/profile/EditProfile"))
 const Payments = lazy(() => import("@food/pages/user/profile/Payments"))
 const AddPayment = lazy(() => import("@food/pages/user/profile/AddPayment"))
@@ -81,6 +81,7 @@ const Logout = lazy(() => import("@food/pages/user/profile/Logout"))
 const ReferEarn = lazy(() => import("@food/pages/user/profile/ReferEarn"))
 
 // Auth
+const Login = lazy(() => import("@food/pages/user/auth/Login"))
 const SignIn = lazy(() => import("@food/pages/user/auth/SignIn"))
 const OTP = lazy(() => import("@food/pages/user/auth/OTP"))
 const AuthCallback = lazy(() => import("@food/pages/user/auth/AuthCallback"))
@@ -107,7 +108,6 @@ export default function UserRouter() {
           {/* Home & Discovery */}
           <Route path="" element={<Home />} />
           <Route path="menu" element={<MenuList />} />
-          <Route path="deliver-on-train" element={<DeliverOnTrain />} />
           <Route path="deals" element={<HotDealsPage />} />
           <Route path="dining" element={<Dining />} />
           <Route path="dining/:category" element={<DiningCategory />} />
@@ -191,6 +191,7 @@ export default function UserRouter() {
 
 
           {/* Profile - Protected (require user auth) */}
+          <Route path="account" element={<AccountSettings />} />
           <Route
             path="profile"
             element={
@@ -312,9 +313,9 @@ export default function UserRouter() {
           <Route path="profile/shipping" element={<Shipping />} />
           <Route path="profile/cancellation" element={<Cancellation />} />
 
-          {/* Auth - User login is centralized at /user/auth/login */}
-          <Route path="auth/login" element={<Navigate to="/user/auth/login" replace />} />
-          <Route path="auth/sign-in" element={<Navigate to="/user/auth/login" replace />} />
+          {/* Auth - User login */}
+          <Route path="auth/login" element={<Login />} />
+          <Route path="auth/sign-in" element={<Login />} />
           <Route path="auth/otp" element={<OTP />} />
           <Route path="auth/callback" element={<AuthCallback />} />
 
