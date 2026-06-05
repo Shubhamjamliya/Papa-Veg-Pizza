@@ -131,7 +131,10 @@ export default function Cart() {
   const [showGiftCardModal, setShowGiftCardModal] = useState(false)
   const [appliedCoupon, setAppliedCoupon] = useState(null)
   const [appliedGiftCard, setAppliedGiftCard] = useState(null)
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
 
   // Resolve Cart items from userCart localStorage on mount
   useEffect(() => {
@@ -180,7 +183,8 @@ export default function Cart() {
     // Listen for updates from other tabs/pages
     window.addEventListener("cartUpdated", resolveAndSyncCart)
     return () => window.removeEventListener("cartUpdated", resolveAndSyncCart)
-  }, [replaceCart])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Resolve active location / delivery slot
   useEffect(() => {
@@ -230,13 +234,13 @@ export default function Cart() {
 
   return (
     <div className={`font-body-md text-body-md min-h-screen pb-36 flex flex-col transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
-      {/* Custom Global Scrollbar Hider and Styling injection */}
-      <style dangerouslySetInnerHTML={{
+      {/* Custom Global Scrollbar Hider and Styling injection */}      <style dangerouslySetInnerHTML={{
         __html: `
         .glass-card {
-          background: rgba(255, 255, 255, 0.05) !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
           backdrop-filter: blur(20px) !important;
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
         }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
@@ -314,11 +318,11 @@ export default function Cart() {
         .mt-md {
           margin-top: 16px !important;
         }
-        .bg-surface\\/80 {
-          background-color: rgba(19, 19, 19, 0.8) !important;
+        .bg-surface\/80 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.8)"} !important;
         }
-        .bg-surface\\/90 {
-          background-color: rgba(19, 19, 19, 0.9) !important;
+        .bg-surface\/90 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.9)" : "rgba(255, 255, 255, 0.9)"} !important;
         }
         .text-primary {
           color: #E53935 !important;
@@ -354,7 +358,16 @@ export default function Cart() {
           color: #5c0005 !important;
         }
         .text-on-surface-variant {
-          color: #e4beb9 !important;
+          color: ${isDarkMode ? "#e4beb9" : "#6b7280"} !important;
+        }
+        .border-white\/10 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)"} !important;
+        }
+        .bg-white\/10 {
+          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)"} !important;
+        }
+        .text-white\/40 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.4)" : "rgba(19, 19, 19, 0.4)"} !important;
         }
         `
       }} />

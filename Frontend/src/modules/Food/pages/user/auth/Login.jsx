@@ -59,10 +59,10 @@ export default function Login() {
           background-color: #E53935 !important;
         }
         .bg-surface\\/80 {
-          background-color: rgba(19, 19, 19, 0.8) !important;
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.8)"} !important;
         }
         .bg-surface {
-          background-color: #131313 !important;
+          background-color: ${isDarkMode ? "#131313" : "#ffffff"} !important;
         }
         .glass-card {
           background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;

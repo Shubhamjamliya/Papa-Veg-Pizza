@@ -131,6 +131,10 @@ export default function MenuList() {
   const { isModalOpen, closeLocationModal, confirmLocation, locationConfirmed } = useLocationStore()
   const checkLocation = useLocationGuard()
   const location = useLocation()
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
   const [activeTab, setActiveTab] = useState("pizzas")
   const [isVegetarian, setIsVegetarian] = useState(true)
   const [showServiceSelector, setShowServiceSelector] = useState(false)
@@ -253,14 +257,15 @@ export default function MenuList() {
   const totalCartPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
   return (
-    <div className="min-h-screen bg-[#111111] text-[#e5e2e1] pb-32 font-body-md overflow-x-hidden">
+    <div className={`min-h-screen pb-32 font-body-md overflow-x-hidden transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
       {/* CSS overrides to keep design exact */}
       <style dangerouslySetInnerHTML={{
         __html: `
         .glass-card {
-          background: rgba(255, 255, 255, 0.05) !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
           backdrop-filter: blur(20px) !important;
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
         }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
@@ -308,7 +313,39 @@ export default function MenuList() {
         .text-on-primary {
           color: #ffffff !important;
         }
-      ` }} />
+        
+        .bg-surface\/80 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.8)"} !important;
+        }
+        .bg-surface\/85 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.85)" : "rgba(255, 255, 255, 0.85)"} !important;
+        }
+        .bg-surface\/90 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.9)" : "rgba(255, 255, 255, 0.9)"} !important;
+        }
+        .bg-surface {
+          background-color: ${isDarkMode ? "#131313" : "#ffffff"} !important;
+        }
+        .border-white\/10 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)"} !important;
+        }
+        .border-white\/12 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.1)"} !important;
+        }
+        .bg-white\/5 {
+          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.04)"} !important;
+        }
+        .text-white\/70 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(19, 19, 19, 0.7)"} !important;
+        }
+        .text-white\/50 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.5)" : "rgba(19, 19, 19, 0.5)"} !important;
+        }
+        .bg-black\/40 {
+          background-color: ${isDarkMode ? "rgba(0, 0, 0, 0.4)" : "rgba(255, 255, 255, 0.5)"} !important;
+        }
+        `
+      }} />
 
       {/* Custom Toast Alert */}
       {toast.visible && (
@@ -318,23 +355,23 @@ export default function MenuList() {
       )}
 
       {/* Top Header Navigation */}
-      <header className="fixed top-0 left-0 w-full z-45 bg-[#131313]/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5">
+      <header className="fixed top-0 left-0 w-full z-45 bg-surface/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5 transition-colors duration-300">
         <button
           onClick={() => navigate("/user")}
-          className="material-symbols-outlined text-white hover:opacity-85 active:scale-95 cursor-pointer bg-transparent border-0 outline-none"
+          className={`material-symbols-outlined hover:opacity-85 active:scale-95 cursor-pointer bg-transparent border-0 outline-none ${isDarkMode ? "text-white" : "text-[#131313]"}`}
         >
           arrow_back
         </button>
         {/* Brand logo design */}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded bg-[#E53935] flex items-center justify-center font-bold text-white tracking-wider">PV</div>
-          <span className="font-headline-lg-mobile text-lg text-white font-black tracking-tight">Papa Veg Pizza</span>
+          <span className={`font-headline-lg-mobile text-lg font-black tracking-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Papa Veg Pizza</span>
         </div>
         <div className="w-8"></div>
       </header>
 
       {/* Categories horizontal tabs */}
-      <div className="fixed top-16 left-0 w-full z-45 bg-[#131313]/85 backdrop-blur-md border-b border-white/10 px-5 flex overflow-x-auto hide-scrollbar py-3 gap-3">
+      <div className="fixed top-16 left-0 w-full z-45 bg-surface/85 backdrop-blur-md border-b border-white/10 px-5 flex overflow-x-auto hide-scrollbar py-3 gap-3">
         {[
           { id: "deals", label: "Deals", action: () => navigate("/user/deals") },
           { id: "pizzas", label: "Pizzas" },
@@ -405,7 +442,7 @@ export default function MenuList() {
 
         {/* Section Header */}
         <div className="flex items-center justify-between border-b border-white/5 pb-2">
-          <h2 className="font-headline-lg-mobile text-white capitalize">{activeTab}</h2>
+          <h2 className={`font-headline-lg-mobile capitalize ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{activeTab}</h2>
           <span className="text-xs opacity-50 font-bold">{MENU_ITEMS[activeTab]?.length || 0} Items</span>
         </div>
 
@@ -433,7 +470,7 @@ export default function MenuList() {
               {/* Card Details */}
               <div className="p-4 space-y-3">
                 <div className="flex justify-between items-start">
-                  <h3 className="font-headline-md-mobile text-lg text-white leading-tight">{item.title}</h3>
+                  <h3 className={`font-headline-md-mobile text-lg leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{item.title}</h3>
                   <span className="text-[#E53935] font-black text-lg">₹{item.price}</span>
                 </div>
                 <p className="text-xs opacity-60 leading-relaxed">{item.description}</p>
@@ -446,10 +483,10 @@ export default function MenuList() {
                       <select
                         defaultValue={item.sizes[0]}
                         onChange={(e) => setSelectedSize(e.target.value)}
-                        className="w-full h-11 bg-white/5 border border-white/10 rounded-xl px-3 text-xs font-bold text-white select-none outline-none appearance-none cursor-pointer"
+                        className={`w-full h-11 bg-white/5 border border-white/10 rounded-xl px-3 text-xs font-bold select-none outline-none appearance-none cursor-pointer ${isDarkMode ? "text-white" : "text-[#131313]"}`}
                       >
                         {item.sizes.map((s) => (
-                          <option key={s} value={s} className="bg-[#131313] text-white font-bold">{s}</option>
+                          <option key={s} value={s} className={`font-bold ${isDarkMode ? "bg-[#131313] text-white" : "bg-white text-[#131313]"}`}>{s}</option>
                         ))}
                       </select>
                       <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-white/50 text-sm pointer-events-none">
@@ -491,7 +528,7 @@ export default function MenuList() {
 
       {/* Floating Customize Overlay Modal */}
       {customizeItem && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
           <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4">
             <h3 className="font-headline-lg-mobile text-lg text-white">Customize {customizeItem.title}</h3>
             <p className="text-xs opacity-60">Personalize your toppings and selection details for {customizeItem.title}:</p>
@@ -631,7 +668,7 @@ export default function MenuList() {
         }}
         setActiveService={setActiveService}
         triggerToast={triggerToast}
-        isDarkMode={true}
+        isDarkMode={isDarkMode}
       />
 
       {/* Delivery or Collection Selection Modal */}
@@ -655,12 +692,12 @@ export default function MenuList() {
             navigate("/user/deliver-on-train")
           }
         }}
-        isDarkMode={true}
+        isDarkMode={isDarkMode}
       />
 
       {/* Takeaway Store Finder Modal */}
       {showStoreModal && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
           <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4 text-left bg-[#131313] border border-white/10">
             <div className="flex justify-between items-center">
               <h3 className="font-headline-lg-mobile text-lg text-white">Find your nearest hut</h3>
@@ -717,7 +754,7 @@ export default function MenuList() {
 
       {/* In-Car Details Modal */}
       {showCarModal && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
           <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4 text-left bg-[#131313] border border-white/10">
             <div className="flex justify-between items-center">
               <h3 className="font-headline-lg-mobile text-lg text-white">In-Car Dining</h3>

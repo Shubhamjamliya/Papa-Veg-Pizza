@@ -1,5 +1,5 @@
 // src/context/cart-context.jsx
-import { createContext, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react"
 import { buildCartLineId } from "@food/utils/foodVariants"
 const debugLog = (...args) => {}
 const debugWarn = (...args) => {}
@@ -384,7 +384,7 @@ export function CartProvider({ children }) {
 
   const clearCart = () => setCart([])
 
-  const replaceCart = (items) => {
+  const replaceCart = useCallback((items) => {
     const normalizedItems = normalizeCartData(items).filter((item) => {
       const quantity = Number(item?.quantity)
       return item?.id && (item?.restaurantId || item?.restaurant) && Number.isFinite(quantity) && quantity > 0
@@ -392,7 +392,7 @@ export function CartProvider({ children }) {
 
     setCart(normalizedItems)
     return { ok: true, count: normalizedItems.length }
-  }
+  }, [])
 
   // Clean cart to remove items from different restaurants
   // Keeps only items from the specified restaurant

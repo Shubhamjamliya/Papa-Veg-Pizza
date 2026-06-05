@@ -69,7 +69,21 @@ export default function Home() {
       "farmhouse-delight": 1
     }
   })
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
+  useEffect(() => {
+    const root = document.documentElement
+    if (isDarkMode) {
+      root.classList.add("dark")
+      localStorage.setItem("appTheme", "dark")
+    } else {
+      root.classList.remove("dark")
+      localStorage.setItem("appTheme", "light")
+    }
+  }, [isDarkMode])
+
   const [activeSlide, setActiveSlide] = useState(0)
 
   // Map & Store Modal States
@@ -212,9 +226,10 @@ export default function Home() {
       <style dangerouslySetInnerHTML={{
         __html: `
         .glass-card {
-          background: rgba(255, 255, 255, 0.05) !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
           backdrop-filter: blur(20px) !important;
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
         }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
@@ -299,10 +314,10 @@ export default function Home() {
           margin-bottom: 16px !important;
         }
         .bg-surface\/80 {
-          background-color: rgba(19, 19, 19, 0.8) !important;
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.8)"} !important;
         }
         .bg-surface {
-          background-color: #131313 !important;
+          background-color: ${isDarkMode ? "#131313" : "#ffffff"} !important;
         }
         .text-primary {
           color: #E53935 !important;
@@ -338,13 +353,31 @@ export default function Home() {
           color: #5c0005 !important;
         }
         .text-on-surface-variant {
-          color: #e4beb9 !important;
+          color: ${isDarkMode ? "#e4beb9" : "#6b7280"} !important;
         }
         .border-primary\/20 {
-          border-color: rgba(229, 57, 53, 0.2) !important;
+          border-color: ${isDarkMode ? "rgba(229, 57, 53, 0.2)" : "rgba(229, 57, 53, 0.1)"} !important;
         }
         .border-primary {
           border-color: #E53935 !important;
+        }
+        .border-white\/10 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)"} !important;
+        }
+        .border-white\/12 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.1)"} !important;
+        }
+        .bg-white\/5 {
+          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.04)"} !important;
+        }
+        .text-white\/70 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(19, 19, 19, 0.7)"} !important;
+        }
+        .text-white\/50 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.5)" : "rgba(19, 19, 19, 0.5)"} !important;
+        }
+        .bg-black\/40 {
+          background-color: ${isDarkMode ? "rgba(0, 0, 0, 0.4)" : "rgba(255, 255, 255, 0.5)"} !important;
         }
       ` }} />
 
@@ -721,7 +754,7 @@ export default function Home() {
 
       {/* In-Car Details Modal */}
       {showCarModal && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
           <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4 text-left">
             <div className="flex justify-between items-center">
               <h3 className="font-headline-lg-mobile text-lg text-white">In-Car Dining</h3>

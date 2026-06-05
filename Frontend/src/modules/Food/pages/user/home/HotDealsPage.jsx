@@ -46,6 +46,10 @@ const DETAILED_DEALS = [
 
 export default function HotDealsPage() {
   const navigate = useNavigate()
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
   const { isModalOpen, closeLocationModal, confirmLocation, locationConfirmed } = useLocationStore()
   const checkLocation = useLocationGuard()
   const [toast, setToast] = useState({ visible: false, message: "" })
@@ -117,14 +121,15 @@ export default function HotDealsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#111111] text-[#e5e2e1] pb-32 font-body-md overflow-x-hidden">
+    <div className={`min-h-screen pb-32 font-body-md overflow-x-hidden transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
       {/* CSS overrides to keep design exact */}
       <style dangerouslySetInnerHTML={{
         __html: `
         .glass-card {
-          background: rgba(255, 255, 255, 0.05) !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
           backdrop-filter: blur(20px) !important;
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
         }
         .font-headline-lg-mobile {
           font-family: 'Plus Jakarta Sans', sans-serif !important;
@@ -154,7 +159,38 @@ export default function HotDealsPage() {
         .text-on-primary {
           color: #ffffff !important;
         }
-      ` }} />
+        .bg-surface\/80 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.8)"} !important;
+        }
+        .bg-surface\/90 {
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.9)" : "rgba(255, 255, 255, 0.9)"} !important;
+        }
+        .bg-surface {
+          background-color: ${isDarkMode ? "#131313" : "#ffffff"} !important;
+        }
+        .border-white\/10 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)"} !important;
+        }
+        .border-white\/12 {
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.1)"} !important;
+        }
+        .bg-white\/5 {
+          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.04)"} !important;
+        }
+        .text-white\/70 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(19, 19, 19, 0.7)"} !important;
+        }
+        .text-white\/50 {
+          color: ${isDarkMode ? "rgba(255, 255, 255, 0.5)" : "rgba(19, 19, 19, 0.5)"} !important;
+        }
+        .bg-black\/40 {
+          background-color: ${isDarkMode ? "rgba(0, 0, 0, 0.4)" : "rgba(255, 255, 255, 0.5)"} !important;
+        }
+        .bg-white\/10 {
+          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.05)"} !important;
+        }
+        `
+      }} />
 
       {/* Custom Toast Alert */}
       {toast.visible && (
@@ -164,16 +200,16 @@ export default function HotDealsPage() {
       )}
 
       {/* Top Header Navigation */}
-      <header className="fixed top-0 left-0 w-full z-45 bg-[#131313]/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5">
+      <header className="fixed top-0 left-0 w-full z-45 bg-surface/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5 transition-colors duration-300">
         <button
           onClick={() => navigate("/user")}
-          className="material-symbols-outlined text-white hover:opacity-85 active:scale-95 cursor-pointer bg-transparent border-0 outline-none"
+          className={`material-symbols-outlined hover:opacity-85 active:scale-95 cursor-pointer bg-transparent border-0 outline-none ${isDarkMode ? "text-white" : "text-[#131313]"}`}
         >
           arrow_back
         </button>
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-[#E53935] text-2xl font-bold">local_offer</span>
-          <span className="font-headline-lg-mobile text-lg text-white font-black tracking-tight">Active Hot Deals</span>
+          <span className={`font-headline-lg-mobile text-lg font-black tracking-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Active Hot Deals</span>
         </div>
         <div className="w-8"></div>
       </header>
@@ -197,10 +233,10 @@ export default function HotDealsPage() {
               <span className="material-symbols-outlined text-[16px]">local_pizza</span>
             </div>
             <div className="text-left space-y-0.5">
-              <h3 className="font-bold text-base text-white leading-snug">
+              <h3 className={`font-bold text-base leading-snug ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
                 {locationConfirmed ? "Delivering to:" : "Add your location"}
               </h3>
-              <p className="text-xs text-zinc-400 line-clamp-1 max-w-[220px]">
+              <p className={`text-xs line-clamp-1 max-w-[220px] ${isDarkMode ? "text-zinc-400" : "text-zinc-600"}`}>
                 {locationConfirmed ? (deliveryAddress || takeawayHut || carNumber) : "See your local deals and pizzas"}
               </p>
             </div>
@@ -228,7 +264,7 @@ export default function HotDealsPage() {
 
               {/* Deal Card Details info */}
               <div className="p-5 space-y-3">
-                <h3 className="font-headline-md-mobile text-lg text-white leading-tight">{deal.title}</h3>
+                <h3 className={`font-headline-md-mobile text-lg leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{deal.title}</h3>
                 <p className="text-xs opacity-60 leading-relaxed">{deal.description}</p>
 
                 {/* Coupon Code section */}
@@ -241,7 +277,7 @@ export default function HotDealsPage() {
                   </div>
                   <button
                     onClick={() => copyCoupon(deal.coupon)}
-                    className="h-9 px-3 bg-white/10 hover:bg-white/15 text-white rounded-xl font-label-sm text-[10px] uppercase font-bold cursor-pointer border-0 active:scale-95 transition-all"
+                    className={`h-9 px-3 bg-white/10 hover:bg-white/15 rounded-xl font-label-sm text-[10px] uppercase font-bold cursor-pointer border-0 active:scale-95 transition-all ${isDarkMode ? "text-white" : "text-[#131313]"}`}
                   >
                     Copy Code
                   </button>
@@ -270,7 +306,7 @@ export default function HotDealsPage() {
         setDeliveryAddress={setDeliveryAddress}
         setActiveService={setActiveService}
         triggerToast={triggerToast}
-        isDarkMode={true}
+        isDarkMode={isDarkMode}
       />
 
       {/* Delivery or Collection Selection Modal */}
@@ -294,12 +330,12 @@ export default function HotDealsPage() {
             navigate("/user/deliver-on-train")
           }
         }}
-        isDarkMode={true}
+        isDarkMode={isDarkMode}
       />
 
       {/* Takeaway Store Finder Modal */}
       {showStoreModal && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
           <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4 text-left bg-[#131313] border border-white/10">
             <div className="flex justify-between items-center">
               <h3 className="font-headline-lg-mobile text-lg text-white">Find your nearest hut</h3>
@@ -355,7 +391,7 @@ export default function HotDealsPage() {
 
       {/* In-Car Details Modal */}
       {showCarModal && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
           <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4 text-left bg-[#131313] border border-white/10">
             <div className="flex justify-between items-center">
               <h3 className="font-headline-lg-mobile text-lg text-white">In-Car Dining</h3>
