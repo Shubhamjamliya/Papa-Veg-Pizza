@@ -76,8 +76,12 @@ const deliveryPartnerSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['pending', 'approved', 'rejected'],
+            enum: ['pending', 'approved', 'rejected', 'suspended'],
             default: 'pending'
+        },
+        priorityRouting: {
+            type: Boolean,
+            default: false
         },
         rejectionReason: { type: String },
         rejectedAt: { type: Date },
