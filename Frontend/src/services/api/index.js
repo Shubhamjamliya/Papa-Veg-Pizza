@@ -259,6 +259,8 @@ export const adminAPI = {
     adminClient.get("/food/admin/delivery/wallets", { params }),
   getDeliveryPartnerById: (id) =>
     adminClient.get(`/food/admin/delivery/${id}`),
+  updateDeliveryPartner: (id, body) =>
+    adminClient.patch(`/food/admin/delivery/${id}`, body),
   approveDeliveryPartner: (id) =>
     adminClient.patch(`/food/admin/delivery/${String(id)}/approve`, {}),
   rejectDeliveryPartner: (id, reason) =>
@@ -1232,7 +1234,7 @@ export const deliveryAPI = {
     deliveryMeCacheTime = 0;
     try {
       localStorage.removeItem("app:isOnline");
-    } catch (_) {}
+    } catch (_) { }
     const token =
       refreshToken ||
       (typeof localStorage !== "undefined"
@@ -1873,23 +1875,23 @@ export const diningAPI = {
   getOfferBanners: () => Promise.resolve({ data: { success: true, data: [] } }),
   getStories: () => Promise.resolve({ data: { success: true, data: [] } }),
   getBankOffers: () => Promise.resolve({ data: { success: true, data: [] } }),
-  
+
   // Real API calls for Bookings
-  getBookings: () => 
+  getBookings: () =>
     userClient.get("/food/dining/bookings/my"),
-  
+
   getRestaurantBookings: (candidate) => {
     const id = candidate?._id || candidate?.id || candidate;
     return restaurantClient.get(`/food/dining/bookings/restaurant/${String(id)}`);
   },
-  
-  updateBookingStatusRestaurant: (bookingId, status) => 
+
+  updateBookingStatusRestaurant: (bookingId, status) =>
     restaurantClient.patch(`/food/dining/bookings/${String(bookingId)}/status`, { status }),
-  
-  createReview: (payload = {}) => 
+
+  createReview: (payload = {}) =>
     userClient.post(`/food/dining/bookings/${String(payload?.bookingId)}/review`, payload),
-  
-  createBooking: (payload = {}) => 
+
+  createBooking: (payload = {}) =>
     userClient.post("/food/dining/bookings", payload),
 };
 export const heroBannerAPI = createStubAPI();

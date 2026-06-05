@@ -229,6 +229,12 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
                               navigate("/food/superadmin/managers")
+                            } else if (item.name === "Delivery Partners") {
+                              navigate("/food/superadmin/delivery-partners")
+                            } else if (item.name === "Kitchen Staff") {
+                              navigate("/food/superadmin/kitchen-staff")
+                            } else if (item.name === "Roles & Permissions") {
+                              navigate("/food/superadmin/roles-permissions")
                             }
                             // On mobile, close sidebar when clicking a menu item
                             if (window.innerWidth < 1024) {

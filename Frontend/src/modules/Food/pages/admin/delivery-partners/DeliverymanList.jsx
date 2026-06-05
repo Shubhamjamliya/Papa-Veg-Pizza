@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@food/components/ui/dialog"
 import { exportDeliverymenToExcel, exportDeliverymenToPDF } from "@food/components/admin/deliveryman/deliverymanExportUtils"
 import { toast } from "sonner"
-const debugError = () => {}
+const debugError = () => { }
 
 
 const formatCurrency = (amount) => {
@@ -71,7 +71,7 @@ export default function DeliverymanList() {
     try {
       setLoading(true)
       setError(null)
-      
+
       const params = {
         page: 1,
         limit: 1000, // Get all for now
@@ -117,10 +117,10 @@ export default function DeliverymanList() {
       }
     } catch (err) {
       debugError("Error fetching delivery partners:", err)
-      
+
       // Better error handling
       let errorMessage = "Failed to fetch delivery partners. Please try again."
-      
+
       if (err.code === 'ERR_NETWORK') {
         errorMessage = "Network error. Please check if backend server is running."
       } else if (err.response?.status === 401) {
@@ -132,7 +132,7 @@ export default function DeliverymanList() {
       } else if (err.message) {
         errorMessage = err.message
       }
-      
+
       setError(errorMessage)
       setDeliverymen([])
     } finally {
@@ -143,7 +143,7 @@ export default function DeliverymanList() {
   // Fetch on mount and setup polling for real-time updates
   useEffect(() => {
     fetchDeliverymen()
-    
+
     // Polling interval: every 8 seconds refresh data (real-time request)
     const interval = setInterval(() => {
       // Pass a flag or just call fetchDeliverymen
@@ -212,18 +212,18 @@ export default function DeliverymanList() {
     try {
       setLoading(true)
       const response = await adminAPI.getDeliveryPartnerById(deliveryman._id)
-      
+
       if (response.data && response.data.success) {
         setViewDetails({
           ...response.data.data.delivery,
           walletSummary: deliveryman.walletSummary || null,
-pocketBalance: deliveryman.pocketBalance || 0,
-cashInHand: deliveryman.cashInHand || 0,
-remainingCashLimit: deliveryman.remainingCashLimit || 0,
-totalEarning: deliveryman.totalEarning || 0,
-bonus: deliveryman.bonus || 0,
-totalWithdrawn: deliveryman.totalWithdrawn || 0,
-availableCashLimit: deliveryman.availableCashLimit || 0,
+          pocketBalance: deliveryman.pocketBalance || 0,
+          cashInHand: deliveryman.cashInHand || 0,
+          remainingCashLimit: deliveryman.remainingCashLimit || 0,
+          totalEarning: deliveryman.totalEarning || 0,
+          bonus: deliveryman.bonus || 0,
+          totalWithdrawn: deliveryman.totalWithdrawn || 0,
+          availableCashLimit: deliveryman.availableCashLimit || 0,
         })
         setIsViewOpen(true)
       } else {
@@ -335,20 +335,20 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
         prev.map((item) =>
           String(item._id) === String(deliveryman._id)
             ? {
-                ...item,
+              ...item,
+              pocketBalance: updatedWallet.pocketBalance ?? nextPocketBalance,
+              cashInHand: updatedWallet.cashInHand ?? nextCashInHand,
+              remainingCashLimit: updatedWallet.remainingCashLimit ?? item.remainingCashLimit,
+              availableCashLimit: updatedWallet.availableCashLimit ?? item.availableCashLimit,
+              walletSummary: {
+                ...(item.walletSummary || {}),
+                walletId: updatedWallet.walletId || item.walletSummary?.walletId,
                 pocketBalance: updatedWallet.pocketBalance ?? nextPocketBalance,
-                cashInHand: updatedWallet.cashInHand ?? nextCashInHand,
+                cashCollected: updatedWallet.cashInHand ?? nextCashInHand,
                 remainingCashLimit: updatedWallet.remainingCashLimit ?? item.remainingCashLimit,
                 availableCashLimit: updatedWallet.availableCashLimit ?? item.availableCashLimit,
-                walletSummary: {
-                  ...(item.walletSummary || {}),
-                  walletId: updatedWallet.walletId || item.walletSummary?.walletId,
-                  pocketBalance: updatedWallet.pocketBalance ?? nextPocketBalance,
-                  cashCollected: updatedWallet.cashInHand ?? nextCashInHand,
-                  remainingCashLimit: updatedWallet.remainingCashLimit ?? item.remainingCashLimit,
-                  availableCashLimit: updatedWallet.availableCashLimit ?? item.availableCashLimit,
-                },
-              }
+              },
+            }
             : item,
         ),
       )
@@ -464,7 +464,7 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                 <FileSpreadsheet className="w-4 h-4" />
                 <span className="text-black font-bold">Excel</span>
               </button>
-              <button 
+              <button
                 onClick={() => setIsSettingsOpen(true)}
                 className="p-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 transition-all"
               >
@@ -601,7 +601,7 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                         {visibleColumns.name && (
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
-                              <div 
+                              <div
                                 className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center shrink-0 overflow-hidden cursor-pointer hover:opacity-80 transition-all border border-slate-100"
                                 onClick={() => handleView(dm)}
                               >
@@ -618,7 +618,7 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                                 )}
                               </div>
                               <div className="flex items-center gap-2">
-                                <span 
+                                <span
                                   className="text-sm font-medium text-slate-900 cursor-pointer hover:text-blue-600 transition-colors"
                                   onClick={() => handleView(dm)}
                                 >
@@ -729,9 +729,9 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                                   <Pencil className="w-4 h-4" />
                                 </button>
                               )}
-                              <button 
+                              <button
                                 onClick={() => handleView(dm)}
-                                className="p-1.5 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors" 
+                                className="p-1.5 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
                                 title="View Details"
                               >
                                 <Eye className="w-4 h-4" />
@@ -774,8 +774,8 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                 <div className="flex items-start gap-6 pb-6 border-b border-slate-200">
                   <div className="flex-shrink-0">
                     {viewDetails.profileImage?.url ? (
-                      <img 
-                        src={viewDetails.profileImage.url} 
+                      <img
+                        src={viewDetails.profileImage.url}
                         alt={viewDetails.name}
                         className="w-24 h-24 rounded-full object-cover border-2 border-slate-200"
                       />
@@ -810,12 +810,11 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-slate-500 uppercase">Status</label>
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${
-                        viewDetails.status === 'pending' ? 'bg-blue-100 text-blue-700' :
-                        viewDetails.status === 'approved' || viewDetails.status === 'active' ? 'bg-green-100 text-green-700' :
-                        viewDetails.status === 'blocked' ? 'bg-red-100 text-red-700' :
-                        'bg-slate-100 text-slate-700'
-                      }`}>
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${viewDetails.status === 'pending' ? 'bg-blue-100 text-blue-700' :
+                          viewDetails.status === 'approved' || viewDetails.status === 'active' ? 'bg-green-100 text-green-700' :
+                            viewDetails.status === 'blocked' ? 'bg-red-100 text-red-700' :
+                              'bg-slate-100 text-slate-700'
+                        }`}>
                         {viewDetails.status === 'blocked' ? 'Rejected' : (viewDetails.status?.charAt(0).toUpperCase() + viewDetails.status?.slice(1) || "N/A")}
                       </span>
                     </div>
@@ -989,9 +988,9 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                               <p className="text-sm text-slate-700 mb-1">Number: {viewDetails.documents.aadhar.number}</p>
                             )}
                             {viewDetails.documents.aadhar.document && (
-                              <a 
-                                href={viewDetails.documents.aadhar.document} 
-                                target="_blank" 
+                              <a
+                                href={viewDetails.documents.aadhar.document}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
                               >
@@ -1011,9 +1010,9 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                               <p className="text-sm text-slate-700 mb-1">Number: {viewDetails.documents.pan.number}</p>
                             )}
                             {viewDetails.documents.pan.document && (
-                              <a 
-                                href={viewDetails.documents.pan.document} 
-                                target="_blank" 
+                              <a
+                                href={viewDetails.documents.pan.document}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
                               >
@@ -1038,9 +1037,9 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                               </p>
                             )}
                             {viewDetails.documents.drivingLicense.document && (
-                              <a 
-                                href={viewDetails.documents.drivingLicense.document} 
-                                target="_blank" 
+                              <a
+                                href={viewDetails.documents.drivingLicense.document}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
                               >
@@ -1060,9 +1059,9 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                               <p className="text-sm text-slate-700 mb-1">Number: {viewDetails.documents.vehicleRC.number}</p>
                             )}
                             {viewDetails.documents.vehicleRC.document && (
-                              <a 
-                                href={viewDetails.documents.vehicleRC.document} 
-                                target="_blank" 
+                              <a
+                                href={viewDetails.documents.vehicleRC.document}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
                               >
@@ -1122,9 +1121,8 @@ availableCashLimit: deliveryman.availableCashLimit || 0,
                   {viewDetails.phoneVerified !== undefined && (
                     <div>
                       <label className="text-xs font-semibold text-slate-500 uppercase">Phone Verified</label>
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${
-                        viewDetails.phoneVerified ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                      }`}>
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium mt-1 ${viewDetails.phoneVerified ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        }`}>
                         {viewDetails.phoneVerified ? 'Verified' : 'Not Verified'}
                       </span>
                     </div>
