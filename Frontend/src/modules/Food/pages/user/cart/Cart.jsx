@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowLeft, Clock } from "lucide-react"
+import { ArrowLeft, Clock, Tag, ChevronRight, Gift } from "lucide-react"
 import { useCart } from "@food/context/CartContext"
 import ApplyCoupon from "./ApplyCoupon"
 import AddGiftCard from "./AddGiftCard"
@@ -131,19 +131,20 @@ export default function Cart() {
   const [showGiftCardModal, setShowGiftCardModal] = useState(false)
   const [appliedCoupon, setAppliedCoupon] = useState(null)
   const [appliedGiftCard, setAppliedGiftCard] = useState(null)
+  const [isDarkMode, setIsDarkMode] = useState(true)
 
   // Resolve Cart items from userCart localStorage on mount
   useEffect(() => {
     const resolveAndSyncCart = () => {
       const stored = JSON.parse(localStorage.getItem("userCart") || "{}")
       const list = []
-      
+
       Object.entries(stored).forEach(([key, qty]) => {
         if (qty <= 0) return
-        
+
         let baseId = key
         let size = ""
-        
+
         const matchedBaseId = Object.keys(ALL_PRODUCTS).find(id => key.startsWith(id))
         if (matchedBaseId) {
           baseId = matchedBaseId
@@ -151,7 +152,7 @@ export default function Cart() {
             size = key.slice(matchedBaseId.length + 1)
           }
         }
-        
+
         const prod = ALL_PRODUCTS[baseId]
         if (prod) {
           list.push({
@@ -169,13 +170,13 @@ export default function Cart() {
           })
         }
       })
-      
+
       setCartItems(list)
       replaceCart(list)
     }
 
     resolveAndSyncCart()
-    
+
     // Listen for updates from other tabs/pages
     window.addEventListener("cartUpdated", resolveAndSyncCart)
     return () => window.removeEventListener("cartUpdated", resolveAndSyncCart)
@@ -191,7 +192,6 @@ export default function Cart() {
       const car = localStorage.getItem("carNumber") || "Vehicle Dining"
       setOrderTypeInfo(`In-Car Dining: ${car}`)
     } else {
-      // For delivery and generic case, show Today 11:30 to match Image 1
       setOrderTypeInfo("Order for Today 11:30")
     }
   }, [])
@@ -200,20 +200,20 @@ export default function Cart() {
   const updateItemQty = (key, delta) => {
     const stored = JSON.parse(localStorage.getItem("userCart") || "{}")
     const newQty = (stored[key] || 0) + delta
-    
+
     if (newQty <= 0) {
       delete stored[key]
     } else {
       stored[key] = newQty
     }
-    
+
     localStorage.setItem("userCart", JSON.stringify(stored))
     window.dispatchEvent(new Event("cartUpdated"))
   }
 
   // Calculate pricing sums
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  
+
   let discount = 0
   if (appliedCoupon) {
     if (subtotal >= appliedCoupon.minOrder) {
@@ -229,89 +229,210 @@ export default function Cart() {
   const total = Math.max(0, subtotal - discount - giftCardValue)
 
   return (
-    <div className="min-h-screen bg-zinc-50 pb-36 text-zinc-900 font-sans flex flex-col">
+    <div className={`font-body-md text-body-md min-h-screen pb-36 flex flex-col transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
       {/* Custom Global Scrollbar Hider and Styling injection */}
       <style dangerouslySetInnerHTML={{
         __html: `
+        .glass-card {
+          background: rgba(255, 255, 255, 0.05) !important;
+          backdrop-filter: blur(20px) !important;
+          border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+        .active-nav-glow { box-shadow: 0 0 15px rgba(229, 57, 53, 0.3) !important; }
+        
+        /* Font Families */
+        .font-headline-lg-mobile, .font-headline-lg, .font-display-lg {
+          font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+        .font-body-md, .font-label-sm, .font-price-xl {
+          font-family: 'Inter', sans-serif !important;
+        }
+        
+        /* Font Sizes & Sizing Styles */
+        .text-headline-lg-mobile {
+          font-size: 28px !important;
+          line-height: 34px !important;
+          font-weight: 700 !important;
+        }
+        .text-headline-lg {
+          font-size: 32px !important;
+          line-height: 40px !important;
+          letter-spacing: -0.01em !important;
+          font-weight: 700 !important;
+        }
+        .text-display-lg {
+          font-size: 40px !important;
+          line-height: 48px !important;
+          letter-spacing: -0.02em !important;
+          font-weight: 800 !important;
+        }
+        .text-body-md {
+          font-size: 16px !important;
+          line-height: 24px !important;
+          font-weight: 400 !important;
+        }
+        .text-label-sm {
+          font-size: 12px !important;
+          line-height: 16px !important;
+          letter-spacing: 0.05em !important;
+          font-weight: 600 !important;
+        }
+        .text-price-xl {
+          font-size: 24px !important;
+          line-height: 24px !important;
+          letter-spacing: -0.01em !important;
+          font-weight: 700 !important;
+        }
+        .px-margin-mobile {
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+        }
+        .p-margin-mobile {
+          padding: 20px !important;
+        }
+        .mx-margin-mobile {
+          margin-left: 20px !important;
+          margin-right: 20px !important;
+        }
+        .gap-gutter {
+          gap: 16px !important;
+        }
+        .space-y-lg > :not([hidden]) ~ :not([hidden]) {
+          margin-top: 24px !important;
+        }
+        .space-y-md > :not([hidden]) ~ :not([hidden]) {
+          margin-top: 16px !important;
+        }
+        .space-y-sm > :not([hidden]) ~ :not([hidden]) {
+          margin-top: 12px !important;
+        }
+        .p-md {
+          padding: 16px !important;
+        }
+        .mt-md {
+          margin-top: 16px !important;
+        }
+        .bg-surface\\/80 {
+          background-color: rgba(19, 19, 19, 0.8) !important;
+        }
+        .bg-surface\\/90 {
+          background-color: rgba(19, 19, 19, 0.9) !important;
+        }
+        .text-primary {
+          color: #E53935 !important;
+        }
+        .bg-primary {
+          background-color: #E53935 !important;
+        }
+        .text-secondary {
+          color: #FF6B35 !important;
+        }
+        .bg-secondary {
+          background-color: #FF6B35 !important;
+        }
+        .bg-tertiary {
+          background-color: #3ce36a !important;
+        }
+        .text-tertiary {
+          color: #3ce36a !important;
+        }
+        .text-on-primary {
+          color: #ffffff !important;
+        }
+        .text-on-secondary {
+          color: #ffffff !important;
+        }
+        .text-on-tertiary {
+          color: #000000 !important;
+        }
+        .bg-primary-container {
+          background-color: #ff544c !important;
+        }
+        .text-on-primary-container {
+          color: #5c0005 !important;
+        }
+        .text-on-surface-variant {
+          color: #e4beb9 !important;
+        }
         `
       }} />
 
       {/* Header */}
-      <header className="sticky top-0 bg-white border-b border-zinc-200 px-4 py-3 flex items-center justify-between z-10">
-        <button 
-          onClick={() => navigate(-1)} 
-          className="p-1 text-zinc-800 hover:bg-zinc-100 rounded-full transition-colors active:scale-95"
+      <header className="sticky top-0 left-0 w-full z-10 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 shadow-sm h-16 flex items-center justify-between px-margin-mobile">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 hover:opacity-80 transition-opacity active:scale-95 bg-transparent border-0 cursor-pointer text-inherit"
         >
-          <ArrowLeft size={22} />
+          <ArrowLeft size={22} className={isDarkMode ? "text-white" : "text-[#1c1b1b]"} />
         </button>
-        <h1 className="text-[17px] font-extrabold text-zinc-900 absolute left-1/2 -translate-x-1/2">Your Cart</h1>
+        <h1 className={`font-headline-lg-mobile text-lg font-bold absolute left-1/2 -translate-x-1/2 ${isDarkMode ? "text-white" : "text-[#1c1b1b]"}`}>Your Cart</h1>
         <div className="w-8" />
       </header>
 
       {/* Order Type / Schedule Card */}
-      <div className="flex items-center gap-3 bg-white px-5 py-4 border-b border-zinc-200 shadow-sm">
-        <div className="w-8 h-8 rounded-full bg-zinc-50 flex items-center justify-center text-zinc-500">
+      <div className="flex items-center gap-3 px-margin-mobile py-4 border-b border-white/10 glass-card mx-margin-mobile mt-md rounded-xl">
+        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
           <Clock size={18} />
         </div>
-        <span className="text-[13px] font-bold text-zinc-800">{orderTypeInfo}</span>
+        <span className={`font-label-sm ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{orderTypeInfo}</span>
       </div>
 
       {/* Order List Header */}
-      <div className="flex justify-between items-center px-5 pt-6 pb-2">
-        <h2 className="text-base font-extrabold text-zinc-900">Order List</h2>
-        <button 
-          onClick={() => navigate("/user/menu")} 
-          className="text-emerald-600 font-extrabold text-sm hover:opacity-80 transition-opacity active:scale-95"
+      <div className="flex justify-between items-center px-margin-mobile pt-6 pb-2">
+        <h2 className={`font-headline-lg-mobile text-base ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Order List</h2>
+        <button
+          onClick={() => navigate("/user/menu")}
+          className="text-primary font-label-sm hover:opacity-80 transition-opacity active:scale-95 bg-transparent border-0 outline-none cursor-pointer"
         >
           + Add more
         </button>
       </div>
 
       {/* Cart Items Area */}
-      <div className="bg-white border-y border-zinc-200 divide-y divide-zinc-100">
+      <div className="px-margin-mobile space-y-md">
         {cartItems.length === 0 ? (
-          <div className="py-16 px-6 text-center text-zinc-400 font-bold text-sm">
+          <div className="py-4 px-4 text-center opacity-60 font-label-sm">
             Looks like you haven't added any item to your Cart yet
           </div>
         ) : (
           cartItems.map((item) => (
-            <div key={item.key} className="p-5 flex items-start gap-4">
+            <div key={item.key} className="glass-card rounded-xl p-md flex items-start gap-4">
               {/* Veg Indicator Square Box */}
-              <div className="mt-1.5 border-2 border-emerald-600 w-3.5 h-3.5 flex items-center justify-center shrink-0">
-                <div className="bg-emerald-600 rounded-full w-1.5 h-1.5" />
+              <div className="mt-1.5 border-2 border-tertiary w-3.5 h-3.5 flex items-center justify-center shrink-0">
+                <div className="bg-tertiary rounded-full w-1.5 h-1.5" />
               </div>
-              
+
               {/* Info Details */}
               <div className="flex-1 text-left space-y-1">
-                <h4 className="font-extrabold text-[14px] text-zinc-900 leading-tight">
+                <h4 className={`font-headline-lg-mobile text-[14px] leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
                   {item.name}
                 </h4>
                 {item.size && (
-                  <p className="text-[11px] text-zinc-500 font-semibold">
+                  <p className="font-label-sm text-[11px] opacity-60">
                     Size: {item.size}
                   </p>
                 )}
-                <p className="text-sm text-zinc-900 font-extrabold">
+                <p className={`font-price-xl text-sm mt-1 ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
                   ₹{item.price * item.quantity}
                 </p>
               </div>
 
               {/* Quantity Changer */}
-              <div className="flex items-center border border-zinc-250 rounded-lg h-9 overflow-hidden bg-white shadow-xs">
-                <button 
+              <div className="flex items-center border border-white/10 rounded-lg h-9 overflow-hidden glass-card">
+                <button
                   onClick={() => updateItemQty(item.key, -1)}
-                  className="px-3 h-full flex items-center justify-center text-zinc-500 font-bold text-lg hover:bg-zinc-50 active:bg-zinc-100 transition-colors"
+                  className="px-3 h-full flex items-center justify-center text-primary font-bold text-lg hover:bg-white/5 active:bg-white/10 transition-colors bg-transparent border-0 cursor-pointer"
                 >
                   -
                 </button>
-                <span className="px-2 font-extrabold text-xs text-zinc-800 min-w-[20px] text-center">
+                <span className={`px-2 font-label-sm min-w-[20px] text-center flex items-center justify-center ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
                   {item.quantity}
                 </span>
-                <button 
+                <button
                   onClick={() => updateItemQty(item.key, 1)}
-                  className="px-3 h-full flex items-center justify-center text-zinc-500 font-bold text-lg hover:bg-zinc-50 active:bg-zinc-100 transition-colors"
+                  className="px-3 h-full flex items-center justify-center text-primary font-bold text-lg hover:bg-white/5 active:bg-white/10 transition-colors bg-transparent border-0 cursor-pointer"
                 >
                   +
                 </button>
@@ -322,93 +443,93 @@ export default function Cart() {
       </div>
 
       {/* Promos & Discounts Section */}
-      <div className="mt-4 bg-white border-y border-zinc-200 divide-y divide-zinc-100">
+      <div className="mt-6 px-margin-mobile space-y-sm">
         {/* Coupon Apply Row */}
-        <div 
+        <div
           onClick={() => !appliedCoupon && setShowCouponModal(true)}
-          className="p-5 flex items-center justify-between cursor-pointer hover:bg-zinc-50 transition-colors"
+          className="p-md flex items-center justify-between cursor-pointer glass-card rounded-xl hover:bg-white/5 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-emerald-600 text-[22px] font-bold">local_offer</span>
+            <Tag size={22} className="text-primary" />
             <div className="text-left">
               {appliedCoupon ? (
                 <div>
-                  <p className="text-sm font-extrabold text-zinc-900">
+                  <p className={`font-label-sm ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
                     Coupon {appliedCoupon.code} applied!
                   </p>
-                  <p className="text-xs text-emerald-600 font-bold">
+                  <p className="text-xs text-primary font-bold mt-0.5">
                     ₹{discount} saved on this order
                   </p>
                 </div>
               ) : (
-                <p className="text-sm font-bold text-zinc-800">Apply Coupon</p>
+                <p className={`font-label-sm ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Apply Coupon</p>
               )}
             </div>
           </div>
           {appliedCoupon ? (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation()
                 setAppliedCoupon(null)
               }}
-              className="text-red-500 text-xs font-bold hover:underline active:scale-95"
+              className="text-primary text-xs font-bold hover:underline active:scale-95 bg-transparent border-0 cursor-pointer"
             >
               Remove
             </button>
           ) : (
-            <span className="material-symbols-outlined text-emerald-600 text-xl font-bold">chevron_right</span>
+            <ChevronRight size={20} className="text-primary" />
           )}
         </div>
 
         {/* Gift Card Add Row */}
-        <div 
+        <div
           onClick={() => !appliedGiftCard && setShowGiftCardModal(true)}
-          className="p-5 flex items-center justify-between cursor-pointer hover:bg-zinc-50 transition-colors"
+          className="p-md flex items-center justify-between cursor-pointer glass-card rounded-xl hover:bg-white/5 transition-colors"
         >
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-zinc-650 text-[22px]">featured_play_list</span>
+            <Gift size={22} className="text-primary" />
             <div className="text-left">
               {appliedGiftCard ? (
                 <div>
-                  <p className="text-sm font-extrabold text-zinc-900">
+                  <p className={`font-label-sm ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
                     Gift Card Applied
                   </p>
-                  <p className="text-xs text-emerald-600 font-bold">
+                  <p className="text-xs text-primary font-bold mt-0.5">
                     ₹{giftCardValue} balance used
                   </p>
                 </div>
               ) : (
-                <p className="text-sm font-bold text-zinc-800">Add Gift Card</p>
+                <p className={`font-label-sm ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Add Gift Card</p>
               )}
             </div>
           </div>
           {appliedGiftCard ? (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation()
                 setAppliedGiftCard(null)
               }}
-              className="text-red-500 text-xs font-bold hover:underline active:scale-95"
+              className="text-primary text-xs font-bold hover:underline active:scale-95 bg-transparent border-0 cursor-pointer"
             >
               Remove
             </button>
           ) : (
-            <span className="material-symbols-outlined text-emerald-600 text-xl font-bold">chevron_right</span>
+            <ChevronRight size={20} className="text-primary" />
           )}
         </div>
       </div>
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t border-zinc-200 px-5 pt-3 pb-8 z-30 flex flex-col gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+      <div className="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-xl border-t border-white/10 px-margin-mobile pt-4 pb-8 z-30 flex flex-col gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
         <div className="flex justify-between items-center">
-          <span className="text-[11px] font-bold text-zinc-400">
+          <span className="text-[11px] font-bold opacity-60">
             Prices are GST-inclusive
           </span>
-          <span className="text-sm font-black text-zinc-950">
+          <span className={`font-price-xl text-sm ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
             Total: ₹{total}
           </span>
         </div>
-        
+
         <button
           onClick={() => {
             if (cartItems.length > 0) {
@@ -416,11 +537,10 @@ export default function Cart() {
             }
           }}
           disabled={cartItems.length === 0}
-          className={`w-full h-12 rounded-xl text-xs font-extrabold transition-all uppercase tracking-wider ${
-            cartItems.length > 0 
-              ? "bg-[#155E37] text-white hover:bg-emerald-800 active:scale-98 shadow-md cursor-pointer" 
-              : "bg-zinc-100 text-zinc-400 cursor-not-allowed border border-zinc-250"
-          }`}
+          className={`w-full h-12 rounded-xl text-xs font-bold transition-all uppercase tracking-wider ${cartItems.length > 0
+            ? "bg-primary text-on-primary hover:bg-red-700 active:scale-95 shadow-[0_0_15px_rgba(229,57,53,0.3)] cursor-pointer border-0"
+            : "bg-white/10 text-white/40 cursor-not-allowed border border-white/10"
+            }`}
         >
           Proceed to Checkout
         </button>
