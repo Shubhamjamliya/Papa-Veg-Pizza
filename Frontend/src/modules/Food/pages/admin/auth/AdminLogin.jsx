@@ -5,7 +5,7 @@ import { adminAPI } from "@food/api"
 import { setAuthData } from "@food/utils/auth"
 import { ShieldCheck, UserCog, Star, Heart, ArrowRight, Loader2, Mail, Lock, Eye, EyeOff, ShieldQuestion } from "lucide-react"
 import { Button } from "@food/components/ui/button"
-import logoNew from "@/assets/logo.png"
+import logoNew from "@/assets/logo1.png"
 import { toast } from "sonner"
 
 export default function AdminLogin() {
@@ -15,6 +15,21 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const submitting = useRef(false)
+
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
+
+  useEffect(() => {
+    const linkFonts = document.createElement("link")
+    linkFonts.href = "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap"
+    linkFonts.rel = "stylesheet"
+    document.head.appendChild(linkFonts)
+    return () => {
+      document.head.removeChild(linkFonts)
+    }
+  }, [])
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -51,16 +66,35 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex flex-col relative overflow-hidden font-['Poppins']">
+    <div
+      className={`min-h-screen flex flex-col relative overflow-hidden transition-colors duration-300 ${isDarkMode ? "dark" : ""}`}
+      style={{
+        backgroundColor: isDarkMode ? "#111111" : "#fbf9f8",
+        color: isDarkMode ? "#e5e2e1" : "#1c1b1b",
+        fontFamily: "'Inter', sans-serif"
+      }}
+    >
+      {/* Dynamic CSS Styling Injector */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .glass-card {
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
+          backdrop-filter: blur(20px) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
+        }
+        `
+      }} />
+
       {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#7e3866]/10 via-[#7e3866]/5 to-transparent pointer-events-none" />
-      <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-[#7e3866]/5 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#7e3866]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#E53935]/10 via-[#E53935]/5 to-transparent pointer-events-none" />
+      <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-[#E53935]/5 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#E53935]/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Main Content */}
       <div className="absolute top-6 right-6 z-20">
         <Link to="/user/auth/support">
-          <Button variant="ghost" className="text-gray-500 hover:text-[#7e3866] font-semibold flex items-center gap-2">
+          <Button variant="ghost" className="text-gray-500 hover:text-[#E53935] font-semibold flex items-center gap-2">
             <ShieldQuestion className="w-5 h-5" />
             Support
           </Button>
@@ -82,10 +116,10 @@ export default function AdminLogin() {
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="relative inline-block mb-4"
             >
-              <img 
-                src={logoNew} 
-                alt="Foodelo Logo" 
-                className="w-32 h-32 md:w-36 md:h-36 object-contain mx-auto"
+              <img
+                src={logoNew}
+                alt="Papa Veg Pizza Logo"
+                className="w-32 h-32 md:w-36 md:h-36 object-contain mx-auto transition-transform duration-300 hover:scale-105"
               />
             </motion.div>
 
@@ -100,15 +134,18 @@ export default function AdminLogin() {
           </div>
 
           {/* Login Card */}
-          <div className="bg-white/80 dark:bg-[#1a1a1a]/80 backdrop-blur-2xl rounded-[3rem] p-8 sm:p-12 shadow-[0_40px_80px_-20px_rgba(126,56,102,0.2)] dark:shadow-none border border-white/20 dark:border-gray-800 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#7e3866]/20 to-transparent" />
+          <div className="glass-card rounded-[3rem] p-8 sm:p-12 shadow-[0_40px_80px_-20px_rgba(229,57,53,0.15)] dark:shadow-none relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#E53935]/20 to-transparent" />
 
             <div className="mb-10 text-center sm:text-left">
-              <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2 font-['Outfit'] tracking-tight">
+              <h2
+                className={`text-3xl font-black mb-2 tracking-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
                 Admin Entry
               </h2>
-              <div className="h-1 w-10 bg-[#7e3866] rounded-full mb-3 hidden sm:block" />
-              <p className="text-base text-gray-500 dark:text-gray-400 font-medium">
+              <div className="h-1 w-10 bg-[#E53935] rounded-full mb-3 hidden sm:block" />
+              <p className={`text-base font-medium ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
                 Authorized access only. Please sign in to continue.
               </p>
             </div>
@@ -116,7 +153,7 @@ export default function AdminLogin() {
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-[#7e3866] uppercase tracking-[0.2em] ml-1">Email Address</label>
+                  <label className="text-[10px] font-black text-[#E53935] uppercase tracking-[0.2em] ml-1">Email Address</label>
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -125,16 +162,16 @@ export default function AdminLogin() {
                       autoFocus
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full pl-12 pr-6 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[#7e3866]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
-                      placeholder="admin@foodelo.com"
+                      className="block w-full pl-12 pr-6 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[#E53935]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
+                      placeholder="admin@papavegpizza.com"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center px-1">
-                    <label className="text-[10px] font-black text-[#7e3866] uppercase tracking-[0.2em]">Password</label>
-                    <Link to="/admin/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 hover:text-[#7e3866] uppercase tracking-wider transition-colors">Forgot?</Link>
+                    <label className="text-[10px] font-black text-[#E53935] uppercase tracking-[0.2em]">Password</label>
+                    <Link to="/admin/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 hover:text-[#E53935] uppercase tracking-wider transition-colors">Forgot?</Link>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -143,7 +180,7 @@ export default function AdminLogin() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full pl-12 pr-12 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[#7e3866]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
+                      className="block w-full pl-12 pr-12 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[#E53935]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
                       placeholder="••••••••"
                     />
                     <button
@@ -160,7 +197,7 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4.5 bg-[#7e3866] hover:bg-[#6a2f56] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white rounded-2xl font-bold text-lg shadow-xl shadow-[#7e3866]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group overflow-hidden relative"
+                className="w-full py-4.5 bg-[#E53935] hover:bg-[#b71c1c] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white rounded-2xl font-bold text-lg shadow-xl shadow-[#E53935]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group overflow-hidden relative border-0 cursor-pointer"
               >
                 {loading ? (
                   <Loader2 className="w-6 h-6 animate-spin" />

@@ -121,7 +121,10 @@ export default function HotDealsPage() {
   }
 
   return (
-    <div className={`min-h-screen pb-32 font-body-md overflow-x-hidden transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
+    <div className={`min-h-screen flex justify-center transition-colors duration-300 ${isDarkMode ? "bg-[#0a0a0a]" : "bg-gray-100"}`}>
+      <div className={`w-full max-w-md min-h-screen pb-32 font-body-md overflow-x-hidden relative shadow-2xl border-x ${
+        isDarkMode ? "border-zinc-800/40" : "border-gray-200/50"
+      }`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
       {/* CSS overrides to keep design exact */}
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -200,7 +203,7 @@ export default function HotDealsPage() {
       )}
 
       {/* Top Header Navigation */}
-      <header className="fixed top-0 left-0 w-full z-45 bg-surface/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5 transition-colors duration-300">
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md z-45 bg-surface/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5 transition-colors duration-300">
         <button
           onClick={() => navigate("/user")}
           className={`material-symbols-outlined hover:opacity-85 active:scale-95 cursor-pointer bg-transparent border-0 outline-none ${isDarkMode ? "text-white" : "text-[#131313]"}`}
@@ -446,6 +449,7 @@ export default function HotDealsPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   )
 }

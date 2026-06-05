@@ -4,13 +4,13 @@ import { ProfileProvider } from "@food/context/ProfileContext"
 import LocationPrompt from "./LocationPrompt"
 import { CartProvider } from "@food/context/CartContext"
 import { OrdersProvider } from "@food/context/OrdersContext"
-const debugLog = (...args) => {}
-const debugWarn = (...args) => {}
-const debugError = (...args) => {}
+const debugLog = (...args) => { }
+const debugWarn = (...args) => { }
+const debugError = (...args) => { }
 
 import SearchOverlay from "./SearchOverlay"
 import BottomNavigation from "./BottomNavigation"
-import DesktopNavbar from "./DesktopNavbar"
+// import DesktopNavbar from "./DesktopNavbar"
 import { useUserNotifications } from "../../hooks/useUserNotifications"
 
 // Create SearchOverlay context with default value
@@ -146,9 +146,9 @@ export default function UserLayout() {
               <LocationSelectorProvider>
                 {/* <Navbar /> */}
                 {/* Desktop Navbar - Hidden on mobile, visible on medium+ screens */}
-                <div className="hidden md:block">
+                {/* <div className="hidden md:block">
                   {showBottomNav && <DesktopNavbar showLogo={!isUnder250} />}
-                </div>
+                </div> */}
                 <LocationPrompt />
                 <main className={showBottomNav ? "md:pt-40" : ""}>
                   <Outlet />

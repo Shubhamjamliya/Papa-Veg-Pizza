@@ -7,6 +7,7 @@ import DeliverOnTrainModal from "@food/components/user/DeliverOnTrainModal"
 import OrderDetailsFlow from "@food/pages/user/orders/OrderDetailsFlow"
 import { useLocationStore } from "@food/store/locationStore"
 import { useLocationGuard } from "@food/hooks/useLocationGuard"
+import logoNew from "@/assets/logo1.png"
 const PRODUCTS = [
   {
     id: "margherita-supreme",
@@ -221,15 +222,26 @@ export default function Home() {
   const totalCartCount = Object.values(cart).reduce((sum, qty) => sum + qty, 0)
 
   return (
-    <div className={`font-body-md text-body-md overflow-x-hidden pb-32 transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
+    <div className={`min-h-screen flex justify-center transition-colors duration-300 ${isDarkMode ? "bg-[#0a0a0a]" : "bg-gray-100"}`}>
+      <div className={`page-wrapper w-full max-w-md min-h-screen font-body-md text-body-md overflow-x-hidden pb-32 relative shadow-2xl border-x ${
+        isDarkMode ? "border-zinc-800/40" : "border-gray-200/50"
+      }`}>
       {/* Dynamic CSS Styling Injector to guarantee exact alignment */}
       <style dangerouslySetInnerHTML={{
         __html: `
+        .page-wrapper {
+          background: ${isDarkMode ? "#111111" : "radial-gradient(circle at top left, #FFF4F3 0%, #FFFDFD 40%, #FFF9F7 80%, #FFFFFF 100%)"} !important;
+          color: ${isDarkMode ? "#e5e2e1" : "#1c1b1b"} !important;
+        }
         .glass-card {
-          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
-          backdrop-filter: blur(20px) !important;
-          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
-          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.75)"} !important;
+          backdrop-filter: blur(24px) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(229, 57, 53, 0.08)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 10px 30px -4px rgba(229, 57, 53, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.01)"} !important;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .glass-card:hover {
+          box-shadow: ${isDarkMode ? "0 4px 20px rgba(0,0,0,0.4)" : "0 16px 35px -4px rgba(229, 57, 53, 0.08), 0 8px 16px -2px rgba(0, 0, 0, 0.02)"} !important;
         }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
@@ -248,13 +260,14 @@ export default function Home() {
         .text-headline-lg-mobile {
           font-size: 28px !important;
           line-height: 34px !important;
-          font-weight: 700 !important;
+          font-weight: 800 !important;
+          letter-spacing: -0.02em !important;
         }
         .text-headline-lg {
           font-size: 32px !important;
           line-height: 40px !important;
           letter-spacing: -0.01em !important;
-          font-weight: 700 !important;
+          font-weight: 800 !important;
         }
         .text-display-lg {
           font-size: 40px !important;
@@ -314,7 +327,8 @@ export default function Home() {
           margin-bottom: 16px !important;
         }
         .bg-surface\/80 {
-          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.8)"} !important;
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.82)"} !important;
+          backdrop-filter: blur(20px) !important;
         }
         .bg-surface {
           background-color: ${isDarkMode ? "#131313" : "#ffffff"} !important;
@@ -353,7 +367,7 @@ export default function Home() {
           color: #5c0005 !important;
         }
         .text-on-surface-variant {
-          color: ${isDarkMode ? "#e4beb9" : "#6b7280"} !important;
+          color: ${isDarkMode ? "#e4beb9" : "#4b5563"} !important;
         }
         .border-primary\/20 {
           border-color: ${isDarkMode ? "rgba(229, 57, 53, 0.2)" : "rgba(229, 57, 53, 0.1)"} !important;
@@ -362,13 +376,13 @@ export default function Home() {
           border-color: #E53935 !important;
         }
         .border-white\/10 {
-          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.08)"} !important;
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(229, 57, 53, 0.08)"} !important;
         }
         .border-white\/12 {
-          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.1)"} !important;
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(229, 57, 53, 0.1)"} !important;
         }
         .bg-white\/5 {
-          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.04)"} !important;
+          background-color: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(229, 57, 53, 0.03)"} !important;
         }
         .text-white\/70 {
           color: ${isDarkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(19, 19, 19, 0.7)"} !important;
@@ -379,7 +393,8 @@ export default function Home() {
         .bg-black\/40 {
           background-color: ${isDarkMode ? "rgba(0, 0, 0, 0.4)" : "rgba(255, 255, 255, 0.5)"} !important;
         }
-      ` }} />
+        `
+      }} />
 
       {/* Custom Toast Alert */}
       {toast.visible && (
@@ -389,9 +404,15 @@ export default function Home() {
       )}
 
       {/* TopAppBar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 shadow-sm h-16 flex items-center justify-between px-margin-mobile">
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md z-50 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 shadow-sm h-16 flex items-center justify-between px-margin-mobile">
         <div className="w-10"></div>
-        <h1 className="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary">Papa Veg Pizza</h1>
+        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center">
+          <img
+            src={logoNew}
+            alt="Papa Veg Pizza Logo"
+            className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
+          />
+        </div>
         <button
           onClick={() => {
             setIsDarkMode(!isDarkMode)
@@ -434,7 +455,7 @@ export default function Home() {
 
         {/* Order Details Flow (Confirmation Bar) */}
         {locationConfirmed && activeService === "delivery" && (
-          <OrderDetailsFlow 
+          <OrderDetailsFlow
             confirmedAddress={deliveryAddress}
             onOpenMap={() => setShowMapModal(true)}
             onClearCart={() => setCart({})}
@@ -470,22 +491,32 @@ export default function Home() {
                     triggerToast(`Switched to ${service.label}`)
                   }
                 }}
-                className={`glass-card rounded-xl p-md flex flex-col items-center justify-center gap-xs active:scale-95 transition-transform cursor-pointer border ${isSelected ? "border-primary/20 shadow-md" : ""}`}
+                className={`glass-card rounded-2xl p-md flex flex-col items-center justify-center gap-xs active:scale-95 transition-all duration-300 cursor-pointer border ${
+                  isSelected 
+                    ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/8 scale-[1.03]" 
+                    : "border-black/5 dark:border-white/5 hover:border-primary/20 dark:hover:border-white/10"
+                }`}
               >
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isSelected ? "bg-primary/10 text-primary" : "bg-white/5 text-on-surface-variant"}`}>
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors duration-300 ${
+                  isSelected 
+                    ? "bg-[#E53935] text-white shadow-md shadow-[#E53935]/20" 
+                    : "bg-[#131313]/5 dark:bg-white/5 text-on-surface-variant"
+                }`}>
                   <span className="material-symbols-outlined text-[32px]">{service.icon}</span>
                 </div>
-                <span className={`font-label-sm uppercase ${isSelected ? "text-primary font-bold" : "opacity-70"}`}>{service.label}</span>
+                <span className={`font-label-sm uppercase tracking-wider text-xs ${
+                  isSelected ? "text-[#E53935] font-extrabold" : "opacity-70 font-semibold"
+                }`}>{service.label}</span>
                 {service.id === "delivery" && (
-                  <span className="text-[9px] opacity-60 line-clamp-1 max-w-[120px] text-center mt-0.5">
+                  <span className={`text-[10px] opacity-60 line-clamp-1 max-w-[120px] text-center mt-0.5 font-medium ${isSelected ? "text-primary/95" : ""}`}>
                     {locationConfirmed ? (deliveryAddress || "Let us know your location") : "Let us know your location"}
                   </span>
                 )}
                 {service.id === "takeaway" && takeawayHut && (
-                  <span className="text-[9px] opacity-60 line-clamp-1 max-w-[120px] text-center mt-0.5">{takeawayHut}</span>
+                  <span className={`text-[10px] opacity-60 line-clamp-1 max-w-[120px] text-center mt-0.5 font-medium ${isSelected ? "text-primary/95" : ""}`}>{takeawayHut}</span>
                 )}
                 {service.id === "incar" && carNumber && (
-                  <span className="text-[9px] opacity-60 line-clamp-1 max-w-[120px] text-center mt-0.5">{carNumber}</span>
+                  <span className={`text-[10px] opacity-60 line-clamp-1 max-w-[120px] text-center mt-0.5 font-medium ${isSelected ? "text-primary/95" : ""}`}>{carNumber}</span>
                 )}
               </div>
             )
@@ -566,12 +597,16 @@ export default function Home() {
                     navigate("/user/menu", { state: { category: cat.id } })
                     triggerToast(`Opening Menu - ${cat.label}`)
                   }}
-                  className="flex flex-col items-center gap-xs min-w-[70px] cursor-pointer"
+                  className="flex flex-col items-center gap-xs min-w-[70px] cursor-pointer group"
                 >
-                  <div className={`w-16 h-16 rounded-full glass-card flex items-center justify-center transition-all ${isSelected ? "bg-primary active-nav-glow text-on-primary" : "text-white/70"}`}>
+                  <div className={`w-16 h-16 rounded-full glass-card flex items-center justify-center transition-all duration-300 ${
+                    isSelected 
+                      ? "bg-primary text-white shadow-lg shadow-primary/30 scale-105 border-transparent" 
+                      : "text-on-surface-variant hover:border-primary/30 hover:scale-105"
+                  }`}>
                     <span className="material-symbols-outlined">{cat.icon}</span>
                   </div>
-                  <span className={`font-label-sm ${isSelected ? "text-primary font-bold" : "opacity-60"}`}>{cat.label}</span>
+                  <span className={`font-label-sm transition-colors duration-300 ${isSelected ? "text-primary font-bold" : "opacity-60 group-hover:text-primary"}`}>{cat.label}</span>
                 </div>
               )
             })}
@@ -630,7 +665,11 @@ export default function Home() {
 
         {/* Fresh Ingredients */}
         <section className="px-margin-mobile">
-          <div className="glass-card rounded-3xl p-lg flex items-center justify-between overflow-hidden relative">
+          <div className={`rounded-3xl p-lg flex items-center justify-between overflow-hidden relative border ${
+            isDarkMode 
+              ? "glass-card" 
+              : "bg-gradient-to-br from-[#FFF5F4] to-[#FFF0EF] border-[#E53935]/15 shadow-md shadow-[#E53935]/4"
+          }`}>
             <div className="z-10 relative">
               <h3 className={`font-headline-lg-mobile mb-xs ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Fresh Every Day</h3>
               <p className={`text-sm opacity-70 max-w-[180px] leading-relaxed ${isDarkMode ? "text-white" : "text-[#131313]"}`}>We use only organic, farm-fresh ingredients for every slice.</p>
@@ -646,13 +685,13 @@ export default function Home() {
 
       {/* Floating Action Button */}
       {totalCartCount > 0 && locationConfirmed && (
-        <div className="fixed bottom-24 right-4 z-45">
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md pointer-events-none z-45">
           <button
             onClick={() => {
               navigate("/user/cart")
               triggerToast("Opening your cart...")
             }}
-            className="w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_0_20px_rgba(229,57,53,0.4)] flex items-center justify-center active:scale-95 transition-transform cursor-pointer relative"
+            className="absolute right-4 pointer-events-auto w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_0_20px_rgba(229,57,53,0.4)] flex items-center justify-center active:scale-95 transition-transform cursor-pointer relative"
           >
             <span className="material-symbols-outlined text-[28px]">shopping_basket</span>
             <div className="absolute -top-1 -right-1 w-6 h-6 bg-white text-on-primary-container rounded-full text-[10px] font-bold flex items-center justify-center border border-primary animate-bounce">
@@ -663,7 +702,7 @@ export default function Home() {
       )}
 
       {/* BottomNavBar */}
-      <nav className="fixed -bottom-[2px] left-0 w-full z-50 rounded-t-xl bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-t border-white/10 shadow-lg flex justify-around items-center h-[82px] pb-[2px] m-0">
+      <nav className="fixed -bottom-[2px] left-1/2 -translate-x-1/2 w-full max-w-md z-50 rounded-t-xl bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-t border-white/10 shadow-lg flex justify-around items-center h-[82px] pb-[2px] m-0">
         <button
           onClick={() => {
             if (window.location.pathname === "/user" || window.location.pathname === "/user/") {
@@ -815,6 +854,7 @@ export default function Home() {
         show={showTrainModal}
         onClose={() => setShowTrainModal(false)}
       />
+      </div>
     </div>
   )
 }

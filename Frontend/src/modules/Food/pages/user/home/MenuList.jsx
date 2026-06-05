@@ -4,6 +4,7 @@ import DeliveryMapModal from "@food/components/user/DeliveryMapModal"
 import DeliveryOrCollectionModal from "@food/components/user/DeliveryOrCollectionModal"
 import { useLocationStore } from "@food/store/locationStore"
 import { useLocationGuard } from "@food/hooks/useLocationGuard"
+import logoNew from "@/assets/logo1.png"
 
 const MENU_ITEMS = {
   pizzas: [
@@ -257,7 +258,10 @@ export default function MenuList() {
   const totalCartPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
   return (
-    <div className={`min-h-screen pb-32 font-body-md overflow-x-hidden transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
+    <div className={`min-h-screen flex justify-center transition-colors duration-300 ${isDarkMode ? "bg-[#0a0a0a]" : "bg-gray-100"}`}>
+      <div className={`w-full max-w-md min-h-screen pb-32 font-body-md overflow-x-hidden relative shadow-2xl border-x ${
+        isDarkMode ? "border-zinc-800/40" : "border-gray-200/50"
+      }`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
       {/* CSS overrides to keep design exact */}
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -355,7 +359,7 @@ export default function MenuList() {
       )}
 
       {/* Top Header Navigation */}
-      <header className="fixed top-0 left-0 w-full z-45 bg-surface/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5 transition-colors duration-300">
+      <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-md z-45 bg-surface/90 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-5 transition-colors duration-300">
         <button
           onClick={() => navigate("/user")}
           className={`material-symbols-outlined hover:opacity-85 active:scale-95 cursor-pointer bg-transparent border-0 outline-none ${isDarkMode ? "text-white" : "text-[#131313]"}`}
@@ -363,15 +367,18 @@ export default function MenuList() {
           arrow_back
         </button>
         {/* Brand logo design */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-[#E53935] flex items-center justify-center font-bold text-white tracking-wider">PV</div>
-          <span className={`font-headline-lg-mobile text-lg font-black tracking-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Papa Veg Pizza</span>
+        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center">
+          <img
+            src={logoNew}
+            alt="Papa Veg Pizza Logo"
+            className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
+          />
         </div>
         <div className="w-8"></div>
       </header>
 
       {/* Categories horizontal tabs */}
-      <div className="fixed top-16 left-0 w-full z-45 bg-surface/85 backdrop-blur-md border-b border-white/10 px-5 flex overflow-x-auto hide-scrollbar py-3 gap-3">
+      <div className="fixed top-16 left-1/2 -translate-x-1/2 w-full max-w-md z-45 bg-surface/85 backdrop-blur-md border-b border-white/10 px-5 flex overflow-x-auto hide-scrollbar py-3 gap-3">
         {[
           { id: "deals", label: "Deals", action: () => navigate("/user/deals") },
           { id: "pizzas", label: "Pizzas" },
@@ -813,12 +820,12 @@ export default function MenuList() {
 
       {/* Floating Action Cart basket FAB */}
       {totalCartCount > 0 && (
-        <div className="fixed bottom-6 right-4 z-45">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-md pointer-events-none z-45">
           <button
             onClick={() => {
               navigate("/user/cart")
             }}
-            className="w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_0_20px_rgba(229,57,53,0.4)] flex items-center justify-center active:scale-95 transition-transform cursor-pointer relative"
+            className="absolute right-4 pointer-events-auto w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_0_20px_rgba(229,57,53,0.4)] flex items-center justify-center active:scale-95 transition-transform cursor-pointer relative"
           >
             <span className="material-symbols-outlined text-[28px]">shopping_basket</span>
             <div className="absolute -top-1 -right-1 w-6 h-6 bg-white text-on-primary-container rounded-full text-[10px] font-bold flex items-center justify-center border border-primary animate-bounce">
@@ -827,6 +834,7 @@ export default function MenuList() {
           </button>
         </div>
       )}
+      </div>
     </div>
   )
 }

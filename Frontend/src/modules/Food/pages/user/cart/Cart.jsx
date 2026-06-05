@@ -233,7 +233,10 @@ export default function Cart() {
   const total = Math.max(0, subtotal - discount - giftCardValue)
 
   return (
-    <div className={`font-body-md text-body-md min-h-screen pb-36 flex flex-col transition-colors duration-300 ${isDarkMode ? "dark" : ""}`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
+    <div className={`min-h-screen flex justify-center transition-colors duration-300 ${isDarkMode ? "bg-[#0a0a0a]" : "bg-gray-100"}`}>
+      <div className={`font-body-md text-body-md w-full max-w-md min-h-screen pb-36 flex flex-col relative shadow-2xl border-x ${
+        isDarkMode ? "border-zinc-800/40" : "border-gray-200/50"
+      }`} style={{ backgroundColor: isDarkMode ? "#111111" : "#fbf9f8", color: isDarkMode ? "#e5e2e1" : "#1c1b1b" }}>
       {/* Custom Global Scrollbar Hider and Styling injection */}      <style dangerouslySetInnerHTML={{
         __html: `
         .glass-card {
@@ -533,7 +536,7 @@ export default function Cart() {
       </div>
 
       {/* Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-xl border-t border-white/10 px-margin-mobile pt-4 pb-8 z-30 flex flex-col gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-surface/90 backdrop-blur-xl border-t border-white/10 px-margin-mobile pt-4 pb-8 z-30 flex flex-col gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
         <div className="flex justify-between items-center">
           <span className="text-[11px] font-bold opacity-60">
             Prices are GST-inclusive
@@ -573,6 +576,7 @@ export default function Cart() {
         onClose={() => setShowGiftCardModal(false)}
         onApply={(card) => setAppliedGiftCard(card)}
       />
+      </div>
     </div>
   )
 }
