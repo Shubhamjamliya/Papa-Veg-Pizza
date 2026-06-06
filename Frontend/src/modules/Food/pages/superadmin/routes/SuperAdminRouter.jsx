@@ -10,6 +10,7 @@ const CustomerList = lazy(() => import("../userManagement/CustomerList"))
 const UserProfile = lazy(() => import("../userManagement/UserProfile"))
 const FranchiseStores = lazy(() => import("../franchiseManagement/FranchiseStores"))
 const StoreRequestApproval = lazy(() => import("../franchiseManagement/StoreRequestApproval"))
+const StoreZones = lazy(() => import("../franchiseManagement/StoreZones"))
 const FranchiseList = lazy(() => import("../userManagement/FranchiseList"))
 const StoreManagers = lazy(() => import("../userManagement/StoreManagers"))
 const StoreManagersList = lazy(() => import("../userManagement/StoreManagersList"))
@@ -30,6 +31,8 @@ function SuperAdminLayout() {
     activeItem = "Franchise Stores"
   } else if (location.pathname.includes("/store-requests")) {
     activeItem = "Store Requests / Approvals"
+  } else if (location.pathname.includes("/store-zones")) {
+    activeItem = "Store Zones / Regions"
   } else if (location.pathname.includes("/franchises")) {
     activeItem = "Franchise Owners"
   } else if (location.pathname.includes("/managers")) {
@@ -85,6 +88,7 @@ export default function SuperAdminRouter() {
           <Route path="/customers/profile" element={<UserProfile />} />
           <Route path="/franchise-stores" element={<FranchiseStores />} />
           <Route path="/store-requests" element={<StoreRequestApproval />} />
+          <Route path="/store-zones" element={<StoreZones />} />
           <Route path="/franchises" element={<FranchiseList />} />
           <Route path="/managers" element={<StoreManagers />} />
           <Route path="/managers/list" element={<StoreManagersList />} />
