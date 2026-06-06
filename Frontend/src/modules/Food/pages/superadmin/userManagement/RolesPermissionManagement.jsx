@@ -56,13 +56,6 @@ export default function RolesPermissionManagement() {
       {/* Header section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-6">
         <div>
-          <nav className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
-            <span>Dashboard</span>
-            <ChevronRight size={14} />
-            <span>User Management</span>
-            <ChevronRight size={14} />
-            <span className="text-[var(--primary)]">Roles & Permissions</span>
-          </nav>
           <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
             Roles & Permissions
           </h1>
@@ -223,7 +216,7 @@ export default function RolesPermissionManagement() {
       <RolesPermissionTable rolesList={INITIAL_ROLES} onPreviewRole={handlePreviewRole} />
 
       {/* Render the Drawer inline instead of through router */}
-      <RolesPermissionDetails 
+      <RolesPermissionDetails
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         role={selectedRole}
