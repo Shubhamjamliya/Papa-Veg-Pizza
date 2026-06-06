@@ -19,6 +19,7 @@ const KitchenStaffManagement = lazy(() => import("../userManagement/KitchenStaff
 const RolesPermissionManagement = lazy(() => import("../userManagement/RolesPermissionManagement"))
 const ProductsManagement = lazy(() => import("../productsManagement/ProductsManagement"))
 const CategoriesManagement = lazy(() => import("../productsManagement/CategoriesManagement"))
+const Addons = lazy(() => import("../productsManagement/Addons"))
 
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
@@ -49,6 +50,8 @@ function SuperAdminLayout() {
     activeItem = "Products"
   } else if (location.pathname.includes("/categories")) {
     activeItem = "Categories"
+  } else if (location.pathname.includes("/addons")) {
+    activeItem = "Add-ons / Toppings"
   }
 
   return (
@@ -103,6 +106,7 @@ export default function SuperAdminRouter() {
           <Route path="/roles-permissions" element={<RolesPermissionManagement />} />
           <Route path="/products" element={<ProductsManagement />} />
           <Route path="/categories" element={<CategoriesManagement />} />
+          <Route path="/addons" element={<Addons />} />
         </Route>
 
         {/* Redirect empty paths to dashboard */}
