@@ -1,0 +1,283 @@
+import React, { useState } from "react";
+import { X, Check, MapPin, Upload, ArrowRight, BadgeCheck } from "lucide-react";
+
+export default function AddFranchiseStores({ isOpen, onClose }) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 4;
+
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-8" id="modal-overlay">
+      {/* Wizard Modal Container */}
+      <div className="bg-white dark:bg-zinc-950 w-full max-w-5xl h-[90vh] md:h-[750px] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-zinc-200 dark:border-zinc-800">
+        
+        {/* Modal Header */}
+        <div className="px-6 py-4 md:px-8 md:py-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-white dark:bg-zinc-900">
+          <div>
+            <h3 className="text-xl md:text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Add New Franchise Store</h3>
+            <p className="text-zinc-500 text-sm mt-1">Onboard a new location to the Papa Veg network.</p>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-zinc-500 transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Stepper Progress Bar */}
+        <div className="px-4 py-4 md:px-8 md:py-6 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-between overflow-x-auto scrollbar-none">
+          {[
+            { step: 1, label: "Basic Details" },
+            { step: 2, label: "Location" },
+            { step: 3, label: "Business Info" },
+            { step: 4, label: "Operations" }
+          ].map((s, idx) => (
+            <div key={s.step} className={`flex items-center gap-2 md:gap-3 ${idx < 3 ? 'flex-1' : ''} relative min-w-max pr-4 md:pr-0`}>
+              <div 
+                className={`w-8 h-8 md:w-10 md:h-10 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300
+                  ${currentStep > s.step ? 'bg-[var(--primary)] border-[var(--primary)] text-white' : 
+                    currentStep === s.step ? 'text-[var(--primary)] border-[var(--primary)]' : 
+                    'text-zinc-500 border-zinc-300 dark:border-zinc-700'}`
+                }
+              >
+                {currentStep > s.step ? <Check size={18} strokeWidth={3} /> : s.step}
+              </div>
+              <span className={`text-[10px] md:text-xs font-bold uppercase tracking-wider ${currentStep >= s.step ? 'text-[var(--primary)]' : 'text-zinc-500'}`}>
+                {s.label}
+              </span>
+              {idx < 3 && (
+                <div className="h-[2px] w-8 md:flex-1 bg-zinc-200 dark:bg-zinc-800 mx-2 md:mx-4"></div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Wizard Steps Content */}
+        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+          
+          {/* Step 1: Basic Details */}
+          {currentStep === 1 && (
+            <section className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Name</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="e.g. Papa Veg Downtown" type="text"/>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Unique Code</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all font-mono text-sm dark:text-zinc-100" placeholder="PV-DT-001" type="text"/>
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Franchise Owner</label>
+                  <select className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100">
+                    <option>Select an approved owner...</option>
+                    <option>Rajiv Malhotra (MAL-9012)</option>
+                    <option>Sonia Gupta (GUP-4432)</option>
+                    <option>Vikram Singh (SIN-1102)</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Contact Number</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">+91</span>
+                    <input className="w-full h-12 pl-12 pr-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="9876543210" type="tel"/>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Manager Email</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="manager@papaveg.com" type="email"/>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Step 2: Location */}
+          {currentStep === 2 && (
+            <section className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div className="md:col-span-2 space-y-6 md:space-y-8">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Complete Address</label>
+                    <textarea className="w-full p-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="Suite 405, Green Plaza, MG Road..." rows="3"></textarea>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Region</label>
+                      <select className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none">
+                        <option>Northern Hub</option>
+                        <option>Southern Coastal</option>
+                        <option>Western Metro</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Pincode</label>
+                      <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="110001" type="text"/>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="md:col-span-1 h-64 md:h-auto">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2 block">Map Picker</label>
+                  <div className="w-full h-[calc(100%-24px)] min-h-[220px] rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden relative bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-cover opacity-80" 
+                      alt="Map" 
+                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&fm=webp"
+                    />
+                    <div className="z-10 bg-white/90 dark:bg-zinc-900/90 p-2 rounded shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col items-center">
+                      <MapPin className="text-[var(--primary)]" size={24} fill="currentColor" />
+                      <span className="text-[10px] font-bold text-zinc-700 dark:text-zinc-300 uppercase mt-1">Pick Location</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Step 3: Business Info */}
+          {currentStep === 3 && (
+            <section className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">GST Number</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg font-mono text-sm dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="22AAAAA0000A1Z5" type="text"/>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">PAN Card Number</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg font-mono text-sm dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="ABCDE1234F" type="text"/>
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">FSSAI License Number</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="100XXXXXXXXXXX" type="text"/>
+                </div>
+              </div>
+              
+              <div className="mt-8">
+                <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Required Documents</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+                  <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer group">
+                    <Upload className="text-[var(--primary)] mb-2 group-hover:scale-110 transition-transform" size={24} />
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Lease Agreement</p>
+                    <p className="text-xs text-zinc-500 mt-1">PDF, Max 5MB</p>
+                  </div>
+                  <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer group">
+                    <Upload className="text-[var(--primary)] mb-2 group-hover:scale-110 transition-transform" size={24} />
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Store Interior Photos</p>
+                    <p className="text-xs text-zinc-500 mt-1">JPG, Max 10MB</p>
+                  </div>
+                  <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer group">
+                    <Upload className="text-[var(--primary)] mb-2 group-hover:scale-110 transition-transform" size={24} />
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Health Certificate</p>
+                    <p className="text-xs text-zinc-500 mt-1">PDF, Max 5MB</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Step 4: Operations */}
+          {currentStep === 4 && (
+            <section className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Operating Hours</label>
+                  <div className="flex items-center gap-2">
+                    <input className="flex-1 h-12 px-2 md:px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none text-sm" type="time" defaultValue="09:00"/>
+                    <span className="text-zinc-500 text-sm">to</span>
+                    <input className="flex-1 h-12 px-2 md:px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none text-sm" type="time" defaultValue="23:00"/>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Delivery Radius (km)</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" type="number" defaultValue="5"/>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Min Order Value (₹)</label>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" type="number" defaultValue="250"/>
+                </div>
+              </div>
+              
+              <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+                <div className="bg-zinc-50 dark:bg-zinc-900 px-4 py-3 flex justify-between items-center">
+                  <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase">Holiday Calendar Management</h4>
+                  <button className="text-[var(--primary)] font-bold text-xs uppercase hover:underline">+ Add Holiday</button>
+                </div>
+                <div className="p-4 space-y-2">
+                  <div className="flex justify-between items-center p-3 bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                    <div>
+                      <p className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">Diwali Festival</p>
+                      <p className="text-xs text-zinc-500">Oct 31, 2024</p>
+                    </div>
+                    <span className="px-2 py-1 bg-[var(--primary)]/10 text-[var(--primary)] text-[10px] font-bold rounded">CLOSED</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                    <div>
+                      <p className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">Store Renovation</p>
+                      <p className="text-xs text-zinc-500">Nov 12 - Nov 15, 2024</p>
+                    </div>
+                    <span className="px-2 py-1 bg-[var(--secondary)]/10 text-[var(--secondary)] text-[10px] font-bold rounded">SCHEDULED</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+        </div>
+
+        {/* Modal Footer Actions */}
+        <div className="px-4 py-4 md:px-8 md:py-6 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col-reverse sm:flex-row justify-between items-center gap-4">
+          <div className="flex gap-4 w-full sm:w-auto">
+            <button 
+              className={`flex-1 sm:flex-none px-6 h-12 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold transition-all ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800'}`}
+              disabled={currentStep === 1}
+              onClick={handlePrev}
+            >
+              Previous
+            </button>
+            <button className="flex-1 sm:flex-none px-6 h-12 rounded-lg text-zinc-500 font-bold hover:text-zinc-900 dark:hover:text-zinc-100 transition-all hidden sm:block">
+              Save Draft
+            </button>
+          </div>
+          
+          <div className="flex gap-4 w-full sm:w-auto">
+            {currentStep < totalSteps ? (
+              <button 
+                className="flex-1 sm:flex-none px-8 h-12 rounded-lg bg-[var(--secondary)] text-white font-bold hover:brightness-110 transition-all shadow-sm flex items-center justify-center gap-2"
+                onClick={handleNext}
+              >
+                <span>Next Step</span>
+                <ArrowRight size={18} />
+              </button>
+            ) : (
+              <button 
+                className="flex-1 sm:flex-none px-8 h-12 rounded-lg bg-[var(--primary)] text-white font-bold hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2"
+                onClick={() => {
+                  onClose();
+                  // Additional save logic would go here
+                }}
+              >
+                <span>Create Store</span>
+                <BadgeCheck size={18} />
+              </button>
+            )}
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  );
+}

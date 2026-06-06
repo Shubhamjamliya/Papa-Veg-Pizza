@@ -8,6 +8,7 @@ const SuperAdminDashboard = lazy(() => import("../Dashboard/SuperAdminDashboard"
 const CustomerAnalysis = lazy(() => import("../userManagement/CustomerAnalysis"))
 const CustomerList = lazy(() => import("../userManagement/CustomerList"))
 const UserProfile = lazy(() => import("../userManagement/UserProfile"))
+const FranchiseStores = lazy(() => import("../franchiseManagement/FranchiseStores"))
 const FranchiseList = lazy(() => import("../userManagement/FranchiseList"))
 const StoreManagers = lazy(() => import("../userManagement/StoreManagers"))
 const StoreManagersList = lazy(() => import("../userManagement/StoreManagersList"))
@@ -24,6 +25,8 @@ function SuperAdminLayout() {
   let activeItem = "Dashboard"
   if (location.pathname.includes("/customers")) {
     activeItem = "Customers"
+  } else if (location.pathname.includes("/franchise-stores")) {
+    activeItem = "Franchise Stores"
   } else if (location.pathname.includes("/franchises")) {
     activeItem = "Franchise Owners"
   } else if (location.pathname.includes("/managers")) {
@@ -77,6 +80,7 @@ export default function SuperAdminRouter() {
           <Route path="/customers/list" element={<CustomerList />} />
           <Route path="/customers/profile/:id" element={<UserProfile />} />
           <Route path="/customers/profile" element={<UserProfile />} />
+          <Route path="/franchise-stores" element={<FranchiseStores />} />
           <Route path="/franchises" element={<FranchiseList />} />
           <Route path="/managers" element={<StoreManagers />} />
           <Route path="/managers/list" element={<StoreManagersList />} />
