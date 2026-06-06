@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Filter, ChevronLeft, ChevronRight, Eye, Edit, Copy, Trash2 } from 'lucide-react';
+import RolesPermissionEdit from './RolesPermissionEdit';
 
 export default function RolesPermissionTable({ rolesList, onPreviewRole }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [editingRole, setEditingRole] = useState(null);
   
   const [typeFilter, setTypeFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -128,7 +130,7 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole }) {
                       </td>
                       <td className="px-6 py-3 text-right space-x-1">
                          <button onClick={() => onPreviewRole(role)} className="text-zinc-400 hover:text-blue-500 dark:hover:text-blue-400 p-1.5 rounded-lg transition-colors"><Eye size={18} /></button>
-                         <button className="text-zinc-400 hover:text-[var(--primary)] p-1.5 rounded-lg transition-colors"><Edit size={18} /></button>
+                         <button onClick={() => setEditingRole(role)} className="text-zinc-400 hover:text-[var(--primary)] p-1.5 rounded-lg transition-colors"><Edit size={18} /></button>
                          <button className="text-zinc-400 hover:text-[var(--primary)] p-1.5 rounded-lg transition-colors"><Copy size={18} /></button>
                          {role.type !== 'System' && (
                            <button className="text-zinc-400 hover:text-rose-500 p-1.5 rounded-lg transition-colors"><Trash2 size={18} /></button>
@@ -179,6 +181,14 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole }) {
               </button>
            </div>
         </div>
+      )}
+
+      {/* Roles Permission Edit Modal */}
+      {editingRole && (
+        <RolesPermissionEdit 
+          role={editingRole} 
+          onClose={() => setEditingRole(null)} 
+        />
       )}
     </div>
   );
