@@ -235,6 +235,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/products")
                             } else if (item.name === "Categories") {
                               navigate("/food/superadmin/categories")
+                            } else if (item.name === "Add-ons / Toppings") {
+                              navigate("/food/superadmin/addons")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
