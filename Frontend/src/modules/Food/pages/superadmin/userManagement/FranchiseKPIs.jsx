@@ -32,7 +32,7 @@ export default function FranchiseKPIs({ stats }) {
     },
     {
       title: "Total Franchise Revenue",
-      value: `$${stats.revenue.toLocaleString()}`,
+      value: `₹${stats.revenue.toLocaleString()}`,
       change: "+18.2%",
       isPositive: true,
       icon: DollarSign,

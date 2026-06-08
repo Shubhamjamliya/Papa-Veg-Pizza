@@ -97,7 +97,7 @@ export default function InventoryManagement() {
         <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden group">
           <div className="absolute inset-0 bg-[var(--primary)] opacity-[0.02] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
           <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2 relative z-10">Total Value</p>
-          <h3 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-zinc-100 relative z-10">$12,450.25</h3>
+          <h3 className="text-2xl md:text-3xl font-black text-zinc-900 dark:text-zinc-100 relative z-10">₹12,450.25</h3>
           <div className="mt-4 flex items-center gap-1 text-zinc-500 dark:text-zinc-400 text-xs font-bold relative z-10">
             <Wallet size={16} />
             Asset Valuation

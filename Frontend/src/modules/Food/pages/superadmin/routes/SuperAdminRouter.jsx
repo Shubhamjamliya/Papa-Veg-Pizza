@@ -22,6 +22,7 @@ const CategoriesManagement = lazy(() => import("../productsManagement/Categories
 const Addons = lazy(() => import("../productsManagement/Addons"))
 const InventoryManagement = lazy(() => import("../productsManagement/InventoryManagement"))
 const OrdersManagement = lazy(() => import("../orderSystem/OrdersManagement"))
+const RefundAndCancellation = lazy(() => import("../orderSystem/RefundAndCancellation"))
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -57,6 +58,8 @@ function SuperAdminLayout() {
     activeItem = "Inventory Management"
   } else if (location.pathname.includes("/orders")) {
     activeItem = "Orders"
+  } else if (location.pathname.includes("/refunds-cancellations")) {
+    activeItem = "Refunds & Cancellations"
   }
 
   return (
@@ -66,7 +69,7 @@ function SuperAdminLayout() {
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         activeItem={activeItem}
-        setActiveItem={() => {}}
+        setActiveItem={() => { }}
       />
       {/* 280px left padding on desktop to clear fixed Sidebar */}
       <div className="lg:pl-[280px] pt-16 min-h-screen">
@@ -114,11 +117,12 @@ export default function SuperAdminRouter() {
           <Route path="/addons" element={<Addons />} />
           <Route path="/inventory" element={<InventoryManagement />} />
           <Route path="/orders" element={<OrdersManagement />} />
+          <Route path="/refunds-cancellations" element={<RefundAndCancellation />} />
         </Route>
 
         {/* Redirect empty paths to dashboard */}
         <Route path="/" element={<Navigate to="dashboard" replace />} />
-        
+
         {/* Wildcard fallback to redirect unknown paths */}
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Routes>

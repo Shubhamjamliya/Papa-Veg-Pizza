@@ -84,15 +84,15 @@ export default function AddonsDetails({ isOpen, onClose, addon }) {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400 font-medium">
                   <span>Base Price</span>
-                  <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">{addon?.price || "$1.50"}</span>
+                  <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">{addon?.price || "₹1.50"}</span>
                 </div>
                 <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400 font-medium">
                   <span>Tax (5%)</span>
-                  <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">$0.08</span>
+                  <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">₹0.08</span>
                 </div>
                 <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex justify-between font-bold text-base mt-2">
                   <span className="text-zinc-900 dark:text-zinc-100">Final Price</span>
-                  <span className="text-[var(--primary)] font-mono">$1.58</span>
+                  <span className="text-[var(--primary)] font-mono">₹1.58</span>
                 </div>
               </div>
             </div>

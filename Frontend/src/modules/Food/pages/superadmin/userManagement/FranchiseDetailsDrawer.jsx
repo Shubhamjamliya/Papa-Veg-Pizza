@@ -383,7 +383,7 @@ export default function FranchiseDetailsDrawer({ isOpen, onClose, admin }) {
 
                       <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-5 rounded-3xl shadow-sm">
                         <span className="text-[10px] text-zinc-400 font-semibold">Average Order Basket</span>
-                        <h3 className="text-lg font-black text-zinc-800 dark:text-zinc-200 mt-1">$28.40</h3>
+                        <h3 className="text-lg font-black text-zinc-800 dark:text-zinc-200 mt-1">₹28.40</h3>
                         <p className="text-[10px] text-zinc-400 font-bold flex items-center gap-1 mt-2">
                           <span>Standard Margin</span>
                         </p>

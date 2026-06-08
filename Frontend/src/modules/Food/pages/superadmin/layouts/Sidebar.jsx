@@ -172,9 +172,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       {/* Sidebar Drawer */}
       <aside
         id="sidebar"
-        className={`fixed inset-y-0 left-0 z-[60] flex flex-col bg-white dark:bg-zinc-900 border-r border-zinc-100 dark:border-zinc-800 w-[280px] transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-[60] flex flex-col bg-white dark:bg-zinc-900 border-r border-zinc-100 dark:border-zinc-800 w-[280px] transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Header / Logo section */}
         <div className="px-6 py-5 flex items-center justify-between border-b border-zinc-50 dark:border-zinc-800">
@@ -241,6 +240,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/inventory")
                             } else if (item.name === "Orders") {
                               navigate("/food/superadmin/orders")
+                            } else if (item.name === "Refunds & Cancellations") {
+                              navigate("/food/superadmin/refunds-cancellations")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
@@ -257,17 +258,15 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               onClose()
                             }
                           }}
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                            isActive
+                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
                               ? "bg-[var(--primary)]/10 text-[var(--primary)] font-semibold shadow-sm"
                               : "text-zinc-600 dark:text-zinc-400 hover:text-[var(--primary)] dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                          }`}
+                            }`}
                         >
                           <Icon
                             size={18}
-                            className={`transition-transform duration-300 ${
-                              isActive ? "scale-110 stroke-[2.2] text-[var(--primary)]" : "text-zinc-400 group-hover:text-[var(--primary)]"
-                            }`}
+                            className={`transition-transform duration-300 ${isActive ? "scale-110 stroke-[2.2] text-[var(--primary)]" : "text-zinc-400 group-hover:text-[var(--primary)]"
+                              }`}
                           />
                           <span>{item.name}</span>
                         </button>
