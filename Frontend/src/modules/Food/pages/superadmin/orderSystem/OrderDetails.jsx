@@ -1,0 +1,238 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  X, Utensils, Phone, MapPin, ChevronDown, 
+  CheckCircle, Printer, Truck, ArrowRight 
+} from 'lucide-react';
+
+export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, onAssignRider }) {
+  const [expandedRow, setExpandedRow] = useState(false);
+  const [isRendered, setIsRendered] = useState(isOpen);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsRendered(true);
+      setTimeout(() => setIsVisible(true), 10);
+    } else {
+      setIsVisible(false);
+      setTimeout(() => setIsRendered(false), 300); // Wait for transition
+    }
+  }, [isOpen]);
+
+  if (!isRendered) return null;
+
+  return (
+    <>
+      {/* Drawer Backdrop Overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm z-[55] transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+        onClick={onClose}
+      />
+
+      {/* Right Side Drawer */}
+      <div 
+        className={`fixed inset-y-0 right-0 w-full max-w-[450px] bg-white dark:bg-zinc-900 shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+        {/* Drawer Header */}
+        <div className="px-6 h-20 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">Order {order?.id || '#PV-8842'}</h2>
+              <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 font-semibold text-[11px] flex items-center gap-1">
+                <Utensils size={14} className="fill-current" /> PREPARING
+              </span>
+            </div>
+            <p className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">Today, 10:10 AM from Downtown Outlet</p>
+          </div>
+          <button 
+            onClick={onClose}
+            className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Scrollable Content Section */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700">
+          
+          {/* Customer Information Section */}
+          <section className="space-y-3">
+            <h3 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.1em]">Customer Details</h3>
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 flex items-start gap-4">
+              <div className="w-12 h-12 shrink-0 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 flex items-center justify-center font-bold text-lg">
+                {order?.customerName?.substring(0, 2).toUpperCase() || 'RS'}
+              </div>
+              <div className="flex-1">
+                <p className="text-base font-semibold text-zinc-900 dark:text-zinc-100">{order?.customerName || 'Rahul Sharma'}</p>
+                <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm mt-1">
+                  <Phone size={14} />
+                  {order?.customerPhone || '+91 98765-43210'}
+                </div>
+                <div className="flex items-start gap-2 text-zinc-500 dark:text-zinc-400 text-sm mt-1">
+                  <MapPin size={14} className="shrink-0 mt-0.5" />
+                  <span>123 Pizza Lane, Green Valley, Sector 4, Bangalore 560001</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Order Items Section */}
+          <section className="space-y-3">
+            <h3 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.1em]">Order Items</h3>
+            <div className="border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">Item</th>
+                    <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300 text-center">Qty</th>
+                    <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300 text-right">Price</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-zinc-900 divide-y divide-zinc-200 dark:divide-zinc-700">
+                  {/* Margherita Row (Expandable) */}
+                  <tr 
+                    className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer group" 
+                    onClick={() => setExpandedRow(!expandedRow)}
+                  >
+                    <td className="px-4 py-4">
+                      <div className="flex items-center gap-2">
+                        <ChevronDown 
+                          size={16} 
+                          className={`text-zinc-400 transition-transform ${expandedRow ? 'rotate-180' : ''}`} 
+                        />
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">Margherita Large</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-center text-zinc-600 dark:text-zinc-400">1</td>
+                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">$18.00</td>
+                  </tr>
+                  
+                  {expandedRow && (
+                    <tr className="bg-zinc-50/50 dark:bg-zinc-800/20">
+                      <td className="px-10 py-3" colSpan="3">
+                        <ul className="text-zinc-500 dark:text-zinc-400 text-xs space-y-1.5">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-zinc-300 dark:bg-zinc-600 rounded-full"></span>
+                            Extra Cheese (+$2.00)
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-zinc-300 dark:bg-zinc-600 rounded-full"></span>
+                            Thin Crust
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  )}
+
+                  <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
+                    <td className="px-4 py-4 pl-10 text-zinc-800 dark:text-zinc-200 font-medium">Garlic Bread</td>
+                    <td className="px-4 py-4 text-center text-zinc-600 dark:text-zinc-400">2</td>
+                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">$10.00</td>
+                  </tr>
+                  
+                  <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
+                    <td className="px-4 py-4 pl-10 text-zinc-800 dark:text-zinc-200 font-medium">Coke 500ml</td>
+                    <td className="px-4 py-4 text-center text-zinc-600 dark:text-zinc-400">2</td>
+                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">$5.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Order Timeline Section */}
+          <section className="space-y-3">
+            <h3 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.1em]">Tracking Timeline</h3>
+            <div className="relative pl-8 space-y-6">
+              <div className="absolute w-[2px] h-[calc(100%-2rem)] bg-zinc-200 dark:bg-zinc-700 left-[7px] top-4 z-0"></div>
+              
+              {/* Timeline Point 1 */}
+              <div className="relative z-10">
+                <div className="absolute -left-[25px] top-1 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-zinc-900"></div>
+                <div>
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Order Placed</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">10:00 AM • Web App</p>
+                </div>
+              </div>
+              
+              {/* Timeline Point 2 */}
+              <div className="relative z-10">
+                <div className="absolute -left-[25px] top-1 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-zinc-900"></div>
+                <div>
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Accepted by Store</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">10:05 AM • Store ID: 402</p>
+                </div>
+              </div>
+              
+              {/* Timeline Point 3 (Active) */}
+              <div className="relative z-10">
+                <div className="absolute -left-[25px] top-1 w-4 h-4 rounded-full bg-orange-500 ring-4 ring-white dark:ring-zinc-900 animate-pulse"></div>
+                <div>
+                  <p className="text-sm font-bold text-orange-600 dark:text-orange-500">Preparing</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">10:10 AM • Kitchen Station 2</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Billing Summary */}
+          <section className="space-y-3 pb-4">
+            <h3 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-[0.1em]">Payment Summary</h3>
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 space-y-2 border border-zinc-200 dark:border-zinc-700">
+              <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
+                <span>Subtotal</span>
+                <span>$33.00</span>
+              </div>
+              <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
+                <span>Add-ons</span>
+                <span>$2.00</span>
+              </div>
+              <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
+                <span>Tax (GST 5%)</span>
+                <span>$2.50</span>
+              </div>
+              <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
+                <span>Delivery Fee</span>
+                <span>$5.00</span>
+              </div>
+              
+              <div className="pt-3 mt-3 border-t border-zinc-200 dark:border-zinc-700 flex justify-between items-center">
+                <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">Grand Total</span>
+                <span className="text-xl font-bold text-[var(--primary)]">$42.50</span>
+              </div>
+              
+              <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 rounded w-max">
+                <CheckCircle size={14} className="fill-emerald-100 dark:fill-emerald-900/30" />
+                PAID VIA CREDIT CARD
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="p-5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 shrink-0 flex flex-col gap-3">
+          <div className="grid grid-cols-2 gap-3">
+            <button className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+              <Printer size={18} />
+              Print Invoice
+            </button>
+            <button 
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              onClick={onAssignRider}
+            >
+              <Truck size={18} />
+              Assign Rider
+            </button>
+          </div>
+          <button 
+            className="w-full bg-[var(--primary)] text-white text-base font-semibold py-3 rounded-xl shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            onClick={onUpdateStatus}
+          >
+            Update Status
+            <ArrowRight size={18} />
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
