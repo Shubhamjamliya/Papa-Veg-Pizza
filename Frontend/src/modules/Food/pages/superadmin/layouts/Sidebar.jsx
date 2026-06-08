@@ -244,6 +244,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/live-monitoring")
                             } else if (item.name === "Refunds & Cancellations") {
                               navigate("/food/superadmin/refunds-cancellations")
+                            } else if (item.name === "Delivery Management") {
+                              navigate("/food/superadmin/delivery-management")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
@@ -261,8 +263,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                             }
                           }}
                           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                              ? "bg-[var(--primary)]/10 text-[var(--primary)] font-semibold shadow-sm"
-                              : "text-zinc-600 dark:text-zinc-400 hover:text-[var(--primary)] dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                            ? "bg-[var(--primary)]/10 text-[var(--primary)] font-semibold shadow-sm"
+                            : "text-zinc-600 dark:text-zinc-400 hover:text-[var(--primary)] dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                             }`}
                         >
                           <Icon
