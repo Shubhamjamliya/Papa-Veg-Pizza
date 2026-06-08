@@ -239,6 +239,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/addons")
                             } else if (item.name === "Inventory Management") {
                               navigate("/food/superadmin/inventory")
+                            } else if (item.name === "Orders") {
+                              navigate("/food/superadmin/orders")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
