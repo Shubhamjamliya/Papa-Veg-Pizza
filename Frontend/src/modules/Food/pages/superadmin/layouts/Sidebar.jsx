@@ -246,6 +246,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/refunds-cancellations")
                             } else if (item.name === "Delivery Management") {
                               navigate("/food/superadmin/delivery-management")
+                            } else if (item.name === "Rider Tracking") {
+                              navigate("/food/superadmin/rider-tracking")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
