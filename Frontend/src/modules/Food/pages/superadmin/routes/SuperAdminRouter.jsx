@@ -26,6 +26,7 @@ const RefundAndCancellation = lazy(() => import("../orderSystem/RefundAndCancell
 const LiveOrderMonitor = lazy(() => import("../orderSystem/LiveOrderMonitor"))
 const DeliveryManagement = lazy(() => import("../deliverySystem/DeliveryManagement"))
 const RiderTracking = lazy(() => import("../deliverySystem/RiderTracking"))
+const DeliveryZoneManagement = lazy(() => import("../deliverySystem/DeliveryZoneManagement"))
 
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
@@ -129,6 +130,7 @@ export default function SuperAdminRouter() {
           <Route path="/refunds-cancellations" element={<RefundAndCancellation />} />
           <Route path="/delivery-management" element={<DeliveryManagement />} />
           <Route path="/rider-tracking" element={<RiderTracking />} />
+          <Route path="/delivery-zones" element={<DeliveryZoneManagement />} />
         </Route>
 
         {/* Redirect empty paths to dashboard */}
