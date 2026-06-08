@@ -104,7 +104,7 @@ export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, o
                       </div>
                     </td>
                     <td className="px-4 py-4 text-center text-zinc-600 dark:text-zinc-400">1</td>
-                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">$18.00</td>
+                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">₹18.00</td>
                   </tr>
                   
                   {expandedRow && (
@@ -113,7 +113,7 @@ export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, o
                         <ul className="text-zinc-500 dark:text-zinc-400 text-xs space-y-1.5">
                           <li className="flex items-center gap-2">
                             <span className="w-1 h-1 bg-zinc-300 dark:bg-zinc-600 rounded-full"></span>
-                            Extra Cheese (+$2.00)
+                            Extra Cheese (+₹2.00)
                           </li>
                           <li className="flex items-center gap-2">
                             <span className="w-1 h-1 bg-zinc-300 dark:bg-zinc-600 rounded-full"></span>
@@ -127,13 +127,13 @@ export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, o
                   <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
                     <td className="px-4 py-4 pl-10 text-zinc-800 dark:text-zinc-200 font-medium">Garlic Bread</td>
                     <td className="px-4 py-4 text-center text-zinc-600 dark:text-zinc-400">2</td>
-                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">$10.00</td>
+                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">₹10.00</td>
                   </tr>
                   
                   <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
                     <td className="px-4 py-4 pl-10 text-zinc-800 dark:text-zinc-200 font-medium">Coke 500ml</td>
                     <td className="px-4 py-4 text-center text-zinc-600 dark:text-zinc-400">2</td>
-                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">$5.00</td>
+                    <td className="px-4 py-4 text-right text-zinc-800 dark:text-zinc-200 font-medium">₹5.00</td>
                   </tr>
                 </tbody>
               </table>
@@ -181,24 +181,24 @@ export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, o
             <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 space-y-2 border border-zinc-200 dark:border-zinc-700">
               <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
                 <span>Subtotal</span>
-                <span>$33.00</span>
+                <span>₹33.00</span>
               </div>
               <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
                 <span>Add-ons</span>
-                <span>$2.00</span>
+                <span>₹2.00</span>
               </div>
               <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
                 <span>Tax (GST 5%)</span>
-                <span>$2.50</span>
+                <span>₹2.50</span>
               </div>
               <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
                 <span>Delivery Fee</span>
-                <span>$5.00</span>
+                <span>₹5.00</span>
               </div>
               
               <div className="pt-3 mt-3 border-t border-zinc-200 dark:border-zinc-700 flex justify-between items-center">
                 <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">Grand Total</span>
-                <span className="text-xl font-bold text-[var(--primary)]">$42.50</span>
+                <span className="text-xl font-bold text-[var(--primary)]">₹42.50</span>
               </div>
               
               <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-1 rounded w-max">

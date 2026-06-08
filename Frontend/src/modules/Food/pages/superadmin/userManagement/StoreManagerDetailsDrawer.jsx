@@ -400,7 +400,7 @@ export default function StoreManagerDetailsDrawer({ isOpen, onClose, manager, on
                       <div className="space-y-1">
                         <p className="text-xs font-extrabold text-zinc-800 dark:text-zinc-200">Administrative Authority</p>
                         <p className="text-[10px] text-zinc-450 dark:text-zinc-400 leading-normal font-medium">
-                          Store managers possess permission to modify store operations hours, approve local driver shifts, and initiate order refunds under $50.00.
+                          Store managers possess permission to modify store operations hours, approve local driver shifts, and initiate order refunds under ₹50.00.
                         </p>
                       </div>
                     </div>

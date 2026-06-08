@@ -694,7 +694,7 @@ export default function UserProfile() {
                     ))}
                   </div>
                   <div className="relative mt-2">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs font-bold">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs font-bold">₹</span>
                     <input
                       type="number"
                       required

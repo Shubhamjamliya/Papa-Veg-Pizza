@@ -66,7 +66,7 @@ export default function CustomerAnalysis() {
     },
     {
       title: "Total Revenue",
-      value: "$1.2M",
+      value: "₹1.2M",
       growth: "+10%",
       isPositive: true,
       icon: DollarSign,

@@ -82,7 +82,7 @@ export default function Addons() {
           <span className="text-zinc-500 font-bold text-xs uppercase tracking-wider">Revenue</span>
           <div className="flex items-end justify-between mt-2">
             <div>
-              <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">$1,240.50</span>
+              <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">₹1,240.50</span>
               <p className="text-emerald-600 font-bold text-xs flex items-center gap-1 mt-1">
                 <TrendingUp size={12} /> 12%
               </p>
