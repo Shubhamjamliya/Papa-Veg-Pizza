@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Download, Upload, Bell, User, Banknote, CheckCircle2, XCircle, Hourglass, Undo2, WalletCards, CreditCard, Landmark, Smartphone, MonitorSmartphone } from 'lucide-react';
 import PaymentsData from './PaymentsData';
 import RefundModal from './RefundModal';
-import TransactionDetails from './TransactionDetails';
+import PaymentDetails from './PaymentDetails';
 
 export default function PaymentsManagement() {
   const [isRefundModalOpen, setIsRefundModalOpen] = useState(false);
@@ -82,7 +82,7 @@ export default function PaymentsManagement() {
             <span className="text-[10px] font-bold text-emerald-600">97.4%</span>
           </div>
           <div className="h-2 w-full bg-emerald-50 dark:bg-emerald-950/20 rounded-full relative overflow-hidden">
-             <div className="absolute inset-y-0 left-0 bg-emerald-500 w-[97.4%] rounded-full"></div>
+            <div className="absolute inset-y-0 left-0 bg-emerald-500 w-[97.4%] rounded-full"></div>
           </div>
         </div>
 
@@ -97,7 +97,7 @@ export default function PaymentsManagement() {
             <span className="text-[10px] font-bold text-rose-500">2.1%</span>
           </div>
           <div className="h-2 w-full bg-rose-50 dark:bg-rose-950/20 rounded-full relative overflow-hidden">
-             <div className="absolute inset-y-0 left-0 bg-rose-500 w-[2.1%] rounded-full"></div>
+            <div className="absolute inset-y-0 left-0 bg-rose-500 w-[2.1%] rounded-full"></div>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ export default function PaymentsManagement() {
             <span className="text-[10px] font-bold text-amber-500">Processing</span>
           </div>
           <div className="h-2 w-full bg-amber-50 dark:bg-amber-950/20 rounded-full relative overflow-hidden">
-             <div className="absolute inset-y-0 left-0 bg-amber-500 w-[5%] rounded-full"></div>
+            <div className="absolute inset-y-0 left-0 bg-amber-500 w-[5%] rounded-full"></div>
           </div>
         </div>
 
@@ -127,7 +127,7 @@ export default function PaymentsManagement() {
             <span className="text-[10px] font-bold text-indigo-500">-4% WoW</span>
           </div>
           <div className="h-2 w-full bg-indigo-50 dark:bg-indigo-950/20 rounded-full relative overflow-hidden">
-             <div className="absolute inset-y-0 left-0 bg-indigo-500 w-[15%] rounded-full"></div>
+            <div className="absolute inset-y-0 left-0 bg-indigo-500 w-[15%] rounded-full"></div>
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function PaymentsManagement() {
             <span className="text-[10px] font-bold text-[var(--primary)]">Fee Share</span>
           </div>
           <div className="h-2 w-full bg-[var(--primary)]/10 rounded-full relative overflow-hidden">
-             <div className="absolute inset-y-0 left-0 bg-[var(--primary)] w-[40%] rounded-full"></div>
+            <div className="absolute inset-y-0 left-0 bg-[var(--primary)] w-[40%] rounded-full"></div>
           </div>
         </div>
       </section>
@@ -170,34 +170,34 @@ export default function PaymentsManagement() {
           </div>
           {/* Mock Bar Chart */}
           <div className="h-64 flex items-end gap-3 px-2 border-b border-l border-zinc-200 dark:border-zinc-800">
-             <div className="flex-1 h-[60%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[70%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
-             <div className="flex-1 h-[45%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[65%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
-             <div className="flex-1 h-[80%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[85%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
-             <div className="flex-1 h-[65%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[75%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
-             <div className="flex-1 h-[90%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[95%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
-             <div className="flex-1 h-[55%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[60%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
-             <div className="flex-1 h-[75%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
-                <div className="absolute bottom-0 left-0 w-full h-[80%] bg-[var(--primary)]/20"></div>
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
-             </div>
+            <div className="flex-1 h-[60%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[70%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
+            <div className="flex-1 h-[45%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[65%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
+            <div className="flex-1 h-[80%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[85%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
+            <div className="flex-1 h-[65%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[75%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
+            <div className="flex-1 h-[90%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[95%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
+            <div className="flex-1 h-[55%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[60%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
+            <div className="flex-1 h-[75%] bg-zinc-100 dark:bg-zinc-800 rounded-t relative overflow-hidden group hover:opacity-90 cursor-pointer transition-opacity">
+              <div className="absolute bottom-0 left-0 w-full h-[80%] bg-[var(--primary)]/20"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--primary)]"></div>
+            </div>
           </div>
           <div className="flex justify-between mt-3 text-[10px] font-bold text-zinc-400 uppercase px-2">
             <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
@@ -233,7 +233,7 @@ export default function PaymentsManagement() {
             </div>
           </div>
         </div>
-        
+
         {/* Gateway Performance */}
         <div className="lg:col-span-12 bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
           <h4 className="font-bold text-zinc-900 dark:text-zinc-100 mb-6">Gateway Performance</h4>
@@ -256,7 +256,7 @@ export default function PaymentsManagement() {
               </div>
               <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase">Revenue: <span className="text-zinc-900 dark:text-zinc-100">₹3,42,000</span></p>
             </div>
-            
+
             {/* Gateway 2 */}
             <div className="space-y-4 group">
               <div className="flex items-center gap-3">
@@ -275,7 +275,7 @@ export default function PaymentsManagement() {
               </div>
               <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase">Revenue: <span className="text-zinc-900 dark:text-zinc-100">₹72,800</span></p>
             </div>
-            
+
             {/* Gateway 3 */}
             <div className="space-y-4 group">
               <div className="flex items-center gap-3">
@@ -294,7 +294,7 @@ export default function PaymentsManagement() {
               </div>
               <p className="text-[10px] font-bold text-rose-500 animate-pulse tracking-wider uppercase">CRITICAL: DOWN IN SOUTH</p>
             </div>
-            
+
             {/* Gateway 4 */}
             <div className="space-y-4 group">
               <div className="flex items-center gap-3">
@@ -318,21 +318,21 @@ export default function PaymentsManagement() {
       </section>
 
       {/* Section 3 & 4: Table and Filter component */}
-      <PaymentsData 
-        onProcessRefund={handleProcessRefund} 
-        onViewTransaction={handleViewTransaction} 
+      <PaymentsData
+        onProcessRefund={handleProcessRefund}
+        onViewTransaction={handleViewTransaction}
       />
 
-      <RefundModal 
-        isOpen={isRefundModalOpen} 
-        onClose={() => setIsRefundModalOpen(false)} 
-        transaction={selectedTransaction} 
+      <RefundModal
+        isOpen={isRefundModalOpen}
+        onClose={() => setIsRefundModalOpen(false)}
+        transaction={selectedTransaction}
       />
 
-      <TransactionDetails 
-        isOpen={isTransactionDrawerOpen} 
-        onClose={() => setIsTransactionDrawerOpen(false)} 
-        transaction={selectedTransaction} 
+      <PaymentDetails
+        isOpen={isTransactionDrawerOpen}
+        onClose={() => setIsTransactionDrawerOpen(false)}
+        transaction={selectedTransaction}
       />
 
     </div>
