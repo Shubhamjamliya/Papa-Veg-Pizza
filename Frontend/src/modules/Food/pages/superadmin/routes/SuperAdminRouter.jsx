@@ -34,6 +34,7 @@ const NotificationsManagement = lazy(() => import("../marketing/NotificationsMan
 const PaymentsManagement = lazy(() => import("../financial/PaymentsManagement"))
 const TransactionManagement = lazy(() => import("../financial/TransactionManagement"))
 const FranchiseCommission = lazy(() => import("../financial/FranchiseCommission"))
+const RevenueReport = lazy(() => import("../financial/RevenueReport"))
 
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
@@ -90,6 +91,8 @@ function SuperAdminLayout() {
     activeItem = "Transactions"
   } else if (location.pathname.includes("/commissions")) {
     activeItem = "Franchise Commissions"
+  } else if (location.pathname.includes("/revenue-reports")) {
+    activeItem = "Revenue Reports"
   }
 
   return (
@@ -159,6 +162,7 @@ export default function SuperAdminRouter() {
           <Route path="/payments" element={<PaymentsManagement />} />
           <Route path="/transactions" element={<TransactionManagement />} />
           <Route path="/commissions" element={<FranchiseCommission />} />
+          <Route path="/revenue-reports" element={<RevenueReport />} />
         </Route>
 
         {/* Redirect empty paths to dashboard */}
