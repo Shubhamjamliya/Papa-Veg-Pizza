@@ -38,6 +38,8 @@ const RevenueReport = lazy(() => import("../financial/RevenueReport"))
 const SalesAnalytics = lazy(() => import("../analytics/SalesAnalytics"))
 const CustomerAnalytics = lazy(() => import("../analytics/CustomerAnalytics"))
 const OperationalAnalytics = lazy(() => import("../analytics/OperationalAnalytics"))
+const AppSettings = lazy(() => import("../settings/AppSettings"))
+const TaxSettings = lazy(() => import("../settings/TaxSettings"))
 
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
@@ -102,6 +104,10 @@ function SuperAdminLayout() {
     activeItem = "Customer Analytics"
   } else if (location.pathname.includes("/operational-analytics")) {
     activeItem = "Operational Analytics"
+  } else if (location.pathname.includes("/app-settings")) {
+    activeItem = "App Settings"
+  } else if (location.pathname.includes("/tax-settings")) {
+    activeItem = "Tax Settings"
   }
 
   return (
@@ -175,6 +181,8 @@ export default function SuperAdminRouter() {
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
           <Route path="/customer-analytics" element={<CustomerAnalytics />} />
           <Route path="/operational-analytics" element={<OperationalAnalytics />} />
+          <Route path="/app-settings" element={<AppSettings />} />
+          <Route path="/tax-settings" element={<TaxSettings />} />
         </Route>
 
         {/* Redirect empty paths to dashboard */}

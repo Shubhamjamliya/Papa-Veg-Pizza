@@ -272,6 +272,10 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/customer-analytics")
                             } else if (item.name === "Operational Analytics") {
                               navigate("/food/superadmin/operational-analytics")
+                            } else if (item.name === "App Settings") {
+                              navigate("/food/superadmin/app-settings")
+                            } else if (item.name === "Tax Settings") {
+                              navigate("/food/superadmin/tax-settings")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
