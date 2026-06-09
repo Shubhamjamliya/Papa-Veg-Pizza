@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Upload, Share, Layers, Zap, Store, Activity, Maximize2 } from 'lucide-react';
 import DeliveryZonesData from './DeliveryZonesData';
-import DeliveryZoneDetails from '../productsManagement/DeliveryZoneDetails';
+import DeliveryZoneDetails from './DeliveryZoneDetails';
 import ZonePricingRules from './ZonePricingRules';
 import CreateDeliveryZone from './CreateDeliveryZone';
 
@@ -19,7 +19,7 @@ export default function DeliveryZoneManagement() {
                     <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mt-1 uppercase tracking-wider">Registry Management / Region 01</p>
                 </div>
                 <div className="flex gap-2.5">
-                    <button 
+                    <button
                         onClick={() => setIsCreateZoneOpen(true)}
                         className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[var(--primary)] text-white font-bold px-5 py-2.5 rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-md shadow-[var(--primary)]/20"
                     >
@@ -76,13 +76,13 @@ export default function DeliveryZoneManagement() {
 
             {/* Map Preview Overlay */}
             <div className="relative h-72 w-full rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-900 shadow-md">
-                <img 
-                    alt="Map Interface" 
-                    className="w-full h-full object-cover opacity-70 grayscale brightness-75 dark:brightness-50 mix-blend-luminosity" 
+                <img
+                    alt="Map Interface"
+                    className="w-full h-full object-cover opacity-70 grayscale brightness-75 dark:brightness-50 mix-blend-luminosity"
                     src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1920&q=80&fm=webp"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent pointer-events-none"></div>
-                
+
                 <div className="absolute top-5 left-5 z-10">
                     <div className="bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-200 dark:border-white/10 shadow-sm flex items-center gap-2">
                         <span className="relative flex h-2 w-2">
