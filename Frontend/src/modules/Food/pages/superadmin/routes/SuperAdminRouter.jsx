@@ -29,6 +29,7 @@ const RiderTracking = lazy(() => import("../deliverySystem/RiderTracking"))
 const DeliveryZoneManagement = lazy(() => import("../deliverySystem/DeliveryZoneManagement"))
 const CouponsManagement = lazy(() => import("../marketing/CouponsManagement"))
 const OffersAndCampaign = lazy(() => import("../marketing/OffersAndCampaign"))
+const BannersAndPromotions = lazy(() => import("../marketing/BannersAndPromotions"))
 
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
@@ -75,6 +76,8 @@ function SuperAdminLayout() {
     activeItem = "Coupons"
   } else if (location.pathname.includes("/offers-campaigns")) {
     activeItem = "Offers & Campaigns"
+  } else if (location.pathname.includes("/banners-promotions")) {
+    activeItem = "Banners / Promotions"
   }
 
   return (
@@ -139,6 +142,7 @@ export default function SuperAdminRouter() {
           <Route path="/delivery-zones" element={<DeliveryZoneManagement />} />
           <Route path="/coupons" element={<CouponsManagement />} />
           <Route path="/offers-campaigns" element={<OffersAndCampaign />} />
+          <Route path="/banners-promotions" element={<BannersAndPromotions />} />
         </Route>
 
         {/* Redirect empty paths to dashboard */}
