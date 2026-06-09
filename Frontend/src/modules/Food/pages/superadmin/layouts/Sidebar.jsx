@@ -270,6 +270,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/sales-analytics")
                             } else if (item.name === "Customer Analytics") {
                               navigate("/food/superadmin/customer-analytics")
+                            } else if (item.name === "Operational Analytics") {
+                              navigate("/food/superadmin/operational-analytics")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
