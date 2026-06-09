@@ -250,6 +250,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/delivery-zones")
                             } else if (item.name === "Rider Tracking") {
                               navigate("/food/superadmin/rider-tracking")
+                            } else if (item.name === "Coupons") {
+                              navigate("/food/superadmin/coupons")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
