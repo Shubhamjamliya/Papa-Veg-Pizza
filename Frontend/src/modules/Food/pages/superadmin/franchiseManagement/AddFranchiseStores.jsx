@@ -23,14 +23,14 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
     <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-8" id="modal-overlay">
       {/* Wizard Modal Container */}
       <div className="bg-white dark:bg-zinc-950 w-full max-w-5xl h-[90vh] md:h-[750px] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-zinc-200 dark:border-zinc-800">
-        
+
         {/* Modal Header */}
         <div className="px-6 py-4 md:px-8 md:py-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-white dark:bg-zinc-900">
           <div>
             <h3 className="text-xl md:text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Add New Franchise Store</h3>
             <p className="text-zinc-500 text-sm mt-1">Onboard a new location to the Papa Veg network.</p>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-zinc-500 transition-colors"
           >
@@ -47,11 +47,11 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
             { step: 4, label: "Operations" }
           ].map((s, idx) => (
             <div key={s.step} className={`flex items-center gap-2 md:gap-3 ${idx < 3 ? 'flex-1' : ''} relative min-w-max pr-4 md:pr-0`}>
-              <div 
+              <div
                 className={`w-8 h-8 md:w-10 md:h-10 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300
-                  ${currentStep > s.step ? 'bg-[var(--primary)] border-[var(--primary)] text-white' : 
-                    currentStep === s.step ? 'text-[var(--primary)] border-[var(--primary)]' : 
-                    'text-zinc-500 border-zinc-300 dark:border-zinc-700'}`
+                  ${currentStep > s.step ? 'bg-[var(--primary)] border-[var(--primary)] text-white' :
+                    currentStep === s.step ? 'text-[var(--primary)] border-[var(--primary)]' :
+                      'text-zinc-500 border-zinc-300 dark:border-zinc-700'}`
                 }
               >
                 {currentStep > s.step ? <Check size={18} strokeWidth={3} /> : s.step}
@@ -68,18 +68,18 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
 
         {/* Wizard Steps Content */}
         <div className="flex-1 overflow-y-auto p-6 md:p-8">
-          
+
           {/* Step 1: Basic Details */}
           {currentStep === 1 && (
             <section className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Name</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="e.g. Papa Veg Downtown" type="text"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="e.g. Papa Veg Downtown" type="text" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Unique Code</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all font-mono text-sm dark:text-zinc-100" placeholder="PV-DT-001" type="text"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all font-mono text-sm dark:text-zinc-100" placeholder="PV-DT-001" type="text" />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Franchise Owner</label>
@@ -94,12 +94,12 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Contact Number</label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">+91</span>
-                    <input className="w-full h-12 pl-12 pr-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="9876543210" type="tel"/>
+                    <input className="w-full h-12 pl-12 pr-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="9876543210" type="tel" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Manager Email</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="manager@papaveg.com" type="email"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="manager@papaveg.com" type="email" />
                 </div>
               </div>
             </section>
@@ -125,17 +125,17 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Pincode</label>
-                      <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="110001" type="text"/>
+                      <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="110001" type="text" />
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="md:col-span-1 h-64 md:h-auto">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2 block">Map Picker</label>
                   <div className="w-full h-[calc(100%-24px)] min-h-[220px] rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden relative bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
-                    <img 
-                      className="absolute inset-0 w-full h-full object-cover opacity-80" 
-                      alt="Map" 
+                    <img
+                      className="absolute inset-0 w-full h-full object-cover opacity-80"
+                      alt="Map"
                       src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&fm=webp"
                     />
                     <div className="z-10 bg-white/90 dark:bg-zinc-900/90 p-2 rounded shadow-sm border border-zinc-200 dark:border-zinc-800 flex flex-col items-center">
@@ -154,18 +154,18 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">GST Number</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg font-mono text-sm dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="22AAAAA0000A1Z5" type="text"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg font-mono text-sm dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="22AAAAA0000A1Z5" type="text" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">PAN Card Number</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg font-mono text-sm dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="ABCDE1234F" type="text"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg font-mono text-sm dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="ABCDE1234F" type="text" />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">FSSAI License Number</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="100XXXXXXXXXXX" type="text"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" placeholder="100XXXXXXXXXXX" type="text" />
                 </div>
               </div>
-              
+
               <div className="mt-8">
                 <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-4">Required Documents</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
@@ -196,21 +196,21 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Operating Hours</label>
                   <div className="flex items-center gap-2">
-                    <input className="flex-1 h-12 px-2 md:px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none text-sm" type="time" defaultValue="09:00"/>
+                    <input className="flex-1 h-12 px-2 md:px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none text-sm" type="time" defaultValue="09:00" />
                     <span className="text-zinc-500 text-sm">to</span>
-                    <input className="flex-1 h-12 px-2 md:px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none text-sm" type="time" defaultValue="23:00"/>
+                    <input className="flex-1 h-12 px-2 md:px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none text-sm" type="time" defaultValue="23:00" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Delivery Radius (km)</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" type="number" defaultValue="5"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" type="number" defaultValue="5" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Min Order Value (₹)</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" type="number" defaultValue="250"/>
+                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg dark:text-zinc-100 focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none" type="number" defaultValue="250" />
                 </div>
               </div>
-              
+
               <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
                 <div className="bg-zinc-50 dark:bg-zinc-900 px-4 py-3 flex justify-between items-center">
                   <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase">Holiday Calendar Management</h4>
@@ -241,21 +241,27 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
         {/* Modal Footer Actions */}
         <div className="px-4 py-4 md:px-8 md:py-6 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col-reverse sm:flex-row justify-between items-center gap-4">
           <div className="flex gap-4 w-full sm:w-auto">
-            <button 
+            <button
               className={`flex-1 sm:flex-none px-6 h-12 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold transition-all ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-zinc-50 dark:hover:bg-zinc-800'}`}
               disabled={currentStep === 1}
               onClick={handlePrev}
             >
               Previous
             </button>
-            <button className="flex-1 sm:flex-none px-6 h-12 rounded-lg text-zinc-500 font-bold hover:text-zinc-900 dark:hover:text-zinc-100 transition-all hidden sm:block">
+            <button 
+              className="flex-1 sm:flex-none px-6 h-12 rounded-lg text-zinc-500 font-bold hover:text-zinc-900 dark:hover:text-zinc-100 transition-all hidden sm:block"
+              onClick={() => {
+                alert("Store details have been saved to drafts.");
+                onClose();
+              }}
+            >
               Save Draft
             </button>
           </div>
-          
+
           <div className="flex gap-4 w-full sm:w-auto">
             {currentStep < totalSteps ? (
-              <button 
+              <button
                 className="flex-1 sm:flex-none px-8 h-12 rounded-lg bg-[var(--secondary)] text-white font-bold hover:brightness-110 transition-all shadow-sm flex items-center justify-center gap-2"
                 onClick={handleNext}
               >
@@ -263,7 +269,7 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                 <ArrowRight size={18} />
               </button>
             ) : (
-              <button 
+              <button
                 className="flex-1 sm:flex-none px-8 h-12 rounded-lg bg-[var(--primary)] text-white font-bold hover:brightness-110 transition-all shadow-lg flex items-center justify-center gap-2"
                 onClick={() => {
                   onClose();
@@ -276,7 +282,7 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
             )}
           </div>
         </div>
-        
+
       </div>
     </div>
   );

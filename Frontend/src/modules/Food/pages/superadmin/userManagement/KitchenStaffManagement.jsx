@@ -302,7 +302,7 @@ export default function KitchenStaffManagement() {
       {/* Header section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-6">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
             Kitchen Staff
           </h1>
           <p className="text-zinc-400 font-semibold text-xs mt-0.5">
@@ -505,10 +505,10 @@ export default function KitchenStaffManagement() {
                     <td className="px-6 py-4">
                       <span
                         className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full ${staff.status === "Active"
-                            ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30"
-                            : staff.status === "Inactive"
-                              ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700/35"
-                              : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30"
+                          ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30"
+                          : staff.status === "Inactive"
+                            ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border border-zinc-200 dark:border-zinc-700/35"
+                            : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30"
                           }`}
                       >
                         {staff.status}
@@ -599,8 +599,8 @@ export default function KitchenStaffManagement() {
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
                   className={`w-9 h-9 flex items-center justify-center rounded-xl text-xs font-bold transition-all ${currentPage === i + 1
-                      ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/10"
-                      : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-850"
+                    ? "bg-[var(--primary)] text-white shadow-md shadow-[var(--primary)]/10"
+                    : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-850"
                     }`}
                 >
                   {i + 1}

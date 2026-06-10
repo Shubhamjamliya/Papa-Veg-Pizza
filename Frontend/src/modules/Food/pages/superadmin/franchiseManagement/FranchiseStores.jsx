@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Download, ChevronDown, Plus, Store, CheckCircle, Clock, Ban, ChevronRight } from "lucide-react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import FranchiseStoresData from "./FranchiseStoresData";
 import FranchiseStoresDetails from "./FranchiseStoresDetails";
 import AddFranchiseStores from "./AddFranchiseStores";
@@ -13,17 +15,35 @@ export default function FranchiseStores() {
     setSelectedStore(store);
     setIsDrawerOpen(true);
   };
+
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Franchise Stores Report", 14, 15);
+    // Use autotable to extract data directly from the HTML table rendered by FranchiseStoresData
+    doc.autoTable({
+      html: 'table',
+      startY: 20,
+      theme: 'grid',
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [41, 128, 185] } // Default blue color
+    });
+    doc.save("franchise-stores-report.pdf");
+  };
+
   return (
     <div className="p-6 md:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
       {/* Breadcrumbs & Title Section */}
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Franchise Stores</h2>
+            <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">Franchise Stores</h2>
             <p className="text-zinc-500 mt-1">Manage all franchise locations, owners, operations and performance.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <button className="px-4 py-2 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2 text-sm">
+            <button 
+              onClick={handleExportPDF}
+              className="px-4 py-2 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2 text-sm"
+            >
               <Download size={16} />
               Export
             </button>

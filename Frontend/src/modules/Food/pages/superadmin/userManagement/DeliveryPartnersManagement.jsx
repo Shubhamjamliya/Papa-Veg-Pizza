@@ -302,7 +302,7 @@ export default function DeliveryPartnersManagement() {
       {/* Breadcrumbs & Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-6">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
             Delivery Partners
           </h1>
           <p className="text-zinc-400 font-semibold text-xs mt-0.5">

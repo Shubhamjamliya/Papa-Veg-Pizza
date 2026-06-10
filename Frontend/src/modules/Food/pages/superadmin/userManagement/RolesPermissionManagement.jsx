@@ -63,7 +63,7 @@ export default function RolesPermissionManagement() {
       {/* Header section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-6">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
             Roles & Permissions
           </h1>
           <p className="text-zinc-400 font-semibold text-xs mt-0.5">
@@ -71,7 +71,7 @@ export default function RolesPermissionManagement() {
           </p>
         </div>
 
-        <button 
+        <button
           onClick={() => setIsCreateRoleOpen(true)}
           className="flex items-center gap-2 px-5 py-3 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl text-xs font-bold shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.02] cursor-pointer"
         >
@@ -223,9 +223,9 @@ export default function RolesPermissionManagement() {
       </section>
 
       {/* Main Table Section */}
-      <RolesPermissionTable 
-        rolesList={roles} 
-        onPreviewRole={handlePreviewRole} 
+      <RolesPermissionTable
+        rolesList={roles}
+        onPreviewRole={handlePreviewRole}
         onDeleteRole={handleDeleteRole}
       />
 
@@ -236,7 +236,7 @@ export default function RolesPermissionManagement() {
         role={selectedRole}
       />
 
-      <CreateRoleModal 
+      <CreateRoleModal
         isOpen={isCreateRoleOpen}
         onClose={() => setIsCreateRoleOpen(false)}
       />
