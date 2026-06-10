@@ -253,7 +253,7 @@ export default function StoreManagers() {
           </div>
           <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Total Managers</p>
           <h3 className="text-2xl font-black text-zinc-800 dark:text-zinc-50 mt-1">{kpis.total}</h3>
-          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-955 rounded-lg overflow-hidden relative">
+          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-950 rounded-lg overflow-hidden relative">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
               <path className="text-[var(--primary)] stroke-[2] fill-none" d="M0 15 Q 10 5, 20 12 T 40 8 T 60 14 T 80 4 T 100 10" />
             </svg>
@@ -272,7 +272,7 @@ export default function StoreManagers() {
           </div>
           <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Active Managers</p>
           <h3 className="text-2xl font-black text-zinc-800 dark:text-zinc-50 mt-1">{kpis.active}</h3>
-          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-955 rounded-lg overflow-hidden relative">
+          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-950 rounded-lg overflow-hidden relative">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
               <path className="text-emerald-500 stroke-[2] fill-none" d="M0 10 Q 25 18, 50 10 T 100 12" />
             </svg>
@@ -289,7 +289,7 @@ export default function StoreManagers() {
           </div>
           <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Managers On Leave</p>
           <h3 className="text-2xl font-black text-zinc-800 dark:text-zinc-50 mt-1">{kpis.onLeave}</h3>
-          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-955 rounded-lg overflow-hidden relative">
+          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-950 rounded-lg overflow-hidden relative">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
               <path className="text-amber-500 stroke-[2] fill-none" d="M0 15 L 20 15 L 40 5 L 60 10 L 80 5 L 100 15" />
             </svg>
@@ -308,7 +308,7 @@ export default function StoreManagers() {
           </div>
           <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Suspended Managers</p>
           <h3 className="text-2xl font-black text-zinc-800 dark:text-zinc-50 mt-1">{kpis.suspended}</h3>
-          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-955 rounded-lg overflow-hidden relative">
+          <div className="mt-4 h-8 w-full bg-zinc-50 dark:bg-zinc-950 rounded-lg overflow-hidden relative">
             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
               <path className="text-rose-500 stroke-[2] fill-none" d="M0 10 C 20 10, 40 10, 50 10 C 60 10, 80 10, 100 10" />
             </svg>
@@ -497,7 +497,7 @@ export default function StoreManagers() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="marco@papaveg.com"
-                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.email ? "border-rose-500" : "border-zinc-200 dark:border-zinc-805"
+                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.email ? "border-rose-500" : "border-zinc-200 dark:border-zinc-805"
                           }`}
                       />
                       {formErrors.email && <p className="text-[9px] font-black text-rose-500 mt-1">{formErrors.email}</p>}
@@ -511,7 +511,7 @@ export default function StoreManagers() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+1 312-555-xxxx"
-                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.phone ? "border-rose-500" : "border-zinc-200 dark:border-zinc-805"
+                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.phone ? "border-rose-500" : "border-zinc-200 dark:border-zinc-805"
                           }`}
                       />
                       {formErrors.phone && <p className="text-[9px] font-black text-rose-500 mt-1">{formErrors.phone}</p>}
@@ -524,7 +524,7 @@ export default function StoreManagers() {
                       <select
                         value={formData.group}
                         onChange={(e) => setFormData({ ...formData, group: e.target.value })}
-                        className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-805 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-850 dark:text-zinc-100 focus:outline-none cursor-pointer"
+                        className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-805 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-850 dark:text-zinc-100 focus:outline-none cursor-pointer"
                       >
                         {franchiseOptions.slice(1).map(opt => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
@@ -535,7 +535,7 @@ export default function StoreManagers() {
                       <select
                         value={formData.store}
                         onChange={(e) => setFormData({ ...formData, store: e.target.value })}
-                        className="w-full text-xs px-3 py-3 border border-zinc-205 dark:border-zinc-805 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-850 dark:text-zinc-100 focus:outline-none cursor-pointer"
+                        className="w-full text-xs px-3 py-3 border border-zinc-205 dark:border-zinc-805 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-850 dark:text-zinc-100 focus:outline-none cursor-pointer"
                       >
                         {storeOptions.slice(1).map(opt => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
@@ -547,7 +547,7 @@ export default function StoreManagers() {
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full text-xs px-3 py-3 border border-zinc-205 dark:border-zinc-805 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-850 dark:text-zinc-100 focus:outline-none cursor-pointer"
+                      className="w-full text-xs px-3 py-3 border border-zinc-205 dark:border-zinc-805 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-850 dark:text-zinc-100 focus:outline-none cursor-pointer"
                     >
                       {statusOptions.slice(1).map(opt => <option key={opt} value={opt}>{opt}</option>)}
                     </select>

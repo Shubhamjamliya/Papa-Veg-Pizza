@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -18,6 +18,10 @@ import {
   CheckCircle,
   AlertCircle
 } from "lucide-react"
+
+import EditUserProfile from "./EditUserProfile"
+import OrdersTransactionModal from "./OrdersTransactionModal"
+import SuspendCustomerModal from "./SuspendCustomerModal"
 
 // Rich Mock Customers Data for robust filtering
 const INITIAL_CUSTOMERS = [
@@ -113,9 +117,18 @@ export default function CustomerList() {
   // State Management
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS)
   const [searchQuery, setSearchQuery] = useState("")
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("All Statuses")
   const [loyaltyFilter, setLoyaltyFilter] = useState("All Tiers")
   const [sortBy, setSortBy] = useState("Name A-Z")
+  
+  // Debounce Search Query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [searchQuery])
   
   // Dropdown states for premium UI toggles
   const [showStatusDropdown, setShowStatusDropdown] = useState(false)
@@ -125,6 +138,15 @@ export default function CustomerList() {
   // Selected customer for Bottom Sheet Actions Drawer
   const [selectedCustomer, setSelectedCustomer] = useState(null)
   
+  // Selected customer for Edit Modal
+  const [editingCustomer, setEditingCustomer] = useState(null)
+  
+  // Selected customer for History Modal
+  const [historyCustomer, setHistoryCustomer] = useState(null)
+  
+  // Selected customer for Suspend Modal
+  const [suspendingCustomer, setSuspendingCustomer] = useState(null)
+  
   // Toast notifications for mock actions
   const [toast, setToast] = useState(null)
 
@@ -133,12 +155,17 @@ export default function CustomerList() {
     setTimeout(() => setToast(null), 3000)
   }
 
+  const handleSaveCustomer = (updatedCustomer) => {
+    setCustomers((prev) => prev.map((c) => (c.id === updatedCustomer.id ? updatedCustomer : c)))
+    showToast(`Profile for ${updatedCustomer.name} updated successfully!`)
+  }
+
   // Filter & Sort Logic
   const filteredAndSortedCustomers = useMemo(() => {
     return customers
       .filter((cust) => {
         // Search Filter
-        const query = searchQuery.toLowerCase()
+        const query = debouncedSearchQuery.toLowerCase()
         const matchesSearch =
           cust.name.toLowerCase().includes(query) ||
           cust.email.toLowerCase().includes(query) ||
@@ -170,7 +197,7 @@ export default function CustomerList() {
         }
         return 0
       })
-  }, [customers, searchQuery, statusFilter, loyaltyFilter, sortBy])
+  }, [customers, debouncedSearchQuery, statusFilter, loyaltyFilter, sortBy])
 
   // Account suspension toggler inside list state
   const handleToggleSuspension = (id) => {
@@ -189,6 +216,19 @@ export default function CustomerList() {
       })
     )
     setSelectedCustomer(null)
+  }
+
+  const handleSuspendAction = (id, reason, notes) => {
+    setCustomers((prev) =>
+      prev.map((cust) => {
+        if (cust.id === id) {
+          return { ...cust, status: "SUSPENDED" }
+        }
+        return cust
+      })
+    )
+    const customerName = customers.find(c => c.id === id)?.name || id
+    showToast(`${customerName}'s account has been Suspended.`, "warning")
   }
 
   return (
@@ -256,7 +296,7 @@ export default function CustomerList() {
         </div>
 
         {/* Filters Select Dropdowns */}
-        <div className="md:col-span-6 lg:col-span-7 flex flex-nowrap overflow-x-auto pb-1.5 scrollbar-none gap-2.5 w-full justify-start md:justify-end select-none">
+        <div className="md:col-span-6 lg:col-span-7 flex flex-wrap pb-1.5 gap-2.5 w-full justify-start md:justify-end select-none z-10 relative">
           {/* Status Filter Dropdown */}
           <div className="relative flex-shrink-0">
             <button
@@ -367,7 +407,7 @@ export default function CustomerList() {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 shadow-xl z-40 p-1"
                   >
-                    {["Name A-Z", "Name Z-A", "Orders Count", "Revenue Spent"].map((sort) => (
+                    {["Name A-Z", "Name Z-A"].map((sort) => (
                       <button
                         key={sort}
                         onClick={() => {
@@ -386,6 +426,24 @@ export default function CustomerList() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Reset Filters Button */}
+          {(searchQuery || statusFilter !== "All Statuses" || loyaltyFilter !== "All Tiers" || sortBy !== "Name A-Z") && (
+            <div className="relative flex-shrink-0">
+              <button
+                onClick={() => {
+                  setSearchQuery("")
+                  setStatusFilter("All Statuses")
+                  setLoyaltyFilter("All Tiers")
+                  setSortBy("Name A-Z")
+                }}
+                className="flex items-center gap-2 px-4 py-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded-full text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+              >
+                <History size={14} />
+                <span>Reset</span>
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -445,16 +503,16 @@ export default function CustomerList() {
                   </span>
 
                   <div className="flex flex-col text-left sm:text-right">
-                    <p className="text-[10px] font-bold text-zinc-900 dark:text-zinc-50">${cust.spent} spent</p>
+                    <p className="text-[10px] font-bold text-zinc-900 dark:text-zinc-50">₹{cust.spent} spent</p>
                     <p className="text-[9px] text-zinc-400 font-semibold mt-0.5">{cust.orders} orders</p>
                   </div>
 
-                  {/* Actions vertical dot button */}
+                  {/* Actions eye button */}
                   <button
                     onClick={() => setSelectedCustomer(cust)}
-                    className="p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-600 active:scale-90 transition-all cursor-pointer"
+                    className="p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-400 hover:text-[var(--primary)] active:scale-90 transition-all cursor-pointer"
                   >
-                    <MoreVertical size={16} />
+                    <Eye size={16} />
                   </button>
                 </div>
               </motion.div>
@@ -564,7 +622,7 @@ export default function CustomerList() {
 
                 <button
                   onClick={() => {
-                    showToast(`Editing profile for ${selectedCustomer.name} is not available in mock mode.`)
+                    setEditingCustomer(selectedCustomer)
                     setSelectedCustomer(null)
                   }}
                   className="w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300 text-xs font-extrabold cursor-pointer"
@@ -575,7 +633,7 @@ export default function CustomerList() {
 
                 <button
                   onClick={() => {
-                    showToast(`Routing to order logs for ${selectedCustomer.name}...`)
+                    setHistoryCustomer(selectedCustomer)
                     setSelectedCustomer(null)
                   }}
                   className="w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300 text-xs font-extrabold cursor-pointer"
@@ -589,7 +647,10 @@ export default function CustomerList() {
                 {/* REAL-TIME SUSPENSION TRIGGER BUTTON */}
                 {selectedCustomer.status === "ACTIVE" ? (
                   <button
-                    onClick={() => handleToggleSuspension(selectedCustomer.id)}
+                    onClick={() => {
+                      setSuspendingCustomer(selectedCustomer)
+                      setSelectedCustomer(null)
+                    }}
                     className="w-full flex items-center gap-4 p-3.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors text-rose-600 text-xs font-extrabold cursor-pointer"
                   >
                     <Ban size={16} />
@@ -616,6 +677,26 @@ export default function CustomerList() {
           </>
         )}
       </AnimatePresence>
+
+      <EditUserProfile
+        isOpen={!!editingCustomer}
+        onClose={() => setEditingCustomer(null)}
+        customer={editingCustomer}
+        onSave={handleSaveCustomer}
+      />
+
+      <OrdersTransactionModal
+        isOpen={!!historyCustomer}
+        onClose={() => setHistoryCustomer(null)}
+        customer={historyCustomer}
+      />
+
+      <SuspendCustomerModal
+        isOpen={!!suspendingCustomer}
+        onClose={() => setSuspendingCustomer(null)}
+        customer={suspendingCustomer}
+        onSuspend={handleSuspendAction}
+      />
     </div>
   )
 }

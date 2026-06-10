@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react"
+import React, { Suspense, lazy, useState, useEffect } from "react"
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom"
 import Sidebar from "../layouts/Sidebar"
 import Navbar from "../layouts/Navbar"
@@ -49,6 +49,22 @@ const FeedbackAndReview = lazy(() => import("../support/FeedbackAndReview"))
 function SuperAdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
+  
+  // Enforce Superadmin Theme settings
+  useEffect(() => {
+    // Apply Light/Dark mode
+    const themeMode = localStorage.getItem("sa_themeMode") || "light";
+    if (themeMode === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    // Apply primary colors
+    const primaryColor = localStorage.getItem("sa_primary") || "#a43c12";
+    document.documentElement.style.setProperty("--primary", primaryColor);
+    document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`);
+  }, [location.pathname])
 
   // Sync active sidebar state based on route path
   let activeItem = "Dashboard"
@@ -123,7 +139,7 @@ function SuperAdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
       <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       <Sidebar
         isOpen={sidebarOpen}
@@ -143,7 +159,7 @@ export default function SuperAdminRouter() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-955">
+        <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
             <p className="text-xs font-bold text-zinc-500 tracking-wider uppercase animate-pulse">
