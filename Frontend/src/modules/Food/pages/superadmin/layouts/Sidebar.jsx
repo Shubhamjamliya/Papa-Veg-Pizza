@@ -282,6 +282,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/content-management")
                             } else if (item.name === "Support Tickets") {
                               navigate("/food/superadmin/support-tickets")
+                            } else if (item.name === "Feedback & Reviews") {
+                              navigate("/food/superadmin/feedback-reviews")
                             } else if (item.name === "Franchise Owners") {
                               navigate("/food/superadmin/franchises")
                             } else if (item.name === "Store Managers") {
