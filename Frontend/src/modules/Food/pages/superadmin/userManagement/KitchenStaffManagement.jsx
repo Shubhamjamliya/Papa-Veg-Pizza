@@ -20,7 +20,8 @@ import {
   Ban,
   X,
   Award,
-  AlertCircle
+  AlertCircle,
+  Eye
 } from "lucide-react"
 
 import KitchenStaffFilters from "./KitchenStaffFilters"
@@ -29,10 +30,10 @@ import KitchenStaffDetail from "./KitchenStaffDetail"
 const INITIAL_STAFF = [
   {
     id: "KS-9842",
-    name: "Antonio Rossi",
-    email: "antonio.rossi@papaveg.com",
-    store: "Downtown #101",
-    franchise: "Downtown Pizza Group",
+    name: "Ravi Sharma",
+    email: "r.sharma@papaveg.com",
+    store: "Mumbai - Andheri West",
+    franchise: "Papa Veg Mumbai",
     role: "Pizza Maker",
     orders: 1240,
     efficiency: 94,
@@ -41,10 +42,10 @@ const INITIAL_STAFF = [
   },
   {
     id: "KS-7721",
-    name: "Sarah Miller",
-    email: "sarah.miller@papaveg.com",
-    store: "Westside #203",
-    franchise: "Westside Express",
+    name: "Neha Singh",
+    email: "n.singh@papaveg.com",
+    store: "Pune - Koregaon Park",
+    franchise: "Papa Veg Pune",
     role: "Supervisor",
     orders: 856,
     efficiency: 88,
@@ -53,10 +54,10 @@ const INITIAL_STAFF = [
   },
   {
     id: "KS-1104",
-    name: "Marco Velo",
-    email: "marco.velo@papaveg.com",
-    store: "Uptown #05",
-    franchise: "Downtown Pizza Group",
+    name: "Amit Patel",
+    email: "a.patel@papaveg.com",
+    store: "Delhi - Connaught Place",
+    franchise: "Papa Veg Delhi",
     role: "Prep Cook",
     orders: 3110,
     efficiency: 91,
@@ -65,10 +66,10 @@ const INITIAL_STAFF = [
   },
   {
     id: "KS-4452",
-    name: "Elena Costa",
-    email: "elena.costa@papaveg.com",
-    store: "Central #01",
-    franchise: "Northside Eats",
+    name: "Rahul Verma",
+    email: "r.verma@papaveg.com",
+    store: "Bangalore - Indiranagar",
+    franchise: "Papa Veg Bangalore",
     role: "Pizza Maker",
     orders: 2440,
     efficiency: 98,
@@ -101,8 +102,8 @@ export default function KitchenStaffManagement() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    store: "Downtown #101",
-    franchise: "Downtown Pizza Group",
+    store: "Mumbai - Andheri West",
+    franchise: "Papa Veg Mumbai",
     role: "Pizza Maker",
     orders: 0,
     efficiency: 95,
@@ -164,8 +165,8 @@ export default function KitchenStaffManagement() {
     setFormData({
       name: "",
       email: "",
-      store: "Downtown #101",
-      franchise: "Downtown Pizza Group",
+      store: "Mumbai - Andheri West",
+      franchise: "Papa Veg Mumbai",
       role: "Pizza Maker",
       orders: 0,
       efficiency: 95,
@@ -515,62 +516,40 @@ export default function KitchenStaffManagement() {
                     </td>
 
                     {/* Actions Menu */}
-                    <td className="px-6 py-4 text-right relative" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => setActiveMenuId(activeMenuId === staff.id ? null : staff.id)}
-                        className="p-1.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-850 text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-250 transition-colors cursor-pointer"
-                      >
-                        <MoreVertical size={16} />
-                      </button>
-
-                      {/* Dropdown Action Popover */}
-                      <AnimatePresence>
-                        {activeMenuId === staff.id && (
-                          <>
-                            <div className="fixed inset-0 z-30" onClick={() => setActiveMenuId(null)} />
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.95, y: 5 }}
-                              animate={{ opacity: 1, scale: 1, y: 0 }}
-                              exit={{ opacity: 0, scale: 0.95, y: 5 }}
-                              className="absolute right-6 top-10 w-40 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl z-40 p-1.5"
-                            >
-                              <button
-                                onClick={() => { setSelectedStaff(staff); setIsDetailDrawerOpen(true); setActiveMenuId(null); }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-zinc-600 hover:text-[var(--primary)] dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                              >
-                                <Users size={14} />
-                                <span>View Details</span>
-                              </button>
-
-                              <button
-                                onClick={() => handleOpenEditModal(staff)}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-zinc-600 hover:text-[var(--primary)] dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                              >
-                                <Edit size={14} />
-                                <span>Edit Employee</span>
-                              </button>
-
-                              <button
-                                onClick={() => handleToggleStatus(staff)}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-zinc-600 hover:text-[var(--primary)] dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                              >
-                                {staff.status === "Active" ? <Ban size={14} /> : <UserCheck size={14} />}
-                                <span>{staff.status === "Active" ? "Suspend" : "Activate"}</span>
-                              </button>
-
-                              <div className="h-px bg-zinc-100 dark:bg-zinc-850 my-1" />
-
-                              <button
-                                onClick={() => handleDeleteStaff(staff)}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors"
-                              >
-                                <Trash2 size={14} />
-                                <span>Delete Member</span>
-                              </button>
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
+                    <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => { setSelectedStaff(staff); setIsDetailDrawerOpen(true); }}
+                          className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                          title="View Details"
+                        >
+                          <Eye size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleOpenEditModal(staff)}
+                          className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                          title="Edit Employee"
+                        >
+                          <Edit size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleToggleStatus(staff)}
+                          className={`p-1.5 rounded-lg border transition-all cursor-pointer ${staff.status === "Active"
+                            ? "border-amber-200 dark:border-amber-950 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/20"
+                            : "border-emerald-200 dark:border-emerald-950 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
+                            }`}
+                          title={staff.status === "Active" ? "Suspend" : "Activate"}
+                        >
+                          {staff.status === "Active" ? <Ban size={15} /> : <UserCheck size={15} />}
+                        </button>
+                        <button
+                          onClick={() => handleDeleteStaff(staff)}
+                          className="p-1.5 rounded-lg border border-rose-200/40 dark:border-rose-950 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-550 dark:text-rose-455 transition-all cursor-pointer"
+                          title="Delete Member"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

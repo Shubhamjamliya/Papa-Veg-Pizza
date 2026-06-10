@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Shield,
   X,
@@ -10,9 +10,14 @@ import {
   Warehouse,
   ChevronRight
 } from 'lucide-react';
+import RolesPermissionEdit from './RolesPermissionEdit';
+import AuditLogsModal from './AuditLogsModal';
 
 export default function RolesPermissionDetails({ isOpen, onClose, role }) {
   if (!role) return null;
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
 
   return (
     <>
@@ -190,15 +195,34 @@ export default function RolesPermissionDetails({ isOpen, onClose, role }) {
 
         {/* Drawer Footer */}
         <div className="p-6 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex gap-3 mt-auto">
-          <button className="flex-1 bg-[var(--primary)] text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[var(--primary)]/90 transition-colors shadow-md shadow-[var(--primary)]/20">
+          <button 
+            onClick={() => setIsEditModalOpen(true)}
+            className="flex-1 bg-[var(--primary)] text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-[var(--primary)]/90 transition-colors shadow-md shadow-[var(--primary)]/20 cursor-pointer"
+          >
             Edit Permissions
           </button>
-          <button className="px-4 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 rounded-lg text-xs font-bold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+          <button 
+            onClick={() => setIsAuditModalOpen(true)}
+            className="px-4 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-2.5 rounded-lg text-xs font-bold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          >
             Audit Logs
           </button>
         </div>
       </div>
+
+      {isEditModalOpen && (
+        <RolesPermissionEdit 
+          role={role} 
+          onClose={() => setIsEditModalOpen(false)} 
+        />
+      )}
+
+      {isAuditModalOpen && (
+        <AuditLogsModal
+          isOpen={isAuditModalOpen}
+          onClose={() => setIsAuditModalOpen(false)}
+        />
+      )}
     </>
   );
-
 }

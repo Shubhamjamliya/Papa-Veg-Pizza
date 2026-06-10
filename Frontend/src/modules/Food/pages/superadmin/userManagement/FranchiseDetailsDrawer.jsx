@@ -33,9 +33,9 @@ import {
 // Mock rich data corresponding to selected franchise admin
 const GENERATED_DETAILS = {
   stores: [
-    { name: "Papa Veg Milan Centro", city: "Milan", type: "Main Bistro", status: "Active", revenue: 84000 },
-    { name: "Papa Veg Milan Navigli", city: "Milan", type: "Express Store", status: "Active", revenue: 54000 },
-    { name: "Papa Veg Monza Outlet", city: "Monza", type: "Bistro Outlet", status: "Inactive", revenue: 12000 }
+    { name: "Papa Veg Mumbai Central", city: "Mumbai, Maharashtra", type: "Main Bistro", status: "Active", revenue: 84000 },
+    { name: "Papa Veg Andheri West", city: "Mumbai, Maharashtra", type: "Express Store", status: "Active", revenue: 54000 },
+    { name: "Papa Veg Pune Outlet", city: "Pune, Maharashtra", type: "Bistro Outlet", status: "Inactive", revenue: 12000 }
   ],
   revenueData: [
     { month: "Jan", revenue: 12000, orders: 480 },
@@ -46,16 +46,16 @@ const GENERATED_DETAILS = {
     { month: "Jun", revenue: 47000, orders: 1800 }
   ],
   staff: [
-    { name: "Matteo Galli", role: "General Store Manager", store: "Milan Centro", email: "m.galli@example.com", status: "Active" },
-    { name: "Sofia Neri", role: "Assistant Store Manager", store: "Milan Centro", email: "s.neri@example.com", status: "Active" },
-    { name: "Davide Bruno", role: "Store Manager", store: "Milan Navigli", email: "d.bruno@example.com", status: "Active" },
-    { name: "Giulia Fontana", role: "Junior Kitchen Manager", store: "Monza Outlet", email: "g.fontana@example.com", status: "Suspended" }
+    { name: "Ravi Sharma", role: "General Store Manager", store: "Mumbai Central", email: "r.sharma@papaveg.com", status: "Active" },
+    { name: "Neha Singh", role: "Assistant Store Manager", store: "Mumbai Central", email: "n.singh@papaveg.com", status: "Active" },
+    { name: "Amit Patel", role: "Store Manager", store: "Andheri West", email: "a.patel@papaveg.com", status: "Active" },
+    { name: "Priya Desai", role: "Junior Kitchen Manager", store: "Pune Outlet", email: "p.desai@papaveg.com", status: "Suspended" }
   ],
   orders: [
-    { id: "ORD-9912", customer: "Sophia Bennet", items: "1x Truffle Pizza, 2x Garlic Bread", amount: 38.50, status: "COMPLETED", time: "10 mins ago" },
-    { id: "ORD-9884", customer: "Luca Moretti", items: "2x Spicy Diavola, 1x Veg Salad", amount: 42.00, status: "DELIVERING", time: "25 mins ago" },
-    { id: "ORD-9762", customer: "Elena Vance", items: "3x Margherita Classic, 1x Coca Cola 1.5L", amount: 29.90, status: "COMPLETED", time: "2 hours ago" },
-    { id: "ORD-9610", customer: "Marco Rossi", items: "1x Veggie Garden Special", amount: 15.00, status: "CANCELLED", time: "4 hours ago" }
+    { id: "ORD-9912", customer: "Rohan Gupta", items: "1x Truffle Pizza, 2x Garlic Bread", amount: 38.50, status: "COMPLETED", time: "10 mins ago" },
+    { id: "ORD-9884", customer: "Pooja Verma", items: "2x Spicy Diavola, 1x Veg Salad", amount: 42.00, status: "DELIVERING", time: "25 mins ago" },
+    { id: "ORD-9762", customer: "Vikram Malhotra", items: "3x Margherita Classic, 1x Coca Cola 1.5L", amount: 29.90, status: "COMPLETED", time: "2 hours ago" },
+    { id: "ORD-9610", customer: "Sanjay Kumar", items: "1x Veggie Garden Special", amount: 15.00, status: "CANCELLED", time: "4 hours ago" }
   ]
 }
 
@@ -79,7 +79,7 @@ export default function FranchiseDetailsDrawer({ isOpen, onClose, admin }) {
       return (
         <div className="bg-zinc-950 text-white dark:bg-zinc-800 p-3 rounded-xl border border-zinc-700/50 shadow-xl text-[10px] font-bold">
           <p className="opacity-60">{label}</p>
-          <p className="text-[var(--primary)] mt-1">Revenue: ${payload[0].value.toLocaleString()}</p>
+          <p className="text-[var(--primary)] mt-1">Revenue: ₹{payload[0].value.toLocaleString()}</p>
           {payload[1] && <p className="text-emerald-400 mt-0.5">Orders: {payload[1].value}</p>}
         </div>
       )
@@ -337,7 +337,7 @@ export default function FranchiseDetailsDrawer({ isOpen, onClose, admin }) {
                             <div className="flex items-center gap-4 flex-shrink-0">
                               <div className="text-right">
                                 <p className="text-xs font-extrabold text-zinc-800 dark:text-zinc-200">
-                                  ${store.revenue.toLocaleString()}
+                                  ₹{store.revenue.toLocaleString()}
                                 </p>
                                 <p className="text-[9px] text-zinc-400 font-bold mt-0.5">Total Revenue</p>
                               </div>
@@ -373,7 +373,7 @@ export default function FranchiseDetailsDrawer({ isOpen, onClose, admin }) {
                       <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-5 rounded-3xl shadow-sm">
                         <span className="text-[10px] text-zinc-400 font-semibold">Total Revenue Generated</span>
                         <h3 className="text-lg font-black text-zinc-800 dark:text-zinc-200 mt-1">
-                          ${admin.revenue.toLocaleString()}
+                          ₹{admin.revenue.toLocaleString()}
                         </h3>
                         <p className="text-[10px] text-emerald-500 font-extrabold flex items-center gap-1 mt-2">
                           <ArrowUpRight size={12} />
@@ -523,7 +523,7 @@ export default function FranchiseDetailsDrawer({ isOpen, onClose, admin }) {
                             </div>
                             <div className="flex items-center justify-between sm:justify-end gap-3 flex-shrink-0">
                               <p className="text-xs font-black text-zinc-800 dark:text-zinc-200">
-                                ${ord.amount.toFixed(2)}
+                                ₹{ord.amount.toFixed(2)}
                               </p>
                               <span
                                 className={`text-[8px] font-black px-2 py-0.5 rounded-full ${

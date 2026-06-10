@@ -40,9 +40,9 @@ import {
 // Mock database for specific detailed metrics for each manager to create an ultra high-fidelity experience
 const MANAGER_DETAILS_DB = {
   "PV-882": {
-    assignedStore: "Chicago - Downtown",
-    storeId: "CH-001",
-    storeGroup: "Urban Slice Group",
+    assignedStore: "Mumbai - Andheri West",
+    storeId: "MH-001",
+    storeGroup: "Papa Veg Mumbai",
     assignedDate: "Oct 12, 2021",
     dailyRevenue: 4280.50,
     monthlyRevenue: 124000,
@@ -60,10 +60,10 @@ const MANAGER_DETAILS_DB = {
       { month: "Nov", revenue: 124000, orders: 210 }
     ],
     team: [
-      { name: "Julio Silva", role: "Head Chef", status: "Active", email: "j.silva@example.com", avatar: "JS" },
-      { name: "Ana Martinez", role: "Floor Supervisor", status: "Active", email: "a.martinez@example.com", avatar: "AM" },
-      { name: "Ben Klein", role: "Senior Courier", status: "Away", email: "b.klein@example.com", avatar: "BK" },
-      { name: "Carla Dupont", role: "Pastry Chef", status: "Active", email: "c.dupont@example.com", avatar: "CD" }
+      { name: "Ravi Sharma", role: "Head Chef", status: "Active", email: "r.sharma@papaveg.com", avatar: "RS" },
+      { name: "Neha Singh", role: "Floor Supervisor", status: "Active", email: "n.singh@papaveg.com", avatar: "NS" },
+      { name: "Amit Patel", role: "Senior Courier", status: "Away", email: "a.patel@papaveg.com", avatar: "AP" },
+      { name: "Priya Desai", role: "Pastry Chef", status: "Active", email: "p.desai@papaveg.com", avatar: "PD" }
     ],
     attendance: {
       presentDays: 22,
@@ -86,9 +86,9 @@ const MANAGER_DETAILS_DB = {
     }
   },
   "PV-714": {
-    assignedStore: "Naperville East - Mall",
-    storeId: "CH-002",
-    storeGroup: "Midwest Pizza Co.",
+    assignedStore: "Delhi - Connaught Place",
+    storeId: "DL-002",
+    storeGroup: "Papa Veg Delhi",
     assignedDate: "Jan 18, 2022",
     dailyRevenue: 3150.00,
     monthlyRevenue: 92000,
@@ -106,9 +106,9 @@ const MANAGER_DETAILS_DB = {
       { month: "Nov", revenue: 92000, orders: 165 }
     ],
     team: [
-      { name: "Marcus Vance", role: "Head Chef", status: "Active", email: "m.vance@example.com", avatar: "MV" },
-      { name: "Cindy Loo", role: "Floor Supervisor", status: "Active", email: "c.loo@example.com", avatar: "CL" },
-      { name: "Danial Craig", role: "Courier", status: "Active", email: "d.craig@example.com", avatar: "DC" }
+      { name: "Rahul Verma", role: "Head Chef", status: "Active", email: "r.verma@papaveg.com", avatar: "RV" },
+      { name: "Sneha Kapoor", role: "Floor Supervisor", status: "Active", email: "s.kapoor@papaveg.com", avatar: "SK" },
+      { name: "Vikram Rathore", role: "Courier", status: "Active", email: "v.rathore@papaveg.com", avatar: "VR" }
     ],
     attendance: {
       presentDays: 15,
@@ -131,9 +131,9 @@ const MANAGER_DETAILS_DB = {
     }
   },
   "PV-630": {
-    assignedStore: "Aurora West Station",
-    storeId: "CH-003",
-    storeGroup: "Midwest Pizza Co.",
+    assignedStore: "Pune - Koregaon Park",
+    storeId: "MH-003",
+    storeGroup: "Papa Veg Pune",
     assignedDate: "Jun 04, 2023",
     dailyRevenue: 1200.00,
     monthlyRevenue: 34000,
@@ -151,9 +151,9 @@ const MANAGER_DETAILS_DB = {
       { month: "Nov", revenue: 34000, orders: 68 }
     ],
     team: [
-      { name: "Chef Boyardee", role: "Head Chef", status: "Active", email: "c.boyardee@example.com", avatar: "CB" },
-      { name: "Luigi Mario", role: "Floor Supervisor", status: "Active", email: "l.mario@example.com", avatar: "LM" },
-      { name: "Bowser Koopa", role: "Courier", status: "Suspended", email: "b.koopa@example.com", avatar: "BK" }
+      { name: "Suresh Kumar", role: "Head Chef", status: "Active", email: "s.kumar@papaveg.com", avatar: "SK" },
+      { name: "Anita Desai", role: "Floor Supervisor", status: "Active", email: "a.desai@papaveg.com", avatar: "AD" },
+      { name: "Karan Singh", role: "Courier", status: "Suspended", email: "k.singh@papaveg.com", avatar: "KS" }
     ],
     attendance: {
       presentDays: 8,
@@ -176,9 +176,9 @@ const MANAGER_DETAILS_DB = {
     }
   },
   "PV-904": {
-    assignedStore: "Evanston North",
-    storeId: "CH-004",
-    storeGroup: "Coastal Veggie Grills",
+    assignedStore: "Bangalore - Indiranagar",
+    storeId: "KA-004",
+    storeGroup: "Papa Veg Bangalore",
     assignedDate: "Mar 10, 2021",
     dailyRevenue: 5120.00,
     monthlyRevenue: 148000,
@@ -196,9 +196,9 @@ const MANAGER_DETAILS_DB = {
       { month: "Nov", revenue: 148000, orders: 280 }
     ],
     team: [
-      { name: "Gordon Ramsay", role: "Head Chef", status: "Active", email: "g.ramsay@example.com", avatar: "GR" },
-      { name: "Christine Ha", role: "Floor Supervisor", status: "Active", email: "c.ha@example.com", avatar: "CH" },
-      { name: "Jimmy Donaldson", role: "Courier", status: "Active", email: "mrbeast@example.com", avatar: "JD" }
+      { name: "Sanjay Gupta", role: "Head Chef", status: "Active", email: "s.gupta@papaveg.com", avatar: "SG" },
+      { name: "Pooja Hegde", role: "Floor Supervisor", status: "Active", email: "p.hegde@papaveg.com", avatar: "PH" },
+      { name: "Arjun Reddy", role: "Courier", status: "Active", email: "a.reddy@papaveg.com", avatar: "AR" }
     ],
     attendance: {
       presentDays: 23,
@@ -447,7 +447,7 @@ export default function StoreManagerDetailsDrawer({ isOpen, onClose, manager, on
                         <div>
                           <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">Daily Store Revenue</p>
                           <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-1">
-                            ${details.dailyRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            ₹{details.dailyRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </p>
                         </div>
                       </div>
@@ -455,8 +455,8 @@ export default function StoreManagerDetailsDrawer({ isOpen, onClose, manager, on
                       <div className="flex items-start gap-3 text-[10px] text-zinc-450 dark:text-zinc-400 font-medium leading-relaxed">
                         <MapPin size={15} className="text-zinc-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="font-bold text-zinc-850 dark:text-zinc-50">Chicago Downtown Hub</p>
-                          <p className="mt-0.5">401 N Michigan Ave, Chicago, IL 60611</p>
+                          <p className="font-bold text-zinc-850 dark:text-zinc-50">{details.assignedStore} Hub</p>
+                          <p className="mt-0.5">101 Main Street, {details.assignedStore.split(' - ')[0]}, IN 400001</p>
                         </div>
                       </div>
                     </div>
@@ -481,7 +481,7 @@ export default function StoreManagerDetailsDrawer({ isOpen, onClose, manager, on
                       <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-2xl text-center">
                         <p className="text-[9px] text-zinc-400 font-bold uppercase">Revenue H1</p>
                         <p className="text-sm font-black text-zinc-800 dark:text-zinc-100 mt-1">
-                          ${(details.monthlyRevenue / 1000).toFixed(0)}k
+                          ₹{(details.monthlyRevenue / 1000).toFixed(0)}k
                         </p>
                       </div>
                       <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-2xl text-center">
@@ -524,7 +524,7 @@ export default function StoreManagerDetailsDrawer({ isOpen, onClose, manager, on
                                   return (
                                     <div className="bg-zinc-950 text-white dark:bg-zinc-800 px-3 py-2 rounded-xl border border-zinc-700/50 shadow-xl text-[9px] font-bold">
                                       <p className="opacity-60">{label}</p>
-                                      <p className="text-[var(--primary)] mt-0.5">Sales: ${payload[0].value.toLocaleString()}</p>
+                                      <p className="text-[var(--primary)] mt-0.5">Sales: ₹{payload[0].value.toLocaleString()}</p>
                                       <p className="text-emerald-400 mt-0.5">Orders: {payload[0].payload.orders}</p>
                                     </div>
                                   )

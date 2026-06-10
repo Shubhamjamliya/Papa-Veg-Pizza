@@ -24,12 +24,12 @@ import { EditFranchiseModal, SuspendFranchiseModal } from "./FranchiseModals"
 const INITIAL_FRANCHISES = [
   {
     id: "FRAN-4921",
-    name: "Giovanni Bianchi",
-    email: "g.bianchi@papaveg.com",
-    phone: "+39 333 111 2222",
-    franchiseName: "Papa Veg Milan Centro",
-    city: "Milan",
-    state: "Lombardia",
+    name: "Ramesh Kumar",
+    email: "ramesh.k@papaveg.com",
+    phone: "+91 98765 43210",
+    franchiseName: "Papa Veg Pizza Mumbai",
+    city: "Mumbai",
+    state: "Maharashtra",
     type: "Multi Store",
     totalStores: 3,
     totalManagers: 6,
@@ -39,12 +39,12 @@ const INITIAL_FRANCHISES = [
   },
   {
     id: "FRAN-8832",
-    name: "Francesca Neri",
-    email: "f.neri@papaveg.com",
-    phone: "+39 347 444 5555",
-    franchiseName: "Papa Veg Rome Termini",
-    city: "Rome",
-    state: "Lazio",
+    name: "Suresh Sharma",
+    email: "suresh.s@papaveg.com",
+    phone: "+91 98765 43211",
+    franchiseName: "Papa Veg Pizza Delhi",
+    city: "New Delhi",
+    state: "Delhi",
     type: "Multi Store",
     totalStores: 2,
     totalManagers: 4,
@@ -54,12 +54,12 @@ const INITIAL_FRANCHISES = [
   },
   {
     id: "FRAN-1029",
-    name: "Roberto Rossi",
-    email: "r.rossi@papaveg.com",
-    phone: "+39 329 888 9999",
-    franchiseName: "Papa Veg Turin Palace",
-    city: "Turin",
-    state: "Piemonte",
+    name: "Priya Patel",
+    email: "priya.p@papaveg.com",
+    phone: "+91 98765 43212",
+    franchiseName: "Papa Veg Pizza Ahmedabad",
+    city: "Ahmedabad",
+    state: "Gujarat",
     type: "Single Store",
     totalStores: 1,
     totalManagers: 2,
@@ -69,12 +69,12 @@ const INITIAL_FRANCHISES = [
   },
   {
     id: "FRAN-7721",
-    name: "Sofia Romano",
-    email: "s.romano@papaveg.com",
-    phone: "+39 349 222 3333",
-    franchiseName: "Papa Veg Florence Duomo",
-    city: "Florence",
-    state: "Toscana",
+    name: "Amit Singh",
+    email: "amit.s@papaveg.com",
+    phone: "+91 98765 43213",
+    franchiseName: "Papa Veg Pizza Bangalore",
+    city: "Bangalore",
+    state: "Karnataka",
     type: "Multi Store",
     totalStores: 4,
     totalManagers: 8,
@@ -84,12 +84,12 @@ const INITIAL_FRANCHISES = [
   },
   {
     id: "FRAN-5534",
-    name: "Antonio Bruno",
-    email: "a.bruno@papaveg.com",
-    phone: "+39 334 777 8888",
-    franchiseName: "Papa Veg Naples Bay",
-    city: "Naples",
-    state: "Campania",
+    name: "Neha Gupta",
+    email: "neha.g@papaveg.com",
+    phone: "+91 98765 43214",
+    franchiseName: "Papa Veg Pizza Hyderabad",
+    city: "Hyderabad",
+    state: "Telangana",
     type: "Single Store",
     totalStores: 1,
     totalManagers: 1,
@@ -363,7 +363,7 @@ export default function FranchiseList() {
 
                     {/* Revenue */}
                     <td className="px-6 py-4 text-xs font-black text-zinc-800 dark:text-zinc-200">
-                      ${fran.revenue.toLocaleString()}
+                      ₹{fran.revenue.toLocaleString()}
                     </td>
 
                     {/* Status Badge */}
@@ -385,77 +385,50 @@ export default function FranchiseList() {
                       {fran.joinedDate}
                     </td>
 
-                    {/* Menu Actions Trigger */}
-                    <td className="px-6 py-4 text-right relative">
-                      <button
-                        onClick={() => setActiveMenuId(activeMenuId === fran.id ? null : fran.id)}
-                        className="p-1.5 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 transition-colors cursor-pointer"
-                      >
-                        <MoreVertical size={16} />
-                      </button>
-
-                      {/* Dropdown Action Popover Menu */}
-                      <AnimatePresence>
-                        {activeMenuId === fran.id && (
-                          <>
-                            <div className="fixed inset-0 z-10" onClick={() => setActiveMenuId(null)} />
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.95, y: 5 }}
-                              animate={{ opacity: 1, scale: 1, y: 0 }}
-                              exit={{ opacity: 0, scale: 0.95, y: 5 }}
-                              className="absolute right-6 top-12 w-44 bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-2xl shadow-xl z-20 p-1.5"
-                            >
-                              <button
-                                onClick={() => {
-                                  setSelectedAdmin(fran)
-                                  setIsDrawerOpen(true)
-                                  setActiveMenuId(null)
-                                }}
-                                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-xs font-extrabold text-zinc-600 hover:text-[var(--primary)] hover:bg-zinc-50 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-                              >
-                                <Eye size={14} />
-                                <span>View Profile Drawer</span>
-                              </button>
-
-                              <button
-                                onClick={() => {
-                                  setSelectedAdmin(fran)
-                                  setIsEditModalOpen(true)
-                                  setActiveMenuId(null)
-                                }}
-                                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-xs font-extrabold text-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800 hover:bg-zinc-50 transition-colors cursor-pointer"
-                              >
-                                <Edit size={14} />
-                                <span>Edit Profile details</span>
-                              </button>
-
-                              <div className="h-px bg-zinc-100 dark:bg-zinc-800 my-1" />
-
-                              {fran.status === "SUSPENDED" ? (
-                                <button
-                                  onClick={() => handleActivateAdmin(fran.id)}
-                                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-xs font-extrabold text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 transition-colors cursor-pointer"
-                                >
-                                  <UserCheck size={14} />
-                                  <span>Re-Activate Account</span>
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => {
-                                    setSelectedAdmin(fran)
-                                    setIsSuspendModalOpen(true)
-                                    setActiveMenuId(null)
-                                  }}
-                                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left text-xs font-extrabold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors cursor-pointer"
-                                >
-                                  <Ban size={14} />
-                                  <span>Suspend Franchise</span>
-                                </button>
-                              )}
-                            </motion.div>
-                          </>
+                    {/* Inline Actions */}
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedAdmin(fran)
+                            setIsDrawerOpen(true)
+                          }}
+                          className="p-1.5 rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 hover:text-[var(--primary)] transition-colors cursor-pointer"
+                          title="View Profile"
+                        >
+                          <Eye size={16} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedAdmin(fran)
+                            setIsEditModalOpen(true)
+                          }}
+                          className="p-1.5 rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 hover:text-[var(--primary)] transition-colors cursor-pointer"
+                          title="Edit Profile"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        {fran.status === "SUSPENDED" ? (
+                          <button
+                            onClick={() => handleActivateAdmin(fran.id)}
+                            className="p-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
+                            title="Re-Activate"
+                          >
+                            <UserCheck size={16} />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setSelectedAdmin(fran)
+                              setIsSuspendModalOpen(true)
+                            }}
+                            className="p-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
+                            title="Suspend"
+                          >
+                            <Ban size={16} />
+                          </button>
                         )}
-                      </AnimatePresence>
+                      </div>
                     </td>
                   </tr>
                 ))
