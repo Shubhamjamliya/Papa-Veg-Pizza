@@ -45,7 +45,7 @@ export default function LiveOrderMonitor() {
   }, []);
 
   return (
-    <div className="p-4 md:p-6 pb-24 lg:pb-8 bg-zinc-50 dark:bg-zinc-955 min-h-screen">
+    <div className="p-4 md:p-6 pb-24 lg:pb-8 bg-zinc-50 dark:bg-zinc-950 min-h-screen">
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes header-pulse {
             0% { transform: scale(1); opacity: 1; }

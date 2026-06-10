@@ -293,7 +293,7 @@ export default function StoreManagersList() {
                     value={localSearch}
                     onChange={(e) => setLocalSearch(e.target.value)}
                     placeholder="Name, Email, PV ID..."
-                    className="w-full text-xs pl-9 pr-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                    className="w-full text-xs pl-9 pr-4 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:border-transparent transition-all"
                   />
                   {localSearch && (
                     <button
@@ -312,7 +312,7 @@ export default function StoreManagersList() {
                 <select
                   value={franchiseFilter}
                   onChange={(e) => setFranchiseFilter(e.target.value)}
-                  className="w-full text-xs px-3.5 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] cursor-pointer"
+                  className="w-full text-xs px-3.5 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] cursor-pointer"
                 >
                   {franchiseOptions.map((opt) => (
                     <option key={opt} value={opt}>
@@ -328,7 +328,7 @@ export default function StoreManagersList() {
                 <select
                   value={storeFilter}
                   onChange={(e) => setStoreFilter(e.target.value)}
-                  className="w-full text-xs px-3.5 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] cursor-pointer"
+                  className="w-full text-xs px-3.5 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] cursor-pointer"
                 >
                   {storeOptions.map((opt) => (
                     <option key={opt} value={opt}>
@@ -344,7 +344,7 @@ export default function StoreManagersList() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full text-xs px-3.5 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] cursor-pointer"
+                  className="w-full text-xs px-3.5 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] cursor-pointer"
                 >
                   {statusOptions.map((opt) => (
                     <option key={opt} value={opt}>
@@ -582,7 +582,7 @@ export default function StoreManagersList() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Marco Santoro"
-                      className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.name ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                      className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.name ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
                         }`}
                     />
                     {formErrors.name && <p className="text-[9px] font-black text-rose-500 mt-1">{formErrors.name}</p>}
@@ -597,7 +597,7 @@ export default function StoreManagersList() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="marco@papaveg.com"
-                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.email ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.email ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
                           }`}
                       />
                       {formErrors.email && <p className="text-[9px] font-black text-rose-500 mt-1">{formErrors.email}</p>}
@@ -611,7 +611,7 @@ export default function StoreManagersList() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+1 312-555-xxxx"
-                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.phone ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                        className={`w-full p-3 text-xs border rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:bg-white transition-colors ${formErrors.phone ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
                           }`}
                       />
                       {formErrors.phone && <p className="text-[9px] font-black text-rose-500 mt-1">{formErrors.phone}</p>}
@@ -624,7 +624,7 @@ export default function StoreManagersList() {
                       <select
                         value={formData.group}
                         onChange={(e) => setFormData({ ...formData, group: e.target.value })}
-                        className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none cursor-pointer"
+                        className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none cursor-pointer"
                       >
                         {franchiseOptions.slice(1).map((opt) => (
                           <option key={opt} value={opt}>
@@ -639,7 +639,7 @@ export default function StoreManagersList() {
                       <select
                         value={formData.store}
                         onChange={(e) => setFormData({ ...formData, store: e.target.value })}
-                        className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none cursor-pointer"
+                        className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none cursor-pointer"
                       >
                         {storeOptions.slice(1).map((opt) => (
                           <option key={opt} value={opt}>
@@ -655,7 +655,7 @@ export default function StoreManagersList() {
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 focus:outline-none cursor-pointer"
+                      className="w-full text-xs px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none cursor-pointer"
                     >
                       {statusOptions.slice(1).map((opt) => (
                         <option key={opt} value={opt}>

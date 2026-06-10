@@ -263,21 +263,22 @@ export default function SuperAdminDashboard() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 w-full sm:flex sm:items-center sm:gap-3 sm:w-auto">
+          <div className="grid grid-cols-2 gap-2 w-full sm:flex sm:items-center sm:gap-3 sm:w-auto">
             {/* Quick Settings Customizer Toggle */}
             <button
               onClick={() => setShowThemePanel(!showThemePanel)}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-xl shadow-sm transition-all text-zinc-700 dark:text-zinc-300 w-full"
+              className="flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 text-[11px] sm:text-xs font-bold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-xl shadow-sm transition-all text-zinc-700 dark:text-zinc-300 w-full whitespace-nowrap"
             >
-              <Sliders size={14} className="text-[var(--primary)]" />
-              <span>Theme Controls</span>
+              <Sliders size={14} className="text-[var(--primary)] shrink-0" />
+              <span className="hidden sm:inline">Theme Controls</span>
+              <span className="sm:hidden">Theme</span>
             </button>
 
             {/* Datepicker Simulation */}
-            <button className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 rounded-xl shadow-sm hover:bg-zinc-50 text-[var(--primary)] dark:text-zinc-100 w-full">
-              <Calendar size={14} />
-              <span>Today: Oct 24</span>
-              <ChevronDown size={12} className="opacity-60" />
+            <button className="flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 text-[11px] sm:text-xs font-bold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 rounded-xl shadow-sm hover:bg-zinc-50 text-[var(--primary)] dark:text-zinc-100 w-full whitespace-nowrap">
+              <Calendar size={14} className="shrink-0" />
+              <span>Today: {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+              <ChevronDown size={12} className="opacity-60 shrink-0 hidden sm:block" />
             </button>
           </div>
         </header>

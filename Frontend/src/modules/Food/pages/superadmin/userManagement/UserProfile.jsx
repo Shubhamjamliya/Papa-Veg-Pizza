@@ -255,11 +255,11 @@ export default function UserProfile() {
 
   // React State for interactive updates
   const [customer, setCustomer] = useState(initialCustomerData)
-  
+
   // Wallet Interaction State
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [addFundsAmount, setAddFundsAmount] = useState("10")
-  
+
   // Address Interaction State
   const [showAddressModal, setShowAddressModal] = useState(false)
   const [newAddressType, setNewAddressType] = useState("Home")
@@ -335,7 +335,7 @@ export default function UserProfile() {
         </button>
         <div>
           <h1 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-50 leading-tight">
-            Customer Profile Dashboard
+            Customer Profile
           </h1>
           <p className="text-[10px] text-zinc-400 font-semibold mt-0.5">
             Modify profile settings, adjust funds, and inspect transaction logs.
@@ -345,10 +345,10 @@ export default function UserProfile() {
 
       {/* Main Bento Column Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Left Column (Overview, Loyalty, Wallet) - col-span-4 */}
         <section className="lg:col-span-4 flex flex-col gap-6">
-          
+
           {/* Bento Card 1: Customer Profile Overview Card */}
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm">
             <div className="flex flex-col items-center text-center">
@@ -369,13 +369,12 @@ export default function UserProfile() {
                 )}
                 {/* Active Indicator status dot */}
                 <span
-                  className={`absolute bottom-1 right-1 w-6 h-6 rounded-full border-4 border-white dark:border-zinc-900 shadow-sm ${
-                    customer.status === "ACTIVE"
+                  className={`absolute bottom-1 right-1 w-6 h-6 rounded-full border-4 border-white dark:border-zinc-900 shadow-sm ${customer.status === "ACTIVE"
                       ? "bg-emerald-500"
                       : customer.status === "BLOCKED"
-                      ? "bg-amber-500"
-                      : "bg-rose-500"
-                  }`}
+                        ? "bg-amber-500"
+                        : "bg-rose-500"
+                    }`}
                 />
               </div>
 
@@ -383,13 +382,12 @@ export default function UserProfile() {
                 {customer.name}
               </h2>
               <span
-                className={`text-[9px] font-extrabold px-3 py-1 rounded-full mb-6 ${
-                  customer.status === "ACTIVE"
+                className={`text-[9px] font-extrabold px-3 py-1 rounded-full mb-6 ${customer.status === "ACTIVE"
                     ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400"
                     : customer.status === "BLOCKED"
-                    ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400"
-                    : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400"
-                }`}
+                      ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400"
+                      : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400"
+                  }`}
               >
                 {customer.status} Status
               </span>
@@ -436,7 +434,7 @@ export default function UserProfile() {
                 </div>
                 <div className="text-right">
                   <p className="text-[9px] font-bold opacity-80 uppercase tracking-wider">Wallet Balance</p>
-                  <p className="text-xl font-black mt-0.5">${customer.walletBalance.toFixed(2)}</p>
+                  <p className="text-xl font-black mt-0.5">₹{customer.walletBalance.toFixed(2)}</p>
                 </div>
               </div>
 
@@ -471,7 +469,7 @@ export default function UserProfile() {
 
         {/* Right Column (Addresses, Order History, Reviews, Transactions) - col-span-8 */}
         <section className="lg:col-span-8 flex flex-col gap-6">
-          
+
           {/* Saved Addresses Section (Horizontal Scroll) */}
           <div>
             <div className="flex justify-between items-center mb-4">
@@ -547,7 +545,7 @@ export default function UserProfile() {
 
                     <div className="text-right flex-shrink-0 flex items-center gap-4">
                       <div className="text-right">
-                        <p className="text-xs font-black text-zinc-900 dark:text-zinc-50">${order.total.toFixed(2)}</p>
+                        <p className="text-xs font-black text-zinc-900 dark:text-zinc-50">₹{order.total.toFixed(2)}</p>
                         <span className="inline-block text-[9px] font-extrabold bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-900/10 mt-1">
                           {order.status}
                         </span>
@@ -571,7 +569,7 @@ export default function UserProfile() {
 
           {/* Feedback Rating & Transactions Log Split Rows */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             {/* Feedback Review Card */}
             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
               <div>
@@ -579,7 +577,7 @@ export default function UserProfile() {
                   <h3 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-50">Latest Product Review</h3>
                   <span className="text-zinc-400 font-semibold text-[9px]">{customer.review.date}</span>
                 </div>
-                
+
                 {/* Rating Stars render */}
                 <div className="flex text-amber-400 mb-3">
                   {[...Array(5)].map((_, i) => (
@@ -606,7 +604,7 @@ export default function UserProfile() {
                 <h3 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-50 mb-4">
                   Recent Cash Flow Transactions
                 </h3>
-                
+
                 <div className="space-y-3.5">
                   {customer.transactions.slice(0, 3).map((txn) => (
                     <div key={txn.id} className="flex justify-between items-center text-xs font-semibold gap-2">
@@ -625,11 +623,10 @@ export default function UserProfile() {
                           <span className="text-[9px] text-zinc-400">{txn.date}</span>
                         </div>
                       </div>
-                      
-                      <span className={`font-bold flex-shrink-0 ${
-                        txn.type === "credit" ? "text-emerald-600" : "text-rose-600"
-                      }`}>
-                        {txn.type === "credit" ? "+" : "-"}${Math.abs(txn.amount).toFixed(2)}
+
+                      <span className={`font-bold flex-shrink-0 ${txn.type === "credit" ? "text-emerald-600" : "text-rose-600"
+                        }`}>
+                        {txn.type === "credit" ? "+" : "-"}₹{Math.abs(txn.amount).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -645,7 +642,7 @@ export default function UserProfile() {
 
       {/* MODAL OVERLAYS (Framer Motion Animated) */}
       <AnimatePresence>
-        
+
         {/* Wallet Funds Deposit Modal */}
         {showWalletModal && (
           <>
@@ -660,7 +657,7 @@ export default function UserProfile() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md mx-4 h-fit bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl z-[120]"
+              className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md h-fit bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl z-[120]"
             >
               <div className="flex justify-between items-center pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-5">
                 <h3 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
@@ -683,13 +680,12 @@ export default function UserProfile() {
                         key={amt}
                         type="button"
                         onClick={() => setAddFundsAmount(amt)}
-                        className={`py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
-                          addFundsAmount === amt
+                        className={`py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${addFundsAmount === amt
                             ? "bg-[var(--primary)] border-[var(--primary)] text-white"
                             : "border-zinc-200 dark:border-zinc-800 text-zinc-650 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                        }`}
+                          }`}
                       >
-                        ${amt}
+                        ₹{amt}
                       </button>
                     ))}
                   </div>
@@ -717,7 +713,7 @@ export default function UserProfile() {
                   type="submit"
                   className="w-full py-3 mt-4 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-xs font-bold rounded-xl shadow-lg active:scale-95 transition-all text-center cursor-pointer"
                 >
-                  Authorize Deposit of ${parseFloat(addFundsAmount || 0).toFixed(2)}
+                  Authorize Deposit of ₹{parseFloat(addFundsAmount || 0).toFixed(2)}
                 </button>
               </form>
             </motion.div>
@@ -738,7 +734,7 @@ export default function UserProfile() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md mx-4 h-fit bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl z-[120]"
+              className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md h-fit bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl z-[120]"
             >
               <div className="flex justify-between items-center pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-5">
                 <h3 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
@@ -761,11 +757,10 @@ export default function UserProfile() {
                         key={label}
                         type="button"
                         onClick={() => setNewAddressType(label)}
-                        className={`py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
-                          newAddressType === label
+                        className={`py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${newAddressType === label
                             ? "bg-[var(--primary)] border-[var(--primary)] text-white"
                             : "border-zinc-200 dark:border-zinc-800 text-zinc-650 hover:bg-zinc-50 dark:hover:bg-zinc-800"
-                        }`}
+                          }`}
                       >
                         {label}
                       </button>
@@ -826,7 +821,7 @@ export default function UserProfile() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md mx-4 h-fit bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl z-[120]"
+              className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md h-fit bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-3xl p-6 shadow-2xl z-[120]"
             >
               <div className="flex justify-between items-center pb-3 border-b border-zinc-100 dark:border-zinc-800 mb-5">
                 <div>
@@ -859,11 +854,11 @@ export default function UserProfile() {
                   <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Ordered Item Details</p>
                   <div className="p-3.5 bg-zinc-50 dark:bg-zinc-950/20 border border-zinc-100 dark:border-zinc-800 rounded-xl">
                     <p className="text-xs font-semibold text-zinc-700 dark:text-zinc-350">{selectedOrder.items}</p>
-                    
+
                     <div className="flex justify-between items-center border-t border-zinc-150 dark:border-zinc-850 pt-2.5 mt-2.5">
                       <span className="text-[10px] font-bold text-zinc-400 uppercase">Paid via POS</span>
                       <span className="text-sm font-black text-zinc-900 dark:text-zinc-50">
-                        ${selectedOrder.total.toFixed(2)}
+                        ₹{selectedOrder.total.toFixed(2)}
                       </span>
                     </div>
                   </div>
