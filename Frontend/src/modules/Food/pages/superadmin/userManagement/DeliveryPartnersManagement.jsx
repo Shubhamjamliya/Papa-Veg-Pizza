@@ -31,21 +31,21 @@ import DeliverySuspendedModal from "./DeliverySuspendedModal"
 const INITIAL_RIDERS = [
   {
     id: "RP-88421",
-    name: "Alex Rivera",
-    email: "alex.rivera@papaveg.com",
-    phone: "+1 212-555-0192",
-    store: "NYC Downtown",
-    franchise: "NYC Metro",
+    name: "Ravi Sharma",
+    email: "r.sharma@papaveg.com",
+    phone: "+91 98765 43210",
+    store: "Mumbai - Andheri West",
+    franchise: "Papa Veg Mumbai",
     vehicle: "Electric Bike",
     vehicleModel: "NIU N-Series",
-    licenseNumber: "ABC-1234-NY",
+    licenseNumber: "MH-02-1234",
     totalOrders: 450,
     completedOrders: 450,
     cancelledOrders: 5,
     rating: 4.8,
     status: "Online",
-    address: "722 Broadway St, Manhattan, Suite 4B",
-    storeManager: "Sarah Jenkins",
+    address: "722 Link Road, Andheri West, Mumbai",
+    storeManager: "Sanjay Gupta",
     priorityRouting: true,
     recentDeliveries: [
       { id: "ORD-11498", date: "Today, 02:45 PM", status: "Delivered", earnings: 12.50 },
@@ -57,21 +57,21 @@ const INITIAL_RIDERS = [
   },
   {
     id: "RP-88422",
-    name: "Elena Gomez",
-    email: "elena.gomez@papaveg.com",
-    phone: "+1 212-555-0841",
-    store: "Jersey Heights",
-    franchise: "Jersey Shore",
+    name: "Neha Singh",
+    email: "n.singh@papaveg.com",
+    phone: "+91 98765 43211",
+    store: "Pune - Koregaon Park",
+    franchise: "Papa Veg Pune",
     vehicle: "Scooter",
-    vehicleModel: "Vespa Elettrica",
-    licenseNumber: "XYZ-5678-NJ",
+    vehicleModel: "Ather 450X",
+    licenseNumber: "MH-12-5678",
     totalOrders: 328,
     completedOrders: 328,
     cancelledOrders: 2,
     rating: 4.9,
     status: "Busy",
-    address: "415 Ocean Ave, Jersey City, NJ 07302",
-    storeManager: "Marcus Aurelius",
+    address: "415 Main Street, Koregaon Park, Pune",
+    storeManager: "Rahul Verma",
     priorityRouting: false,
     recentDeliveries: [
       { id: "ORD-11488", date: "Yesterday, 09:15 PM", status: "Delivered", earnings: 15.20 },
@@ -80,21 +80,21 @@ const INITIAL_RIDERS = [
   },
   {
     id: "RP-88423",
-    name: "Marcus Chen",
-    email: "marcus.chen@papaveg.com",
-    phone: "+1 212-555-0374",
-    store: "NYC Midtown",
-    franchise: "NYC Metro",
+    name: "Amit Patel",
+    email: "a.patel@papaveg.com",
+    phone: "+91 98765 43212",
+    store: "Delhi - Connaught Place",
+    franchise: "Papa Veg Delhi",
     vehicle: "Car",
-    vehicleModel: "Tesla Model 3",
-    licenseNumber: "MCN-9012-NY",
+    vehicleModel: "Tata Nexon EV",
+    licenseNumber: "DL-01-9012",
     totalOrders: 1102,
     completedOrders: 1102,
     cancelledOrders: 18,
     rating: 4.7,
     status: "Offline",
-    address: "789 Lex Ave, New York, NY 10021",
-    storeManager: "David Miller",
+    address: "789 CP Inner Circle, Delhi",
+    storeManager: "Suresh Kumar",
     priorityRouting: true,
     recentDeliveries: [
       { id: "ORD-11475", date: "2 days ago", status: "Delivered", earnings: 18.00 },
@@ -103,21 +103,21 @@ const INITIAL_RIDERS = [
   },
   {
     id: "RP-88424",
-    name: "James Wilson",
-    email: "james.wilson@papaveg.com",
-    phone: "+1 212-555-0629",
-    store: "Brooklyn East",
-    franchise: "NYC Metro",
+    name: "Rahul Verma",
+    email: "r.verma_rider@papaveg.com",
+    phone: "+91 98765 43213",
+    store: "Bangalore - Indiranagar",
+    franchise: "Papa Veg Bangalore",
     vehicle: "Electric Bike",
-    vehicleModel: "Rad Power RadCity",
-    licenseNumber: "JWL-3456-NY",
+    vehicleModel: "Ola S1 Pro",
+    licenseNumber: "KA-01-3456",
     totalOrders: 84,
     completedOrders: 84,
     cancelledOrders: 12,
     rating: 3.2,
     status: "Suspended",
-    address: "101 Flatbush Ave, Brooklyn, NY 11217",
-    storeManager: "Sarah Jenkins",
+    address: "101 100ft Road, Indiranagar, Bangalore",
+    storeManager: "Vikram Singh",
     priorityRouting: false,
     recentDeliveries: [
       { id: "ORD-11425", date: "3 days ago", status: "Failed", earnings: 0.00 }
@@ -134,6 +134,7 @@ export default function DeliveryPartnersManagement() {
   const [storeFilter, setStoreFilter] = useState("All Stores")
   const [statusFilter, setStatusFilter] = useState("All Statuses")
   const [vehicleFilter, setVehicleFilter] = useState("Vehicle Type")
+  const [sortOrder, setSortOrder] = useState("asc")
 
   // Pagination States
   const [currentPage, setCurrentPage] = useState(1)
@@ -187,8 +188,8 @@ export default function DeliveryPartnersManagement() {
         vehicleFilter === "Vehicle Type" || rider.vehicle === vehicleFilter
 
       return matchesSearch && matchesFranchise && matchesStore && matchesStatus && matchesVehicle
-    })
-  }, [riders, searchQuery, franchiseFilter, storeFilter, statusFilter, vehicleFilter])
+    }).sort((a, b) => sortOrder === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name))
+  }, [riders, searchQuery, franchiseFilter, storeFilter, statusFilter, vehicleFilter, sortOrder])
 
   // Paginated results
   const paginatedRiders = useMemo(() => {
@@ -256,6 +257,7 @@ export default function DeliveryPartnersManagement() {
     setStoreFilter("All Stores")
     setStatusFilter("All Statuses")
     setVehicleFilter("Vehicle Type")
+    setSortOrder("asc")
     setCurrentPage(1)
     showToast("Filters reset successful!", "success")
   }
@@ -270,9 +272,9 @@ export default function DeliveryPartnersManagement() {
   }
 
   const getProfileImage = (name) => {
-    if (name?.toLowerCase().includes("alex")) return "/rider_alex.webp"
-    if (name?.toLowerCase().includes("elena")) return "/rider_elena.webp"
-    if (name?.toLowerCase().includes("marcus")) return "/rider_marcus.webp"
+    if (name?.toLowerCase().includes("ravi")) return "/rider_alex.webp"
+    if (name?.toLowerCase().includes("neha")) return "/rider_elena.webp"
+    if (name?.toLowerCase().includes("amit")) return "/rider_marcus.webp"
     return "/rider_alex.webp" // Default fallback
   }
 
@@ -393,7 +395,7 @@ export default function DeliveryPartnersManagement() {
         </div>
       </section>
 
-      {/* Filter Options */}
+      {/* Delivery Partners Filters Component */}
       <DeliveryPartnersFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -405,6 +407,8 @@ export default function DeliveryPartnersManagement() {
         setStatusFilter={setStatusFilter}
         vehicleFilter={vehicleFilter}
         setVehicleFilter={setVehicleFilter}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
         onReset={handleResetFilters}
       />
 
@@ -508,73 +512,46 @@ export default function DeliveryPartnersManagement() {
                     </td>
 
                     {/* Actions Menu */}
-                    <td className="px-6 py-4 text-right relative" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        onClick={() => setActiveMenuId(activeMenuId === rider.id ? null : rider.id)}
-                        className="p-1.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-850 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors cursor-pointer"
-                      >
-                        <MoreVertical size={16} />
-                      </button>
-
-                      {/* Dropdown Action Popover */}
-                      <AnimatePresence>
-                        {activeMenuId === rider.id && (
-                          <>
-                            <div className="fixed inset-0 z-30" onClick={() => setActiveMenuId(null)} />
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.95, y: 5 }}
-                              animate={{ opacity: 1, scale: 1, y: 0 }}
-                              exit={{ opacity: 0, scale: 0.95, y: 5 }}
-                              className="absolute right-6 top-10 w-44 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl z-40 p-1.5"
-                            >
-                              <button
-                                onClick={() => {
-                                  setSelectedRider(rider)
-                                  setIsDrawerOpen(true)
-                                  setActiveMenuId(null)
-                                }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-zinc-600 hover:text-[var(--primary)] dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                              >
-                                <Eye size={14} />
-                                <span>View Profile Drawer</span>
-                              </button>
-
-                              <button
-                                onClick={() => {
-                                  setSelectedRider(rider)
-                                  setIsEditModalOpen(true)
-                                  setActiveMenuId(null)
-                                }}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-zinc-600 hover:text-[var(--primary)] dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                              >
-                                <Edit size={14} />
-                                <span>Edit Profile details</span>
-                              </button>
-
-                              <div className="h-px bg-zinc-100 dark:bg-zinc-800 my-1" />
-
-                              <button
-                                onClick={() => handleSuspendToggle(rider)}
-                                className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold transition-colors ${rider.status === "Suspended"
-                                  ? "text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
-                                  : "text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20"
-                                  }`}
-                              >
-                                {rider.status === "Suspended" ? <UserCheck size={14} /> : <Ban size={14} />}
-                                <span>{rider.status === "Suspended" ? "Activate Account" : "Suspend Rider"}</span>
-                              </button>
-
-                              <button
-                                onClick={() => handleDeleteRider(rider)}
-                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors"
-                              >
-                                <Trash2 size={14} />
-                                <span>Delete Partner</span>
-                              </button>
-                            </motion.div>
-                          </>
-                        )}
-                      </AnimatePresence>
+                    <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedRider(rider)
+                            setIsDrawerOpen(true)
+                          }}
+                          className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                          title="View Profile"
+                        >
+                          <Eye size={15} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedRider(rider)
+                            setIsEditModalOpen(true)
+                          }}
+                          className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                          title="Edit Profile"
+                        >
+                          <Edit size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleSuspendToggle(rider)}
+                          className={`p-1.5 rounded-lg border transition-all cursor-pointer ${rider.status === "Suspended"
+                            ? "border-emerald-200 dark:border-emerald-950 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20"
+                            : "border-amber-200 dark:border-amber-950 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/20"
+                            }`}
+                          title={rider.status === "Suspended" ? "Activate Account" : "Suspend Rider"}
+                        >
+                          {rider.status === "Suspended" ? <UserCheck size={15} /> : <Ban size={15} />}
+                        </button>
+                        <button
+                          onClick={() => handleDeleteRider(rider)}
+                          className="p-1.5 rounded-lg border border-rose-200/40 dark:border-rose-950 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-550 dark:text-rose-455 transition-all cursor-pointer"
+                          title="Delete Partner"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

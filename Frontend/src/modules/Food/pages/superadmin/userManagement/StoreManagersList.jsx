@@ -15,7 +15,9 @@ import {
   Save,
   Trash2,
   Ban,
-  ClipboardList
+  ClipboardList,
+  Eye,
+  Edit
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import StoreManagerDetailsDrawer from "./StoreManagerDetailsDrawer"
@@ -24,61 +26,61 @@ import StoreManagerDetailsDrawer from "./StoreManagerDetailsDrawer"
 const INITIAL_MANAGERS = [
   {
     id: "PV-882",
-    name: "Marco Santoro",
-    email: "marco.s@papaveg.com",
-    phone: "+1 312-555-0192",
-    store: "Chicago - Downtown",
-    group: "Urban Slice Group",
+    name: "Ravi Sharma",
+    email: "r.sharma@papaveg.com",
+    phone: "+91 98765 43210",
+    store: "Mumbai - Andheri West",
+    group: "Papa Veg Mumbai",
     status: "Active",
     avatar: ""
   },
   {
     id: "PV-714",
-    name: "Sarah Jenkins",
-    email: "s.jenkins@papaveg.com",
-    phone: "+1 630-555-0104",
-    store: "Naperville East - Mall",
-    group: "Midwest Pizza Co.",
+    name: "Rahul Verma",
+    email: "r.verma@papaveg.com",
+    phone: "+91 98765 43211",
+    store: "Delhi - Connaught Place",
+    group: "Papa Veg Delhi",
     status: "On Leave",
     avatar: ""
   },
   {
     id: "PV-630",
-    name: "David Miller",
-    email: "d.miller@papaveg.com",
-    phone: "+1 630-555-0188",
-    store: "Aurora West Station",
-    group: "Midwest Pizza Co.",
+    name: "Suresh Kumar",
+    email: "s.kumar@papaveg.com",
+    phone: "+91 98765 43212",
+    store: "Pune - Koregaon Park",
+    group: "Papa Veg Pune",
     status: "Suspended",
     avatar: ""
   },
   {
     id: "PV-904",
-    name: "Elena Vance",
-    email: "e.vance@example.com",
-    phone: "+1 312-555-0904",
-    store: "Evanston North",
-    group: "Coastal Veggie Grills",
+    name: "Sanjay Gupta",
+    email: "s.gupta@papaveg.com",
+    phone: "+91 98765 43213",
+    store: "Bangalore - Indiranagar",
+    group: "Papa Veg Bangalore",
     status: "Active",
     avatar: ""
   },
   {
     id: "PV-512",
-    name: "Marcus Rossi",
-    email: "m.rossi@example.com",
-    phone: "+1 815-555-0212",
-    store: "Naperville West",
-    group: "Midwest Pizza Co.",
+    name: "Vikram Singh",
+    email: "v.singh@papaveg.com",
+    phone: "+91 98765 43214",
+    store: "Chennai - T Nagar",
+    group: "Papa Veg Chennai",
     status: "Active",
     avatar: ""
   },
   {
     id: "PV-384",
-    name: "Chloe Bennett",
-    email: "c.bennett@example.com",
-    phone: "+1 312-555-0384",
-    store: "Chicago Loop",
-    group: "Urban Slice Group",
+    name: "Pooja Reddy",
+    email: "p.reddy@papaveg.com",
+    phone: "+91 98765 43215",
+    store: "Hyderabad - Banjara Hills",
+    group: "Papa Veg Hyderabad",
     status: "Active",
     avatar: ""
   }
@@ -114,15 +116,15 @@ export default function StoreManagersList() {
     name: "",
     email: "",
     phone: "",
-    store: "Chicago - Downtown",
-    group: "Urban Slice Group",
+    store: "Mumbai - Andheri West",
+    group: "Papa Veg Mumbai",
     status: "Active"
   })
   const [formErrors, setFormErrors] = useState({})
 
   // Dropdown list options
-  const franchiseOptions = ["All Franchises", "Urban Slice Group", "Midwest Pizza Co.", "Coastal Veggie Grills"]
-  const storeOptions = ["All Stores", "Chicago - Downtown", "Naperville East - Mall", "Aurora West Station", "Evanston North", "Naperville West", "Chicago Loop"]
+  const franchiseOptions = ["All Franchises", "Papa Veg Mumbai", "Papa Veg Delhi", "Papa Veg Pune", "Papa Veg Bangalore", "Papa Veg Chennai", "Papa Veg Hyderabad"]
+  const storeOptions = ["All Stores", "Mumbai - Andheri West", "Delhi - Connaught Place", "Pune - Koregaon Park", "Bangalore - Indiranagar", "Chennai - T Nagar", "Hyderabad - Banjara Hills"]
   const statusOptions = ["Any Status", "Active", "On Leave", "Suspended"]
 
   // 1. Debounce Search Bar Input
@@ -186,8 +188,8 @@ export default function StoreManagersList() {
         name: "",
         email: "",
         phone: "",
-        store: "Chicago - Downtown",
-        group: "Urban Slice Group",
+        store: "Mumbai - Andheri West",
+        group: "Papa Veg Mumbai",
         status: "Active"
       })
     }
@@ -489,19 +491,31 @@ export default function StoreManagersList() {
                       <td className="py-4 px-6 text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={() => openAddEditModal(mgr)}
-                            className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 font-bold text-[10px] text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                            onClick={() => {
+                              setSelectedManager(mgr)
+                              setIsDrawerOpen(true)
+                            }}
+                            className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                            title="View Profile"
                           >
-                            Edit
+                            <Eye size={15} />
+                          </button>
+                          <button
+                            onClick={() => openAddEditModal(mgr)}
+                            className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-[var(--primary)] transition-all cursor-pointer"
+                            title="Edit Profile"
+                          >
+                            <Edit size={15} />
                           </button>
                           <button
                             onClick={() => {
                               setManagerToDelete(mgr)
                               setShowDeleteModal(true)
                             }}
-                            className="px-3 py-1.5 rounded-lg border border-rose-200/40 dark:border-rose-950 hover:bg-rose-50 dark:hover:bg-rose-950/30 font-bold text-[10px] text-rose-550 dark:text-rose-455 transition-all cursor-pointer"
+                            className="p-1.5 rounded-lg border border-rose-200/40 dark:border-rose-950 hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-550 dark:text-rose-455 transition-all cursor-pointer"
+                            title="Remove Manager"
                           >
-                            Remove
+                            <Trash2 size={15} />
                           </button>
                         </div>
                       </td>

@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import ChangeShiftModal from "./ChangeShiftModal"
 import {
   X,
   Calendar,
@@ -15,6 +16,13 @@ import {
 export default function KitchenStaffDetail({ isOpen, onClose, staff, onEdit, onSuspend }) {
   if (!staff) return null;
 
+  const [isShiftModalOpen, setIsShiftModalOpen] = useState(false);
+
+  const handleShiftConfirm = (staff, newShift, date, reason) => {
+    alert(`Shift change request to ${newShift} Shift submitted successfully for ${staff.name}.`);
+    setIsShiftModalOpen(false);
+  };
+
   // Derive profile image from staff name
   const getProfileImage = (name) => {
     if (name?.toLowerCase().includes("antonio")) return "/chef_antonio.webp"
@@ -25,8 +33,9 @@ export default function KitchenStaffDetail({ isOpen, onClose, staff, onEdit, onS
   }
 
   return (
-    <AnimatePresence>
-      {isOpen && (
+    <>
+      <AnimatePresence>
+        {isOpen && (
         <div className="fixed inset-0 z-[150] flex justify-end">
           {/* Overlay */}
           <motion.div
@@ -263,7 +272,10 @@ export default function KitchenStaffDetail({ isOpen, onClose, staff, onEdit, onS
                 <Edit size={16} />
                 Edit Details
               </button>
-              <button className="border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 py-3 rounded-xl text-sm font-bold hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors">
+              <button 
+                onClick={() => setIsShiftModalOpen(true)}
+                className="border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 py-3 rounded-xl text-sm font-bold hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+              >
                 Change Shift
               </button>
               <button 
@@ -275,7 +287,15 @@ export default function KitchenStaffDetail({ isOpen, onClose, staff, onEdit, onS
             </div>
           </motion.div>
         </div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+
+      <ChangeShiftModal 
+        isOpen={isShiftModalOpen}
+        onClose={() => setIsShiftModalOpen(false)}
+        staff={staff}
+        onConfirm={handleShiftConfirm}
+      />
+    </>
   )
 }

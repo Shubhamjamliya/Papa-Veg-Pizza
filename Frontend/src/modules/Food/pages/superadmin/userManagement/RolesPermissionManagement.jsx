@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronRight, Plus, Users, Edit3, Shield, History, ShieldCheck, Building2, Store, ChefHat, X, CheckCircle, XCircle, TrendingUp } from 'lucide-react';
 import RolesPermissionTable from './RolesPermissionTable';
 import RolesPermissionDetails from './RolesPermissionDetails';
+import CreateRoleModal from './CreateRoleModal';
 
 export const INITIAL_ROLES = [
   {
@@ -45,6 +46,12 @@ export const INITIAL_ROLES = [
 export default function RolesPermissionManagement() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [isCreateRoleOpen, setIsCreateRoleOpen] = useState(false);
+  const [roles, setRoles] = useState(INITIAL_ROLES);
+
+  const handleDeleteRole = (roleId) => {
+    setRoles(prev => prev.filter(r => r.id !== roleId));
+  };
 
   const handlePreviewRole = (role) => {
     setSelectedRole(role);
@@ -64,7 +71,10 @@ export default function RolesPermissionManagement() {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 px-5 py-3 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl text-xs font-bold shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.02] cursor-pointer">
+        <button 
+          onClick={() => setIsCreateRoleOpen(true)}
+          className="flex items-center gap-2 px-5 py-3 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl text-xs font-bold shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.02] cursor-pointer"
+        >
           <Plus size={16} className="stroke-[3]" />
           <span>CREATE NEW ROLE</span>
         </button>
@@ -213,13 +223,22 @@ export default function RolesPermissionManagement() {
       </section>
 
       {/* Main Table Section */}
-      <RolesPermissionTable rolesList={INITIAL_ROLES} onPreviewRole={handlePreviewRole} />
+      <RolesPermissionTable 
+        rolesList={roles} 
+        onPreviewRole={handlePreviewRole} 
+        onDeleteRole={handleDeleteRole}
+      />
 
       {/* Render the Drawer inline instead of through router */}
       <RolesPermissionDetails
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         role={selectedRole}
+      />
+
+      <CreateRoleModal 
+        isOpen={isCreateRoleOpen}
+        onClose={() => setIsCreateRoleOpen(false)}
       />
     </div>
   );

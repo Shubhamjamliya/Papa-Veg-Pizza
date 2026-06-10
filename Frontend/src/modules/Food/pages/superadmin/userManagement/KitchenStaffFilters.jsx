@@ -32,9 +32,10 @@ export default function KitchenStaffFilters({
 
   const franchises = [
     { value: "", label: "All Franchises" },
-    { value: "Downtown Pizza Group", label: "Downtown Pizza Group" },
-    { value: "Northside Eats", label: "Northside Eats" },
-    { value: "Westside Express", label: "Westside Express" }
+    { value: "Papa Veg Mumbai", label: "Papa Veg Mumbai" },
+    { value: "Papa Veg Pune", label: "Papa Veg Pune" },
+    { value: "Papa Veg Delhi", label: "Papa Veg Delhi" },
+    { value: "Papa Veg Bangalore", label: "Papa Veg Bangalore" }
   ]
 
   const roles = [
