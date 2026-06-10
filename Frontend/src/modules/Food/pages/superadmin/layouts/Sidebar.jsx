@@ -202,16 +202,18 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
               <div key={groupIdx} className="space-y-1">
                 <button
                   onClick={() => toggleGroup(group.title)}
-                  className="w-full flex items-center justify-between px-3 py-1.5 text-xs font-semibold text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 uppercase tracking-wider text-left transition-colors"
+                  className="w-full flex items-center justify-between px-5 py-3 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors focus:outline-none"
                 >
                   <span>{group.title}</span>
-                  <span className="text-[10px] transform transition-transform duration-200">
-                    {isExpanded ? "▼" : "▶"}
+                  <span className={`transition-transform duration-200 text-zinc-400 ${isExpanded ? 'rotate-180' : ''}`}>
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </span>
                 </button>
 
                 {isExpanded && (
-                  <div className="space-y-1 pl-1 transition-all">
+                  <div className="space-y-1 px-3 pb-2 transition-all">
                     {group.items.map((item, itemIdx) => {
                       const Icon = item.icon
                       const isActive = activeItem === item.name
@@ -300,17 +302,16 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               onClose()
                             }
                           }}
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                            ? "bg-[var(--primary)]/10 text-[var(--primary)] font-semibold shadow-sm"
-                            : "text-zinc-600 dark:text-zinc-400 hover:text-[var(--primary)] dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-left group ${isActive
+                            ? "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-100 dark:border-red-900/30 shadow-sm"
+                            : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-200 border border-transparent"
                             }`}
                         >
                           <Icon
                             size={18}
-                            className={`transition-transform duration-300 ${isActive ? "scale-110 stroke-[2.2] text-[var(--primary)]" : "text-zinc-400 group-hover:text-[var(--primary)]"
-                              }`}
+                            className={`shrink-0 transition-transform duration-300 ${isActive ? "text-red-600 dark:text-red-400" : "text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-300"}`}
                           />
-                          <span>{item.name}</span>
+                          <span className="leading-snug">{item.name}</span>
                         </button>
                       )
                     })}

@@ -239,7 +239,7 @@ export default function FranchiseList() {
       {/* Header and Add Button */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-4">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
             Franchise Admins
           </h1>
           <p className="text-zinc-400 font-semibold text-xs mt-0.5">
@@ -370,10 +370,10 @@ export default function FranchiseList() {
                     <td className="px-6 py-4">
                       <span
                         className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full ${fran.status === "ACTIVE"
-                            ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30"
-                            : fran.status === "INACTIVE"
-                              ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30"
-                              : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30"
+                          ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30"
+                          : fran.status === "INACTIVE"
+                            ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30"
+                            : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30"
                           }`}
                       >
                         {fran.status}

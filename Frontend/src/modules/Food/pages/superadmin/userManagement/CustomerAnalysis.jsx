@@ -130,7 +130,7 @@ export default function CustomerAnalysis() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
               Customer Analytics
             </h1>
             <span className="bg-[var(--primary)]/10 text-[var(--primary)] text-[10px] font-bold px-2 py-0.5 rounded-full border border-[var(--primary)]/20 animate-pulse">
@@ -171,11 +171,10 @@ export default function CustomerAnalysis() {
                   <Icon size={18} className="stroke-[2.2]" />
                 </div>
                 <span
-                  className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-0.5 ${
-                    stat.isPositive
-                      ? "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20"
-                      : "text-rose-600 bg-rose-50 dark:bg-rose-950/20"
-                  }`}
+                  className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-0.5 ${stat.isPositive
+                    ? "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20"
+                    : "text-rose-600 bg-rose-50 dark:bg-rose-950/20"
+                    }`}
                 >
                   {stat.isPositive ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
                   {stat.growth}
@@ -334,13 +333,12 @@ export default function CustomerAnalysis() {
 
                   <div className="text-right">
                     <span
-                      className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
-                        customer.status === "ACTIVE"
-                          ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400"
-                          : customer.status === "BLOCKED"
+                      className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${customer.status === "ACTIVE"
+                        ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400"
+                        : customer.status === "BLOCKED"
                           ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400"
                           : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400"
-                      }`}
+                        }`}
                     >
                       {customer.status}
                     </span>

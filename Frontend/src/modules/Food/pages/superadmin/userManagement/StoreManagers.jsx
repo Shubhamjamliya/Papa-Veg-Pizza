@@ -216,7 +216,7 @@ export default function StoreManagers() {
       {/* Page Header section */}
       <section className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
         <div className="space-y-1">
-          <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight">
+          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
             Store Managers
           </h1>
           <p className="text-xs font-semibold text-zinc-400">
