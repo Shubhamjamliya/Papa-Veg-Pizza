@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Filter, MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, MoreVertical, ChevronLeft, ChevronRight, RotateCcw, Eye } from "lucide-react";
 
 export default function ProductsData({ onViewProduct }) {
   const [showFilters, setShowFilters] = useState(false);
@@ -48,13 +48,13 @@ export default function ProductsData({ onViewProduct }) {
   }, [searchTerm]);
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
-                          product.id.toLowerCase().includes(debouncedSearch.toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      product.id.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchesCategory = categoryFilter === "All Categories" || product.category === categoryFilter;
-    const matchesStatus = statusFilter === "All" || 
-                         (statusFilter === "Active" && product.status !== "Inactive") ||
-                         (statusFilter === "Inactive" && product.status === "Inactive");
-    
+    const matchesStatus = statusFilter === "All" ||
+      (statusFilter === "Active" && product.status !== "Inactive") ||
+      (statusFilter === "Inactive" && product.status === "Inactive");
+
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -69,15 +69,15 @@ export default function ProductsData({ onViewProduct }) {
     <>
       {/* Search & Filter Panel */}
       <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm mb-6">
-        <div 
-          className="p-4 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 cursor-pointer" 
+        <div
+          className="p-2 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 cursor-pointer"
           onClick={() => setShowFilters(!showFilters)}
         >
           <div className="flex items-center gap-3 flex-1">
             <Search className="text-zinc-400" size={20} />
-            <input 
-              className="bg-transparent border-none focus:ring-0 w-full text-sm outline-none text-zinc-900 dark:text-zinc-100" 
-              placeholder="Search products..." 
+            <input
+              className="bg-transparent border-none focus:ring-0 w-full text-sm outline-none text-zinc-900 dark:text-zinc-100"
+              placeholder="Search products..."
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -89,57 +89,73 @@ export default function ProductsData({ onViewProduct }) {
             Filters
           </button>
         </div>
-        
+
         {showFilters && (
-          <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Category</label>
-              <select 
-                className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all dark:text-zinc-100"
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-              >
-                <option>All Categories</option>
-                <option>Classic Pizzas</option>
-                <option>Signature Pizzas</option>
-                <option>Sides</option>
-                <option>Beverages</option>
-              </select>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store</label>
-              <select 
-                className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all dark:text-zinc-100"
-                value={storeFilter}
-                onChange={(e) => setStoreFilter(e.target.value)}
-              >
-                <option>All Stores</option>
-                <option>Downtown Branch</option>
-                <option>Westside Express</option>
-              </select>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
-              <div className="flex gap-2 h-10 items-center">
-                <button 
-                  onClick={() => setStatusFilter("All")}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "All" ? "bg-[var(--primary)] text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+          <div className="p-4 flex flex-col gap-6 animate-in slide-in-from-top-2 duration-200 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Category</label>
+                <select
+                  className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all dark:text-zinc-100"
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
                 >
-                  All
-                </button>
-                <button 
-                  onClick={() => setStatusFilter("Active")}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "Active" ? "bg-emerald-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
-                >
-                  Active
-                </button>
-                <button 
-                  onClick={() => setStatusFilter("Inactive")}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "Inactive" ? "bg-red-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
-                >
-                  Inactive
-                </button>
+                  <option>All Categories</option>
+                  <option>Classic Pizzas</option>
+                  <option>Signature Pizzas</option>
+                  <option>Sides</option>
+                  <option>Beverages</option>
+                </select>
               </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store</label>
+                <select
+                  className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all dark:text-zinc-100"
+                  value={storeFilter}
+                  onChange={(e) => setStoreFilter(e.target.value)}
+                >
+                  <option>All Stores</option>
+                  <option>Downtown Branch</option>
+                  <option>Westside Express</option>
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
+                <div className="flex gap-2 h-10 items-center">
+                  <button
+                    onClick={() => setStatusFilter("All")}
+                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "All" ? "bg-[var(--primary)] text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                  >
+                    All
+                  </button>
+                  <button
+                    onClick={() => setStatusFilter("Active")}
+                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "Active" ? "bg-emerald-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                  >
+                    Active
+                  </button>
+                  <button
+                    onClick={() => setStatusFilter("Inactive")}
+                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "Inactive" ? "bg-red-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                  >
+                    Inactive
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end items-center mt-2">
+              <button
+                onClick={() => {
+                  setCategoryFilter("All Categories");
+                  setStoreFilter("All Stores");
+                  setStatusFilter("All");
+                  setSearchTerm("");
+                }}
+                title="Reset Filters"
+                className="p-2 rounded-full text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              >
+                <RotateCcw size={18} />
+              </button>
             </div>
           </div>
         )}
@@ -149,24 +165,26 @@ export default function ProductsData({ onViewProduct }) {
       <section className="flex flex-col gap-4">
         {filteredProducts.map(product => (
           <div key={product.id} onClick={() => onViewProduct?.(product)} className={`bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden flex flex-col sm:flex-row relative group transition-all hover:shadow-md cursor-pointer ${product.status === "Inactive" ? "opacity-75" : ""}`}>
-            <div className="w-full sm:w-48 h-48 sm:h-auto overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
-              <img 
-                className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${product.status === "Inactive" ? "grayscale" : ""}`} 
-                src={product.image} 
-                alt={product.name} 
+            <div className="w-full sm:w-48 h-40 sm:h-auto overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
+              <img
+                className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${product.status === "Inactive" ? "grayscale" : ""}`}
+                src={product.image}
+                alt={product.name}
               />
             </div>
-            <div className="p-4 md:p-6 flex flex-col flex-1 gap-2">
+            <div className="p-2 md:p-6 flex flex-col flex-1 gap-2">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{product.name}</h3>
+                  <h3 className="text-md font-bold text-zinc-900 dark:text-zinc-100">{product.name}</h3>
                   <p className="text-xs text-zinc-500 font-medium mt-1">SKU: {product.id} • {product.category}</p>
                 </div>
-                <button className="p-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
-                  <MoreVertical size={20} />
+                <button
+                  className="px-3 py-1.5 rounded-lg border-none border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-xs font-bold text-[var(--primary)] transition-colors flex items-center gap-1.5"
+                >
+                  <Eye size={16} />
                 </button>
               </div>
-              <div className="grid grid-cols-2 gap-4 mt-4 mb-2">
+              <div className="grid grid-cols-2 gap-4 mt-2 mb-2">
                 <div className="flex flex-col">
                   <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Price</span>
                   <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mt-0.5">{product.price}</span>
@@ -178,7 +196,7 @@ export default function ProductsData({ onViewProduct }) {
                   </span>
                 </div>
               </div>
-              <div className="mt-auto pt-2">
+              <div className="mt-auto">
                 {getStatusBadge(product.status)}
               </div>
             </div>
