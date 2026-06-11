@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Search, Filter, Download, MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function AddonsData({ onViewDetails }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterGroup, setFilterGroup] = useState("");
+  const [filterType, setFilterType] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
 
   // Debouncing search term
   useEffect(() => {
@@ -47,10 +51,22 @@ export default function AddonsData({ onViewDetails }) {
     }
   ];
 
-  const filteredAddons = initialAddons.filter(addon => 
-    addon.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-    addon.group.toLowerCase().includes(debouncedSearch.toLowerCase())
-  );
+  const filteredAddons = initialAddons.filter(addon => {
+    const matchesSearch = addon.name.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
+                          addon.group.toLowerCase().includes(debouncedSearch.toLowerCase());
+    const matchesGroup = filterGroup ? addon.group === filterGroup : true;
+    const matchesType = filterType ? addon.type === filterType : true;
+    const matchesStatus = filterStatus ? addon.status === filterStatus : true;
+    
+    return matchesSearch && matchesGroup && matchesType && matchesStatus;
+  });
+
+  const resetFilters = () => {
+    setFilterGroup("");
+    setFilterType("");
+    setFilterStatus("");
+    setSearchTerm("");
+  };
 
   return (
     <section className="bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
@@ -67,15 +83,71 @@ export default function AddonsData({ onViewDetails }) {
           />
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <button className="flex items-center gap-2 px-4 py-2 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-950 rounded-lg font-bold text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors w-full sm:w-auto justify-center shadow-sm">
+          <button 
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-2 px-4 py-2 border text-sm font-bold rounded-lg transition-colors w-full sm:w-auto justify-center shadow-sm ${
+              showFilters 
+                ? 'bg-[var(--primary)] text-white border-[var(--primary)]' 
+                : 'bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900'
+            }`}
+          >
             <Filter size={18} />
             Filters
           </button>
-          <button className="p-2 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-950 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors shadow-sm">
-            <Download size={18} />
-          </button>
         </div>
       </div>
+
+      {/* Filters Panel */}
+      {showFilters && (
+        <div className="p-4 md:p-6 bg-zinc-50 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 animate-in slide-in-from-top-2 duration-200">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Group</label>
+            <select 
+              className="w-full h-10 px-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)] text-zinc-900 dark:text-zinc-100"
+              value={filterGroup}
+              onChange={(e) => setFilterGroup(e.target.value)}
+            >
+              <option value="">All Groups</option>
+              <option value="Veg Toppings">Veg Toppings</option>
+              <option value="Cheese Add-ons">Cheese Add-ons</option>
+              <option value="Dips">Dips</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Type</label>
+            <select 
+              className="w-full h-10 px-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)] text-zinc-900 dark:text-zinc-100"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <option value="">All Types</option>
+              <option value="Topping">Topping</option>
+              <option value="Add-on">Add-on</option>
+              <option value="Dip">Dip</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
+            <select 
+              className="w-full h-10 px-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)] text-zinc-900 dark:text-zinc-100"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
+              <option value="">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="Out of Stock">Out of Stock</option>
+            </select>
+          </div>
+          <div className="flex items-end">
+            <button 
+              onClick={resetFilters}
+              className="h-10 px-4 w-full bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-bold rounded-lg transition-colors"
+            >
+              Reset Filters
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Table Data */}
       <div className="overflow-x-auto">
@@ -96,7 +168,6 @@ export default function AddonsData({ onViewDetails }) {
               <tr 
                 key={item.id} 
                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group cursor-pointer"
-                onClick={() => onViewDetails && onViewDetails(item)}
               >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-4">
@@ -127,8 +198,14 @@ export default function AddonsData({ onViewDetails }) {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button className="text-zinc-400 hover:text-[var(--primary)] transition-colors p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                    <MoreVertical size={20} />
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onViewDetails) onViewDetails(item);
+                    }}
+                    className="text-zinc-400 hover:text-[var(--primary)] transition-colors p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  >
+                    <Eye size={20} />
                   </button>
                 </td>
               </tr>
