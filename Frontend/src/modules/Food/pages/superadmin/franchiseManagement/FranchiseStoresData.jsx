@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Filter, MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, MoreVertical, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 
 export default function FranchiseStoresData({ onRowClick }) {
   const [showFilters, setShowFilters] = useState(false);
@@ -223,7 +223,7 @@ export default function FranchiseStoresData({ onRowClick }) {
                   </td>
                   <td className="px-6 py-4">
                     <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
-                      <MoreVertical size={18} />
+                      <Eye size={18} />
                     </button>
                   </td>
                 </tr>

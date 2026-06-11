@@ -3,16 +3,16 @@ import { X, Search, ChevronRight, ChevronLeft, MinusCircle, CheckCircle, Chevron
 
 export default function StoreAssignmentModal({ isOpen, onClose }) {
   const [availableStores, setAvailableStores] = useState([
-    { id: "241", name: "5th Ave", location: "Midtown Manhattan, NY", selected: false },
-    { id: "102", name: "Broadway", location: "Lower Manhattan, NY", selected: false },
-    { id: "089", name: "Brooklyn", location: "Williamsburg, NY", selected: false },
-    { id: "302", name: "Queens", location: "Astoria, NY", selected: false }
+    { id: "241", name: "Connaught Place", location: "New Delhi, DL", selected: false },
+    { id: "102", name: "Andheri West", location: "Mumbai, MH", selected: false },
+    { id: "089", name: "Koramangala", location: "Bangalore, KA", selected: false },
+    { id: "302", name: "Salt Lake Sector V", location: "Kolkata, WB", selected: false }
   ]);
 
   const [assignedStores, setAssignedStores] = useState([
-    { id: "442", name: "Chelsea", location: "Manhattan, NY" },
-    { id: "119", name: "Soho", location: "Manhattan, NY" },
-    { id: "004", name: "Wall St", location: "Manhattan, NY" }
+    { id: "442", name: "Bandra West", location: "Mumbai, MH" },
+    { id: "119", name: "Jayanagar", location: "Bangalore, KA" },
+    { id: "004", name: "Sector 18", location: "Noida, UP" }
   ]);
 
   if (!isOpen) return null;
@@ -62,19 +62,21 @@ export default function StoreAssignmentModal({ isOpen, onClose }) {
           {/* Selection Filters */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider">Region</label>
+              <label className="block text-xs font-bold text-zinc-550 uppercase tracking-wider">Region</label>
               <select className="w-full h-10 px-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 outline-none transition-all text-sm text-zinc-900 dark:text-zinc-100">
-                <option>Northwest Metro</option>
-                <option>Southeast Coast</option>
-                <option>Central Plains</option>
+                <option>North India (Delhi NCR & Punjab)</option>
+                <option>West India (Maharashtra & Gujarat)</option>
+                <option>South India (Karnataka & Tamil Nadu)</option>
+                <option>East India (West Bengal & Odisha)</option>
               </select>
             </div>
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider">Target Zone</label>
+              <label className="block text-xs font-bold text-zinc-550 uppercase tracking-wider">Target Zone</label>
               <select className="w-full h-10 px-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 outline-none transition-all text-sm text-zinc-900 dark:text-zinc-100">
-                <option>Zone A - Downtown Core</option>
-                <option>Zone B - Suburban North</option>
-                <option>Zone C - Industrial East</option>
+                <option>Zone DL - Delhi Core Hub</option>
+                <option>Zone MH - Mumbai Suburban West</option>
+                <option>Zone KA - Bangalore Tech Corridor</option>
+                <option>Zone WB - Kolkata Metro Central</option>
               </select>
             </div>
           </div>

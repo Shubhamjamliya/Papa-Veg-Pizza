@@ -14,12 +14,12 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
   return (
     <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-8" id="modal-overlay">
       <div className="bg-zinc-50 dark:bg-zinc-950 w-full max-w-6xl h-[95vh] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-zinc-200 dark:border-zinc-800">
-        
+
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 relative">
-          
+
           <div className="p-4 md:p-8 space-y-6 md:space-y-8 max-w-5xl mx-auto w-full">
-            
+
             {/* Modal Header Content */}
             <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
               <div className="p-4 md:p-6 border-b border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -31,13 +31,13 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
                 </div>
                 <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
                   <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 uppercase tracking-wider
-                    ${request?.status === 'Pending' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' : 
-                      request?.status === 'Under Review' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 
-                      'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'}`}>
+                    ${request?.status === 'Pending' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                      request?.status === 'Under Review' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
+                        'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'}`}>
                     <Clock size={14} />
                     {request?.status || "PENDING"}
                   </span>
-                  <button 
+                  <button
                     onClick={onClose}
                     className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400"
                   >
@@ -248,9 +248,9 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
             {/* Dashboard Visuals (Contextual Graphic) */}
             <div className="mt-8 hidden md:block">
               <div className="relative h-64 w-full rounded-2xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800">
-                <img 
-                  className="w-full h-full object-cover" 
-                  alt="Dashboard view" 
+                <img
+                  className="w-full h-full object-cover"
+                  alt="Dashboard view"
                   src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80&fm=webp"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-8">
@@ -271,19 +271,19 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
             <p className="text-xs font-bold text-zinc-500">Last updated by Admin: 25 Oct 2023</p>
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
-            <button 
+            <button
               className="flex-1 sm:flex-none px-6 h-10 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold text-sm rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
               onClick={onClose}
             >
               Reject
             </button>
-            <button 
+            <button
               onClick={() => setIsRequestDocsOpen(true)}
               className="flex-1 sm:flex-none px-6 h-10 bg-orange-500 text-white font-bold text-sm rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
             >
               <FilePlus size={16} /> <span className="hidden sm:inline">Request Docs</span>
             </button>
-            <button 
+            <button
               className="flex-[2] sm:flex-none px-8 h-10 bg-[var(--primary)] text-white font-bold text-sm rounded-lg hover:brightness-110 transition-all shadow-md flex items-center justify-center gap-2"
               onClick={onClose}
             >
@@ -294,9 +294,9 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
 
       </div>
 
-      <RequestDocumentsModal 
-        isOpen={isRequestDocsOpen} 
-        onClose={() => setIsRequestDocsOpen(false)} 
+      <RequestDocumentsModal
+        isOpen={isRequestDocsOpen}
+        onClose={() => setIsRequestDocsOpen(false)}
         request={request}
         onRequestSent={(docs) => {
           setRequestedDocs(docs);
@@ -305,7 +305,7 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
         }}
       />
 
-      <RequestSentSuccessModal 
+      <RequestSentSuccessModal
         isOpen={isSuccessOpen}
         onClose={() => setIsSuccessOpen(false)}
         onReturnDashboard={() => {

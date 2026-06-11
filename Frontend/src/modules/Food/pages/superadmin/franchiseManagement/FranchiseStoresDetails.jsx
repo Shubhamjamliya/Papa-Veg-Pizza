@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { X, Info, Phone, Mail, MapPin, ArrowUp, ArrowDown, Star, StarHalf } from "lucide-react";
+import { toast } from "sonner";
 
-export default function FranchiseStoresDetails({ isOpen, onClose, store }) {
+export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit }) {
   const [activeTab, setActiveTab] = useState("basic");
 
   // Reset tab when a new store is opened
@@ -10,6 +11,15 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store }) {
       setActiveTab("basic");
     }
   }, [isOpen, store]);
+
+  const handleArchive = () => {
+    toast.success(`Store ${store?.name || "Indiranagar Central"} has been archived.`);
+    onClose();
+  };
+
+  const handleEdit = () => {
+    if (onEdit) onEdit(store);
+  };
 
   // Don't render internal drawer DOM unless it's open (or rely on translation CSS)
   // Let's use standard translate-x for the drawer.
@@ -292,10 +302,16 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store }) {
 
         {/* Drawer Footer */}
         <div className="p-6 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex justify-between gap-4">
-          <button className="flex-1 px-6 py-3 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+          <button 
+            onClick={handleArchive}
+            className="flex-1 px-6 py-3 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          >
             Archive Store
           </button>
-          <button className="flex-1 px-6 py-3 bg-[var(--primary)] text-white font-semibold text-sm rounded-lg hover:brightness-110 shadow-md active:scale-95 transition-all">
+          <button 
+            onClick={handleEdit}
+            className="flex-1 px-6 py-3 bg-[var(--primary)] text-white font-semibold text-sm rounded-lg hover:brightness-110 shadow-md active:scale-95 transition-all"
+          >
             Edit Information
           </button>
         </div>
