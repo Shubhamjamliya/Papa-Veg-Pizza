@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X, DollarSign, Database, CheckSquare, Info, Trash2, Edit2, UtensilsCrossed } from "lucide-react";
 
-export default function AddonsDetails({ isOpen, onClose, addon }) {
+export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
   const [activeTab, setActiveTab] = useState("selection");
 
   if (!isOpen) return null;
@@ -202,7 +202,13 @@ export default function AddonsDetails({ isOpen, onClose, addon }) {
             >
               Discard
             </button>
-            <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-[var(--primary)] text-white font-bold text-sm rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-md">
+            <button 
+              onClick={() => {
+                onClose();
+                if (onEdit) onEdit(addon);
+              }}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-[var(--primary)] text-white font-bold text-sm rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-md"
+            >
               <Edit2 size={16} />
               Edit Add-on
             </button>

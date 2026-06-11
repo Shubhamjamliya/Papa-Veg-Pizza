@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Grid, List, MoreVertical, X } from "lucide-react";
+import { Search, Grid, List, MoreVertical, FilterX, Eye } from "lucide-react";
 
 export default function CategoriesData({ onViewDetails }) {
   const [viewMode, setViewMode] = useState("grid");
@@ -71,15 +71,15 @@ export default function CategoriesData({ onViewDetails }) {
         <div className="flex flex-wrap items-center gap-4 flex-1">
           <div className="relative w-full max-w-xs">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-            <input 
-              className="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-zinc-700 bg-transparent rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] text-sm outline-none transition-all dark:text-zinc-100" 
-              placeholder="Search categories..." 
+            <input
+              className="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-zinc-700 bg-transparent rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] text-sm outline-none transition-all dark:text-zinc-100"
+              placeholder="Search categories..."
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <select 
+          <select
             className="px-4 py-2 border border-zinc-300 dark:border-zinc-700 bg-transparent rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] dark:text-zinc-100 transition-all"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -89,22 +89,23 @@ export default function CategoriesData({ onViewDetails }) {
             <option>Inactive</option>
           </select>
           {(searchTerm || statusFilter !== "All Status") && (
-            <button 
+            <button
               onClick={() => { setSearchTerm(""); setStatusFilter("All Status"); }}
-              className="text-[var(--primary)] text-sm font-bold hover:underline flex items-center gap-1"
+              className="text-[var(--primary)] p-2 rounded-lg hover:bg-[var(--primary)]/10 transition-colors flex items-center justify-center"
+              title="Clear Filters"
             >
-              <X size={14} /> Clear Filters
+              <FilterX size={20} />
             </button>
           )}
         </div>
         <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg border border-zinc-200 dark:border-zinc-700">
-          <button 
+          <button
             onClick={() => setViewMode("grid")}
             className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-bold transition-all ${viewMode === "grid" ? "bg-white dark:bg-zinc-900 text-[var(--primary)] shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
           >
             <Grid size={18} /> Grid
           </button>
-          <button 
+          <button
             onClick={() => setViewMode("table")}
             className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-bold transition-all ${viewMode === "table" ? "bg-white dark:bg-zinc-900 text-[var(--primary)] shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
           >
@@ -119,17 +120,16 @@ export default function CategoriesData({ onViewDetails }) {
           {filteredCategories.map(category => (
             <div key={category.id} className={`bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all group ${category.status === 'Inactive' ? 'opacity-75' : ''}`}>
               <div className="h-40 relative overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                <img 
-                  className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${category.status === 'Inactive' ? 'grayscale' : ''}`} 
-                  src={category.image} 
-                  alt={category.name} 
+                <img
+                  className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${category.status === 'Inactive' ? 'grayscale' : ''}`}
+                  src={category.image}
+                  alt={category.name}
                 />
                 <div className="absolute top-3 right-3">
-                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${
-                    category.status === 'Active' 
-                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' 
-                      : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                  }`}>
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${category.status === 'Active'
+                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
+                    : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                    }`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${category.status === 'Active' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                     {category.status}
                   </span>
@@ -145,8 +145,11 @@ export default function CategoriesData({ onViewDetails }) {
                 <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 line-clamp-2">{category.description}</p>
                 <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
                   <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{category.productsCount} Products</span>
-                  <button className="text-zinc-400 hover:text-[var(--primary)] transition-colors">
-                    <MoreVertical size={20} />
+                  <button
+                    onClick={() => onViewDetails(category)}
+                    className="text-zinc-500 hover:text-[var(--primary)] bg-zinc-100 hover:bg-[var(--primary)]/10 dark:bg-zinc-800 dark:hover:bg-[var(--primary)]/20 px-2.5 py-1.5 rounded-md transition-colors flex items-center gap-1.5"
+                  >
+                    <Eye size={16} />
                   </button>
                 </div>
               </div>
@@ -178,7 +181,7 @@ export default function CategoriesData({ onViewDetails }) {
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                 {filteredCategories.map(category => (
-                  <tr key={category.id} className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors cursor-pointer ${category.status === 'Inactive' ? 'opacity-75' : ''}`} onClick={() => onViewDetails(category)}>
+                  <tr key={category.id} className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors ${category.status === 'Inactive' ? 'opacity-75' : ''}`}>
                     <td className="px-6 py-4">
                       <div className="w-12 h-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
                         <img className={`w-full h-full object-cover ${category.status === 'Inactive' ? 'grayscale' : ''}`} src={category.image} alt={category.name} />
@@ -198,17 +201,19 @@ export default function CategoriesData({ onViewDetails }) {
                       {category.sortOrder}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        category.status === 'Active' 
-                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' 
-                          : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                      }`}>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${category.status === 'Active'
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                        }`}>
                         {category.status}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="text-zinc-400 hover:text-[var(--primary)] transition-colors">
-                        <MoreVertical size={20} />
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onViewDetails(category); }}
+                        className="text-zinc-500 hover:text-[var(--primary)] bg-zinc-100 hover:bg-[var(--primary)]/10 dark:bg-zinc-800 dark:hover:bg-[var(--primary)]/20 px-3 py-1.5 rounded-md transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <Eye size={16} />
                       </button>
                     </td>
                   </tr>
