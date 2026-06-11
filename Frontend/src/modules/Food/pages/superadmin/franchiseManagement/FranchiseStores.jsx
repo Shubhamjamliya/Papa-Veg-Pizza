@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { Download, ChevronDown, Plus, Store, CheckCircle, Clock, Ban, ChevronRight } from "lucide-react";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import FranchiseStoresData from "./FranchiseStoresData";
 import FranchiseStoresDetails from "./FranchiseStoresDetails";
 import AddFranchiseStores from "./AddFranchiseStores";
+import BulkAction from "./BulkAction";
+import ComplianceReport from "./ComplianceReport";
 
 export default function FranchiseStores() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState(null);
   const [isAddStoreOpen, setIsAddStoreOpen] = useState(false);
+  const [isBulkActionOpen, setIsBulkActionOpen] = useState(false);
+  const [isComplianceReportOpen, setIsComplianceReportOpen] = useState(false);
+  const [editStoreData, setEditStoreData] = useState(null);
 
   const handleRowClick = (store) => {
     setSelectedStore(store);
@@ -20,7 +25,7 @@ export default function FranchiseStores() {
     const doc = new jsPDF();
     doc.text("Franchise Stores Report", 14, 15);
     // Use autotable to extract data directly from the HTML table rendered by FranchiseStoresData
-    doc.autoTable({
+    autoTable(doc, {
       html: 'table',
       startY: 20,
       theme: 'grid',
@@ -47,12 +52,15 @@ export default function FranchiseStores() {
               <Download size={16} />
               Export
             </button>
-            <button className="px-4 py-2 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2 text-sm">
+            <button 
+              onClick={() => setIsBulkActionOpen(true)}
+              className="px-4 py-2 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2 text-sm"
+            >
               Bulk Actions
               <ChevronDown size={16} />
             </button>
             <button
-              onClick={() => setIsAddStoreOpen(true)}
+              onClick={() => { setEditStoreData(null); setIsAddStoreOpen(true); }}
               className="px-5 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:brightness-110 shadow-lg shadow-[var(--primary)]/20 transition-all flex items-center gap-2 text-sm"
             >
               <Plus size={18} />
@@ -166,7 +174,10 @@ export default function FranchiseStores() {
           <p className="text-zinc-300 opacity-90 text-sm">
             92% of franchise stores have successfully integrated the new Papa Veg 'Green-Chain' inventory management system. Compliance reviews for the remaining 12 units are scheduled for next quarter.
           </p>
-          <button className="px-6 py-2 bg-white text-zinc-900 font-bold rounded-lg hover:bg-zinc-100 transition-all text-sm mt-2">
+          <button 
+            onClick={() => setIsComplianceReportOpen(true)}
+            className="px-6 py-2 bg-white text-zinc-900 font-bold rounded-lg hover:bg-zinc-100 transition-all text-sm mt-2"
+          >
             View Compliance Report
           </button>
         </div>
@@ -186,7 +197,7 @@ export default function FranchiseStores() {
 
       {/* Mobile FAB */}
       <button
-        onClick={() => setIsAddStoreOpen(true)}
+        onClick={() => { setEditStoreData(null); setIsAddStoreOpen(true); }}
         className="fixed bottom-6 right-6 w-14 h-14 bg-[var(--primary)] text-white rounded-full shadow-2xl flex items-center justify-center md:hidden z-50 active:scale-95 transition-transform"
       >
         <Plus size={24} />
@@ -197,12 +208,29 @@ export default function FranchiseStores() {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         store={selectedStore}
+        onEdit={(store) => {
+          setEditStoreData(store);
+          setIsAddStoreOpen(true);
+        }}
       />
 
       {/* Add New Store Wizard */}
       <AddFranchiseStores
         isOpen={isAddStoreOpen}
         onClose={() => setIsAddStoreOpen(false)}
+        store={editStoreData}
+      />
+
+      {/* Bulk Action Modal */}
+      <BulkAction
+        isOpen={isBulkActionOpen}
+        onClose={() => setIsBulkActionOpen(false)}
+      />
+
+      {/* Compliance Report Modal */}
+      <ComplianceReport
+        isOpen={isComplianceReportOpen}
+        onClose={() => setIsComplianceReportOpen(false)}
       />
     </div>
   );

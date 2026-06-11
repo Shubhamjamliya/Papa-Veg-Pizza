@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { X, Check, MapPin, Upload, ArrowRight, BadgeCheck } from "lucide-react";
 
-export default function AddFranchiseStores({ isOpen, onClose }) {
+export default function AddFranchiseStores({ isOpen, onClose, store }) {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
+  const isEditMode = !!store;
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
@@ -27,8 +28,8 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
         {/* Modal Header */}
         <div className="px-6 py-4 md:px-8 md:py-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-white dark:bg-zinc-900">
           <div>
-            <h3 className="text-xl md:text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Add New Franchise Store</h3>
-            <p className="text-zinc-500 text-sm mt-1">Onboard a new location to the Papa Veg network.</p>
+            <h3 className="text-xl md:text-2xl font-semibold text-zinc-900 dark:text-zinc-100">{isEditMode ? "Edit Franchise Store" : "Add New Franchise Store"}</h3>
+            <p className="text-zinc-500 text-sm mt-1">{isEditMode ? "Update details for an existing location." : "Onboard a new location to the Papa Veg network."}</p>
           </div>
           <button
             onClick={onClose}
@@ -75,11 +76,11 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Name</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="e.g. Papa Veg Downtown" type="text" />
+                  <input defaultValue={store?.name || ""} className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="e.g. Papa Veg Downtown" type="text" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Unique Code</label>
-                  <input className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all font-mono text-sm dark:text-zinc-100" placeholder="PV-DT-001" type="text" />
+                  <input defaultValue={store?.id || ""} className="w-full h-12 px-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all font-mono text-sm dark:text-zinc-100" placeholder="PV-DT-001" type="text" />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Franchise Owner</label>
@@ -94,7 +95,7 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                   <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Contact Number</label>
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">+91</span>
-                    <input className="w-full h-12 pl-12 pr-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="9876543210" type="tel" />
+                    <input defaultValue={store?.phone?.replace("+91 ", "") || ""} className="w-full h-12 pl-12 pr-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="9876543210" type="tel" />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -112,7 +113,7 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                 <div className="md:col-span-2 space-y-6 md:space-y-8">
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Complete Address</label>
-                    <textarea className="w-full p-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="Suite 405, Green Plaza, MG Road..." rows="3"></textarea>
+                    <textarea defaultValue={store?.location || ""} className="w-full p-4 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all dark:text-zinc-100" placeholder="Suite 405, Green Plaza, MG Road..." rows="3"></textarea>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-2">
@@ -276,7 +277,7 @@ export default function AddFranchiseStores({ isOpen, onClose }) {
                   // Additional save logic would go here
                 }}
               >
-                <span>Create Store</span>
+                <span>{isEditMode ? "Update Store" : "Create Store"}</span>
                 <BadgeCheck size={18} />
               </button>
             )}
