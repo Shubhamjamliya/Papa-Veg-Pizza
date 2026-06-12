@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, CloudUpload, ChevronDown, ArrowRight, ArrowLeft, Utensils, Leaf, Image as ImageIcon, Lightbulb, Search, Activity, AlertTriangle, Banknote, Receipt, Plus, Info, SlidersHorizontal, Smartphone, Monitor, Store, Square, CheckSquare, MonitorSmartphone, CheckCircle2, ShoppingBasket, Link, Globe, Loader2 } from "lucide-react";
 
-export default function AddAddonsModal({ isOpen, onClose, addon }) {
+export default function AddAddonsModal({ isOpen, onClose }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [addonName, setAddonName] = useState("");
   const [isActive, setIsActive] = useState(true);
@@ -24,15 +24,11 @@ export default function AddAddonsModal({ isOpen, onClose, addon }) {
   }, [searchTerm]);
 
   useEffect(() => {
-    if (addon && isOpen) {
-      setAddonName(addon.name || "");
-      setIsActive(addon.status === "Active");
-      // Other fields could be populated here based on the addon object
-    } else if (!addon && isOpen) {
+    if (isOpen) {
       setAddonName("");
       setIsActive(true);
     }
-  }, [addon, isOpen]);
+  }, [isOpen]);
 
   const allProducts = [
     { id: 1, name: "Margherita Pizza", cat: "Pizzas", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPGinoQDR8bGAXZOrK-lCEj53AZV7Y6SsF7YgRdWYV-A8NmMriecQCGN7Bkki4mk8jvxoAApQZXw49mmN6neZjRo1ylwxzzaTwDG8ziThOO9R2yS1JZyvmWQ0aEmsSe-nF4SpKrAQZp6kJDbSCR541xJhbbN7CcSPo6zeh0rNO4nfZmUgLQhJnS4zgbKyp5HIsXjZ3ks4SJfBgiwutKCDyYXTwA9WLJZSm4QJcN4T3HvEs1tAMhz80KTjjcHbe40gzvuPxmw4BMMA" },
@@ -69,7 +65,7 @@ export default function AddAddonsModal({ isOpen, onClose, addon }) {
     setIsPublishing(true);
     setTimeout(() => {
       setIsPublishing(false);
-      alert(addon ? 'Add-on updated successfully!' : 'Add-on published successfully!');
+      alert('Add-on published successfully!');
       onClose();
     }, 1500);
   };
@@ -96,7 +92,7 @@ export default function AddAddonsModal({ isOpen, onClose, addon }) {
           <div className="p-6 bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{addon ? "Edit Add-on" : "Add New Add-on"}</h2>
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Add New Add-on</h2>
                 <p className="text-sm text-zinc-500 mt-1">Configure custom toppings and extra sides.</p>
               </div>
               <button 
