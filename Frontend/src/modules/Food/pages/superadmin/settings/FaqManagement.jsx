@@ -44,24 +44,24 @@ export default function FaqManagement() {
   return (
     <div className="flex-1 overflow-y-auto animate-in fade-in duration-300">
       {/* Page Header */}
-      <section className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <section className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-[#271815]">FAQ Management</h2>
-          <p className="text-sm text-[#5b403c]">Organize help center content</p>
+          <h2 className="text-lg md:text-xl font-bold text-[#271815]">FAQ Management</h2>
+          <p className="text-xs text-[#5b403c]">Organize help center content</p>
         </div>
-        <button className="bg-[#b41e15] text-white px-6 py-2 rounded-lg text-sm font-semibold tracking-wide flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-sm">
-          <Plus size={20} />
+        <button className="bg-[#b41e15] text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide flex items-center justify-center gap-1.5 active:scale-95 transition-transform shadow-sm">
+          <Plus size={15} />
           Add FAQ
         </button>
       </section>
 
       {/* Category Tabs */}
-      <section className="mb-6 border-b border-[#e4beb8] flex gap-4 overflow-x-auto no-scrollbar pb-1">
+      <section className="mb-3.5 border-b border-[#e4beb8] flex gap-3 overflow-x-auto no-scrollbar pb-1">
         {tabs.map((tab) => (
           <button 
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`whitespace-nowrap pb-2 px-1 text-sm font-semibold tracking-wide transition-colors ${
+            className={`whitespace-nowrap pb-1.5 px-1 text-xs font-semibold tracking-wide transition-colors ${
               activeTab === tab 
                 ? 'text-[#b41e15] border-b-2 border-[#b41e15]' 
                 : 'text-[#5b403c] hover:text-[#b41e15]'
@@ -73,44 +73,44 @@ export default function FaqManagement() {
       </section>
 
       {/* Bulk Actions Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 bg-[#ffe2dd] p-2 rounded-lg border border-[#e4beb8] gap-4 sm:gap-0">
-        <div className="flex items-center gap-2 px-2">
-          <input className="w-4 h-4 rounded border-[#8f706b] text-[#b41e15] focus:ring-[#b41e15]" type="checkbox" />
-          <span className="text-xs font-semibold tracking-wide text-[#5b403c]">Select All</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 bg-[#ffe2dd] p-1.5 rounded-lg border border-[#e4beb8] gap-3 sm:gap-0">
+        <div className="flex items-center gap-1.5 px-2">
+          <input className="w-3.5 h-3.5 rounded border-[#8f706b] text-[#b41e15] focus:ring-[#b41e15]" type="checkbox" />
+          <span className="text-[10px] font-semibold tracking-wide text-[#5b403c]">Select All</span>
         </div>
-        <div className="flex gap-2">
-          <button className="flex items-center gap-1 px-3 py-1.5 border border-[#8f706b] rounded text-[#5b403c] hover:bg-white transition-colors text-xs font-semibold tracking-wide bg-[#fff8f7]">
-            <Eye size={16} />
+        <div className="flex gap-1.5">
+          <button className="flex items-center gap-1 px-2.5 py-1 border border-[#8f706b] rounded text-[#5b403c] hover:bg-white transition-colors text-[10px] font-semibold tracking-wide bg-[#fff8f7]">
+            <Eye size={13} />
             Enable
           </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 border border-[#8f706b] rounded text-[#5b403c] hover:bg-white transition-colors text-xs font-semibold tracking-wide bg-[#fff8f7]">
-            <Move size={16} />
+          <button className="flex items-center gap-1 px-2.5 py-1 border border-[#8f706b] rounded text-[#5b403c] hover:bg-white transition-colors text-[10px] font-semibold tracking-wide bg-[#fff8f7]">
+            <Move size={13} />
             Move
           </button>
         </div>
       </div>
 
       {/* FAQ Sortable List */}
-      <div className="flex flex-col gap-2 mb-8">
+      <div className="flex flex-col gap-1.5 mb-6">
         {faqs.filter(faq => activeTab === 'All Categories' || faq.category === activeTab).map((faq) => (
           <div key={faq.id} className={`group bg-white rounded-lg border border-[#e4beb8] hover:shadow-md transition-all ${!faq.enabled ? 'opacity-70 grayscale-[30%]' : ''}`}>
-            <div className="p-4 flex items-start gap-4">
+            <div className="p-3 flex items-start gap-3">
               <div className="mt-1 text-[#5b403c] cursor-grab active:cursor-grabbing">
-                <GripVertical size={20} />
+                <GripVertical size={16} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start mb-1">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#b41e15]">{faq.category}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-[#5b403c] bg-[#ffe9e6] rounded px-2 py-0.5">{faq.pos}</span>
+                <div className="flex justify-between items-start mb-0.5">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#b41e15]">{faq.category}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-semibold text-[#5b403c] bg-[#ffe9e6] rounded px-1.5 py-0.5">{faq.pos}</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input type="checkbox" className="sr-only peer" defaultChecked={faq.enabled} />
                       <div className="w-8 h-4 bg-[#dae1e3] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[#b41e15]"></div>
                     </label>
                   </div>
                 </div>
-                <h3 className="text-xl font-semibold text-[#271815] mb-2">{faq.title}</h3>
-                <p className="text-sm text-[#5b403c] line-clamp-2">
+                <h3 className="text-sm font-semibold text-[#271815] mb-1">{faq.title}</h3>
+                <p className="text-xs text-[#5b403c] line-clamp-2">
                   {faq.content}
                 </p>
               </div>

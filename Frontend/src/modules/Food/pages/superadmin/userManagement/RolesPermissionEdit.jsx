@@ -63,50 +63,50 @@ export default function RolesPermissionEdit({ role, onClose }) {
     >
       {/* Modal Container */}
       <div 
-        className="bg-white dark:bg-zinc-950 w-full max-w-6xl h-full max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden text-zinc-900 dark:text-zinc-100 border border-zinc-200/50 dark:border-zinc-800 animate-in zoom-in-95 duration-200"
+        className="bg-white dark:bg-zinc-950 w-full max-w-4xl h-full max-h-[75vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden text-zinc-900 dark:text-zinc-100 border border-zinc-200/50 dark:border-zinc-800 animate-in zoom-in-95 duration-200"
         onClick={handleModalContentClick}
       >
         
-        <header className="bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 w-full flex flex-col sm:flex-row sm:items-center justify-between p-4 lg:px-6 shrink-0 gap-3">
-          <div className="flex items-center gap-3">
-            <button onClick={onClose} className="text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 p-2 rounded-lg transition-colors cursor-pointer active:opacity-80">
-              <X className="w-5 h-5" />
+        <header className="bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 w-full flex flex-col sm:flex-row sm:items-center justify-between px-4 py-2 shrink-0 gap-2">
+          <div className="flex items-center gap-2.5">
+            <button onClick={onClose} className="text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 p-1 rounded-lg transition-colors cursor-pointer active:opacity-80">
+              <X className="w-4 h-4" />
             </button>
-            <h1 className="text-lg md:text-xl font-bold text-[var(--primary)] truncate">
+            <h1 className="text-sm font-bold text-[var(--primary)] truncate">
               Edit Permissions: {role?.name || "Franchise Admin"}
             </h1>
           </div>
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <span className="bg-[var(--primary)]/10 text-[var(--primary)] px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">DRAFT MODE</span>
-            <button className="text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 p-2 rounded-lg transition-colors cursor-pointer active:opacity-80 hidden sm:block">
-              <HelpCircle className="w-5 h-5" />
+          <div className="flex items-center gap-1.5 self-end sm:self-auto">
+            <span className="bg-[var(--primary)]/10 text-[var(--primary)] px-2 py-0.5 rounded-full text-[9px] font-bold">DRAFT MODE</span>
+            <button className="text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 p-1 rounded-lg transition-colors cursor-pointer active:opacity-80 hidden sm:block">
+              <HelpCircle className="w-4 h-4" />
             </button>
           </div>
         </header>
 
-        <div className="bg-zinc-50 dark:bg-zinc-900/50 p-4 lg:px-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+        <div className="bg-zinc-50 dark:bg-zinc-900/50 px-4 py-2 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
           <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4" />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 w-3.5 h-3.5" />
             <input 
-              className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg pl-9 pr-4 py-2 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none text-sm" 
+              className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg pl-8 pr-3 py-1.5 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none text-xs" 
               placeholder="Search modules..." 
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button 
               onClick={() => handleToggleAll(true)}
-              className="flex items-center gap-1.5 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-xs font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors rounded-lg flex-1 md:flex-none justify-center"
+              className="flex items-center gap-1 px-2.5 py-1 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-[10px] font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors rounded-lg flex-1 md:flex-none justify-center"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Select All
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Select All
             </button>
             <button 
               onClick={() => handleToggleAll(false)}
-              className="flex items-center gap-1.5 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-xs font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors rounded-lg flex-1 md:flex-none justify-center"
+              className="flex items-center gap-1 px-2.5 py-1 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-[10px] font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors rounded-lg flex-1 md:flex-none justify-center"
             >
-              <Ban className="w-4 h-4 text-rose-500" /> Clear All
+              <Ban className="w-3.5 h-3.5 text-rose-500" /> Clear All
             </button>
           </div>
         </div>
@@ -114,14 +114,14 @@ export default function RolesPermissionEdit({ role, onClose }) {
         <main className="flex-1 overflow-auto bg-white dark:bg-zinc-950 scrollbar-thin">
           <div className="min-w-[900px] lg:min-w-full">
             <div className="sticky top-0 bg-zinc-50 dark:bg-zinc-900/90 backdrop-blur-md z-10 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-[1.5fr_repeat(7,1fr)] items-center">
-              <div className="px-4 lg:px-6 py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">MODULE NAME</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">CREATE</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">VIEW</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">UPDATE</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">DELETE</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">EXPORT</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">APPROVE</div>
-              <div className="text-center py-3 text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-wider">ASSIGN</div>
+              <div className="px-4 py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">MODULE NAME</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">CREATE</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">VIEW</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">UPDATE</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">DELETE</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">EXPORT</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">APPROVE</div>
+              <div className="text-center py-1.5 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">ASSIGN</div>
             </div>
 
             <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -129,16 +129,16 @@ export default function RolesPermissionEdit({ role, onClose }) {
                 const IconComponent = mod.icon;
                 return (
                   <div key={mod.id} className="grid grid-cols-[1.5fr_repeat(7,1fr)] items-center hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors group">
-                    <div className="px-4 lg:px-6 py-2.5 flex items-center gap-3 border-r border-zinc-200/50 dark:border-zinc-800/50">
-                      <IconComponent className="w-4 h-4 text-zinc-400 group-hover:text-[var(--primary)] transition-colors shrink-0" />
-                      <span className="text-xs md:text-sm font-semibold truncate">{mod.name}</span>
+                    <div className="px-4 py-1.5 flex items-center gap-2.5 border-r border-zinc-200/50 dark:border-zinc-800/50">
+                      <IconComponent className="w-3.5 h-3.5 text-zinc-400 group-hover:text-[var(--primary)] transition-colors shrink-0" />
+                      <span className="text-xs font-semibold truncate">{mod.name}</span>
                     </div>
                     {mod.perms.map((p, permIndex) => (
-                      <div key={permIndex} className={`text-center py-2.5 border-r border-zinc-200/50 dark:border-zinc-800/50 last:border-r-0 transition-colors ${p ? 'bg-[var(--primary)]/5 dark:bg-[var(--primary)]/10' : ''}`}>
-                        <label className="inline-flex items-center justify-center p-1.5 cursor-pointer rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                      <div key={permIndex} className={`text-center py-1.5 border-r border-zinc-200/50 dark:border-zinc-800/50 last:border-r-0 transition-colors ${p ? 'bg-[var(--primary)]/5 dark:bg-[var(--primary)]/10' : ''}`}>
+                        <label className="inline-flex items-center justify-center p-1 cursor-pointer rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
                           <input 
                             type="checkbox" 
-                            className="rounded border-zinc-300 dark:border-zinc-700 text-[var(--primary)] focus:ring-[var(--primary)] focus:ring-offset-0 h-4 w-4 cursor-pointer bg-white dark:bg-zinc-900"
+                            className="rounded border-zinc-300 dark:border-zinc-700 text-[var(--primary)] focus:ring-[var(--primary)] focus:ring-offset-0 h-3.5 w-3.5 cursor-pointer bg-white dark:bg-zinc-900"
                             checked={p}
                             onChange={(e) => handleCheckboxChange(modIndex, permIndex, e.target.checked)}
                           />
@@ -152,16 +152,16 @@ export default function RolesPermissionEdit({ role, onClose }) {
           </div>
         </main>
 
-        <footer className="bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 p-4 lg:px-6 flex flex-col-reverse sm:flex-row items-center justify-between shrink-0 gap-4">
+        <footer className="bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 px-4 py-2 flex flex-col-reverse sm:flex-row items-center justify-between shrink-0 gap-3">
           <div className="flex flex-col text-center sm:text-left">
-            <span className="text-[10px] md:text-xs font-bold text-zinc-500">Last saved: 2 hours ago</span>
-            <span className="text-[9px] md:text-[11px] text-zinc-400">Changes are currently staged</span>
+            <span className="text-[9px] font-bold text-zinc-500">Last saved: 2 hours ago</span>
+            <span className="text-[8px] text-zinc-400">Changes are currently staged</span>
           </div>
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button onClick={onClose} className="flex-1 sm:flex-none px-4 md:px-6 py-2 md:py-2.5 border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-[10px] md:text-xs font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors rounded-lg uppercase tracking-wider">
+          <div className="flex items-center gap-2.5 w-full sm:w-auto">
+            <button onClick={onClose} className="flex-1 sm:flex-none px-3 py-1.5 border border-zinc-300 dark:border-zinc-700 text-zinc-650 dark:text-zinc-350 text-[10px] font-bold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors rounded-lg uppercase tracking-wider">
               Cancel
             </button>
-            <button className="flex-1 sm:flex-none px-4 md:px-8 py-2 md:py-2.5 bg-[var(--primary)] text-white text-[10px] md:text-xs font-bold hover:opacity-90 transition-all rounded-lg uppercase tracking-wider shadow-sm active:scale-95">
+            <button className="flex-1 sm:flex-none px-5 py-1.5 bg-[var(--primary)] text-white text-[10px] font-bold hover:opacity-90 transition-all rounded-lg uppercase tracking-wider shadow-sm active:scale-95">
               Save
             </button>
           </div>

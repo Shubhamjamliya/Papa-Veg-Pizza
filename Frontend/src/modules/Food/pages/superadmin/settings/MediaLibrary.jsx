@@ -104,45 +104,45 @@ export default function MediaLibrary() {
   return (
     <div className="flex-1 flex flex-col animate-in fade-in duration-300 relative">
       {/* Page Header Section */}
-      <section className="pb-4">
+      <section className="pb-2.5">
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#271815]">Media Library</h2>
-            <p className="text-sm text-[#5b403c]">Manage digital assets</p>
+            <h2 className="text-lg md:text-xl font-bold text-[#271815]">Media Library</h2>
+            <p className="text-xs text-[#5b403c]">Manage digital assets</p>
           </div>
         </div>
-        <div className="flex gap-2 mt-6">
-          <button className="flex-1 bg-[#b41e15] text-white py-2 px-4 rounded-lg text-sm font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-transform">
-            <Upload size={20} />
+        <div className="flex gap-2 mt-3">
+          <button className="flex-1 bg-[#b41e15] text-white py-1.5 px-3 rounded-lg text-xs font-semibold tracking-wide flex items-center justify-center gap-1 active:scale-95 transition-transform">
+            <Upload size={15} />
             Upload File
           </button>
-          <button className="flex-1 bg-[#dae1e3] text-[#5d6466] py-2 px-4 rounded-lg text-sm font-semibold tracking-wide flex items-center justify-center gap-1 border border-[#e4beb8] active:scale-95 transition-transform">
-            <FolderPlus size={20} />
+          <button className="flex-1 bg-[#dae1e3] text-[#5d6466] py-1.5 px-3 rounded-lg text-xs font-semibold tracking-wide flex items-center justify-center gap-1 border border-[#e4beb8] active:scale-95 transition-transform">
+            <FolderPlus size={15} />
             New Folder
           </button>
         </div>
       </section>
 
       {/* Search & Filter Controls */}
-      <section className="mb-4 sticky top-0 bg-[#fff8f7]/95 backdrop-blur-sm py-1 z-30">
+      <section className="mb-3 sticky top-0 bg-[#fff8f7]/95 backdrop-blur-sm py-1 z-30">
         <div className="relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5b403c] group-focus-within:text-[#b41e15] transition-colors" size={20} />
-          <input className="w-full pl-12 pr-4 py-2 bg-white border border-[#e4beb8] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#b41e15]/20 focus:border-[#b41e15]" placeholder="Search assets..." type="text" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#5b403c] group-focus-within:text-[#b41e15] transition-colors" size={16} />
+          <input className="w-full pl-9 pr-3 py-1.5 bg-white border border-[#e4beb8] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#b41e15]/20 focus:border-[#b41e15]" placeholder="Search assets..." type="text" />
         </div>
-        <div className="flex gap-2 mt-2 overflow-x-auto no-scrollbar pb-1">
-          <button className="whitespace-nowrap px-4 py-1.5 bg-[#b41e15] text-white rounded-full text-sm font-semibold tracking-wide">All Files</button>
-          <button className="whitespace-nowrap px-4 py-1.5 bg-[#ffe2dd] text-[#5b403c] rounded-full text-sm font-semibold tracking-wide border border-[#e4beb8]">Images</button>
-          <button className="whitespace-nowrap px-4 py-1.5 bg-[#ffe2dd] text-[#5b403c] rounded-full text-sm font-semibold tracking-wide border border-[#e4beb8]">Videos</button>
-          <button className="whitespace-nowrap px-4 py-1.5 bg-[#ffe2dd] text-[#5b403c] rounded-full text-sm font-semibold tracking-wide border border-[#e4beb8]">Documents</button>
-          <button className="whitespace-nowrap px-4 py-1.5 bg-[#ffe2dd] text-[#5b403c] rounded-full text-sm font-semibold tracking-wide border border-[#e4beb8] flex items-center gap-1">
+        <div className="flex gap-1.5 mt-1.5 overflow-x-auto no-scrollbar pb-0.5">
+          <button className="whitespace-nowrap px-3 py-1 bg-[#b41e15] text-white rounded-full text-xs font-semibold tracking-wide">All Files</button>
+          <button className="whitespace-nowrap px-3 py-1 bg-[#ffe2dd] text-[#5b403c] rounded-full text-xs font-semibold tracking-wide border border-[#e4beb8]">Images</button>
+          <button className="whitespace-nowrap px-3 py-1 bg-[#ffe2dd] text-[#5b403c] rounded-full text-xs font-semibold tracking-wide border border-[#e4beb8]">Videos</button>
+          <button className="whitespace-nowrap px-3 py-1 bg-[#ffe2dd] text-[#5b403c] rounded-full text-xs font-semibold tracking-wide border border-[#e4beb8]">Documents</button>
+          <button className="whitespace-nowrap px-3 py-1 bg-[#ffe2dd] text-[#5b403c] rounded-full text-xs font-semibold tracking-wide border border-[#e4beb8] flex items-center gap-1">
             Date
-            <ChevronDown size={16} />
+            <ChevronDown size={14} />
           </button>
         </div>
       </section>
 
       {/* Media Grid */}
-      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-24">
+      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 pb-16">
         {assets.map((asset) => {
           const isSelected = selectedItems.has(asset.id);
           return (
@@ -159,13 +159,13 @@ export default function MediaLibrary() {
                     {asset.isVideo && (
                       <>
                         <div className="absolute inset-0 bg-black/20 z-10"></div>
-                        <PlayCircle className="absolute text-white z-20" size={48} />
+                        <PlayCircle className="absolute text-white z-20" size={32} />
                         <div className="absolute bottom-1 right-1 bg-black/60 text-white text-[10px] px-1 rounded font-bold z-20">{asset.duration}</div>
                       </>
                     )}
                   </>
                 ) : (
-                  <FileText className="text-[#b41e15]" size={64} />
+                  <FileText className="text-[#b41e15]" size={44} />
                 )}
                 
                 <div className={`absolute top-2 right-2 transition-opacity z-20 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
@@ -173,13 +173,13 @@ export default function MediaLibrary() {
                     onClick={(e) => { e.stopPropagation(); toggleSelection(asset.id); }}
                     className={`rounded-full bg-white ${isSelected ? 'text-[#b41e15]' : 'text-[#e4beb8] hover:text-[#b41e15]'}`}
                   >
-                    <CheckCircle2 size={24} className={isSelected ? 'fill-current' : ''} />
+                    <CheckCircle2 size={18} className={isSelected ? 'fill-current' : ''} />
                   </button>
                 </div>
               </div>
               <div className="p-2">
-                <p className="text-sm font-semibold tracking-wide text-[#271815] truncate">{asset.name}</p>
-                <p className="text-xs text-[#5b403c]">{asset.size}</p>
+                <p className="text-xs font-semibold tracking-wide text-[#271815] truncate">{asset.name}</p>
+                <p className="text-[10px] text-[#5b403c]">{asset.size}</p>
               </div>
             </div>
           );
@@ -190,43 +190,43 @@ export default function MediaLibrary() {
       {previewAsset && (
         <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center">
           <div className="absolute inset-0 bg-[#271815]/40 backdrop-blur-sm transition-opacity duration-300" onClick={closePreview}></div>
-          <div className="w-full md:max-w-xl bg-white rounded-t-3xl md:rounded-3xl md:mb-8 p-6 z-10 shadow-2xl animate-in slide-in-from-bottom max-h-[90vh] overflow-y-auto">
-            <div className="w-12 h-1.5 bg-[#e4beb8] rounded-full mx-auto mb-6 md:hidden"></div>
-            <div className="flex gap-4 mb-6">
-              <div className="w-24 h-24 rounded-xl overflow-hidden bg-[#ffe9e6] shrink-0 flex items-center justify-center">
+          <div className="w-full md:max-w-xl bg-white rounded-t-3xl md:rounded-3xl md:mb-8 p-4 z-10 shadow-2xl animate-in slide-in-from-bottom max-h-[90vh] overflow-y-auto">
+            <div className="w-12 h-1.5 bg-[#e4beb8] rounded-full mx-auto mb-4 md:hidden"></div>
+            <div className="flex gap-3 mb-4">
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-[#ffe9e6] shrink-0 flex items-center justify-center">
                 {previewAsset.src ? (
                   <img className="w-full h-full object-cover" src={previewAsset.src} alt={previewAsset.name} />
                 ) : (
-                  <FileText className="text-[#b41e15]" size={48} />
+                  <FileText className="text-[#b41e15]" size={32} />
                 )}
               </div>
               <div className="flex-grow min-w-0">
-                <h3 className="text-xl font-semibold text-[#271815] mb-1 truncate">{previewAsset.name}</h3>
+                <h3 className="text-sm font-semibold text-[#271815] mb-1 truncate">{previewAsset.name}</h3>
                 <div className="flex flex-wrap gap-1">
-                  <span className="bg-[#dae1e3] text-[#5d6466] px-2 py-0.5 rounded text-[11px] font-medium">{previewAsset.type}</span>
-                  <span className="bg-[#ffe2dd] text-[#5b403c] px-2 py-0.5 rounded text-[11px] font-medium">{previewAsset.size}</span>
+                  <span className="bg-[#dae1e3] text-[#5d6466] px-1.5 py-0.5 rounded text-[10px] font-medium">{previewAsset.type}</span>
+                  <span className="bg-[#ffe2dd] text-[#5b403c] px-1.5 py-0.5 rounded text-[10px] font-medium">{previewAsset.size}</span>
                 </div>
               </div>
             </div>
             
-            <div className="space-y-4 border-t border-[#e4beb8] pt-6">
+            <div className="space-y-2.5 border-t border-[#e4beb8] pt-3.5">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-[#5b403c]">Uploaded by</span>
-                <span className="text-sm font-semibold tracking-wide text-[#271815]">{previewAsset.uploader}</span>
+                <span className="text-xs text-[#5b403c]">Uploaded by</span>
+                <span className="text-xs font-semibold tracking-wide text-[#271815]">{previewAsset.uploader}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-[#5b403c]">Date Created</span>
-                <span className="text-sm font-semibold tracking-wide text-[#271815]">{previewAsset.date}</span>
+                <span className="text-xs text-[#5b403c]">Date Created</span>
+                <span className="text-xs font-semibold tracking-wide text-[#271815]">{previewAsset.date}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-[#5b403c]">Dimensions</span>
-                <span className="text-sm font-semibold tracking-wide text-[#271815]">{previewAsset.dimensions}</span>
+                <span className="text-xs text-[#5b403c]">Dimensions</span>
+                <span className="text-xs font-semibold tracking-wide text-[#271815]">{previewAsset.dimensions}</span>
               </div>
             </div>
             
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <button className="bg-[#b41e15] text-white py-4 rounded-xl text-sm font-semibold tracking-wide active:opacity-80 transition-opacity">Download</button>
-              <button className="border border-[#8f706b] text-[#5b403c] py-4 rounded-xl text-sm font-semibold tracking-wide hover:bg-[#ffe9e6] transition-colors" onClick={closePreview}>Close</button>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <button className="bg-[#b41e15] text-white py-2 rounded-xl text-xs font-semibold tracking-wide active:opacity-80 transition-opacity">Download</button>
+              <button className="border border-[#8f706b] text-[#5b403c] py-2 rounded-xl text-xs font-semibold tracking-wide hover:bg-[#ffe9e6] transition-colors" onClick={closePreview}>Close</button>
             </div>
           </div>
         </div>
@@ -234,25 +234,25 @@ export default function MediaLibrary() {
 
       {/* Bulk Action Bar */}
       <div className={`fixed bottom-8 left-4 right-4 z-40 pointer-events-none transition-transform duration-300 ${selectedItems.size > 0 ? 'translate-y-0' : 'translate-y-32'}`}>
-        <div className="bg-[#f9dcd8]/95 backdrop-blur-md rounded-2xl p-4 flex items-center justify-between shadow-xl border border-[#e4beb8] pointer-events-auto max-w-lg mx-auto">
+        <div className="bg-[#f9dcd8]/95 backdrop-blur-md rounded-2xl p-2.5 flex items-center justify-between shadow-xl border border-[#e4beb8] pointer-events-auto max-w-lg mx-auto">
           <div className="flex items-center gap-2">
-            <div className="bg-[#b41e15] text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+            <div className="bg-[#b41e15] text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">
               {selectedItems.size}
             </div>
-            <span className="text-sm font-semibold tracking-wide text-[#271815]">Selected</span>
+            <span className="text-xs font-semibold tracking-wide text-[#271815]">Selected</span>
           </div>
-          <div className="flex gap-4">
-            <button className="flex flex-col items-center gap-1 text-[#5b403c] hover:text-[#b41e15] transition-colors" onClick={() => { alert('Deleted!'); setSelectedItems(new Set()); }}>
-              <Trash2 size={24} />
-              <span className="text-[10px] font-bold uppercase tracking-wider">Delete</span>
+          <div className="flex gap-3">
+            <button className="flex flex-col items-center gap-0.5 text-[#5b403c] hover:text-[#b41e15] transition-colors" onClick={() => { alert('Deleted!'); setSelectedItems(new Set()); }}>
+              <Trash2 size={18} />
+              <span className="text-[9px] font-bold uppercase tracking-wider">Delete</span>
             </button>
-            <button className="flex flex-col items-center gap-1 text-[#5b403c] hover:text-[#b41e15] transition-colors">
-              <FolderInput size={24} />
-              <span className="text-[10px] font-bold uppercase tracking-wider">Move</span>
+            <button className="flex flex-col items-center gap-0.5 text-[#5b403c] hover:text-[#b41e15] transition-colors">
+              <FolderInput size={18} />
+              <span className="text-[9px] font-bold uppercase tracking-wider">Move</span>
             </button>
-            <button className="flex flex-col items-center gap-1 text-[#b41e15] hover:opacity-80 transition-opacity" onClick={copyUrl}>
-              <Link size={24} />
-              <span className="text-[10px] font-bold uppercase tracking-wider">Copy URL</span>
+            <button className="flex flex-col items-center gap-0.5 text-[#b41e15] hover:opacity-80 transition-opacity" onClick={copyUrl}>
+              <Link size={18} />
+              <span className="text-[9px] font-bold uppercase tracking-wider">Copy URL</span>
             </button>
           </div>
         </div>
