@@ -15,14 +15,18 @@ export default function RefundAndCancellation() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [selectedRefundForDetails, setSelectedRefundForDetails] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('All');
   
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Filter refunds based on debounced search term
-  const filteredRefunds = initialRefunds.filter(refund => 
-    refund.id.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-    refund.customer.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-  );
+  // Filter refunds based on debounced search term and status filter
+  const filteredRefunds = initialRefunds.filter(refund => {
+    const matchesSearch = refund.id.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                          refund.customer.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'All' || refund.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
@@ -41,6 +45,67 @@ export default function RefundAndCancellation() {
   const isAllSelected = filteredRefunds.length > 0 && selectedIds.length === filteredRefunds.length;
   const isIndeterminate = selectedIds.length > 0 && selectedIds.length < filteredRefunds.length;
 
+  const handleExportAll = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const dataHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Refunds and Cancellations Export</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px; color: #111827; }
+            h1 { color: #af101a; font-size: 24px; margin-bottom: 20px; text-transform: uppercase; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+            th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+            th { background-color: #f9fafb; font-weight: bold; font-size: 14px; }
+            td { font-size: 14px; }
+            @media print {
+              body { padding: 0; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Refunds and Cancellations Report</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Requested At</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filteredRefunds.map(r => `
+                <tr>
+                  <td>${r.id}</td>
+                  <td>${r.customer}</td>
+                  <td>${r.amount}</td>
+                  <td>${r.status}</td>
+                  <td>${r.requestedAt}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 300);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(dataHtml);
+    printWindow.document.close();
+  };
+
   return (
     <div className="p-4 md:p-6 pb-24 max-w-7xl mx-auto w-full">
       {/* Header Search & Actions */}
@@ -50,16 +115,6 @@ export default function RefundAndCancellation() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage and process multiple refund requests efficiently.</p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="flex items-center bg-white dark:bg-zinc-900 px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm w-full sm:w-64 transition-colors focus-within:border-[var(--primary)] focus-within:ring-1 focus-within:ring-[var(--primary)]">
-            <Search size={18} className="text-zinc-400 shrink-0" />
-            <input 
-              className="bg-transparent border-none focus:ring-0 text-sm w-full ml-2 text-zinc-900 dark:text-zinc-100 outline-none placeholder-zinc-400" 
-              placeholder="Search Refund ID..." 
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
           <button className="p-2.5 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg transition-colors relative shrink-0">
             <Bell size={18} className="text-zinc-600 dark:text-zinc-300" />
             <span className="absolute top-2 right-2.5 w-2 h-2 bg-[var(--primary)] rounded-full"></span>
@@ -108,20 +163,52 @@ export default function RefundAndCancellation() {
       {/* Table Header Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
         <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Active Requests</h2>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+          <div className="relative w-full sm:w-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+            <input 
+              className="pl-9 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full text-sm text-zinc-800 dark:text-zinc-200 focus:ring-1 focus:ring-[var(--primary)] outline-none w-full sm:w-64 transition-all" 
+              placeholder="Search Refund ID..." 
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button 
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border rounded-full transition-colors text-sm font-semibold \${showFilters ? 'border-[var(--primary)] text-[var(--primary)] bg-red-50 dark:bg-red-900/10' : 'border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`}
+          >
             <Filter size={16} />
-            Filter
+            Filters
           </button>
           <button 
-            onClick={() => setIsReportModalOpen(true)}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+            onClick={handleExportAll}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-[var(--primary)] text-white border border-transparent rounded-full hover:bg-red-800 transition-colors text-sm font-semibold"
           >
             <Download size={16} />
             Export All
           </button>
         </div>
       </div>
+
+      {/* Expanded Filters UI */}
+      {showFilters && (
+        <div className="bg-white dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl mb-6 shadow-sm flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex-1 max-w-[200px]">
+            <label className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-2">Status</label>
+            <select 
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 text-sm font-medium text-zinc-800 dark:text-zinc-200 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-all"
+            >
+              <option value="All">All Statuses</option>
+              <option value="New">New</option>
+              <option value="Pending">Pending</option>
+              <option value="Priority">Priority</option>
+            </select>
+          </div>
+        </div>
+      )}
 
       {/* High-Density List Container */}
       <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden">

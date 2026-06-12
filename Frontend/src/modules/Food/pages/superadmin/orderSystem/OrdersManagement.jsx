@@ -8,6 +8,8 @@ import {
 import { initialOrders, useDebounce } from './OrdersData';
 import OrderDetails from './OrderDetails';
 import { UpdateStatusModal, AssignRiderModal } from './OrderModals';
+import AddManualOrder from './AddManualOrder';
+import LogisticsMap from './LogisticsMap';
 
 export default function OrdersManagement() {
   const [showFilters, setShowFilters] = useState(false);
@@ -18,6 +20,8 @@ export default function OrdersManagement() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isUpdateStatusModalOpen, setIsUpdateStatusModalOpen] = useState(false);
   const [isAssignRiderModalOpen, setIsAssignRiderModalOpen] = useState(false);
+  const [isAddManualOrderOpen, setIsAddManualOrderOpen] = useState(false);
+  const [isLogisticsMapOpen, setIsLogisticsMapOpen] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -77,7 +81,10 @@ export default function OrdersManagement() {
           <button className="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
             <Download size={18} /> Export Reports
           </button>
-          <button className="bg-[var(--primary)] text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 shadow-sm transition-all active:scale-95">
+          <button 
+            onClick={() => setIsAddManualOrderOpen(true)}
+            className="bg-[var(--primary)] text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 shadow-sm transition-all active:scale-95"
+          >
             <Plus size={18} /> Manual Order
           </button>
         </div>
@@ -384,7 +391,10 @@ export default function OrdersManagement() {
               </div>
             </div>
             
-            <button className="w-full mt-6 py-2 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-sm font-semibold hover:bg-[var(--primary)] hover:text-white transition-all">
+            <button 
+              onClick={() => setIsLogisticsMapOpen(true)}
+              className="w-full mt-6 py-2 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-sm font-semibold hover:bg-[var(--primary)] hover:text-white transition-all"
+            >
               View Full Logistics Map
             </button>
           </div>
@@ -407,7 +417,10 @@ export default function OrdersManagement() {
       </div>
 
       {/* Floating Action Button (FAB) - Mobile Only Contextual */}
-      <button className="lg:hidden fixed bottom-6 right-6 w-12 h-12 bg-[var(--primary)] text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40">
+      <button 
+        onClick={() => setIsAddManualOrderOpen(true)}
+        className="lg:hidden fixed bottom-6 right-6 w-12 h-12 bg-[var(--primary)] text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40"
+      >
         <Plus size={24} />
       </button>
 
@@ -430,6 +443,14 @@ export default function OrdersManagement() {
         isOpen={isAssignRiderModalOpen} 
         onClose={() => setIsAssignRiderModalOpen(false)} 
         order={selectedOrder} 
+      />
+      <AddManualOrder 
+        isOpen={isAddManualOrderOpen} 
+        onClose={() => setIsAddManualOrderOpen(false)} 
+      />
+      <LogisticsMap 
+        isOpen={isLogisticsMapOpen} 
+        onClose={() => setIsLogisticsMapOpen(false)} 
       />
     </div>
   );

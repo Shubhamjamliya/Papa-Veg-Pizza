@@ -19,6 +19,135 @@ export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, o
     }
   }, [isOpen]);
 
+  const handlePrint = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const invoiceHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Invoice - Order \${order?.id || '#PV-8842'}</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px; color: #111827; max-width: 800px; margin: 0 auto; }
+            .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; }
+            .header h1 { margin: 0 0 10px 0; color: #af101a; font-size: 28px; text-transform: uppercase; letter-spacing: 1px; }
+            .header p { margin: 0; color: #6b7280; }
+            .details { display: flex; justify-content: space-between; margin-bottom: 40px; }
+            .details-box { flex: 1; }
+            .details-box h3 { font-size: 14px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em; margin-bottom: 10px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+            th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+            th { background-color: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 12px; color: #6b7280; letter-spacing: 0.05em; }
+            .text-right { text-align: right; }
+            .text-center { text-align: center; }
+            .summary { width: 300px; margin-left: auto; background: #f9fafb; padding: 20px; border-radius: 8px; }
+            .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: #4b5563; font-size: 14px; }
+            .summary-row.total { font-weight: bold; font-size: 18px; border-top: 1px solid #d1d5db; padding-top: 12px; margin-top: 12px; color: #111827; }
+            .footer { text-align: center; margin-top: 60px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 13px; color: #6b7280; }
+            @media print {
+              body { padding: 0; max-width: 100%; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Papa Veg Pizza</h1>
+            <p>Tax Invoice / Bill of Supply</p>
+          </div>
+          
+          <div class="details">
+            <div class="details-box">
+              <h3>Order Info</h3>
+              <strong>Order ID:</strong> \${order?.id || '#PV-8842'}<br/>
+              <strong>Date:</strong> \${new Date().toLocaleDateString()} \${new Date().toLocaleTimeString()}<br/>
+              <strong>Status:</strong> \${order?.status || 'Active'}<br/>
+              <strong>Store:</strong> \${order?.store || 'Downtown Outlet'}
+            </div>
+            <div class="details-box" style="text-align: right;">
+              <h3>Customer Info</h3>
+              <strong>\${order?.customerName || 'Rahul Sharma'}</strong><br/>
+              \${order?.customerPhone || '+91 98765-43210'}<br/>
+              123 Pizza Lane, Green Valley<br/>
+              Sector 4, Bangalore 560001
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Item Description</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Margherita Large</strong><br/><span style="color: #6b7280; font-size: 13px;">Extra Cheese, Thin Crust</span></td>
+                <td class="text-center">1</td>
+                <td class="text-right">₹18.00</td>
+              </tr>
+              <tr>
+                <td><strong>Garlic Bread</strong></td>
+                <td class="text-center">2</td>
+                <td class="text-right">₹10.00</td>
+              </tr>
+              <tr>
+                <td><strong>Coke 500ml</strong></td>
+                <td class="text-center">2</td>
+                <td class="text-right">₹5.00</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="summary">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span>₹33.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Add-ons:</span>
+              <span>₹2.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (GST 5%):</span>
+              <span>₹2.50</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery Fee:</span>
+              <span>₹5.00</span>
+            </div>
+            <div class="summary-row total">
+              <span>Grand Total:</span>
+              <span>\${order?.amount || '₹42.50'}</span>
+            </div>
+            <div style="margin-top: 15px; text-align: center; font-size: 12px; color: #059669; font-weight: bold;">
+              PAID VIA CREDIT CARD
+            </div>
+          </div>
+          
+          <div class="footer">
+            <p>Thank you for ordering from Papa Veg Pizza!</p>
+            <p>FSSAI License: 12345678901234 | GSTIN: 29XXXXX1234X1ZX</p>
+          </div>
+          
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+                // window.close(); // Optional: close window after print
+              }, 300);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(invoiceHtml);
+    printWindow.document.close();
+  };
+
   if (!isRendered) return null;
 
   return (
@@ -212,7 +341,10 @@ export default function OrderDetails({ isOpen, onClose, order, onUpdateStatus, o
         {/* Footer Actions */}
         <div className="p-5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 shrink-0 flex flex-col gap-3">
           <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+            <button 
+              onClick={handlePrint}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors active:scale-95"
+            >
               <Printer size={18} />
               Print Invoice
             </button>
