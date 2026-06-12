@@ -28,21 +28,21 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
         className={`fixed top-0 right-0 h-full w-full max-w-2xl bg-white dark:bg-zinc-950 shadow-2xl z-[70] flex flex-col transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         {/* Header */}
-        <header className="flex justify-between items-center px-6 h-16 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+        <header className="flex justify-between items-center px-4 h-12 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
           <div className="flex items-center gap-3">
             <button 
               onClick={onClose}
-              className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full p-2 transition-colors"
+              className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full p-1.5 transition-colors"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
             <div>
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{addon?.name || "Extra Cheese"}</h2>
+              <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{addon?.name || "Extra Cheese"}</h2>
               <p className="text-xs text-zinc-500 font-bold">Add-on Details</p>
             </div>
           </div>
           <div className="flex gap-2">
-            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+            <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
               addon?.status === 'Active' 
                 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' 
                 : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
@@ -53,12 +53,12 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
         </header>
 
         {/* Tabs */}
-        <nav className="flex border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 px-4 overflow-x-auto hide-scrollbar">
+        <nav className="flex border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 px-3 overflow-x-auto hide-scrollbar">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-4 text-xs font-bold whitespace-nowrap transition-colors ${
+              className={`px-3 py-2.5 text-xs font-bold whitespace-nowrap transition-colors ${
                 activeTab === tab.id
                   ? "text-[var(--primary)] border-b-2 border-[var(--primary)]"
                   : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 border-b-2 border-transparent"
@@ -70,16 +70,16 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
         </nav>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           
           {/* Summary Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Pricing Summary Card */}
-            <div className="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
+            <div className="p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-amber-400"></div>
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Pricing Summary</h3>
-                <DollarSign className="text-amber-500" size={20} />
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Pricing Summary</h3>
+                <DollarSign className="text-amber-500" size={18} />
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400 font-medium">
@@ -90,7 +90,7 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
                   <span>Tax (5%)</span>
                   <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">₹0.08</span>
                 </div>
-                <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex justify-between font-bold text-base mt-2">
+                <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex justify-between font-bold text-sm mt-2">
                   <span className="text-zinc-900 dark:text-zinc-100">Final Price</span>
                   <span className="text-[var(--primary)] font-mono">₹1.58</span>
                 </div>
@@ -98,15 +98,15 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
             </div>
 
             {/* Inventory Linking Card */}
-            <div className="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
+            <div className="p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Inventory Linking</h3>
-                <Database className="text-emerald-600" size={20} />
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Inventory Linking</h3>
+                <Database className="text-emerald-600" size={18} />
               </div>
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 bg-zinc-50 dark:bg-zinc-950 rounded-lg border border-zinc-100 dark:border-zinc-800">
-                  <UtensilsCrossed className="text-zinc-400" size={20} />
+                <div className="flex items-center gap-2 p-2 bg-zinc-50 dark:bg-zinc-950 rounded-lg border border-zinc-100 dark:border-zinc-800">
+                  <UtensilsCrossed className="text-zinc-400" size={18} />
                   <div>
                     <p className="text-xs font-bold text-zinc-500">Linked Item</p>
                     <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Mozzarella Block</p>
@@ -123,30 +123,30 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
           </div>
 
           {/* Selection Rules Section */}
-          <div className="space-y-4 animate-in fade-in duration-300">
+          <div className="space-y-3 animate-in fade-in duration-300">
             <div className="flex items-center gap-2">
-              <CheckSquare className="text-[var(--primary)]" size={20} />
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Selection Rules</h3>
+              <CheckSquare className="text-[var(--primary)]" size={18} />
+              <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Selection Rules</h3>
             </div>
             
-            <div className="grid grid-cols-3 gap-4">
-              <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm text-center">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm text-center">
                 <p className="text-xs font-bold text-zinc-500 uppercase mb-1">Min Quantity</p>
-                <p className="text-2xl font-black text-zinc-900 dark:text-zinc-100 font-mono">0</p>
+                <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 font-mono">0</p>
               </div>
-              <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm text-center">
+              <div className="p-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm text-center">
                 <p className="text-xs font-bold text-zinc-500 uppercase mb-1">Max Quantity</p>
-                <p className="text-2xl font-black text-zinc-900 dark:text-zinc-100 font-mono">3</p>
+                <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 font-mono">3</p>
               </div>
-              <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm text-center">
+              <div className="p-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm text-center">
                 <p className="text-xs font-bold text-zinc-500 uppercase mb-1">Default</p>
-                <p className="text-2xl font-black text-zinc-900 dark:text-zinc-100 font-mono">1</p>
+                <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 font-mono">1</p>
               </div>
             </div>
 
             {/* Toggles */}
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm overflow-hidden">
-              <div className="p-4 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm overflow-hidden">
+              <div className="p-3 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                 <div>
                   <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Required Selection</p>
                   <p className="text-xs text-zinc-500 mt-0.5">Forces the customer to select this add-on</p>
@@ -155,7 +155,7 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
                   <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"></div>
                 </div>
               </div>
-              <div className="p-4 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+              <div className="p-3 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
                 <div>
                   <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Allow Multiple Quantities</p>
                   <p className="text-xs text-zinc-500 mt-0.5">Enables +/- selector in the storefront</p>
@@ -167,8 +167,8 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
             </div>
 
             {/* Validation Logic Preview */}
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl flex items-start gap-3">
-              <Info className="text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" size={20} />
+            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg flex items-start gap-2">
+              <Info className="text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" size={18} />
               <div>
                 <p className="text-xs font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider mb-1">Preview of validation logic</p>
                 <p className="text-sm font-medium text-blue-900 dark:text-blue-200 italic">"Customers can add up to 3 portions of {addon?.name || 'Extra Cheese'}."</p>
@@ -177,7 +177,7 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
           </div>
 
           {/* Visualization / Graphic */}
-          <div className="rounded-xl overflow-hidden aspect-video relative group border border-zinc-200 dark:border-zinc-800">
+          <div className="rounded-lg overflow-hidden h-40 relative group border border-zinc-200 dark:border-zinc-800">
             <img 
               alt="Add-on Visual" 
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
@@ -190,8 +190,8 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
         </div>
 
         {/* Footer Actions */}
-        <footer className="p-4 md:p-6 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-wrap justify-between items-center gap-4">
-          <button className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/20 px-4 py-2 rounded-xl transition-colors">
+        <footer className="p-3 md:p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-wrap justify-between items-center gap-3">
+          <button className="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-2 rounded-lg transition-colors">
             <Trash2 size={18} />
             <span className="hidden sm:inline">Delete</span>
           </button>
@@ -201,7 +201,7 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
                 onClose();
                 if (onEdit) onEdit(addon);
               }}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-[var(--primary)] text-white font-bold text-sm rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-md"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-[var(--primary)] text-white font-bold text-sm rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-md"
             >
               <Edit2 size={16} />
               Edit Add-on
