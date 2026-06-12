@@ -188,49 +188,49 @@ export default function AuditLogsModal({ isOpen, onClose }) {
             className="fixed inset-0 z-[200] bg-zinc-950/60 backdrop-blur-sm"
             onClick={onClose}
           />
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 pointer-events-none">
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="bg-white dark:bg-zinc-950 w-full max-w-6xl max-h-[90vh] flex flex-col rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden pointer-events-auto"
+              className="bg-white dark:bg-zinc-950 w-full max-w-5xl max-h-[90vh] flex flex-col rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden pointer-events-auto"
             >
               {/* Header */}
-              <div className="px-6 py-5 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-start bg-zinc-50 dark:bg-zinc-900/50 shrink-0">
+              <div className="px-4 py-2.5 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-start bg-zinc-50 dark:bg-zinc-900/50 shrink-0">
                 <div>
-                  <div className="flex items-center gap-2 text-red-600 dark:text-red-500 mb-1">
-                    <ShieldAlert size={20} className="fill-red-100 dark:fill-red-950" />
-                    <span className="text-[11px] font-bold uppercase tracking-widest">SecureOps Systems</span>
+                  <div className="flex items-center gap-1.5 text-red-600 dark:text-red-500 mb-0.5">
+                    <ShieldAlert size={15} className="fill-red-100 dark:fill-red-950" />
+                    <span className="text-[9px] font-bold uppercase tracking-widest">SecureOps Systems</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Security Audit Logs</h2>
-                  <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">Detailed audit trail of permission changes and access revocations.</p>
+                  <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Security Audit Logs</h2>
+                  <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Detailed audit trail of permission changes and access revocations.</p>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors text-zinc-500"
+                  className="p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors text-zinc-500"
                 >
-                  <X size={20} />
+                  <X size={16} />
                 </button>
               </div>
 
               {/* Filters */}
-              <div className="p-4 lg:p-6 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 bg-white dark:bg-zinc-950 shrink-0">
+              <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-[2fr_1fr_1fr_1fr_auto] gap-3 bg-white dark:bg-zinc-950 shrink-0">
                 <div className="lg:col-span-1 relative">
-                  <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search by admin name or action..."
-                    className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
+                    className="w-full pl-8 pr-3 py-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
                   />
                 </div>
                 <div className="relative">
-                  <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+                  <Calendar size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
                   <select 
                     value={dateRange}
                     onChange={(e) => setDateRange(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all appearance-none cursor-pointer"
+                    className="w-full pl-8 pr-3 py-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all appearance-none cursor-pointer"
                   >
                     <option>Last 24 Hours</option>
                     <option>Last 7 Days</option>
@@ -242,7 +242,7 @@ export default function AuditLogsModal({ isOpen, onClose }) {
                   <select 
                     value={eventType}
                     onChange={(e) => setEventType(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all cursor-pointer"
+                    className="w-full px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all cursor-pointer"
                   >
                     <option>All Event Types</option>
                     <option>Role Created</option>
@@ -255,7 +255,7 @@ export default function AuditLogsModal({ isOpen, onClose }) {
                   <select 
                     value={severityFilter}
                     onChange={(e) => setSeverityFilter(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-sm font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all cursor-pointer"
+                    className="w-full px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all cursor-pointer"
                   >
                     <option>All Severities</option>
                     <option>Critical</option>
@@ -267,7 +267,7 @@ export default function AuditLogsModal({ isOpen, onClose }) {
                 <div>
                   <button
                     onClick={handleResetFilters}
-                    className="w-full h-full px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all whitespace-nowrap cursor-pointer"
+                    className="w-full h-full px-4 py-1.5 bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all whitespace-nowrap cursor-pointer"
                   >
                     Reset
                   </button>
@@ -279,48 +279,48 @@ export default function AuditLogsModal({ isOpen, onClose }) {
                 <table className="w-full text-left border-collapse min-w-[800px]">
                   <thead className="sticky top-0 bg-zinc-100 dark:bg-zinc-900 z-10 border-b border-zinc-200 dark:border-zinc-800">
                     <tr>
-                      <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Administrator</th>
-                      <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Action</th>
-                      <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Target</th>
-                      <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Timestamp / IP</th>
-                      <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Severity</th>
-                      <th className="px-6 py-4"></th>
+                      <th className="px-3 py-2 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Administrator</th>
+                      <th className="px-3 py-2 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Action</th>
+                      <th className="px-3 py-2 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Target</th>
+                      <th className="px-3 py-2 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Timestamp / IP</th>
+                      <th className="px-3 py-2 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Severity</th>
+                      <th className="px-3 py-2"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                     {filteredLogs.map((log) => (
                       <tr key={log.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-xl bg-zinc-200 dark:bg-zinc-800 overflow-hidden flex items-center justify-center text-zinc-500 font-bold shrink-0">
+                        <td className="px-3 py-2">
+                          <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-lg bg-zinc-200 dark:bg-zinc-800 overflow-hidden flex items-center justify-center text-zinc-500 font-bold shrink-0 text-xs">
                               {log.adminName.charAt(0)}
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50">{log.adminName}</p>
-                              <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">{log.adminRole}</p>
+                              <p className="text-xs font-bold text-zinc-900 dark:text-zinc-50">{log.adminName}</p>
+                              <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">{log.adminRole}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">{log.action}</p>
+                        <td className="px-3 py-2">
+                          <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">{log.action}</p>
                         </td>
-                        <td className="px-6 py-4">
-                          <span className="bg-zinc-100 dark:bg-zinc-800/80 px-2.5 py-1 rounded-md text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-300">
+                        <td className="px-3 py-2">
+                          <span className="bg-zinc-100 dark:bg-zinc-800/80 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-semibold text-zinc-700 dark:text-zinc-300">
                             {log.target}
                           </span>
                         </td>
-                        <td className="px-6 py-4">
-                          <p className="text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200">{log.date}</p>
-                          <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 mt-0.5">{log.ip}</p>
+                        <td className="px-3 py-2">
+                          <p className="text-[10px] font-mono font-semibold text-zinc-800 dark:text-zinc-200">{log.date}</p>
+                          <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 mt-0.5">{log.ip}</p>
                         </td>
-                        <td className="px-6 py-4">
-                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getSeverityClasses(log.severity)}`}>
+                        <td className="px-3 py-2">
+                          <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border ${getSeverityClasses(log.severity)}`}>
                             {log.severity}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <button className="text-zinc-400 hover:text-[var(--primary)] transition-colors p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full cursor-pointer">
-                            <Info size={18} />
+                        <td className="px-3 py-2 text-right">
+                          <button className="text-zinc-400 hover:text-[var(--primary)] transition-colors p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full cursor-pointer">
+                            <Info size={14} />
                           </button>
                         </td>
                       </tr>
@@ -330,34 +330,34 @@ export default function AuditLogsModal({ isOpen, onClose }) {
               </div>
 
               {/* Footer */}
-              <div className="px-4 lg:px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-4 shrink-0 rounded-b-2xl">
-                <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="px-3 py-2.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-2.5 shrink-0 rounded-b-2xl">
+                <div className="flex items-center gap-2 w-full md:w-auto">
                   <button 
                     onClick={handleExportPDF}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-[10px] font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                   >
-                    <Download size={16} /> PDF
+                    <Download size={14} /> PDF
                   </button>
                   <button 
                     onClick={handleExportCSV}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-[10px] font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                   >
-                    <FileSpreadsheet size={16} /> CSV
+                    <FileSpreadsheet size={14} /> CSV
                   </button>
                 </div>
                 
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 mr-2">Showing 1-5 of 2,492</span>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 mr-2">Showing 1-5 of 2,492</span>
                   <div className="flex items-center gap-1">
-                    <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-zinc-500 disabled:opacity-50 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
-                      <ChevronLeft size={16} />
+                    <button className="w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-zinc-500 disabled:opacity-50 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+                      <ChevronLeft size={14} />
                     </button>
-                    <button className="w-8 h-8 flex items-center justify-center bg-[var(--primary)] text-white rounded-lg text-xs font-bold shadow-md shadow-[var(--primary)]/20">1</button>
-                    <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors hidden sm:flex">2</button>
-                    <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors hidden sm:flex">3</button>
+                    <button className="w-7 h-7 flex items-center justify-center bg-[var(--primary)] text-white rounded-lg text-[10px] font-bold shadow-md shadow-[var(--primary)]/20">1</button>
+                    <button className="w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-[10px] font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors hidden sm:flex">2</button>
+                    <button className="w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-[10px] font-bold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors hidden sm:flex">3</button>
                     <span className="text-zinc-400 mx-1">...</span>
-                    <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
-                      <ChevronRight size={16} />
+                    <button className="w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+                      <ChevronRight size={14} />
                     </button>
                   </div>
                 </div>

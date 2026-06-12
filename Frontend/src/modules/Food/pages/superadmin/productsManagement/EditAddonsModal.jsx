@@ -45,50 +45,50 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
         className="relative w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-5xl bg-white dark:bg-zinc-900 sm:rounded-xl shadow-xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300"
       >
         {/* Top Bar */}
-        <header className="h-16 flex items-center justify-between px-4 sm:px-6 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 z-10 shrink-0">
-          <div className="flex items-center gap-4">
+        <header className="h-14 flex items-center justify-between px-4 sm:px-5 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 z-10 shrink-0">
+          <div className="flex items-center gap-3">
             <button 
               onClick={onClose}
               aria-label="Close" 
-              className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors active:scale-90"
+              className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors active:scale-90"
             >
-              <X className="text-zinc-500 dark:text-zinc-400" size={20} />
+              <X className="text-zinc-500 dark:text-zinc-400" size={18} />
             </button>
-            <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Edit Add-on</h1>
+            <h1 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Edit Add-on</h1>
           </div>
-          <button onClick={handleSave} className="bg-[var(--primary)] text-white font-bold text-sm px-6 py-2 rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-sm hidden sm:block">
+          <button onClick={handleSave} className="bg-[var(--primary)] text-white font-bold text-sm px-5 py-2 rounded-lg hover:brightness-110 active:scale-95 transition-all shadow-sm hidden sm:block">
             Save Changes
           </button>
         </header>
 
         {/* Scrollable Body */}
-        <main className="flex-1 overflow-y-auto hide-scrollbar p-4 sm:p-8 space-y-8 bg-zinc-50 dark:bg-zinc-950">
+        <main className="flex-1 overflow-y-auto hide-scrollbar p-4 sm:p-5 space-y-5 bg-zinc-50 dark:bg-zinc-950">
           
           {/* Basic Information */}
-          <section className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-            <div className="flex items-center gap-2 mb-6">
-              <Info className="text-[var(--primary)]" size={20} />
+          <section className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+            <div className="flex items-center gap-2 mb-4">
+              <Info className="text-[var(--primary)]" size={18} />
               <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Basic Information</h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Add-on Name</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Add-on Name</label>
                   <input 
-                    className="w-full h-12 px-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all placeholder:text-zinc-400" 
+                    className="w-full h-10 px-3 text-sm border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all placeholder:text-zinc-400" 
                     placeholder="e.g., Extra Cheese" 
                     value={addonName}
                     onChange={(e) => setAddonName(e.target.value)}
                   />
                 </div>
                 
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Group</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Group</label>
                   <select 
                     value={addonGroup}
                     onChange={(e) => setAddonGroup(e.target.value)}
-                    className="w-full h-12 px-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all"
+                    className="w-full h-10 px-3 text-sm border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all"
                   >
                     <option>Veg Toppings</option>
                     <option>Cheese Add-ons</option>
@@ -97,12 +97,12 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
                   </select>
                 </div>
                 
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Type</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Type</label>
                   <select 
                     value={addonType}
                     onChange={(e) => setAddonType(e.target.value)}
-                    className="w-full h-12 px-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all"
+                    className="w-full h-10 px-3 text-sm border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all"
                   >
                     <option>Topping</option>
                     <option>Add-on</option>
@@ -110,12 +110,12 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
                   </select>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Status</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Status</label>
                   <select 
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-full h-12 px-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all"
+                    className="w-full h-10 px-3 text-sm border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all"
                   >
                     <option value="Active">Active</option>
                     <option value="Out of Stock">Out of Stock</option>
@@ -124,10 +124,10 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Image Upload</label>
-                  <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg p-6 flex flex-col items-center justify-center gap-3 bg-zinc-50 dark:bg-zinc-950/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors cursor-pointer relative h-[142px]">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Image Upload</label>
+                  <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg p-4 flex flex-col items-center justify-center gap-2 bg-zinc-50 dark:bg-zinc-950/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors cursor-pointer relative h-[100px]">
                     <div className="w-12 h-12 bg-[var(--primary)]/10 text-[var(--primary)] rounded-full flex items-center justify-center">
                       <UploadCloud size={24} />
                     </div>
@@ -140,11 +140,11 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
                 </div>
               </div>
 
-              <div className="md:col-span-2 space-y-1.5">
-                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Description</label>
+              <div className="md:col-span-2 space-y-1">
+                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Description</label>
                 <textarea 
-                  rows="3"
-                  className="w-full p-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all placeholder:text-zinc-400 resize-none" 
+                  rows="2"
+                  className="w-full p-3 text-sm border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] outline-none transition-all placeholder:text-zinc-400 resize-none" 
                   placeholder="Short description for the customer..." 
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -154,19 +154,19 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
           </section>
 
           {/* Pricing & Inventory */}
-          <section className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm border-t-4 border-t-emerald-500">
-            <div className="flex items-center gap-2 mb-6">
-              <Banknote className="text-emerald-500" size={20} />
+          <section className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm border-t-4 border-t-emerald-500">
+            <div className="flex items-center gap-2 mb-4">
+              <Banknote className="text-emerald-500" size={18} />
               <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Pricing & Stock</h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Price</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Price</label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">₹</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">₹</span>
                   <input 
-                    className="w-full h-12 pl-8 pr-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all tabular-nums" 
+                    className="w-full h-10 text-sm pl-7 pr-3 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all tabular-nums" 
                     type="number"
                     step="0.01"
                     value={price}
@@ -175,17 +175,17 @@ export default function EditAddonsModal({ isOpen, onClose, addon }) {
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Stock (Units)</label>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase">Stock (Units)</label>
                 <div className="relative">
                   <input 
-                    className="w-full h-12 px-4 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all tabular-nums" 
+                    className="w-full h-10 text-sm px-3 border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 dark:text-zinc-100 border rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all tabular-nums" 
                     type="number"
                     min="0"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">units</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs">units</span>
                 </div>
               </div>
             </div>
