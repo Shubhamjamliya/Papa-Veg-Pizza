@@ -42,26 +42,26 @@ export default function OrdersManagement() {
     switch(status) {
       case 'Active':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-medium text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Active
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 font-bold text-[9px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
           </span>
         );
       case 'Out for Delivery':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-medium text-xs">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> Out for Delivery
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold text-[9px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Out for Delivery
           </span>
         );
       case 'Delivered':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 font-medium text-xs">
-            <CheckCircle2 size={14} className="text-emerald-500" /> Delivered
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 font-bold text-[9px]">
+            <CheckCircle2 size={12} className="text-emerald-500" /> Delivered
           </span>
         );
       case 'Cancelled':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 font-medium text-xs">
-            <XCircle size={14} /> Cancelled
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 font-bold text-[9px]">
+            <XCircle size={12} /> Cancelled
           </span>
         );
       default:
@@ -70,146 +70,180 @@ export default function OrdersManagement() {
   };
 
   return (
-    <div className="p-4 md:p-6 pb-24 lg:pb-8 w-full">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-950 min-h-screen w-full space-y-4">
       {/* Page Header */}
-      <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-50">Orders Management</h2>
-          <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-1">Monitor and manage all franchise orders in real-time.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2">
+        <div className="space-y-0.5">
+          <h2 className="text-lg font-bold text-black dark:text-white leading-tight">Orders Management</h2>
+          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">Monitor and manage all franchise orders in real-time.</p>
         </div>
-        <div className="flex gap-3">
-          <button className="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
-            <Download size={18} /> Export Reports
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-white dark:bg-zinc-950 text-black dark:text-white border border-zinc-200 dark:border-zinc-800 text-[11px] font-bold px-3 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors shadow-sm">
+            <Download size={14} /> <span>Export Reports</span>
           </button>
           <button 
             onClick={() => setIsAddManualOrderOpen(true)}
-            className="bg-[var(--primary)] text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 shadow-sm transition-all active:scale-95"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-[var(--primary)] text-white text-[11px] font-bold px-3 py-1.5 rounded-lg hover:opacity-90 shadow-md transition-all active:scale-95 cursor-pointer"
           >
-            <Plus size={18} /> Manual Order
+            <Plus size={14} /> <span>Manual Order</span>
           </button>
         </div>
       </div>
 
       {/* KPI Cards Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-[var(--primary)]">
-              <ShoppingCart size={20} />
+      <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-3 mb-4 select-none">
+        {/* Card 1 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Total Orders</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">1,284</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> +12.5%
+              </span>
             </div>
-            <span className="text-emerald-600 font-medium text-xs flex items-center gap-1">+12.5% <TrendingUp size={14} /></span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Total Orders</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">1,284</h4>
+          <div className="p-1.5 rounded-md bg-[var(--primary)]/10 text-[var(--primary)] shrink-0 border border-[var(--primary)]/20">
+            <ShoppingCart size={14} />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-[var(--primary)]">
-              <Calendar size={20} />
+        {/* Card 2 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Today</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">156</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> +4.2%
+              </span>
             </div>
-            <span className="text-emerald-600 font-medium text-xs flex items-center gap-1">+4.2% <TrendingUp size={14} /></span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Today</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">156</h4>
+          <div className="p-1.5 rounded-md bg-[var(--primary)]/10 text-[var(--primary)] shrink-0 border border-[var(--primary)]/20">
+            <Calendar size={14} />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg">
-              <Timer size={20} className="animate-pulse" />
+        {/* Card 3 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md border-t-2 border-t-emerald-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Active</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-emerald-600 dark:text-emerald-400 mt-0.5">24</h3>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold text-[8px] tracking-wider animate-pulse">LIVE</span>
             </div>
-            <span className="text-zinc-500 dark:text-zinc-400 font-medium text-xs">Live</span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Active</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">24</h4>
+          <div className="p-1.5 rounded-md bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 shrink-0 border border-emerald-100 dark:border-emerald-900/20">
+            <Timer size={14} className="animate-pulse" />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-emerald-600">
-              <CheckCircle2 size={20} />
+        {/* Card 4 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Delivered</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">1,210</h3>
+              <span className="text-emerald-600 font-bold text-[8px] tracking-wider">98% SUCCESS</span>
             </div>
-            <span className="text-emerald-600 font-medium text-xs flex items-center gap-1">98% Success</span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Delivered</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">1,210</h4>
+          <div className="p-1.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-emerald-600 shrink-0 border border-zinc-200 dark:border-zinc-700">
+            <CheckCircle2 size={14} className="text-emerald-500" />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg">
-              <XCircle size={20} />
+        {/* Card 5 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md border-t-2 border-t-red-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Cancelled</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-red-650 dark:text-red-400 mt-0.5">18</h3>
+              <span className="text-red-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingDown size={10} /> -2%
+              </span>
             </div>
-            <span className="text-red-600 font-medium text-xs flex items-center gap-1">-2% <TrendingDown size={14} /></span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Cancelled</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">18</h4>
+          <div className="p-1.5 rounded-md bg-red-500/10 text-red-600 shrink-0 border border-red-100 dark:border-red-900/30">
+            <XCircle size={14} className="stroke-red-500" />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-blue-600">
-              <CreditCard size={20} />
+        {/* Card 6 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">AOV</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">₹452.00</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> +8%
+              </span>
             </div>
-            <span className="text-emerald-600 font-medium text-xs flex items-center gap-1">+8% <TrendingUp size={14} /></span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">AOV</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">₹452.00</h4>
+          <div className="p-1.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-blue-600 shrink-0 border border-zinc-200 dark:border-zinc-700">
+            <CreditCard size={14} />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-[var(--primary)]">
-              <IndianRupee size={20} />
+        {/* Card 7 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Revenue</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">₹70,450</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> +18%
+              </span>
             </div>
-            <span className="text-emerald-600 font-medium text-xs flex items-center gap-1">+18% <TrendingUp size={14} /></span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Revenue</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">₹70,450</h4>
+          <div className="p-1.5 rounded-md bg-[var(--primary)]/10 text-[var(--primary)] shrink-0 border border-[var(--primary)]/20">
+            <IndianRupee size={14} />
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-start">
-            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-zinc-500 dark:text-zinc-400">
-              <Hourglass size={20} />
+        {/* Card 8 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-shadow hover:shadow-md border-t-2 border-t-amber-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Pending</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-amber-500 mt-0.5">06</h3>
+              <span className="text-amber-600 dark:text-amber-400 font-bold text-[8px] tracking-wider">URGENT</span>
             </div>
-            <span className="text-zinc-500 dark:text-zinc-400 font-medium text-xs">High Priority</span>
           </div>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Pending</p>
-          <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">06</h4>
+          <div className="p-1.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0 border border-amber-100 dark:border-amber-900/30">
+            <Hourglass size={14} className="stroke-amber-500" />
+          </div>
         </div>
       </section>
 
       {/* Filters Section */}
-      <section className="bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-xl mb-6 border border-zinc-200 dark:border-zinc-800">
+      <section className="bg-zinc-50 dark:bg-zinc-900/50 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
         <div 
-          className="flex items-center justify-between cursor-pointer mb-2" 
+          className="flex items-center justify-between cursor-pointer" 
           onClick={() => setShowFilters(!showFilters)}
         >
-          <div className="flex items-center gap-2 text-zinc-800 dark:text-zinc-200">
-            <Filter size={20} />
-            <h3 className="text-base font-semibold">Advanced Filters</h3>
+          <div className="flex items-center gap-2 text-black dark:text-white">
+            <Filter size={14} />
+            <h3 className="text-xs font-bold">Advanced Filters</h3>
           </div>
           <ChevronDown 
-            size={20} 
-            className={`text-zinc-500 transition-transform ${showFilters ? 'rotate-180' : ''}`} 
+            size={14} 
+            className={`text-black/60 dark:text-white/60 transition-transform ${showFilters ? 'rotate-180' : ''}`} 
           />
         </div>
         
         {showFilters && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3 pt-3 border-t border-zinc-200 dark:border-zinc-850 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Date Range</label>
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Date Range</label>
               <input 
-                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-800 dark:text-zinc-200 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none" 
+                className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none font-semibold" 
                 type="date"
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Order Status</label>
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Order Status</label>
               <select 
-                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-800 dark:text-zinc-200 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none"
+                className="w-full bg-white dark:bg-zinc-955 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none font-semibold"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -221,9 +255,9 @@ export default function OrdersManagement() {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Store Location</label>
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Store Location</label>
               <select 
-                className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-800 dark:text-zinc-200 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none"
+                className="w-full bg-white dark:bg-zinc-955 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none font-semibold"
                 value={storeFilter}
                 onChange={(e) => setStoreFilter(e.target.value)}
               >
@@ -234,8 +268,8 @@ export default function OrdersManagement() {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Franchise Group</label>
-              <select className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-800 dark:text-zinc-200 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none">
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Franchise Group</label>
+              <select className="w-full bg-white dark:bg-zinc-955 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none font-semibold">
                 <option>All Groups</option>
                 <option>North India Ops</option>
                 <option>South Region Pvt</option>
@@ -246,16 +280,16 @@ export default function OrdersManagement() {
       </section>
 
       {/* Main Workspace Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {/* Orders Table Container */}
         <div className="xl:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm flex flex-col">
-          <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-zinc-200 dark:border-zinc-800">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Recent Orders</h3>
+          <div className="p-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-zinc-200 dark:border-zinc-800">
+            <h3 className="text-xs font-bold text-black dark:text-white">Recent Orders</h3>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <div className="relative w-full sm:w-auto">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/60 dark:text-white/60" size={14} />
                 <input 
-                  className="pl-9 pr-4 py-1.5 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-full text-sm text-zinc-800 dark:text-zinc-200 focus:ring-1 focus:ring-[var(--primary)] outline-none w-full sm:w-64 transition-all" 
+                  className="pl-8 pr-3 py-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] outline-none w-full sm:w-56 transition-all" 
                   placeholder="Search orders..." 
                   type="text"
                   value={searchTerm}
@@ -269,46 +303,46 @@ export default function OrdersManagement() {
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead className="bg-zinc-50 dark:bg-zinc-900/80 sticky top-0">
                 <tr>
-                  <th className="px-5 py-3 font-semibold text-xs text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider">Order #</th>
-                  <th className="px-5 py-3 font-semibold text-xs text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider">Customer</th>
-                  <th className="px-5 py-3 font-semibold text-xs text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider">Store</th>
-                  <th className="px-5 py-3 font-semibold text-xs text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 text-right uppercase tracking-wider">Amount</th>
-                  <th className="px-5 py-3 font-semibold text-xs text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 text-center uppercase tracking-wider">Status</th>
-                  <th className="px-5 py-3 font-semibold text-xs text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800 text-center uppercase tracking-wider">Actions</th>
+                  <th className="px-3 py-2 font-bold text-[10px] text-black dark:text-white border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider">Order #</th>
+                  <th className="px-3 py-2 font-bold text-[10px] text-black dark:text-white border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider">Customer</th>
+                  <th className="px-3 py-2 font-bold text-[10px] text-black dark:text-white border-b border-zinc-200 dark:border-zinc-800 uppercase tracking-wider">Store</th>
+                  <th className="px-3 py-2 font-bold text-[10px] text-black dark:text-white border-b border-zinc-200 dark:border-zinc-800 text-right uppercase tracking-wider">Amount</th>
+                  <th className="px-3 py-2 font-bold text-[10px] text-black dark:text-white border-b border-zinc-200 dark:border-zinc-800 text-center uppercase tracking-wider">Status</th>
+                  <th className="px-3 py-2 font-bold text-[10px] text-black dark:text-white border-b border-zinc-200 dark:border-zinc-800 text-center uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                 {filteredOrders.length > 0 ? (
                   filteredOrders.map((order, idx) => (
                     <tr key={idx} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group">
-                      <td className="px-5 py-4 font-mono text-sm text-zinc-900 dark:text-zinc-100">{order.id}</td>
-                      <td className="px-5 py-4">
+                      <td className="px-3 py-2 font-mono text-xs font-bold text-[var(--primary)]">{order.id}</td>
+                      <td className="px-3 py-2">
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{order.customerName}</span>
-                          <span className="text-xs text-zinc-500 dark:text-zinc-400">{order.customerPhone}</span>
+                          <span className="text-xs font-bold text-black dark:text-white">{order.customerName}</span>
+                          <span className="text-[10px] font-semibold text-black/70 dark:text-white/70">{order.customerPhone}</span>
                         </div>
                       </td>
-                      <td className="px-5 py-4 text-sm text-zinc-700 dark:text-zinc-300">{order.store}</td>
-                      <td className="px-5 py-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100 text-right">{order.amount}</td>
-                      <td className="px-5 py-4 text-center">
+                      <td className="px-3 py-2 text-xs font-bold text-black dark:text-white">{order.store}</td>
+                      <td className="px-3 py-2 text-xs font-bold text-black dark:text-white text-right">{order.amount}</td>
+                      <td className="px-3 py-2 text-center">
                         {getStatusBadge(order.status)}
                       </td>
-                      <td className="px-5 py-4 text-center">
+                      <td className="px-3 py-2 text-center">
                         <button 
-                          className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-[var(--primary)]"
+                          className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-black/60 dark:text-white/60 hover:text-[var(--primary)] dark:hover:text-[var(--primary)]"
                           onClick={() => {
                             setSelectedOrder(order);
                             setIsDrawerOpen(true);
                           }}
                         >
-                          <Eye size={18} />
+                          <Eye size={14} />
                         </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="px-5 py-8 text-center text-zinc-500 dark:text-zinc-400 text-sm">
+                    <td colSpan="6" className="px-3 py-6 text-center text-black/60 dark:text-white/60 text-xs">
                       No orders found matching your filters.
                     </td>
                   </tr>
@@ -317,74 +351,74 @@ export default function OrdersManagement() {
             </table>
           </div>
           
-          <div className="mt-auto p-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">Showing {filteredOrders.length} of {initialOrders.length} orders</span>
+          <div className="mt-auto px-3 py-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+            <span className="text-[11px] font-semibold text-black/70 dark:text-white/70">Showing {filteredOrders.length} of {initialOrders.length} orders</span>
             <div className="flex items-center gap-1.5">
-              <button className="p-1.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
-                <ChevronLeft size={16} />
+              <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white transition-colors">
+                <ChevronLeft size={12} />
               </button>
-              <button className="px-2.5 py-1 bg-[var(--primary)] text-white text-xs font-medium rounded-md">1</button>
-              <button className="px-2.5 py-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium rounded-md hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">2</button>
-              <button className="px-2.5 py-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-medium rounded-md hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">3</button>
-              <button className="p-1.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
-                <ChevronRight size={16} />
+              <button className="w-6 h-6 flex items-center justify-center rounded bg-[var(--primary)] text-white text-[10px] font-bold shadow-sm">1</button>
+              <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white text-[10px] font-bold transition-colors">2</button>
+              <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white text-[10px] font-bold transition-colors">3</button>
+              <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white transition-colors">
+                <ChevronRight size={12} />
               </button>
             </div>
           </div>
         </div>
 
         {/* Live Tracking Widget */}
-        <aside className="flex flex-col gap-6">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 shadow-sm">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Live Order Flow</h3>
-              <span className="inline-flex px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold text-[10px] uppercase tracking-wider">Real-time</span>
+        <aside className="flex flex-col gap-4">
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xs font-bold text-black dark:text-white">Live Order Flow</h3>
+              <span className="inline-flex px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-bold text-[9px] uppercase tracking-wider">Real-time</span>
             </div>
             
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center relative">
-                  <Utensils size={18} className="text-[var(--primary)]" />
-                  <div className="absolute -top-1 -right-1 bg-[var(--primary)] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white dark:border-zinc-900 font-bold">12</div>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 shrink-0 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center relative border border-zinc-200 dark:border-zinc-700">
+                  <Utensils size={14} className="text-[var(--primary)]" />
+                  <div className="absolute -top-0.5 -right-0.5 bg-[var(--primary)] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center border border-white dark:border-zinc-900 font-bold">12</div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1.5">
-                    <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Kitchen Prep</span>
-                    <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400">45% Capacity</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-bold text-black dark:text-white truncate">Kitchen Prep</span>
+                    <span className="text-[9px] font-semibold text-black/70 dark:text-white/70 shrink-0">45% Capacity</span>
                   </div>
-                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1 rounded-full overflow-hidden">
                     <div className="bg-[var(--primary)] h-full rounded-full" style={{ width: '45%' }}></div>
                   </div>
                 </div>
               </div>
               
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center relative">
-                  <Truck size={18} className="text-emerald-500" />
-                  <div className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white dark:border-zinc-900 font-bold">08</div>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 shrink-0 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center relative border border-zinc-200 dark:border-zinc-700">
+                  <Truck size={14} className="text-emerald-500" />
+                  <div className="absolute -top-0.5 -right-0.5 bg-emerald-500 text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center border border-white dark:border-zinc-900 font-bold">08</div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1.5">
-                    <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Out for Delivery</span>
-                    <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400">High Traffic</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-bold text-black dark:text-white truncate">Out for Delivery</span>
+                    <span className="text-[9px] font-semibold text-black/70 dark:text-white/70 shrink-0">High Traffic</span>
                   </div>
-                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1 rounded-full overflow-hidden">
                     <div className="bg-emerald-500 h-full rounded-full" style={{ width: '78%' }}></div>
                   </div>
                 </div>
               </div>
               
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center relative">
-                  <CheckCircle2 size={18} className="text-blue-500" />
-                  <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-[9px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-zinc-900 font-bold">156</div>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 shrink-0 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center relative border border-zinc-200 dark:border-zinc-700">
+                  <CheckCircle2 size={14} className="text-blue-500" />
+                  <div className="absolute -top-0.5 -right-0.5 bg-blue-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center border border-white dark:border-zinc-900 font-bold">156</div>
                 </div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1.5">
-                    <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Today's Completed</span>
-                    <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400">Daily Goal 80%</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-bold text-black dark:text-white truncate">Today's Completed</span>
+                    <span className="text-[9px] font-semibold text-black/70 dark:text-white/70 shrink-0">Goal 80%</span>
                   </div>
-                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1 rounded-full overflow-hidden">
                     <div className="bg-blue-500 h-full rounded-full" style={{ width: '80%' }}></div>
                   </div>
                 </div>
@@ -393,7 +427,7 @@ export default function OrdersManagement() {
             
             <button 
               onClick={() => setIsLogisticsMapOpen(true)}
-              className="w-full mt-6 py-2 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-sm font-semibold hover:bg-[var(--primary)] hover:text-white transition-all"
+              className="w-full mt-4 py-1.5 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-[10px] font-bold hover:bg-[var(--primary)] hover:text-white transition-all cursor-pointer"
             >
               View Full Logistics Map
             </button>
@@ -402,14 +436,14 @@ export default function OrdersManagement() {
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
             <img 
               alt="Pizza Branding" 
-              className="w-full h-36 object-cover" 
+              className="w-full h-24 object-cover" 
               src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800&h=400"
             />
-            <div className="p-4">
-              <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">Weekly Promotion</h4>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">"The Veggie Supreme" is trending in Mumbai region with 40% increase in orders.</p>
-              <button className="mt-4 text-[var(--primary)] text-xs font-semibold flex items-center gap-1 hover:underline group">
-                Manage Promos <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="p-3">
+              <h4 className="text-xs font-bold text-black dark:text-white">Weekly Promotion</h4>
+              <p className="text-[10px] text-black/70 dark:text-white/70 mt-1 leading-normal font-semibold">"The Veggie Supreme" is trending in Mumbai region with 40% increase in orders.</p>
+              <button className="mt-3 text-[var(--primary)] text-[10px] font-bold flex items-center gap-1 hover:underline group cursor-pointer">
+                Manage Promos <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
           </div>
@@ -419,9 +453,9 @@ export default function OrdersManagement() {
       {/* Floating Action Button (FAB) - Mobile Only Contextual */}
       <button 
         onClick={() => setIsAddManualOrderOpen(true)}
-        className="lg:hidden fixed bottom-6 right-6 w-12 h-12 bg-[var(--primary)] text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40"
+        className="lg:hidden fixed bottom-6 right-6 w-10 h-10 bg-[var(--primary)] text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40"
       >
-        <Plus size={24} />
+        <Plus size={20} />
       </button>
 
       {/* Order Details Drawer */}

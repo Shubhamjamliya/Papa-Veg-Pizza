@@ -57,8 +57,8 @@ export function BannersList({ searchTerm, filterType, filterStatus, onPreview })
     if (debouncedSearch) {
       const lowerSearch = debouncedSearch.toLowerCase();
       result = result.filter(item => 
-        item.title.toLowerCase().includes(lowerSearch) || 
-        item.type.toLowerCase().includes(lowerSearch)
+         item.title.toLowerCase().includes(lowerSearch) || 
+         item.type.toLowerCase().includes(lowerSearch)
       );
     }
 
@@ -77,69 +77,69 @@ export function BannersList({ searchTerm, filterType, filterStatus, onPreview })
     switch (status) {
       case 'Active': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400';
       case 'Scheduled': return 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400';
-      case 'Expired': return 'bg-zinc-100 text-zinc-700 dark:bg-zinc-500/10 dark:text-zinc-400';
+      case 'Expired': return 'bg-zinc-100 text-black/70 dark:bg-zinc-800 dark:text-white/70';
       case 'Draft': return 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400';
-      default: return 'bg-zinc-100 text-zinc-700';
+      default: return 'bg-zinc-100 text-black/70';
     }
   };
 
   const getPriorityColor = (priority) => {
     switch(priority) {
       case 'High': return 'text-[var(--primary)]';
-      case 'Medium': return 'text-zinc-600 dark:text-zinc-400';
-      case 'Low': return 'text-zinc-400 dark:text-zinc-500';
-      default: return 'text-zinc-600';
+      case 'Medium': return 'text-black dark:text-white';
+      case 'Low': return 'text-black/50 dark:text-white/50';
+      default: return 'text-black/70 dark:text-white/70';
     }
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between px-2">
-        <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">Current Banners ({filteredData.length})</h4>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">Sorted by Priority</span>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between px-1">
+        <h4 className="text-xs font-bold text-black dark:text-white uppercase tracking-wider">Current Banners ({filteredData.length})</h4>
+        <span className="text-[10px] font-semibold text-black/50 dark:text-white/50">Sorted by Priority</span>
       </div>
 
       {filteredData.length > 0 ? filteredData.map((banner) => (
-        <div key={banner.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center gap-6 hover:shadow-md transition-shadow group">
-          <div className="w-full md:w-32 h-32 md:h-20 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex-shrink-0">
+        <div key={banner.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex flex-col md:flex-row items-start md:items-center gap-4 hover:shadow-md transition-shadow group">
+          <div className="w-full md:w-24 h-24 md:h-16 rounded-lg overflow-hidden bg-zinc-150 dark:bg-zinc-850 flex-shrink-0">
             <img 
               src={banner.image} 
               alt={banner.title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
             />
           </div>
           <div className="flex-1 min-w-0 w-full">
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <h5 className="text-base font-bold text-zinc-900 dark:text-zinc-100 truncate">{banner.title}</h5>
-              <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase ${getStatusColor(banner.status)}`}>
+            <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
+              <h5 className="text-xs font-bold text-black dark:text-white truncate">{banner.title}</h5>
+              <span className={`px-1.5 py-0.5 text-[9px] font-bold rounded-full uppercase ${getStatusColor(banner.status)}`}>
                 {banner.status}
               </span>
             </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">{banner.type} • Starts: {banner.startDate}</p>
+            <p className="text-[10px] text-black/70 dark:text-white/70 font-semibold">{banner.type} • Starts: {banner.startDate}</p>
           </div>
-          <div className="grid grid-cols-3 gap-8 px-4 border-l border-zinc-200 dark:border-zinc-800 hidden lg:grid">
+          <div className="grid grid-cols-3 gap-6 px-2 border-l border-zinc-200 dark:border-zinc-800 hidden lg:grid">
             <div className="text-center">
-              <p className="text-[10px] text-zinc-500 uppercase font-bold">Priority</p>
-              <p className={`text-sm font-bold ${getPriorityColor(banner.priority)}`}>{banner.priority}</p>
+              <p className="text-[9px] text-black dark:text-white uppercase font-bold">Priority</p>
+              <p className={`text-xs font-bold ${getPriorityColor(banner.priority)}`}>{banner.priority}</p>
             </div>
             <div className="text-center">
-              <p className="text-[10px] text-zinc-500 uppercase font-bold">Impressions</p>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{banner.impressions}</p>
+              <p className="text-[9px] text-black dark:text-white uppercase font-bold">Impressions</p>
+              <p className="text-xs font-semibold text-black dark:text-white">{banner.impressions}</p>
             </div>
             <div className="text-center">
-              <p className="text-[10px] text-zinc-500 uppercase font-bold">CTR</p>
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{banner.ctr}</p>
+              <p className="text-[9px] text-black dark:text-white uppercase font-bold">CTR</p>
+              <p className="text-xs font-semibold text-black dark:text-white">{banner.ctr}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 md:border-l md:border-zinc-200 md:dark:border-zinc-800 md:pl-4 mt-4 md:mt-0 w-full md:w-auto justify-end">
-            <button onClick={() => onPreview && onPreview(banner)} className="p-2 text-zinc-500 hover:text-[var(--primary)] hover:bg-[var(--primary)]/5 rounded-full transition-colors"><Eye size={18} /></button>
-            <button className="p-2 text-zinc-500 hover:text-[var(--primary)] hover:bg-[var(--primary)]/5 rounded-full transition-colors"><Edit size={18} /></button>
-            <button className="p-2 text-zinc-500 hover:text-red-500 hover:bg-red-500/5 rounded-full transition-colors"><Trash2 size={18} /></button>
+          <div className="flex items-center gap-1.5 md:border-l md:border-zinc-200 md:dark:border-zinc-800 md:pl-3 mt-3 md:mt-0 w-full md:w-auto justify-end">
+            <button onClick={() => onPreview && onPreview(banner)} className="p-1 text-black/50 dark:text-white/50 hover:text-[var(--primary)] hover:bg-[var(--primary)]/5 rounded-lg transition-colors"><Eye size={14} /></button>
+            <button className="p-1 text-black/50 dark:text-white/50 hover:text-[var(--primary)] hover:bg-[var(--primary)]/5 rounded-lg transition-colors"><Edit size={14} /></button>
+            <button className="p-1 text-black/50 dark:text-white/50 hover:text-red-500 hover:bg-red-500/5 rounded-lg transition-colors"><Trash2 size={14} /></button>
           </div>
         </div>
       )) : (
-        <div className="p-8 text-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-          <p className="text-zinc-500 dark:text-zinc-400">No banners found matching your filters.</p>
+        <div className="p-6 text-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+          <p className="text-xs font-semibold text-black/60 dark:text-white/60">No banners found matching your filters.</p>
         </div>
       )}
     </div>

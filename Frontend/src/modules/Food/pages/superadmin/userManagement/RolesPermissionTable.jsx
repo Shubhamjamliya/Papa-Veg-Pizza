@@ -46,20 +46,20 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
   return (
     <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
       {/* Filters */}
-      <div className="p-4 md:p-6 border-b border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center gap-4 bg-zinc-50 dark:bg-zinc-900/50">
-         <div className="flex-1 min-w-[300px] relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
+      <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center gap-2 bg-zinc-50 dark:bg-zinc-900/50">
+         <div className="flex-1 min-w-[200px] relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black dark:text-white" size={14} />
             <input 
-               className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm text-zinc-800 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-0 outline-none transition-colors" 
+               className="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-white placeholder-black/50 dark:placeholder-white/50 focus:border-[var(--primary)] focus:ring-0 outline-none transition-colors" 
                placeholder="Search roles, users, or permissions..." 
                type="text"
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
             />
          </div>
-         <div className="flex items-center gap-3">
+         <div className="flex flex-wrap items-center gap-2">
             <select 
-              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg py-2.5 px-4 text-sm focus:border-[var(--primary)] focus:ring-0 outline-none cursor-pointer"
+              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white rounded-lg py-1.5 px-2.5 text-xs font-semibold focus:border-[var(--primary)] focus:ring-0 outline-none cursor-pointer"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
             >
@@ -68,7 +68,7 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
                <option value="Custom">Custom</option>
             </select>
             <select 
-              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg py-2.5 px-4 text-sm focus:border-[var(--primary)] focus:ring-0 outline-none cursor-pointer"
+              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white rounded-lg py-1.5 px-2.5 text-xs font-semibold focus:border-[var(--primary)] focus:ring-0 outline-none cursor-pointer"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -78,7 +78,7 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
                <option value="Suspended">Suspended</option>
             </select>
             <select 
-              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg py-2.5 px-4 text-sm focus:border-[var(--primary)] focus:ring-0 outline-none cursor-pointer"
+              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white rounded-lg py-1.5 px-2.5 text-xs font-semibold focus:border-[var(--primary)] focus:ring-0 outline-none cursor-pointer"
               value={scopeFilter}
               onChange={(e) => setScopeFilter(e.target.value)}
             >
@@ -87,8 +87,8 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
                <option value="Franchise">Franchise</option>
                <option value="Store">Store</option>
             </select>
-            <button className="p-2.5 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-               <Filter size={20} />
+            <button className="p-1.5 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+               <Filter size={14} />
             </button>
          </div>
       </div>
@@ -98,45 +98,45 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
          <table className="w-full text-left border-collapse">
             <thead>
                <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Role Name</th>
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Type</th>
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Users</th>
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Permissions</th>
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Scope</th>
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-right">Actions</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Role Name</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Type</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Users</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Permissions</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Scope</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Status</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider text-right">Actions</th>
                </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                {paginatedRoles.length > 0 ? (
                  paginatedRoles.map((role) => (
                    <tr key={role.id} className="hover:bg-[var(--primary)]/5 dark:hover:bg-[var(--primary)]/10 transition-colors group">
-                      <td className="px-6 py-3 cursor-pointer" onClick={() => onPreviewRole(role)}>
-                         <div className="text-sm font-bold text-zinc-900 dark:text-zinc-50 group-hover:text-[var(--primary)] transition-colors">{role.name}</div>
-                         <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{role.subtitle}</div>
+                      <td className="px-3 py-2 cursor-pointer" onClick={() => onPreviewRole(role)}>
+                         <div className="text-xs font-bold text-black dark:text-white group-hover:text-[var(--primary)] transition-colors">{role.name}</div>
+                         <div className="text-[10px] text-black/70 dark:text-white/70 mt-0.5">{role.subtitle}</div>
                       </td>
-                      <td className="px-6 py-3">
-                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${role.type === 'System' ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300' : 'bg-red-50 dark:bg-red-900/20 text-[var(--primary)]'}`}>{role.type}</span>
+                      <td className="px-3 py-2">
+                         <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ${role.type === 'System' ? 'bg-zinc-100 dark:bg-zinc-800 text-black/70 dark:text-white/70' : 'bg-red-50 dark:bg-red-900/20 text-[var(--primary)]'}`}>{role.type}</span>
                       </td>
-                      <td className="px-6 py-3 text-[13px] font-medium text-zinc-800 dark:text-zinc-200">{role.users}</td>
-                      <td className="px-6 py-3 text-[13px] font-medium text-zinc-800 dark:text-zinc-200">
+                      <td className="px-3 py-2 text-xs font-semibold text-black dark:text-white">{role.users}</td>
+                      <td className="px-3 py-2 text-xs font-semibold text-black dark:text-white">
                          {role.permissionsCount} {role.permissionsTotal ? `/ ${role.permissionsTotal}` : ''}
                       </td>
-                      <td className="px-6 py-3 text-xs text-zinc-700 dark:text-zinc-300">{role.scope}</td>
-                      <td className="px-6 py-3">
-                         <span className={`px-3 py-1 rounded-full text-[11px] font-bold ${role.status === 'Active' ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : role.status === 'Suspended' ? 'bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'}`}>
+                      <td className="px-3 py-2 text-xs font-semibold text-black dark:text-white">{role.scope}</td>
+                      <td className="px-3 py-2">
+                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${role.status === 'Active' ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400' : role.status === 'Suspended' ? 'bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400' : 'bg-zinc-100 dark:bg-zinc-800 text-black/70 dark:text-white/70'}`}>
                             {role.status}
                          </span>
                       </td>
-                      <td className="px-6 py-3 text-right space-x-1">
-                         <button onClick={() => onPreviewRole(role)} className="text-zinc-400 hover:text-blue-500 dark:hover:text-blue-400 p-1.5 rounded-lg transition-colors"><Eye size={18} /></button>
-                         <button onClick={() => setEditingRole(role)} className="text-zinc-400 hover:text-[var(--primary)] p-1.5 rounded-lg transition-colors"><Edit size={18} /></button>
+                      <td className="px-3 py-2 text-right space-x-0.5">
+                         <button onClick={() => onPreviewRole(role)} className="text-black/60 dark:text-white/60 hover:text-blue-500 dark:hover:text-blue-400 p-1 rounded-lg transition-colors"><Eye size={14} /></button>
+                         <button onClick={() => setEditingRole(role)} className="text-black/60 dark:text-white/60 hover:text-[var(--primary)] p-1 rounded-lg transition-colors"><Edit size={14} /></button>
                          {role.type !== 'System' && (
                            <button 
                              onClick={() => onDeleteRole(role.id)} 
-                             className="text-zinc-400 hover:text-rose-500 p-1.5 rounded-lg transition-colors cursor-pointer"
+                             className="text-black/60 dark:text-white/60 hover:text-rose-500 p-1 rounded-lg transition-colors cursor-pointer"
                            >
-                             <Trash2 size={18} />
+                             <Trash2 size={14} />
                            </button>
                          )}
                       </td>
@@ -144,7 +144,7 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
                  ))
                ) : (
                  <tr>
-                   <td colSpan="7" className="px-6 py-12 text-center text-zinc-500 dark:text-zinc-400 text-sm">
+                   <td colSpan="7" className="px-3 py-6 text-center text-black/50 dark:text-white/50 text-xs">
                      No roles match the selected filters.
                    </td>
                  </tr>
@@ -155,23 +155,23 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
       
       {/* Pagination */}
       {filteredRoles.length > 0 && (
-        <div className="px-6 py-4 flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-200 dark:border-zinc-800">
-           <div className="text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="px-3 py-2 flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-200 dark:border-zinc-800">
+           <div className="text-[11px] font-medium text-black/70 dark:text-white/70">
               Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredRoles.length)} of {filteredRoles.length} roles
            </div>
            <div className="flex items-center gap-1">
               <button 
                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                  disabled={currentPage === 1}
-                 className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+                 className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
               >
-                 <ChevronLeft size={18} />
+                 <ChevronLeft size={12} />
               </button>
               {Array.from({ length: totalPages }).map((_, i) => (
                  <button 
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
-                    className={`w-8 h-8 flex items-center justify-center rounded text-xs font-bold transition-colors ${currentPage === i + 1 ? 'bg-[var(--primary)] text-white' : 'border border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
+                    className={`w-6 h-6 flex items-center justify-center rounded text-[10px] font-bold transition-colors ${currentPage === i + 1 ? 'bg-[var(--primary)] text-white' : 'border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
                  >
                     {i + 1}
                  </button>
@@ -179,9 +179,9 @@ export default function RolesPermissionTable({ rolesList, onPreviewRole, onDelet
               <button 
                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                  disabled={currentPage === totalPages}
-                 className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+                 className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
               >
-                 <ChevronRight size={18} />
+                 <ChevronRight size={12} />
               </button>
            </div>
         </div>

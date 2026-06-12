@@ -71,27 +71,27 @@ export default function AddonsData({ onViewDetails }) {
   return (
     <section className="bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
       {/* Search and Filters Header */}
-      <div className="p-4 md:p-6 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-        <div className="relative w-full sm:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+      <div className="p-3 flex flex-col sm:flex-row justify-between items-center gap-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+        <div className="relative w-full sm:w-80">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black dark:text-white/70" size={14} />
           <input 
             type="text"
-            className="w-full pl-10 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+            className="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white rounded-lg text-xs outline-none focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all font-medium"
             placeholder="Search add-ons..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <button 
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-4 py-2 border text-sm font-bold rounded-lg transition-colors w-full sm:w-auto justify-center shadow-sm ${
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 border text-xs font-bold rounded-lg transition-colors w-full sm:w-auto justify-center shadow-sm ${
               showFilters 
                 ? 'bg-[var(--primary)] text-white border-[var(--primary)]' 
-                : 'bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900'
+                : 'bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-50 dark:hover:bg-zinc-900'
             }`}
           >
-            <Filter size={18} />
+            <Filter size={12} />
             Filters
           </button>
         </div>
@@ -99,11 +99,11 @@ export default function AddonsData({ onViewDetails }) {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="p-4 md:p-6 bg-zinc-50 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 animate-in slide-in-from-top-2 duration-200">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Group</label>
+        <div className="p-3 bg-zinc-50 dark:bg-zinc-900/30 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 animate-in slide-in-from-top-2 duration-200">
+          <div className="space-y-1">
+            <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Group</label>
             <select 
-              className="w-full h-10 px-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)] text-zinc-900 dark:text-zinc-100"
+              className="w-full h-8 py-1 px-2.5 bg-white dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs outline-none focus:ring-1 focus:ring-[var(--primary)] text-black dark:text-white font-semibold"
               value={filterGroup}
               onChange={(e) => setFilterGroup(e.target.value)}
             >
@@ -113,10 +113,10 @@ export default function AddonsData({ onViewDetails }) {
               <option value="Dips">Dips</option>
             </select>
           </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Type</label>
+          <div className="space-y-1">
+            <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Type</label>
             <select 
-              className="w-full h-10 px-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)] text-zinc-900 dark:text-zinc-100"
+              className="w-full h-8 py-1 px-2.5 bg-white dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs outline-none focus:ring-1 focus:ring-[var(--primary)] text-black dark:text-white font-semibold"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
@@ -126,10 +126,10 @@ export default function AddonsData({ onViewDetails }) {
               <option value="Dip">Dip</option>
             </select>
           </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
+          <div className="space-y-1">
+            <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Status</label>
             <select 
-              className="w-full h-10 px-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)] text-zinc-900 dark:text-zinc-100"
+              className="w-full h-8 py-1 px-2.5 bg-white dark:bg-zinc-905 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs outline-none focus:ring-1 focus:ring-[var(--primary)] text-black dark:text-white font-semibold"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
@@ -141,7 +141,7 @@ export default function AddonsData({ onViewDetails }) {
           <div className="flex items-end">
             <button 
               onClick={resetFilters}
-              className="h-10 px-4 w-full bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-bold rounded-lg transition-colors"
+              className="h-8 px-3 w-full bg-zinc-250 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-black dark:text-white text-xs font-bold rounded-lg transition-colors border border-zinc-200 dark:border-zinc-700"
             >
               Reset Filters
             </button>
@@ -154,13 +154,13 @@ export default function AddonsData({ onViewDetails }) {
         <table className="w-full text-left">
           <thead className="bg-zinc-50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800">
             <tr>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Item Name</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Group</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Type</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Price</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Stock</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider text-right">Actions</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Item Name</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Group</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Type</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Price</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Stock</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Status</th>
+              <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider text-right"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -169,43 +169,43 @@ export default function AddonsData({ onViewDetails }) {
                 key={item.id} 
                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors group cursor-pointer"
               >
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex-shrink-0 border border-zinc-200 dark:border-zinc-700 shadow-sm">
+                <td className="px-3 py-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex-shrink-0 border border-zinc-200 dark:border-zinc-700 shadow-sm">
                       <img className="w-full h-full object-cover" src={item.image} alt={item.name} />
                     </div>
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100">{item.name}</span>
+                    <span className="font-bold text-xs text-black dark:text-white group-hover:text-[var(--primary)] transition-colors">{item.name}</span>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+                <td className="px-3 py-2 text-xs text-black/70 dark:text-white/70 font-semibold">
                   {item.group}
                 </td>
-                <td className="px-6 py-4">
-                  <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg text-xs font-bold shadow-sm">
+                <td className="px-3 py-2">
+                  <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white rounded text-[9px] font-bold shadow-sm">
                     {item.type}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                <td className="px-3 py-2 text-xs font-bold text-black dark:text-white">
                   {item.price}
                 </td>
-                <td className={`px-6 py-4 text-sm font-bold ${item.stock === 0 ? "text-red-500" : "text-zinc-900 dark:text-zinc-100"}`}>
+                <td className={`px-3 py-2 text-xs font-bold ${item.stock === 0 ? "text-red-500" : "text-black dark:text-white"}`}>
                   {item.stock} units
                 </td>
-                <td className="px-6 py-4">
-                  <span className={`flex items-center gap-1.5 text-xs font-bold ${item.status === 'Active' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-                    <span className={`w-2 h-2 rounded-full ${item.status === 'Active' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                <td className="px-3 py-2">
+                  <span className={`flex items-center gap-1 text-[9px] font-bold ${item.status === 'Active' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-650 dark:text-red-400'}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'Active' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                     {item.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-right">
+                <td className="px-3 py-2 text-right">
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       if (onViewDetails) onViewDetails(item);
                     }}
-                    className="text-zinc-400 hover:text-[var(--primary)] transition-colors p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-750 text-[var(--primary)] transition-colors inline-flex items-center gap-1.5"
                   >
-                    <Eye size={20} />
+                    <Eye size={14} />
                   </button>
                 </td>
               </tr>
@@ -213,7 +213,7 @@ export default function AddonsData({ onViewDetails }) {
             
             {filteredAddons.length === 0 && (
               <tr>
-                <td colSpan="7" className="px-6 py-8 text-center text-zinc-500">
+                <td colSpan="7" className="px-3 py-6 text-center text-black/50 dark:text-white/50 text-xs font-semibold">
                   No addons found matching "{searchTerm}"
                 </td>
               </tr>
@@ -223,17 +223,17 @@ export default function AddonsData({ onViewDetails }) {
       </div>
 
       {/* Pagination Footer */}
-      <div className="p-4 md:p-6 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col sm:flex-row justify-between items-center border-t border-zinc-200 dark:border-zinc-800 gap-4">
-        <p className="text-sm font-bold text-zinc-500">Showing {filteredAddons.length} of 84 items</p>
-        <div className="flex gap-2">
-          <button className="px-2 py-1 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50 text-zinc-700 dark:text-zinc-300" disabled>
-            <ChevronLeft size={18} />
+      <div className="px-3 py-2 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <p className="text-[11px] font-semibold text-black/70 dark:text-white/70">Showing {filteredAddons.length} of 84 items</p>
+        <div className="flex items-center gap-1">
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors" disabled>
+            <ChevronLeft size={12} />
           </button>
-          <button className="px-3 py-1 border border-[var(--primary)] rounded-lg bg-[var(--primary)] text-white font-bold shadow-sm">1</button>
-          <button className="px-3 py-1 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300 font-bold">2</button>
-          <button className="px-3 py-1 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300 font-bold">...</button>
-          <button className="px-2 py-1 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300">
-            <ChevronRight size={18} />
+          <button className="w-6 h-6 flex items-center justify-center rounded bg-[var(--primary)] text-white font-bold text-[10px] shadow-sm">1</button>
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">2</button>
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">...</button>
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+            <ChevronRight size={12} />
           </button>
         </div>
       </div>

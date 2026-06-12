@@ -33,19 +33,23 @@ export default function Addons() {
   };
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-950 min-h-screen w-full space-y-4">
       {/* Top App Bar Equivalent Content */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--primary)] dark:text-red-400">Add-ons & Toppings</h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage extra options, toppings, and dips.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2">
+        <div className="space-y-0.5">
+          <h1 className="text-lg font-bold text-black dark:text-white leading-tight">
+            Add-ons & Toppings
+          </h1>
+          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">
+            Manage extra options, toppings, and dips.
+          </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex items-center gap-1.5">
           <button 
             onClick={() => setIsAddGroupModalOpen(true)}
-            className="hidden sm:flex items-center gap-2 px-4 py-2 border border-[var(--primary)] text-[var(--primary)] rounded-xl font-bold text-sm hover:bg-[var(--primary)]/10 transition-colors bg-white dark:bg-zinc-950 shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white rounded-lg font-bold text-[11px] hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors bg-white dark:bg-zinc-950 shadow-sm"
           >
-            <PlusCircle size={18} />
+            <PlusCircle size={14} />
             Add Group
           </button>
           <button
@@ -53,134 +57,147 @@ export default function Addons() {
               setSelectedAddonToEdit(null);
               setIsAddModalOpen(true);
             }}
-            className="flex flex-1 sm:flex-none justify-center items-center gap-2 px-6 py-2 bg-[var(--primary)] text-white rounded-xl font-bold text-sm shadow-md hover:brightness-110 active:scale-[0.98] transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg font-bold text-[11px] shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
           >
-            <Plus size={18} />
+            <Plus size={14} />
             Add Add-on
           </button>
         </div>
       </div>
 
       {/* KPI Cards Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
-          <span className="text-zinc-500 font-bold text-xs uppercase tracking-wider">Total Add-ons</span>
-          <div className="flex items-end justify-between mt-2">
-            <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">84</span>
-            <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
-              <ClipboardList className="text-[var(--primary)]" size={20} />
+      <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4 select-none">
+        {/* Total Add-ons */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Total Add-ons</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">84</h3>
             </div>
+          </div>
+          <div className="p-1.5 rounded-md bg-[var(--primary)]/10 text-[var(--primary)] shrink-0 border border-[var(--primary)]/20">
+            <ClipboardList size={14} />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
-          <span className="text-zinc-500 font-bold text-xs uppercase tracking-wider">Active Add-ons</span>
-          <div className="flex items-end justify-between mt-2">
-            <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">72</span>
-            <div className="bg-emerald-100 dark:bg-emerald-900/30 p-2 rounded-lg">
-              <CheckCircle className="text-emerald-600 dark:text-emerald-400" size={20} />
+        {/* Active Add-ons */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Active Add-ons</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">72</h3>
             </div>
+          </div>
+          <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0 border border-emerald-100 dark:border-emerald-900/30">
+            <CheckCircle size={14} />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm border-t-4 border-t-red-500 flex flex-col justify-between">
-          <span className="text-zinc-500 font-bold text-xs uppercase tracking-wider">Out Of Stock</span>
-          <div className="flex items-end justify-between mt-2">
-            <span className="text-2xl font-black text-red-600 dark:text-red-400">8</span>
-            <div className="bg-red-100 dark:bg-red-900/30 p-2 rounded-lg">
-              <AlertTriangle className="text-red-600 dark:text-red-400" size={20} />
+        {/* Out Of Stock */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow border-t-2 border-t-red-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Out Of Stock</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-rose-600 dark:text-rose-455 mt-0.5">8</h3>
             </div>
+          </div>
+          <div className="p-1.5 rounded-md bg-red-500/10 text-rose-600 dark:text-rose-400 shrink-0 border border-red-100 dark:border-red-900/30">
+            <AlertTriangle size={14} />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
-          <span className="text-zinc-500 font-bold text-xs uppercase tracking-wider">Most Used</span>
-          <div className="flex items-end justify-between mt-2">
-            <span className="text-lg font-black text-zinc-900 dark:text-zinc-100 truncate pr-2">Extra Cheese</span>
-            <div className="bg-orange-100 dark:bg-orange-900/30 p-2 rounded-lg shrink-0">
-              <TrendingUp className="text-orange-600 dark:text-orange-400" size={20} />
+        {/* Most Used */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Most Used</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap mt-0.5">
+              <h3 className="text-[11px] font-black text-black dark:text-white truncate">Extra Cheese</h3>
             </div>
+          </div>
+          <div className="p-1.5 rounded-md bg-orange-500/10 text-orange-600 dark:text-orange-400 shrink-0 border border-orange-100 dark:border-orange-900/30">
+            <TrendingUp size={14} />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between">
-          <span className="text-zinc-500 font-bold text-xs uppercase tracking-wider">Revenue</span>
-          <div className="flex items-end justify-between mt-2">
-            <div>
-              <span className="text-2xl font-black text-zinc-900 dark:text-zinc-100">₹1,240.50</span>
-              <p className="text-emerald-600 font-bold text-xs flex items-center gap-1 mt-1">
-                <TrendingUp size={12} /> 12%
-              </p>
+        {/* Revenue */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow sm:col-span-1 col-span-2">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Revenue</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">₹1,240.50</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> 12%
+              </span>
             </div>
-            <div className="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-lg">
-              <DollarSign className="text-[var(--primary)]" size={20} />
-            </div>
+          </div>
+          <div className="p-1.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0 border border-blue-100 dark:border-blue-900/30">
+            <DollarSign size={14} />
           </div>
         </div>
       </section>
 
       {/* Add-on Groups */}
-      <section className="space-y-4">
-        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Layers className="text-[var(--primary)]" size={20} />
+      <section className="space-y-3">
+        <h3 className="text-xs font-bold text-black dark:text-white flex items-center gap-1.5">
+          <Layers className="text-[var(--primary)]" size={14} />
           Add-on Groups
         </h3>
-        <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+        <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1.5">
 
-          <div className="min-w-[280px] bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-[var(--primary)] dark:hover:border-[var(--primary)] transition-colors cursor-pointer group">
-            <div className="flex justify-between items-start mb-4">
+          <div className="min-w-[240px] bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-[var(--primary)] dark:hover:border-[var(--primary)] transition-colors cursor-pointer group">
+            <div className="flex justify-between items-start mb-2">
               <div>
-                <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Cheese Add-ons</h4>
-                <p className="text-zinc-500 text-xs font-bold mt-1">5 items</p>
+                <h4 className="text-xs font-bold text-black dark:text-white">Cheese Add-ons</h4>
+                <p className="text-black/70 dark:text-white/70 text-[10px] font-semibold mt-0.5">5 items</p>
               </div>
               <button 
                 onClick={(e) => { e.stopPropagation(); handleEditGroup({ name: 'Cheese Add-ons', min: 0, max: 3 }); }}
-                className="text-zinc-400 group-hover:text-[var(--primary)] transition-colors p-1"
+                className="text-black/50 hover:text-[var(--primary)] dark:text-white/50 dark:hover:text-[var(--primary)] transition-colors p-1"
               >
-                <Edit2 size={18} />
+                <Edit2 size={12} />
               </button>
             </div>
-            <div className="flex items-center gap-2 mt-6">
-              <span className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-bold text-zinc-700 dark:text-zinc-300">Min: 0</span>
-              <span className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-bold text-zinc-700 dark:text-zinc-300">Max: 3</span>
+            <div className="flex items-center gap-1.5 mt-4">
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[9px] font-bold text-black/85 dark:text-white/85">Min: 0</span>
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[9px] font-bold text-black/85 dark:text-white/85">Max: 3</span>
             </div>
           </div>
 
-          <div className="min-w-[280px] bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-[var(--primary)] dark:hover:border-[var(--primary)] transition-colors cursor-pointer group border-t-4 border-t-orange-400">
-            <div className="flex justify-between items-start mb-4">
+          <div className="min-w-[240px] bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-[var(--primary)] dark:hover:border-[var(--primary)] transition-colors cursor-pointer group border-t-2 border-t-orange-400">
+            <div className="flex justify-between items-start mb-2">
               <div>
-                <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Veg Toppings</h4>
-                <p className="text-zinc-500 text-xs font-bold mt-1">12 items</p>
+                <h4 className="text-xs font-bold text-black dark:text-white">Veg Toppings</h4>
+                <p className="text-black/70 dark:text-white/70 text-[10px] font-semibold mt-0.5">12 items</p>
               </div>
               <button 
                 onClick={(e) => { e.stopPropagation(); handleEditGroup({ name: 'Veg Toppings', min: 0, max: 5 }); }}
-                className="text-zinc-400 group-hover:text-[var(--primary)] transition-colors p-1"
+                className="text-black/50 hover:text-[var(--primary)] dark:text-white/50 dark:hover:text-[var(--primary)] transition-colors p-1"
               >
-                <Edit2 size={18} />
+                <Edit2 size={12} />
               </button>
             </div>
-            <div className="flex items-center gap-2 mt-6">
-              <span className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-bold text-zinc-700 dark:text-zinc-300">Min: 0</span>
-              <span className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-bold text-zinc-700 dark:text-zinc-300">Max: 5</span>
+            <div className="flex items-center gap-1.5 mt-4">
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[9px] font-bold text-black/85 dark:text-white/85">Min: 0</span>
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[9px] font-bold text-black/85 dark:text-white/85">Max: 5</span>
             </div>
           </div>
 
-          <div className="min-w-[280px] bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-[var(--primary)] dark:hover:border-[var(--primary)] transition-colors cursor-pointer group">
-            <div className="flex justify-between items-start mb-4">
+          <div className="min-w-[240px] bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm hover:border-[var(--primary)] dark:hover:border-[var(--primary)] transition-colors cursor-pointer group">
+            <div className="flex justify-between items-start mb-2">
               <div>
-                <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">Dips</h4>
-                <p className="text-zinc-500 text-xs font-bold mt-1">4 items</p>
+                <h4 className="text-xs font-bold text-black dark:text-white">Dips</h4>
+                <p className="text-black/70 dark:text-white/70 text-[10px] font-semibold mt-0.5">4 items</p>
               </div>
               <button 
                 onClick={(e) => { e.stopPropagation(); handleEditGroup({ name: 'Dips', min: 0, max: 2 }); }}
-                className="text-zinc-400 group-hover:text-[var(--primary)] transition-colors p-1"
+                className="text-black/50 hover:text-[var(--primary)] dark:text-white/50 dark:hover:text-[var(--primary)] transition-colors p-1"
               >
-                <Edit2 size={18} />
+                <Edit2 size={12} />
               </button>
             </div>
-            <div className="flex items-center gap-2 mt-6">
-              <span className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-bold text-zinc-700 dark:text-zinc-300">Min: 0</span>
-              <span className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded text-xs font-bold text-zinc-700 dark:text-zinc-300">Max: 2</span>
+            <div className="flex items-center gap-1.5 mt-4">
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[9px] font-bold text-black/85 dark:text-white/85">Min: 0</span>
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[9px] font-bold text-black/85 dark:text-white/85">Max: 2</span>
             </div>
           </div>
 

@@ -37,27 +37,27 @@ export default function RevenueData() {
       case 0: return 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-500';
       case 1: return 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
       case 2: return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-500';
-      default: return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400';
+      default: return 'bg-zinc-100 dark:bg-zinc-800 text-black/50 dark:text-white/50';
     }
   };
 
   return (
     <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden flex flex-col h-full">
-      <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="px-3.5 py-2.5 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div>
-          <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">Top Store Ranking</h3>
-          <span className="text-[10px] uppercase font-bold text-zinc-500 dark:text-zinc-400 tracking-widest">Revenue Weighted</span>
+          <h3 className="font-bold text-xs text-black dark:text-white">Top Store Ranking</h3>
+          <span className="text-[9px] uppercase font-bold text-black/50 dark:text-white/50 tracking-widest">Revenue Weighted</span>
         </div>
         
         {/* Search Input for Debouncing */}
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+        <div className="relative w-full sm:w-48">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/50 dark:text-white/50" size={12} />
           <input 
             type="text" 
-            placeholder="Search stores or clusters..." 
+            placeholder="Search stores..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm focus:border-[var(--primary)] focus:ring-[var(--primary)] outline-none transition-all dark:text-zinc-100"
+            className="w-full pl-8 pr-3 py-1.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg text-xs focus:border-[var(--primary)] focus:ring-[var(--primary)] outline-none transition-all text-black dark:text-white"
           />
         </div>
       </div>
@@ -66,33 +66,33 @@ export default function RevenueData() {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800">
-              <th className="px-5 py-3 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Rank</th>
-              <th className="px-5 py-3 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Store Location</th>
-              <th className="px-5 py-3 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Revenue</th>
-              <th className="px-5 py-3 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Growth</th>
+              <th className="px-3 py-2 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Rank</th>
+              <th className="px-3 py-2 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Store Location</th>
+              <th className="px-3 py-2 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Revenue</th>
+              <th className="px-3 py-2 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Growth</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
             {filteredStores.length > 0 ? (
               filteredStores.map((store, index) => (
                 <tr key={store.id} className="hover:bg-[var(--primary)]/5 dark:hover:bg-[var(--primary)]/10 transition-colors group">
-                  <td className="px-5 py-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${getRankColor(index)}`}>
+                  <td className="px-3 py-2">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px] ${getRankColor(index)}`}>
                       {(index + 1).toString().padStart(2, '0')}
                     </div>
                   </td>
-                  <td className="px-5 py-4">
+                  <td className="px-3 py-2">
                     <div className="flex flex-col">
-                      <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{store.name}</span>
-                      <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">{store.cluster}</span>
+                      <span className="font-bold text-xs text-black dark:text-white">{store.name}</span>
+                      <span className="text-[10px] font-semibold text-black/50 dark:text-white/50">{store.cluster}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-4 font-mono text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  <td className="px-3 py-2 font-mono text-xs font-bold text-black dark:text-white">
                     {formatCurrencyLakhs(store.revenue)}
                   </td>
-                  <td className="px-5 py-4">
-                    <span className="text-emerald-600 dark:text-emerald-500 flex items-center gap-1 font-bold text-xs">
-                      <TrendingUp size={14} />
+                  <td className="px-3 py-2">
+                    <span className="text-emerald-600 dark:text-emerald-500 flex items-center gap-0.5 font-bold text-xs">
+                      <TrendingUp size={12} />
                       {store.growth}%
                     </span>
                   </td>
@@ -100,7 +100,7 @@ export default function RevenueData() {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="px-5 py-8 text-center text-zinc-500 dark:text-zinc-400 text-sm">
+                <td colSpan="4" className="px-3 py-6 text-center text-black/50 dark:text-white/50 font-semibold text-xs">
                   No stores found matching your search.
                 </td>
               </tr>
@@ -108,8 +108,8 @@ export default function RevenueData() {
           </tbody>
         </table>
       </div>
-      <div className="p-4 bg-zinc-50 dark:bg-zinc-950/50 border-t border-zinc-200 dark:border-zinc-800 flex justify-center">
-        <button className="text-xs text-[var(--primary)] font-bold hover:underline">View Full Leaderboard</button>
+      <div className="py-2 bg-zinc-50 dark:bg-zinc-950/50 border-t border-zinc-200 dark:border-zinc-800 flex justify-center">
+        <button className="text-[10px] text-[var(--primary)] font-bold hover:underline">View Full Leaderboard</button>
       </div>
     </div>
   );

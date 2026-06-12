@@ -51,33 +51,33 @@ export default function PaymentsData({ onProcessRefund, onViewTransaction }) {
   return (
     <>
       {/* Filters Bar */}
-      <div className="sticky top-16 z-30 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm flex flex-wrap items-center gap-4 mb-8">
-        <div className="relative flex-1 min-w-[240px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+      <div className="sticky top-12 z-30 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 p-2.5 rounded-xl shadow-sm flex flex-wrap items-center gap-2 mb-4">
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/50 dark:text-white/50" size={12} />
           <input 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none text-sm transition-colors text-zinc-800 dark:text-zinc-200" 
+            className="w-full pl-8 pr-3 py-1.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] focus:outline-none text-xs transition-colors text-black dark:text-white" 
             placeholder="Search Customer, Order, or Transaction ID..." 
             type="text" 
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Calendar className="text-zinc-400" size={16} />
+        <div className="flex items-center gap-1.5">
+          <Calendar className="text-black/50 dark:text-white/50" size={12} />
           <select 
             value={dateRange} onChange={(e) => setDateRange(e.target.value)}
-            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium py-2 px-3 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-zinc-800 dark:text-zinc-200 transition-colors"
+            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-bold py-1 px-2 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-black dark:text-white transition-colors"
           >
             <option>Today</option>
             <option>Last 7 Days</option>
             <option>Custom Range</option>
           </select>
         </div>
-        <div className="flex items-center gap-2">
-          <Store className="text-zinc-400" size={16} />
+        <div className="flex items-center gap-1.5">
+          <Store className="text-black/50 dark:text-white/50" size={12} />
           <select 
              value={storeFilter} onChange={(e) => setStoreFilter(e.target.value)}
-             className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium py-2 px-3 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-zinc-800 dark:text-zinc-200 transition-colors"
+             className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-bold py-1 px-2 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-black dark:text-white transition-colors"
           >
             <option>All Stores</option>
             <option>Indiranagar HQ</option>
@@ -86,11 +86,11 @@ export default function PaymentsData({ onProcessRefund, onViewTransaction }) {
             <option>Whitefield</option>
           </select>
         </div>
-        <div className="flex items-center gap-2">
-          <Globe className="text-zinc-400" size={16} />
+        <div className="flex items-center gap-1.5">
+          <Globe className="text-black/50 dark:text-white/50" size={12} />
           <select 
             value={gatewayFilter} onChange={(e) => setGatewayFilter(e.target.value)}
-            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium py-2 px-3 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-zinc-800 dark:text-zinc-200 transition-colors"
+            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-bold py-1 px-2 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-black dark:text-white transition-colors"
           >
             <option>All Gateways</option>
             <option>Razorpay</option>
@@ -99,11 +99,11 @@ export default function PaymentsData({ onProcessRefund, onViewTransaction }) {
             <option>Paytm</option>
           </select>
         </div>
-        <div className="flex items-center gap-2">
-          <Filter className="text-zinc-400" size={16} />
+        <div className="flex items-center gap-1.5">
+          <Filter className="text-black/50 dark:text-white/50" size={12} />
           <select 
             value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium py-2 px-3 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-zinc-800 dark:text-zinc-200 transition-colors"
+            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-bold py-1 px-2 focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] text-black dark:text-white transition-colors"
           >
             <option>All Statuses</option>
             <option>Successful</option>
@@ -120,22 +120,22 @@ export default function PaymentsData({ onProcessRefund, onViewTransaction }) {
             setGatewayFilter('All Gateways');
             setStatusFilter('All Statuses');
           }}
-          className="ml-auto w-10 h-10 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-300"
+          className="ml-auto w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-black/70 dark:text-white/70"
         >
-          <RefreshCw size={16} />
+          <RefreshCw size={12} />
         </button>
       </div>
 
       {/* Data Table */}
-      <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden mb-8">
-        <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <h5 className="font-bold text-zinc-900 dark:text-zinc-100">Recent Transactions</h5>
-            <span className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] font-black rounded-full uppercase tracking-wider">Live Feed</span>
+      <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden mb-4">
+        <div className="px-3.5 py-2.5 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <h5 className="font-bold text-xs text-black dark:text-white">Recent Transactions</h5>
+            <span className="px-1.5 py-0.2 bg-zinc-100 dark:bg-zinc-800 text-black/70 dark:text-white/70 text-[9px] font-black rounded-full uppercase tracking-wider">Live Feed</span>
           </div>
-          <div className="flex gap-2">
-            <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-zinc-500 dark:text-zinc-400">
-              <MoreVertical size={16} />
+          <div className="flex gap-1.5">
+            <button className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-black/50 dark:text-white/50">
+              <MoreVertical size={14} />
             </button>
           </div>
         </div>
@@ -143,38 +143,38 @@ export default function PaymentsData({ onProcessRefund, onViewTransaction }) {
           <table className="w-full text-left border-collapse">
             <thead className="bg-zinc-50/50 dark:bg-zinc-950/50 sticky top-0">
               <tr>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800"><input className="rounded border-zinc-300 dark:border-zinc-700 text-[var(--primary)] focus:ring-[var(--primary)]" type="checkbox" /></th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Payment ID</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Order ID</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Customer</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Store</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Gateway</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Amount</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-right">Status</th>
-                <th className="p-4 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-center">Actions</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 w-8"><input className="rounded border-zinc-300 dark:border-zinc-700 text-[var(--primary)] focus:ring-[var(--primary)]" type="checkbox" /></th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Payment ID</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Order ID</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Customer</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Store</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Gateway</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Amount</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider text-right">Status</th>
+                <th className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-800 text-[9px] font-bold text-black dark:text-white uppercase tracking-wider text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200/50 dark:divide-zinc-800/50">
               {filteredData.length > 0 ? filteredData.map((tx, i) => (
                 <tr key={i} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/20 transition-colors group">
-                  <td className="p-4"><input className="rounded border-zinc-300 dark:border-zinc-700 text-[var(--primary)] focus:ring-[var(--primary)] bg-transparent" type="checkbox" /></td>
-                  <td className="p-4 text-[var(--primary)] font-bold text-sm">{tx.id}</td>
-                  <td className="p-4 text-sm font-medium text-zinc-600 dark:text-zinc-300">{tx.orderId}</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-700 dark:text-zinc-300">{tx.customer.initials}</div>
-                      <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">{tx.customer.name}</span>
+                  <td className="px-3 py-2"><input className="rounded border-zinc-300 dark:border-zinc-700 text-[var(--primary)] focus:ring-[var(--primary)] bg-transparent" type="checkbox" /></td>
+                  <td className="px-3 py-2 text-[var(--primary)] font-bold text-xs">{tx.id}</td>
+                  <td className="px-3 py-2 text-xs font-semibold text-black/70 dark:text-white/70">{tx.orderId}</td>
+                  <td className="px-3 py-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[9px] font-bold text-black dark:text-white shrink-0">{tx.customer.initials}</div>
+                      <span className="text-xs font-semibold text-black dark:text-white">{tx.customer.name}</span>
                     </div>
                   </td>
-                  <td className="p-4 text-sm font-medium text-zinc-600 dark:text-zinc-300">{tx.store}</td>
-                  <td className="p-4">
-                    <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200/50 dark:border-zinc-700/50">{tx.gateway}</span>
+                  <td className="px-3 py-2 text-xs font-semibold text-black/70 dark:text-white/70">{tx.store}</td>
+                  <td className="px-3 py-2">
+                    <span className="text-[9px] font-bold text-black/70 dark:text-white/70 uppercase px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200/50 dark:border-zinc-700/50">{tx.gateway}</span>
                   </td>
-                  <td className="p-4 font-black text-zinc-900 dark:text-zinc-100">₹{tx.amount.toFixed(2)}</td>
-                  <td className="p-4 text-right">
-                    <span className={`px-2 py-1 text-[10px] font-bold rounded-full border ${getStatusStyle(tx.status)}`}>{tx.status}</span>
+                  <td className="px-3 py-2 font-bold text-xs text-black dark:text-white">₹{tx.amount.toFixed(2)}</td>
+                  <td className="px-3 py-2 text-right">
+                    <span className={`px-1.5 py-0.5 text-[9px] font-bold rounded border ${getStatusStyle(tx.status)}`}>{tx.status}</span>
                   </td>
-                  <td className="p-4 text-center">
+                  <td className="px-3 py-2 text-center">
                     <button 
                       onClick={() => {
                         if (tx.status === 'REFUNDED') {
@@ -183,31 +183,31 @@ export default function PaymentsData({ onProcessRefund, onViewTransaction }) {
                           onViewTransaction && onViewTransaction(tx);
                         }
                       }}
-                      className="p-1.5 text-zinc-400 dark:text-zinc-500 hover:text-[var(--primary)] dark:hover:text-[var(--primary)] transition-colors rounded-lg border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                      className="p-1 text-black/50 dark:text-white/50 hover:text-[var(--primary)] dark:hover:text-[var(--primary)] transition-colors rounded-lg border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800"
                     >
-                      {tx.status === 'SUCCESSFUL' || tx.status === 'PENDING' ? <Eye size={16} /> : tx.status === 'FAILED' ? <RotateCcw size={16} /> : <Info size={16} />}
+                      {tx.status === 'SUCCESSFUL' || tx.status === 'PENDING' ? <Eye size={12} /> : tx.status === 'FAILED' ? <RotateCcw size={12} /> : <Info size={12} />}
                     </button>
                   </td>
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan="9" className="p-8 text-center text-zinc-500 dark:text-zinc-400 font-medium">No transactions found</td>
+                  <td colSpan="9" className="px-3 py-4 text-center text-black/50 dark:text-white/50 font-semibold text-xs">No transactions found</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-        <div className="p-4 bg-zinc-50/50 dark:bg-zinc-950/50 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">Showing {filteredData.length > 0 ? 1 : 0}-{Math.min(10, filteredData.length)} of {filteredData.length} transactions</p>
-          <div className="flex gap-2">
-            <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 disabled:opacity-50 text-zinc-600 dark:text-zinc-400" disabled>
-              <ChevronLeft size={16} />
+        <div className="px-3.5 py-2 bg-zinc-50/50 dark:bg-zinc-950/50 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+          <p className="text-[10px] text-black/50 dark:text-white/50 font-bold">Showing {filteredData.length > 0 ? 1 : 0}-{Math.min(10, filteredData.length)} of {filteredData.length} transactions</p>
+          <div className="flex gap-1.5">
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 disabled:opacity-50 text-black/50 dark:text-white/50" disabled>
+              <ChevronLeft size={12} />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center bg-[var(--primary)] text-white rounded text-xs font-bold shadow-sm">1</button>
-            <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">2</button>
-            <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-xs font-bold text-zinc-600 dark:text-zinc-400">3</button>
-            <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-              <ChevronRight size={16} />
+            <button className="w-6 h-6 flex items-center justify-center bg-[var(--primary)] text-white rounded text-[10px] font-bold shadow-sm">1</button>
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-[10px] font-bold text-black/50 dark:text-white/50">2</button>
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-[10px] font-bold text-black/50 dark:text-white/50">3</button>
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-black/50 dark:text-white/50">
+              <ChevronRight size={12} />
             </button>
           </div>
         </div>

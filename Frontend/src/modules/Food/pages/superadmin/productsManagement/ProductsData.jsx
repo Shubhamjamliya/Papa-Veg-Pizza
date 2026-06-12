@@ -59,24 +59,24 @@ export default function ProductsData({ onViewProduct }) {
   });
 
   const getStatusBadge = (status) => {
-    if (status === "Active") return <span className="px-3 py-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 text-[10px] uppercase tracking-wider font-bold rounded-full">Active</span>;
-    if (status === "Low Stock") return <span className="px-3 py-1 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 text-[10px] uppercase tracking-wider font-bold rounded-full">Low Stock</span>;
-    if (status === "Inactive") return <span className="px-3 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 text-[10px] uppercase tracking-wider font-bold rounded-full">Inactive</span>;
+    if (status === "Active") return <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 text-[9px] uppercase tracking-wider font-bold rounded">Active</span>;
+    if (status === "Low Stock") return <span className="px-2 py-0.5 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 text-[9px] uppercase tracking-wider font-bold rounded">Low Stock</span>;
+    if (status === "Inactive") return <span className="px-2 py-0.5 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 text-[9px] uppercase tracking-wider font-bold rounded">Inactive</span>;
     return null;
   };
 
   return (
     <>
       {/* Search & Filter Panel */}
-      <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm mb-6">
+      <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm mb-3">
         <div
-          className="p-2 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 cursor-pointer"
+          className="p-1.5 px-3 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 cursor-pointer"
           onClick={() => setShowFilters(!showFilters)}
         >
-          <div className="flex items-center gap-3 flex-1">
-            <Search className="text-zinc-400" size={20} />
+          <div className="flex items-center gap-2 flex-1">
+            <Search className="text-black dark:text-white/70" size={14} />
             <input
-              className="bg-transparent border-none focus:ring-0 w-full text-sm outline-none text-zinc-900 dark:text-zinc-100"
+              className="bg-transparent border-none focus:ring-0 w-full text-xs outline-none text-black dark:text-white font-medium"
               placeholder="Search products..."
               type="text"
               value={searchTerm}
@@ -84,19 +84,19 @@ export default function ProductsData({ onViewProduct }) {
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-          <button className="flex items-center gap-2 text-sm font-bold text-[var(--primary)] hover:bg-[var(--primary)]/10 px-3 py-1.5 rounded-lg transition-colors">
-            <Filter size={18} />
+          <button className="flex items-center gap-1.5 text-xs font-bold text-[var(--primary)] hover:bg-[var(--primary)]/10 px-2.5 py-1 rounded-lg transition-colors border border-zinc-200 dark:border-zinc-800">
+            <Filter size={12} />
             Filters
           </button>
         </div>
 
         {showFilters && (
-          <div className="p-4 flex flex-col gap-6 animate-in slide-in-from-top-2 duration-200 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Category</label>
+          <div className="p-3 flex flex-col gap-3 animate-in slide-in-from-top-2 duration-200 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Category</label>
                 <select
-                  className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all dark:text-zinc-100"
+                  className="w-full h-8 py-1 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-xs outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all text-black dark:text-white font-semibold"
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
                 >
@@ -107,10 +107,10 @@ export default function ProductsData({ onViewProduct }) {
                   <option>Beverages</option>
                 </select>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Store</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Store</label>
                 <select
-                  className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all dark:text-zinc-100"
+                  className="w-full h-8 py-1 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-xs outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)]/20 transition-all text-black dark:text-white font-semibold"
                   value={storeFilter}
                   onChange={(e) => setStoreFilter(e.target.value)}
                 >
@@ -119,31 +119,31 @@ export default function ProductsData({ onViewProduct }) {
                   <option>Westside Express</option>
                 </select>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
-                <div className="flex gap-2 h-10 items-center">
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Status</label>
+                <div className="flex gap-1.5 h-8 items-center">
                   <button
                     onClick={() => setStatusFilter("All")}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "All" ? "bg-[var(--primary)] text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                    className={`px-3 py-1 rounded-full text-[11px] font-bold transition-colors ${statusFilter === "All" ? "bg-[var(--primary)] text-white" : "bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white"}`}
                   >
                     All
                   </button>
                   <button
                     onClick={() => setStatusFilter("Active")}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "Active" ? "bg-emerald-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                    className={`px-3 py-1 rounded-full text-[11px] font-bold transition-colors ${statusFilter === "Active" ? "bg-emerald-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white"}`}
                   >
                     Active
                   </button>
                   <button
                     onClick={() => setStatusFilter("Inactive")}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${statusFilter === "Inactive" ? "bg-red-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"}`}
+                    className={`px-3 py-1 rounded-full text-[11px] font-bold transition-colors ${statusFilter === "Inactive" ? "bg-red-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white"}`}
                   >
                     Inactive
                   </button>
                 </div>
               </div>
             </div>
-            <div className="flex justify-end items-center mt-2">
+            <div className="flex justify-end items-center mt-1">
               <button
                 onClick={() => {
                   setCategoryFilter("All Categories");
@@ -152,9 +152,9 @@ export default function ProductsData({ onViewProduct }) {
                   setSearchTerm("");
                 }}
                 title="Reset Filters"
-                className="p-2 rounded-full text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-1.5 rounded-full text-black hover:text-black hover:bg-zinc-100 dark:text-white dark:hover:text-white dark:hover:bg-zinc-800 transition-colors"
               >
-                <RotateCcw size={18} />
+                <RotateCcw size={14} />
               </button>
             </div>
           </div>
@@ -162,68 +162,67 @@ export default function ProductsData({ onViewProduct }) {
       </section>
 
       {/* Products List */}
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-3">
         {filteredProducts.map(product => (
           <div key={product.id} onClick={() => onViewProduct?.(product)} className={`bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden flex flex-col sm:flex-row relative group transition-all hover:shadow-md cursor-pointer ${product.status === "Inactive" ? "opacity-75" : ""}`}>
-            <div className="w-full sm:w-48 h-40 sm:h-auto overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
+            <div className="w-full sm:w-32 h-28 sm:h-auto overflow-hidden bg-zinc-100 dark:bg-zinc-800 shrink-0">
               <img
                 className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${product.status === "Inactive" ? "grayscale" : ""}`}
                 src={product.image}
                 alt={product.name}
               />
             </div>
-            <div className="p-2 md:p-6 flex flex-col flex-1 gap-2">
+            <div className="p-3 flex flex-col flex-1 gap-1.5">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-md font-bold text-zinc-900 dark:text-zinc-100">{product.name}</h3>
-                  <p className="text-xs text-zinc-500 font-medium mt-1">SKU: {product.id} • {product.category}</p>
+                  <h3 className="text-xs font-bold text-black dark:text-white">{product.name}</h3>
+                  <p className="text-[10px] text-black/70 dark:text-white/70 font-semibold mt-0.5">SKU: {product.id} • {product.category}</p>
                 </div>
                 <button
-                  className="px-3 py-1.5 rounded-lg border-none border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-xs font-bold text-[var(--primary)] transition-colors flex items-center gap-1.5"
+                  className="p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-750 text-[var(--primary)] transition-colors flex items-center gap-1.5"
                 >
-                  <Eye size={16} />
+                  <Eye size={14} />
                 </button>
               </div>
-              <div className="grid grid-cols-2 gap-4 mt-2 mb-2">
+              <div className="grid grid-cols-2 gap-3 mt-1 mb-1">
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Price</span>
-                  <span className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mt-0.5">{product.price}</span>
+                  <span className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Price</span>
+                  <span className="text-xs font-bold text-black dark:text-white mt-0.5">{product.price}</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Stock</span>
-                  <span className={`text-lg font-bold mt-0.5 ${product.stock <= 5 && product.stock > 0 ? "text-orange-500" : product.stock === 0 ? "text-red-500" : "text-zinc-900 dark:text-zinc-100"}`}>
+                  <span className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Stock</span>
+                  <span className={`text-xs font-bold mt-0.5 ${product.stock <= 5 && product.stock > 0 ? "text-orange-500" : product.stock === 0 ? "text-red-500" : "text-black dark:text-white"}`}>
                     {product.stock} units
                   </span>
                 </div>
               </div>
-              <div className="mt-auto">
+              <div className="mt-auto flex items-center justify-between">
                 {getStatusBadge(product.status)}
               </div>
             </div>
           </div>
         ))}
         {filteredProducts.length === 0 && (
-          <div className="p-8 text-center text-zinc-500 font-medium bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div className="p-6 text-center text-black/50 dark:text-white/50 text-xs font-semibold bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
             No products found matching your criteria.
           </div>
         )}
       </section>
 
       {/* Pagination */}
-      <div className="mt-8 mb-4 flex items-center justify-between">
-        <button className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed" disabled>
-          <ChevronLeft size={20} />
-        </button>
-        <div className="flex gap-1 items-center">
-          <span className="w-8 h-8 flex items-center justify-center rounded-lg bg-[var(--primary)] text-white font-bold text-sm">1</span>
-          <span className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold text-sm cursor-pointer transition-colors">2</span>
-          <span className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold text-sm cursor-pointer transition-colors">3</span>
-          <span className="px-2 text-zinc-400">...</span>
-          <span className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold text-sm cursor-pointer transition-colors">12</span>
+      <div className="px-3 py-2 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-2 mt-4 rounded-xl">
+        <p className="text-[11px] font-medium text-black/70 dark:text-white/70">Showing 1 to {filteredProducts.length} of {products.length} entries</p>
+        <div className="flex items-center gap-1">
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors" disabled>
+            <ChevronLeft size={12} />
+          </button>
+          <button className="w-6 h-6 flex items-center justify-center rounded bg-[var(--primary)] text-white font-bold text-[10px] shadow-sm">1</button>
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">2</button>
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">3</button>
+          <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+            <ChevronRight size={12} />
+          </button>
         </div>
-        <button className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-500 transition-colors">
-          <ChevronRight size={20} />
-        </button>
       </div>
     </>
   );

@@ -98,113 +98,93 @@ export default function StoreRequestApproval() {
   const rejectedCount = requests.filter((r) => r.status === "Rejected").length;
 
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-950 min-h-screen w-full space-y-4">
       {/* Breadcrumbs & Header */}
-      <div className="space-y-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">Store Requests & Approvals</h2>
-            <p className="text-zinc-500 mt-2 max-w-2xl text-sm">Manage franchise applications, approvals, document verification, and onboarding workflows efficiently.</p>
-          </div>
-          <div className="flex items-center gap-3 whitespace-nowrap">
-            <button className="px-4 py-2 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 font-semibold rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors flex items-center gap-2 text-sm shadow-sm">
-              <Download size={16} />
-              Export Requests
-            </button>
-            <button
-              onClick={() => setIsBulkActionOpen(true)}
-              className="px-5 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:brightness-110 shadow-lg shadow-[var(--primary)]/20 transition-all flex items-center gap-2 text-sm"
-            >
-              <Layers size={18} />
-              Bulk Actions {selectedRequestIds.length > 0 && `(${selectedRequestIds.length})`}
-            </button>
-          </div>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2">
+        <div className="space-y-0.5">
+          <h1 className="text-lg font-bold text-black dark:text-white leading-tight">
+            Store Requests & Approvals
+          </h1>
+          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">
+            Manage franchise applications, approvals, document verification, and onboarding workflows efficiently
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.01] transition-all cursor-pointer font-bold text-[11px]">
+            <Download size={14} />
+            <span>EXPORT REQUESTS</span>
+          </button>
+          <button
+            onClick={() => setIsBulkActionOpen(true)}
+            className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
+          >
+            <Layers size={14} className="stroke-[3]" />
+            <span>BULK ACTIONS {selectedRequestIds.length > 0 && `(${selectedRequestIds.length})`}</span>
+          </button>
         </div>
       </div>
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4 select-none">
         {/* Pending */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-lg">
-              <Store size={20} />
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Pending Requests</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">{pendingCount}</h3>
+              <span className="text-amber-500 font-bold text-[8px]">Action Required</span>
             </div>
-            <div className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Pending</div>
           </div>
-          <div>
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Pending Requests</p>
-            <div className="flex items-end justify-between">
-              <h4 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{pendingCount}</h4>
-              {/* Sparkline simulation */}
-              <div className="h-8 w-20 bg-amber-500/10 rounded relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-amber-500/30 dark:bg-amber-500/50" style={{ clipPath: 'polygon(0% 100%, 0% 40%, 20% 60%, 40% 30%, 60% 70%, 80% 20%, 100% 50%, 100% 100%)' }}></div>
-              </div>
-            </div>
+          <div className="p-1.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0 border border-amber-100 dark:border-amber-900/30">
+            <Store size={14} />
           </div>
         </div>
 
         {/* Under Review */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg">
-              <Eye size={20} />
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Under Review</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">{underReviewCount}</h3>
+              <span className="text-blue-500 font-bold text-[8px]">In Progress</span>
             </div>
-            <div className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Under Review</div>
           </div>
-          <div>
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Under Review</p>
-            <div className="flex items-end justify-between">
-              <h4 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{underReviewCount}</h4>
-              <div className="h-8 w-20 bg-blue-500/10 rounded relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-blue-500/30 dark:bg-blue-500/50" style={{ clipPath: 'polygon(0% 100%, 0% 70%, 25% 40%, 50% 60%, 75% 20%, 100% 40%, 100% 100%)' }}></div>
-              </div>
-            </div>
+          <div className="p-1.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0 border border-blue-100 dark:border-blue-900/30">
+            <Eye size={14} />
           </div>
         </div>
 
         {/* Approved */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-[var(--primary)]/10 text-[var(--primary)] rounded-lg">
-              <CheckCircle size={20} />
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Approved</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">{approvedCount}</h3>
+              <span className="text-emerald-500 font-bold text-[8px]">Ready to Onboard</span>
             </div>
-            <div className="bg-[var(--primary)]/10 text-[var(--primary)] px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Approved</div>
           </div>
-          <div>
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Approved</p>
-            <div className="flex items-end justify-between">
-              <h4 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{approvedCount}</h4>
-              <div className="h-8 w-20 bg-[var(--primary)]/10 rounded relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-[var(--primary)]/30" style={{ clipPath: 'polygon(0% 100%, 0% 80%, 20% 50%, 40% 40%, 60% 30%, 80% 20%, 100% 10%, 100% 100%)' }}></div>
-              </div>
-            </div>
+          <div className="p-1.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0 border border-emerald-100 dark:border-emerald-900/30">
+            <CheckCircle size={14} />
           </div>
         </div>
 
         {/* Rejected */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 hover:shadow-md transition-shadow group">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg">
-              <XCircle size={20} />
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Rejected</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">{rejectedCount}</h3>
+              <span className="text-rose-500 font-bold text-[8px]">Closed</span>
             </div>
-            <div className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Rejected</div>
           </div>
-          <div>
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Rejected</p>
-            <div className="flex items-end justify-between">
-              <h4 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{rejectedCount}</h4>
-              <div className="h-8 w-20 bg-red-500/10 rounded relative overflow-hidden">
-                <div className="absolute bottom-0 left-0 w-full h-1/2 bg-red-500/30 dark:bg-red-500/50" style={{ clipPath: 'polygon(0% 100%, 0% 20%, 30% 80%, 60% 40%, 100% 90%, 100% 100%)' }}></div>
-              </div>
-            </div>
+          <div className="p-1.5 rounded-md bg-rose-500/10 text-rose-600 dark:text-rose-400 shrink-0 border border-rose-100 dark:border-rose-900/30">
+            <XCircle size={14} />
           </div>
         </div>
       </div>
 
       {/* Bento Grid - Large Table & Info Panel */}
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-3">
         {/* Table Container Component */}
         <StoreRequestApprovalData
           onRowClick={handleRowClick}
@@ -215,35 +195,35 @@ export default function StoreRequestApproval() {
         />
 
         {/* Side Panel / Quick Insights */}
-        <div className="flex flex-col gap-6 xl:col-span-1">
+        <div className="flex flex-col gap-3 xl:col-span-1">
           {/* Distribution Card */}
-          <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
-            <h6 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-6">Territory Distribution</h6>
-            <div className="space-y-6">
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5 shadow-sm">
+            <h6 className="text-xs font-bold text-black dark:text-white uppercase tracking-wider mb-4">Territory Distribution</h6>
+            <div className="space-y-3">
               <div>
-                <div className="flex justify-between text-sm font-semibold mb-2 text-zinc-700 dark:text-zinc-300">
+                <div className="flex justify-between text-xs font-semibold mb-1 text-black dark:text-white">
                   <span>North India</span>
                   <span className="font-bold text-[var(--primary)]">42%</span>
                 </div>
-                <div className="w-full h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-zinc-100 dark:bg-zinc-850 rounded-full overflow-hidden">
                   <div className="h-full bg-[var(--primary)]" style={{ width: '42%' }}></div>
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-sm font-semibold mb-2 text-zinc-700 dark:text-zinc-300">
+                <div className="flex justify-between text-xs font-semibold mb-1 text-black dark:text-white">
                   <span>West India</span>
                   <span className="font-bold text-orange-500">35%</span>
                 </div>
-                <div className="w-full h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-zinc-100 dark:bg-zinc-850 rounded-full overflow-hidden">
                   <div className="h-full bg-orange-500" style={{ width: '35%' }}></div>
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-sm font-semibold mb-2 text-zinc-700 dark:text-zinc-300">
+                <div className="flex justify-between text-xs font-semibold mb-1 text-black dark:text-white">
                   <span>South India</span>
                   <span className="font-bold text-blue-500">23%</span>
                 </div>
-                <div className="w-full h-2 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-zinc-100 dark:bg-zinc-850 rounded-full overflow-hidden">
                   <div className="h-full bg-blue-500" style={{ width: '23%' }}></div>
                 </div>
               </div>
@@ -251,27 +231,27 @@ export default function StoreRequestApproval() {
           </div>
 
           {/* Map/Visual Insight */}
-          <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm flex flex-col flex-1 min-h-[300px]">
-            <div className="p-6 pb-4">
-              <h6 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-1">Regional Hotspots</h6>
-              <p className="text-xs text-zinc-500 leading-relaxed">Top performing cities currently receiving highest application volume.</p>
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm flex flex-col flex-1 min-h-[200px]">
+            <div className="p-3.5 pb-2">
+              <h6 className="text-xs font-bold text-black dark:text-white uppercase tracking-wider mb-0.5">Regional Hotspots</h6>
+              <p className="text-[10px] text-black/70 dark:text-white/70 leading-relaxed">Top cities receiving highest application volume</p>
             </div>
-            <div className="flex-1 relative bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
+            <div className="flex-1 relative bg-zinc-100 dark:bg-zinc-900 overflow-hidden min-h-[140px]">
               <img
                 alt="Map distribution"
                 className="w-full h-full object-cover grayscale opacity-50 dark:opacity-30"
                 src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&fm=webp"
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  <div className="absolute -top-12 -left-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2 shadow-lg animate-bounce z-10">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[var(--primary)]"></div>
-                      <span className="text-[10px] font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">Mumbai Hotspot</span>
+                <div className="relative scale-75">
+                  <div className="absolute -top-12 -left-8 bg-white dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1.5 shadow-lg animate-bounce z-10">
+                    <div className="flex items-center gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"></div>
+                      <span className="text-[8px] font-bold text-black dark:text-white uppercase tracking-wider">Mumbai Hotspot</span>
                     </div>
                   </div>
-                  <div className="w-16 h-16 bg-[var(--primary)]/20 rounded-full animate-ping flex items-center justify-center">
-                    <div className="w-4 h-4 bg-[var(--primary)] rounded-full shadow-lg"></div>
+                  <div className="w-12 h-12 bg-[var(--primary)]/20 rounded-full animate-ping flex items-center justify-center">
+                    <div className="w-3 h-3 bg-[var(--primary)] rounded-full shadow-lg"></div>
                   </div>
                 </div>
               </div>

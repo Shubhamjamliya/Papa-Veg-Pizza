@@ -65,14 +65,14 @@ export default function CategoriesData({ onViewDetails }) {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Filters & Views */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-        <div className="flex flex-wrap items-center gap-4 flex-1">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+        <div className="flex flex-wrap items-center gap-2 flex-1">
           <div className="relative w-full max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black dark:text-white/70" size={14} />
             <input
-              className="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-zinc-700 bg-transparent rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] text-sm outline-none transition-all dark:text-zinc-100"
+              className="w-full pl-8 pr-3 py-1.5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 rounded-lg text-xs outline-none focus:ring-1 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] text-black dark:text-white font-medium transition-all"
               placeholder="Search categories..."
               type="text"
               value={searchTerm}
@@ -80,7 +80,7 @@ export default function CategoriesData({ onViewDetails }) {
             />
           </div>
           <select
-            className="px-4 py-2 border border-zinc-300 dark:border-zinc-700 bg-transparent rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] dark:text-zinc-100 transition-all"
+            className="py-1.5 px-2.5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 rounded-lg text-xs outline-none focus:ring-1 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] text-black dark:text-white font-semibold transition-all"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -91,72 +91,72 @@ export default function CategoriesData({ onViewDetails }) {
           {(searchTerm || statusFilter !== "All Status") && (
             <button
               onClick={() => { setSearchTerm(""); setStatusFilter("All Status"); }}
-              className="text-[var(--primary)] p-2 rounded-lg hover:bg-[var(--primary)]/10 transition-colors flex items-center justify-center"
+              className="text-[var(--primary)] p-1.5 rounded-lg hover:bg-[var(--primary)]/10 transition-colors flex items-center justify-center border border-zinc-200"
               title="Clear Filters"
             >
-              <FilterX size={20} />
+              <FilterX size={14} />
             </button>
           )}
         </div>
-        <div className="flex bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg border border-zinc-200 dark:border-zinc-700">
+        <div className="flex bg-zinc-100 dark:bg-zinc-800 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-700">
           <button
             onClick={() => setViewMode("grid")}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-bold transition-all ${viewMode === "grid" ? "bg-white dark:bg-zinc-900 text-[var(--primary)] shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all ${viewMode === "grid" ? "bg-white dark:bg-zinc-900 text-[var(--primary)] shadow-sm" : "text-black dark:text-white"}`}
           >
-            <Grid size={18} /> Grid
+            <Grid size={14} /> Grid
           </button>
           <button
             onClick={() => setViewMode("table")}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-md text-sm font-bold transition-all ${viewMode === "table" ? "bg-white dark:bg-zinc-900 text-[var(--primary)] shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold transition-all ${viewMode === "table" ? "bg-white dark:bg-zinc-900 text-[var(--primary)] shadow-sm" : "text-black dark:text-white"}`}
           >
-            <List size={18} /> Table
+            <List size={14} /> Table
           </button>
         </div>
       </div>
 
       {/* Grid View */}
       {viewMode === "grid" && (
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {filteredCategories.map(category => (
             <div key={category.id} className={`bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all group ${category.status === 'Inactive' ? 'opacity-75' : ''}`}>
-              <div className="h-40 relative overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+              <div className="h-28 relative overflow-hidden bg-zinc-100 dark:bg-zinc-800">
                 <img
                   className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${category.status === 'Inactive' ? 'grayscale' : ''}`}
                   src={category.image}
                   alt={category.name}
                 />
-                <div className="absolute top-3 right-3">
-                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${category.status === 'Active'
+                <div className="absolute top-2 right-2">
+                  <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider flex items-center gap-1 ${category.status === 'Active'
                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
                     : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                     }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${category.status === 'Active' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
+                    <span className={`w-1 h-1 rounded-full ${category.status === 'Active' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                     {category.status}
                   </span>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => onViewDetails(category)} className="bg-white text-zinc-900 px-4 py-1.5 rounded-lg text-sm font-bold shadow-md hover:bg-zinc-50">Quick Edit</button>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onClick={() => onViewDetails(category)} className="bg-white text-zinc-900 px-3 py-1 rounded text-xs font-bold shadow-md hover:bg-zinc-50">Quick Edit</button>
                 </div>
               </div>
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h5 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{category.name}</h5>
+              <div className="p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <h5 className="text-xs font-bold text-black dark:text-white">{category.name}</h5>
                 </div>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 line-clamp-2">{category.description}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">
-                  <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">{category.productsCount} Products</span>
+                <p className="text-[10px] text-black/70 dark:text-white/70 mb-2 line-clamp-2">{category.description}</p>
+                <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                  <span className="text-[9px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">{category.productsCount} Products</span>
                   <button
                     onClick={() => onViewDetails(category)}
-                    className="text-zinc-500 hover:text-[var(--primary)] bg-zinc-100 hover:bg-[var(--primary)]/10 dark:bg-zinc-800 dark:hover:bg-[var(--primary)]/20 px-2.5 py-1.5 rounded-md transition-colors flex items-center gap-1.5"
+                    className="p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-750 text-[var(--primary)] transition-colors flex items-center gap-1.5"
                   >
-                    <Eye size={16} />
+                    <Eye size={14} />
                   </button>
                 </div>
               </div>
             </div>
           ))}
           {filteredCategories.length === 0 && (
-            <div className="col-span-full p-8 text-center text-zinc-500 font-medium bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
+            <div className="col-span-full p-6 text-center text-black/50 dark:text-white/50 text-xs font-semibold bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
               No categories found matching your criteria.
             </div>
           )}
@@ -170,57 +170,57 @@ export default function CategoriesData({ onViewDetails }) {
             <table className="w-full text-left">
               <thead className="bg-zinc-50 dark:bg-zinc-800/50">
                 <tr>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Image</th>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Category</th>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Parent</th>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Products</th>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Sort Order</th>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Status</th>
-                  <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800"></th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Image</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Category</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Parent</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Products</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Sort Order</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800">Status</th>
+                  <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider border-b border-zinc-200 dark:border-zinc-800"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                 {filteredCategories.map(category => (
                   <tr key={category.id} className={`hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors ${category.status === 'Inactive' ? 'opacity-75' : ''}`}>
-                    <td className="px-6 py-4">
-                      <div className="w-12 h-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
+                    <td className="px-3 py-2">
+                      <div className="w-8 h-8 rounded bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
                         <img className={`w-full h-full object-cover ${category.status === 'Inactive' ? 'grayscale' : ''}`} src={category.image} alt={category.name} />
                       </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="text-base font-bold text-zinc-900 dark:text-zinc-100">{category.name}</p>
-                      <p className="text-sm text-zinc-500 line-clamp-1">Main Menu</p>
+                    <td className="px-3 py-2">
+                      <p className="text-xs font-bold text-black dark:text-white">{category.name}</p>
+                      <p className="text-[10px] text-black/75 dark:text-white/75 font-semibold line-clamp-1">Main Menu</p>
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                    <td className="px-3 py-2 text-xs font-medium text-black dark:text-white">
                       {category.parent}
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                    <td className="px-3 py-2 text-xs font-medium text-black dark:text-white">
                       {category.productsCount} Items
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                    <td className="px-3 py-2 text-xs font-medium text-black dark:text-white">
                       {category.sortOrder}
                     </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${category.status === 'Active'
+                    <td className="px-3 py-2">
+                      <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${category.status === 'Active'
                         ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
                         : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                         }`}>
                         {category.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-3 py-2 text-right">
                       <button
                         onClick={(e) => { e.stopPropagation(); onViewDetails(category); }}
-                        className="text-zinc-500 hover:text-[var(--primary)] bg-zinc-100 hover:bg-[var(--primary)]/10 dark:bg-zinc-800 dark:hover:bg-[var(--primary)]/20 px-3 py-1.5 rounded-md transition-colors inline-flex items-center gap-1.5"
+                        className="p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-750 text-[var(--primary)] transition-colors inline-flex items-center gap-1.5"
                       >
-                        <Eye size={16} />
+                        <Eye size={14} />
                       </button>
                     </td>
                   </tr>
                 ))}
                 {filteredCategories.length === 0 && (
                   <tr>
-                    <td colSpan="7" className="p-8 text-center text-zinc-500 font-medium">
+                    <td colSpan="7" className="p-6 text-center text-black/50 dark:text-white/50 text-xs font-semibold">
                       No categories found matching your criteria.
                     </td>
                   </tr>
@@ -232,25 +232,25 @@ export default function CategoriesData({ onViewDetails }) {
       )}
 
       {/* Hierarchy View */}
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm">
-        <h5 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-6 flex items-center gap-2">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5 shadow-sm">
+        <h5 className="text-xs font-bold text-black dark:text-white mb-3 flex items-center gap-2">
           Category Hierarchy
         </h5>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-xs">PZ</div>
-            <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">Pizza</span>
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 rounded bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-[10px]">PZ</div>
+            <span className="text-xs font-bold text-black dark:text-white">Pizza</span>
           </div>
-          <div className="ml-4 space-y-4 border-l-2 border-zinc-200 dark:border-zinc-800 pl-6">
-            <div className="flex items-center gap-4 relative">
-              <span className="absolute -left-6 top-1/2 w-4 h-[2px] bg-zinc-200 dark:bg-zinc-800"></span>
-              <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">Veg Pizza</span>
-              <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded text-xs font-bold">24 Items</span>
+          <div className="ml-3 space-y-2 border-l border-zinc-200 dark:border-zinc-800 pl-4">
+            <div className="flex items-center gap-3 relative">
+              <span className="absolute -left-4 top-1/2 w-3 h-[1px] bg-zinc-200 dark:bg-zinc-800"></span>
+              <span className="text-xs font-bold text-black/80 dark:text-white/80">Veg Pizza</span>
+              <span className="bg-zinc-100 dark:bg-zinc-800 text-black/60 dark:text-white/60 px-1.5 py-0.5 rounded text-[10px] font-bold">24 Items</span>
             </div>
-            <div className="flex items-center gap-4 relative">
-              <span className="absolute -left-6 top-1/2 w-4 h-[2px] bg-zinc-200 dark:bg-zinc-800"></span>
-              <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">Cheese Pizza</span>
-              <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded text-xs font-bold">18 Items</span>
+            <div className="flex items-center gap-3 relative">
+              <span className="absolute -left-4 top-1/2 w-3 h-[1px] bg-zinc-200 dark:bg-zinc-800"></span>
+              <span className="text-xs font-bold text-black/80 dark:text-white/80">Cheese Pizza</span>
+              <span className="bg-zinc-100 dark:bg-zinc-800 text-black/60 dark:text-white/60 px-1.5 py-0.5 rounded text-[10px] font-bold">18 Items</span>
             </div>
           </div>
         </div>
