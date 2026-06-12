@@ -216,7 +216,7 @@ export default function FranchiseList() {
   }
 
   return (
-    <div className="pb-24 max-w-7xl mx-auto px-4 md:px-8">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto w-full">
       {/* Toast Alert Alert Banner */}
       <AnimatePresence>
         {toast && (
@@ -237,12 +237,12 @@ export default function FranchiseList() {
       </AnimatePresence>
 
       {/* Header and Add Button */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pt-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pt-1">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
+          <h1 className="text-xl font-semibold text-black dark:text-white tracking-tight">
             Franchise Admins
           </h1>
-          <p className="text-zinc-400 font-semibold text-xs mt-0.5">
+          <p className="text-black dark:text-white text-xs font-medium mt-0.5">
             Manage franchise owners, store properties, and commissions.
           </p>
         </div>
@@ -270,33 +270,33 @@ export default function FranchiseList() {
       />
 
       {/* Main Responsive Data Table Container */}
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-150 border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full border-collapse text-left">
             <thead>
-              <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-150 border-zinc-200 dark:border-zinc-800">
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+              <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-150 dark:border-zinc-800">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Operator Info
                 </th>
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Franchise Brand
                 </th>
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   HQ Region
                 </th>
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Capacity
                 </th>
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Total Revenue
                 </th>
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-4 text-[10px] font-extrabold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Joined Date
                 </th>
-                <th className="px-6 py-4 text-right"></th>
+                <th className="px-3 py-2.5 text-right"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -307,32 +307,32 @@ export default function FranchiseList() {
                     className="hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 transition-colors group"
                   >
                     {/* Operator Profile */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center font-bold text-xs text-zinc-600 dark:text-zinc-400 group-hover:scale-105 transition-transform">
+                    <td className="px-3 py-2.5">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center font-bold text-[10px] text-black dark:text-white group-hover:scale-105 transition-transform">
                           {fran.name
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
                         </div>
                         <div>
-                          <p className="text-xs font-extrabold text-zinc-900 dark:text-zinc-50 group-hover:text-[var(--primary)] transition-colors">
+                          <p className="text-xs font-extrabold text-black dark:text-white group-hover:text-[var(--primary)] transition-colors">
                             {fran.name}
                           </p>
-                          <p className="text-[10px] text-zinc-400 font-semibold mt-0.5">{fran.email}</p>
+                          <p className="text-[9px] text-black dark:text-white opacity-60 font-semibold mt-0.5">{fran.email}</p>
                         </div>
                       </div>
                     </td>
 
                     {/* Franchise Brand */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <Building size={14} className="text-zinc-400" />
+                    <td className="px-3 py-2.5">
+                      <div className="flex items-center gap-1.5">
+                        <Building size={12} className="text-black dark:text-white opacity-60" />
                         <div>
-                          <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                          <p className="text-xs font-bold text-black dark:text-white">
                             {fran.franchiseName}
                           </p>
-                          <span className="text-[9px] font-mono bg-zinc-100 dark:bg-zinc-850 px-1 py-0.5 rounded text-zinc-550 dark:text-zinc-400">
+                          <span className="text-[9px] font-mono bg-zinc-100 dark:bg-zinc-850 px-1 py-0.2 rounded text-black dark:text-white opacity-60">
                             {fran.id}
                           </span>
                         </div>
@@ -340,9 +340,9 @@ export default function FranchiseList() {
                     </td>
 
                     {/* HQ Region */}
-                    <td className="px-6 py-4 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                      <div className="flex items-center gap-1.5">
-                        <MapPin size={12} className="text-zinc-400" />
+                    <td className="px-3 py-2.5 text-xs font-semibold text-black dark:text-white">
+                      <div className="flex items-center gap-1">
+                        <MapPin size={11} className="text-black dark:text-white opacity-60" />
                         <span>
                           {fran.city}, {fran.state}
                         </span>
@@ -350,26 +350,26 @@ export default function FranchiseList() {
                     </td>
 
                     {/* Stores & Managers */}
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-2.5">
                       <div>
-                        <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
+                        <p className="text-xs font-bold text-black dark:text-white">
                           {fran.totalStores} {fran.totalStores === 1 ? "Store" : "Stores"}
                         </p>
-                        <p className="text-[9px] text-zinc-400 font-bold mt-0.5">
+                        <p className="text-[9px] text-black dark:text-white opacity-60 font-bold mt-0.5">
                           {fran.totalManagers} Staff Managers
                         </p>
                       </div>
                     </td>
 
                     {/* Revenue */}
-                    <td className="px-6 py-4 text-xs font-black text-zinc-800 dark:text-zinc-200">
+                    <td className="px-3 py-2.5 text-xs font-black text-black dark:text-white">
                       ₹{fran.revenue.toLocaleString()}
                     </td>
 
                     {/* Status Badge */}
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-2.5">
                       <span
-                        className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full ${fran.status === "ACTIVE"
+                        className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${fran.status === "ACTIVE"
                           ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30"
                           : fran.status === "INACTIVE"
                             ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30"
@@ -381,40 +381,40 @@ export default function FranchiseList() {
                     </td>
 
                     {/* Joined Date */}
-                    <td className="px-6 py-4 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                    <td className="px-3 py-2.5 text-xs font-semibold text-black dark:text-white opacity-70">
                       {fran.joinedDate}
                     </td>
 
                     {/* Inline Actions */}
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="px-3 py-2.5 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => {
                             setSelectedAdmin(fran)
                             setIsDrawerOpen(true)
                           }}
-                          className="p-1.5 rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 hover:text-[var(--primary)] transition-colors cursor-pointer"
+                          className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
                           title="View Profile"
                         >
-                          <Eye size={16} />
+                          <Eye size={14} />
                         </button>
                         <button
                           onClick={() => {
                             setSelectedAdmin(fran)
                             setIsEditModalOpen(true)
                           }}
-                          className="p-1.5 rounded-xl bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-zinc-500 hover:text-[var(--primary)] transition-colors cursor-pointer"
+                          className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
                           title="Edit Profile"
                         >
-                          <Edit size={16} />
+                          <Edit size={14} />
                         </button>
                         {fran.status === "SUSPENDED" ? (
                           <button
                             onClick={() => handleActivateAdmin(fran.id)}
-                            className="p-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
+                            className="p-1 rounded-md bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
                             title="Re-Activate"
                           >
-                            <UserCheck size={16} />
+                            <UserCheck size={14} />
                           </button>
                         ) : (
                           <button
@@ -422,10 +422,10 @@ export default function FranchiseList() {
                               setSelectedAdmin(fran)
                               setIsSuspendModalOpen(true)
                             }}
-                            className="p-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
+                            className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
                             title="Suspend"
                           >
-                            <Ban size={16} />
+                            <Ban size={14} />
                           </button>
                         )}
                       </div>
@@ -435,20 +435,20 @@ export default function FranchiseList() {
               ) : (
                 /* Empty filter state */
                 <tr>
-                  <td colSpan="8" className="px-6 py-16 text-center">
-                    <div className="flex flex-col items-center justify-center space-y-3">
-                      <div className="w-12 h-12 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
-                        <Building size={22} />
+                  <td colSpan="8" className="px-3 py-12 text-center">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <div className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-black dark:text-white opacity-60">
+                        <Building size={18} />
                       </div>
                       <div>
-                        <p className="text-sm font-extrabold text-zinc-800 dark:text-zinc-200">No Franchise Admins Found</p>
-                        <p className="text-xs text-zinc-450 dark:text-zinc-550 font-semibold mt-0.5">
+                        <p className="text-xs font-extrabold text-black dark:text-white">No Franchise Admins Found</p>
+                        <p className="text-[10px] text-black dark:text-white opacity-60 font-semibold mt-0.5">
                           Try adjusting your filtering choices or resetting the search term.
                         </p>
                       </div>
                       <button
                         onClick={handleResetFilters}
-                        className="px-5 py-2.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-xl text-xs font-bold transition-all shadow cursor-pointer"
+                        className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-lg text-xs font-bold transition-all shadow cursor-pointer"
                       >
                         Reset All Filters
                       </button>

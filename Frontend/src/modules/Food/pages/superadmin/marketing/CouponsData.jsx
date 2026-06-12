@@ -80,45 +80,45 @@ export const CouponList = ({ filters }) => {
   }, [debouncedSearch, filters.status, filters.type, filters.date]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {filteredCoupons.map((coupon) => (
-        <div key={coupon.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col gap-4 hover:shadow-md transition-shadow relative overflow-hidden group">
+        <div key={coupon.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex flex-col gap-3 hover:shadow-md transition-shadow relative overflow-hidden group">
           <div className={`absolute top-0 left-0 w-1 h-full ${coupon.color === 'primary' ? 'bg-[var(--primary)]' : 'bg-zinc-500'}`}></div>
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex items-center gap-2">
-                <span className={`px-2 py-1 rounded text-[13px] font-semibold tracking-wide border ${coupon.color === 'primary' ? 'bg-[var(--primary)]/10 text-[var(--primary)] border-[var(--primary)]/20' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'}`}>
+              <div className="flex items-center gap-1.5">
+                <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wide border ${coupon.color === 'primary' ? 'bg-[var(--primary)]/10 text-[var(--primary)] border-[var(--primary)]/20' : 'bg-zinc-100 dark:bg-zinc-800 text-black/70 dark:text-white/70 border-zinc-200 dark:border-zinc-700'}`}>
                   {coupon.code}
                 </span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${coupon.status === 'Active' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'}`}>
+                <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase ${coupon.status === 'Active' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'}`}>
                   {coupon.status}
                 </span>
               </div>
-              <h3 className="text-base font-bold mt-2 text-zinc-900 dark:text-zinc-100">{coupon.title}</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{coupon.description}</p>
+              <h3 className="text-xs font-bold mt-1.5 text-black dark:text-white">{coupon.title}</h3>
+              <p className="text-[10px] text-black/70 dark:text-white/70 mt-0.5">{coupon.description}</p>
             </div>
-            <div className="flex items-center gap-1">
-              <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
-                <Edit size={16} />
+            <div className="flex items-center gap-0.5">
+              <button className="p-1 text-black/40 hover:text-black dark:text-white/40 dark:hover:text-white rounded-lg transition-colors">
+                <Edit size={14} />
               </button>
-              <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
-                <MoreVertical size={16} />
+              <button className="p-1 text-black/40 hover:text-black dark:text-white/40 dark:hover:text-white rounded-lg transition-colors">
+                <MoreVertical size={14} />
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 border-t border-zinc-100 dark:border-zinc-800 pt-4 mt-2">
+          <div className="grid grid-cols-2 gap-3 border-t border-zinc-150 dark:border-zinc-800 pt-3 mt-1.5">
             <div>
-              <p className="text-[10px] text-zinc-400 uppercase font-bold tracking-wider">Redemptions</p>
-              <div className="flex items-center gap-2 mt-1.5">
-                <div className="flex-1 bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+              <p className="text-[9px] text-black dark:text-white uppercase font-bold tracking-wider">Redemptions</p>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="flex-1 bg-zinc-100 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">
                   <div className={`${coupon.color === 'primary' ? 'bg-[var(--primary)]' : 'bg-zinc-500'} h-full transition-all duration-500`} style={{ width: `${(coupon.redemptions / coupon.maxRedemptions) * 100}%` }}></div>
                 </div>
-                <span className="text-[11px] font-medium text-zinc-600 dark:text-zinc-400">{coupon.redemptions >= 1000 ? (coupon.redemptions/1000).toFixed(1) + 'k' : coupon.redemptions}/{coupon.maxRedemptions >= 1000 ? (coupon.maxRedemptions/1000).toFixed(1) + 'k' : coupon.maxRedemptions}</span>
+                <span className="text-[10px] font-semibold text-black/70 dark:text-white/70">{coupon.redemptions >= 1000 ? (coupon.redemptions/1000).toFixed(1) + 'k' : coupon.redemptions}/{coupon.maxRedemptions >= 1000 ? (coupon.maxRedemptions/1000).toFixed(1) + 'k' : coupon.maxRedemptions}</span>
               </div>
             </div>
             <div>
-              <p className="text-[10px] text-zinc-400 uppercase font-bold tracking-wider">Validity</p>
-              <p className="text-[11px] font-medium mt-1 text-zinc-600 dark:text-zinc-400">
+              <p className="text-[9px] text-black dark:text-white uppercase font-bold tracking-wider">Validity</p>
+              <p className="text-[10px] font-semibold mt-1 text-black/70 dark:text-white/70">
                 {coupon.status === 'Active' ? `${new Date(coupon.validityStart).toLocaleDateString('en-US', {month:'short', day:'2-digit'})} - ${new Date(coupon.validityEnd).toLocaleDateString('en-US', {month:'short', day:'2-digit'}, {year:'numeric'})}` : `Expired ${new Date(coupon.validityEnd).toLocaleDateString('en-US', {month:'short', day:'2-digit', year:'numeric'})}`}
               </p>
             </div>
@@ -127,23 +127,23 @@ export const CouponList = ({ filters }) => {
       ))}
       
       {/* Recommended Action Bento Box */}
-      <div className="bg-[var(--primary)]/5 dark:bg-[var(--primary)]/10 border border-[var(--primary)]/20 rounded-2xl p-6 relative overflow-hidden mt-6">
-        <div className="flex justify-between items-center mb-4">
-          <div className="p-2 bg-[var(--primary)] rounded-lg text-white">
-            <Sparkles size={18} />
+      <div className="bg-[var(--primary)]/5 dark:bg-[var(--primary)]/10 border border-[var(--primary)]/20 rounded-xl p-3.5 relative overflow-hidden mt-4">
+        <div className="flex justify-between items-center mb-3">
+          <div className="p-1 bg-[var(--primary)] rounded text-white">
+            <Sparkles size={14} />
           </div>
-          <span className="text-[11px] font-bold text-[var(--primary)] tracking-wide">RECOMMENDED ACTION</span>
+          <span className="text-[9px] font-bold text-[var(--primary)] tracking-wide">RECOMMENDED ACTION</span>
         </div>
-        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Boost Redemptions</h3>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-2 mb-4">"SUMMER50" is nearing its limit. Extend the limit by 20% to capture the weekend peak demand?</p>
+        <h3 className="text-xs font-bold text-black dark:text-white">Boost Redemptions</h3>
+        <p className="text-xs text-black/70 dark:text-white/70 mt-1 mb-3">"SUMMER50" is nearing its limit. Extend the limit by 20% to capture the weekend peak demand?</p>
         <div className="flex gap-2">
-          <button className="bg-[var(--primary)] text-white px-4 py-2 rounded-lg text-[13px] font-semibold shadow-sm hover:bg-[var(--primary)]/90 transition-colors">Extend Limit</button>
-          <button className="border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 px-4 py-2 rounded-lg text-[13px] font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Dismiss</button>
+          <button className="bg-[var(--primary)] text-white px-2.5 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-[var(--primary)]/90 transition-colors">Extend Limit</button>
+          <button className="border border-zinc-200 dark:border-zinc-700 text-black/70 dark:text-white/70 px-2.5 py-1.5 rounded-lg text-xs font-bold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Dismiss</button>
         </div>
       </div>
 
       {filteredCoupons.length === 0 && (
-         <div className="py-12 text-center text-zinc-500 dark:text-zinc-400 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl">
+         <div className="py-8 text-center text-black/60 dark:text-white/60 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl text-xs font-semibold">
             No coupons match your filters.
          </div>
       )}

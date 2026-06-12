@@ -62,11 +62,11 @@ export function NotificationList({ searchTerm, onSelect }) {
 
   const getIcon = (channel) => {
     switch (channel) {
-      case 'Push': return <Bell size={20} />;
-      case 'Email': return <Mail size={20} />;
-      case 'WhatsApp': return <MessageCircle size={20} />;
-      case 'SMS': return <MessageSquare size={20} />;
-      default: return <Bell size={20} />;
+      case 'Push': return <Bell size={14} />;
+      case 'Email': return <Mail size={14} />;
+      case 'WhatsApp': return <MessageCircle size={14} />;
+      case 'SMS': return <MessageSquare size={14} />;
+      default: return <Bell size={14} />;
     }
   };
 
@@ -85,41 +85,41 @@ export function NotificationList({ searchTerm, onSelect }) {
       case 'Completed': return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400';
       case 'Sending': return 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400';
       case 'Failed': return 'bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400';
-      default: return 'bg-zinc-100 text-zinc-700';
+      default: return 'bg-zinc-100 text-black/70 dark:bg-zinc-800 dark:text-white/70';
     }
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {filteredData.length > 0 ? filteredData.map((notif) => (
         <div 
           key={notif.id} 
           onClick={() => onSelect && onSelect(notif)}
-          className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:shadow-sm transition-all group cursor-pointer hover:border-[var(--primary)]/30 active:scale-[0.99]"
+          className="flex flex-col sm:flex-row sm:items-center gap-3 p-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:shadow-sm transition-all group cursor-pointer hover:border-[var(--primary)]/30 active:scale-[0.99]"
         >
-          <div className="flex items-center gap-4 flex-1">
-            <div className={`w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center shrink-0 ${getIconColorClass(notif.channel)}`}>
+          <div className="flex items-center gap-3 flex-1">
+            <div className={`w-8 h-8 rounded-full bg-zinc-50 dark:bg-zinc-805 flex items-center justify-center shrink-0 ${getIconColorClass(notif.channel)}`}>
               {getIcon(notif.channel)}
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">{notif.title}</h4>
-              <div className="flex items-center gap-2 text-[10px] text-zinc-500 font-medium mt-1">
+              <h4 className="text-xs font-bold text-black dark:text-white truncate">{notif.title}</h4>
+              <div className="flex items-center gap-1.5 text-[9px] text-black/50 dark:text-white/50 font-semibold mt-0.5">
                 <span>{notif.channel}</span>
                 <span>•</span>
                 <span>{notif.time}</span>
               </div>
             </div>
           </div>
-          <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0 gap-2 sm:gap-1 mt-2 sm:mt-0 pl-14 sm:pl-0">
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${getStatusClasses(notif.status)} uppercase tracking-wide`}>
+          <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0 gap-2 sm:gap-0.5 mt-1 sm:mt-0 pl-11 sm:pl-0">
+            <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold ${getStatusClasses(notif.status)} uppercase tracking-wide`}>
               {notif.status}
             </span>
-            <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{notif.count}</span>
+            <span className="text-xs font-bold text-black dark:text-white">{notif.count}</span>
           </div>
         </div>
       )) : (
-        <div className="p-8 text-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
-          <p className="text-zinc-500 dark:text-zinc-400 text-sm font-medium">No notifications match your search.</p>
+        <div className="p-6 text-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+          <p className="text-black/60 dark:text-white/60 text-xs font-semibold">No notifications match your search.</p>
         </div>
       )}
     </div>

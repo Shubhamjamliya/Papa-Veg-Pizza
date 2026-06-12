@@ -59,21 +59,21 @@ export default function LiveOrderTracking({ isOpen, onClose, order }) {
 
       {/* Full-screen map modal (or slide-up drawer for mobile, but let's make it a large centered modal or full-screen drawer like the HTML suggests) */}
       <div 
-        className={`fixed inset-y-0 right-0 w-full max-w-2xl bg-zinc-50 dark:bg-zinc-950 shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed inset-y-0 right-0 w-full sm:w-[450px] lg:w-[480px] bg-zinc-50 dark:bg-zinc-955 shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col ${isVisible ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {/* Top App Bar */}
-        <header className="bg-white dark:bg-zinc-900 sticky top-0 z-50 shadow-sm border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center px-4 md:px-6 h-16 shrink-0 w-full">
-          <div className="flex items-center gap-3">
+        <header className="bg-white dark:bg-zinc-900 sticky top-0 z-50 shadow-sm border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center px-3.5 h-12 shrink-0 w-full">
+          <div className="flex items-center gap-2.5">
             <button 
-              className="text-[var(--primary)] hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-full transition-colors"
+              className="text-[var(--primary)] hover:bg-red-50 dark:hover:bg-red-900/20 p-1.5 rounded-full transition-colors"
               onClick={onClose}
             >
-              <X size={24} />
+              <X size={18} />
             </button>
-            <Pizza size={24} className="text-[var(--primary)]" />
-            <h1 className="text-xl font-bold text-[var(--primary)]">Papa Veg Pizza</h1>
+            <Pizza size={18} className="text-[var(--primary)]" />
+            <h1 className="text-sm font-bold text-[var(--primary)]">Papa Veg Pizza</h1>
           </div>
-          <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-700">
+          <div className="w-7 h-7 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-700">
             <img 
               alt="Admin User" 
               className="w-full h-full object-cover" 
@@ -98,30 +98,30 @@ export default function LiveOrderTracking({ isOpen, onClose, order }) {
             {/* Papa Veg Store Marker */}
             <div className="absolute top-[30%] left-[25%] pointer-events-auto cursor-pointer hover:scale-110 transition-transform">
               <div className="flex flex-col items-center">
-                <div className="bg-[var(--primary)] text-white p-2 rounded-full shadow-lg border-2 border-white">
-                  <Pizza size={20} />
+                <div className="bg-[var(--primary)] text-white p-1.5 rounded-full shadow-lg border border-white">
+                  <Pizza size={14} />
                 </div>
-                <span className="mt-1 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm border border-zinc-200 dark:border-zinc-700 uppercase tracking-wider">Downtown Store</span>
+                <span className="mt-0.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-55 px-1.5 py-0.5 rounded text-[9px] font-bold shadow-sm border border-zinc-200 dark:border-zinc-700 uppercase tracking-wider">Downtown Store</span>
               </div>
             </div>
 
             {/* Customer Location Marker */}
             <div className="absolute top-[65%] right-[20%] pointer-events-auto cursor-pointer hover:scale-110 transition-transform">
               <div className="flex flex-col items-center">
-                <div className="bg-blue-600 text-white p-2 rounded-full shadow-lg border-2 border-white">
-                  <Home size={20} />
+                <div className="bg-blue-600 text-white p-1.5 rounded-full shadow-lg border border-white">
+                  <Home size={14} />
                 </div>
-                <span className="mt-1 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 px-2 py-0.5 rounded text-[10px] font-bold shadow-sm border border-zinc-200 dark:border-zinc-700 uppercase tracking-wider">Delivery Point</span>
+                <span className="mt-0.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-55 px-1.5 py-0.5 rounded text-[9px] font-bold shadow-sm border border-zinc-200 dark:border-zinc-700 uppercase tracking-wider">Delivery Point</span>
               </div>
             </div>
 
             {/* Active Rider Marker */}
             <div className="absolute top-[52%] left-[48%] pointer-events-auto cursor-pointer hover:scale-110 transition-transform">
               <div className="flex flex-col items-center">
-                <div className="bg-emerald-600 text-white p-2 rounded-full shadow-lg border-2 border-white marker-pulse relative">
-                  <Bike size={20} />
+                <div className="bg-emerald-600 text-white p-1.5 rounded-full shadow-lg border border-white marker-pulse relative">
+                  <Bike size={14} />
                 </div>
-                <div className="mt-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 px-2 py-1 rounded-lg text-[10px] font-bold shadow-md flex items-center gap-1.5 border border-emerald-200 dark:border-emerald-800/50">
+                <div className="mt-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.5 rounded-lg text-[9px] font-bold shadow-md flex items-center gap-1 border border-emerald-200 dark:border-emerald-800/50">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   {order?.riderId || 'RD-9921'}
                 </div>
@@ -130,30 +130,30 @@ export default function LiveOrderTracking({ isOpen, onClose, order }) {
           </div>
 
           {/* Floating Action Buttons Cluster */}
-          <div className="absolute right-4 top-4 z-20 flex flex-col gap-3">
-            <button className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-md flex items-center justify-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800 active:scale-95">
-              <LocateFixed size={20} />
+          <div className="absolute right-3.5 top-3.5 z-20 flex flex-col gap-2.5">
+            <button className="w-8 h-8 rounded-full bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-md flex items-center justify-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800 active:scale-95">
+              <LocateFixed size={16} />
             </button>
-            <button className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-md flex items-center justify-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800 active:scale-95">
-              <Filter size={20} />
+            <button className="w-8 h-8 rounded-full bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-md flex items-center justify-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800 active:scale-95">
+              <Filter size={16} />
             </button>
-            <button className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-md flex items-center justify-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800 active:scale-95">
-              <List size={20} />
+            <button className="w-8 h-8 rounded-full bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 shadow-md flex items-center justify-center hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800 active:scale-95">
+              <List size={16} />
             </button>
           </div>
 
           {/* Active Delivery Card (Bottom Sheet Style) */}
-          <div className="absolute bottom-6 left-4 right-4 md:bottom-8 md:left-8 md:right-8 z-30">
+          <div className="absolute bottom-4 left-3.5 right-3.5 z-30">
             <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
               {/* Progress Bar */}
-              <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800">
+              <div className="h-1 w-full bg-zinc-100 dark:bg-zinc-800">
                 <div className="h-full bg-emerald-500 transition-all duration-1000" style={{ width: `${progress}%` }}></div>
               </div>
               
-              <div className="p-4 md:p-5">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex gap-3">
-                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center overflow-hidden border border-emerald-200 dark:border-emerald-800/30 shrink-0">
+              <div className="p-3.5">
+                <div className="flex justify-between items-start mb-3.5">
+                  <div className="flex gap-2.5">
+                    <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center overflow-hidden border border-emerald-200 dark:border-emerald-800/30 shrink-0">
                       <img 
                         alt="Rider Portrait" 
                         className="w-full h-full object-cover" 
@@ -161,36 +161,36 @@ export default function LiveOrderTracking({ isOpen, onClose, order }) {
                       />
                     </div>
                     <div>
-                      <h3 className="text-base md:text-lg font-bold text-zinc-900 dark:text-zinc-50">Rider #{order?.riderId || 'RD-9921'}</h3>
-                      <p className="text-xs md:text-sm text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 mt-0.5">
-                        <BadgeCheck size={16} className="text-emerald-600 dark:text-emerald-500" />
+                      <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-50">Rider #{order?.riderId || 'RD-9921'}</h3>
+                      <p className="text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 mt-0.5">
+                        <BadgeCheck size={12} className="text-emerald-600 dark:text-emerald-500" />
                         On the way to customer
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl md:text-3xl font-black text-emerald-600 dark:text-emerald-500">{order?.eta?.split(' ')[0] || '8'} <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">mins</span></span>
-                    <p className="text-[10px] md:text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mt-0.5">Estimated Time</p>
+                    <span className="text-lg font-bold text-emerald-600 dark:text-emerald-500">{order?.eta?.split(' ')[0] || '8'} <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">mins</span></span>
+                    <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mt-0.5">Estimated Time</p>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-lg">
-                      <Route size={18} className="text-zinc-600 dark:text-zinc-400" />
+                <div className="grid grid-cols-2 gap-3.5 pt-3 border-t border-zinc-200 dark:border-zinc-800">
+                  <div className="flex items-center gap-2.5">
+                    <div className="bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg">
+                      <Route size={14} className="text-zinc-600 dark:text-zinc-400" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Distance</p>
-                      <p className="text-sm font-bold text-zinc-900 dark:text-zinc-50">{order?.distance || '1.4 km'}</p>
+                      <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Distance</p>
+                      <p className="text-xs font-bold text-zinc-900 dark:text-zinc-50">{order?.distance || '1.4 km'}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-zinc-100 dark:bg-zinc-800 p-2 rounded-lg">
-                      <ShoppingBag size={18} className="text-zinc-600 dark:text-zinc-400" />
+                  <div className="flex items-center gap-2.5">
+                    <div className="bg-zinc-100 dark:bg-zinc-800 p-1.5 rounded-lg">
+                      <ShoppingBag size={14} className="text-zinc-600 dark:text-zinc-400" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Order Status</p>
-                      <span className="inline-flex items-center gap-1.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/30">
+                      <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">Order Status</p>
+                      <span className="inline-flex items-center gap-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400 px-1.5 py-0.5 rounded text-[9px] font-bold border border-emerald-200 dark:border-emerald-800/30">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                         OUT FOR DELIVERY
                       </span>

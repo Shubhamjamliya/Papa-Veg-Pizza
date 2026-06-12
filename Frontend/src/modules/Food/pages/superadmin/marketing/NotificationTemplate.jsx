@@ -59,33 +59,33 @@ export default function NotificationTemplate({ onBack, onSelectTemplate }) {
     : TEMPLATES.filter(t => t.category.toLowerCase().includes(activeCategory.toLowerCase().replace(/s$/, '')));
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pb-24 animate-in fade-in slide-in-from-right-4 duration-300 relative z-50">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-955 pb-16 animate-in fade-in slide-in-from-right-4 duration-300 relative z-50">
       {/* Top Header */}
-      <header className="w-full sticky top-0 z-40 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between h-16 px-4 md:px-8 shadow-sm">
-        <div className="flex items-center gap-4">
-          <button onClick={onBack} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors flex items-center justify-center">
-            <ArrowLeft size={20} className="text-[var(--primary)]" />
-          </button>
-          <h1 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Template Library</h1>
-        </div>
+      <header className="w-full sticky top-0 z-40 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between h-12 px-4 md:px-6 shadow-sm">
         <div className="flex items-center gap-3">
-          <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
-            <Search size={20} className="text-zinc-500" />
+          <button onClick={onBack} className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors flex items-center justify-center text-black/55 dark:text-white/55">
+            <ArrowLeft size={18} className="text-[var(--primary)]" />
           </button>
-          <button onClick={() => onSelectTemplate && onSelectTemplate()} className="bg-[var(--primary)] text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-[var(--primary)]/90 active:scale-95 transition-all hidden sm:block">
+          <h1 className="text-sm font-bold text-black dark:text-white tracking-tight">Template Library</h1>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-black/50 dark:text-white/50">
+            <Search size={14} />
+          </button>
+          <button onClick={() => onSelectTemplate && onSelectTemplate()} className="bg-[var(--primary)] text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md hover:bg-[var(--primary)]/90 active:scale-95 transition-all hidden sm:block">
             NEW CAMPAIGN
           </button>
         </div>
       </header>
 
-      <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
+      <main className="p-3 md:p-4 max-w-7xl mx-auto space-y-4">
         {/* Category Scroll */}
-        <section className="flex items-center gap-3 overflow-x-auto scrollbar-none pb-2">
+        <section className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
           {categories.map(cat => (
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-[var(--primary)] text-white shadow-md hover:scale-105' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-sm'}`}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-[var(--primary)] text-white shadow-md' : 'bg-white dark:bg-zinc-900 text-black/70 dark:text-white/70 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 shadow-sm'}`}
             >
               {cat}
             </button>
@@ -93,44 +93,44 @@ export default function NotificationTemplate({ onBack, onSelectTemplate }) {
         </section>
 
         {/* Template Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {filteredTemplates.map(template => (
-            <div key={template.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all group flex flex-col shadow-sm">
-              <div className="h-32 bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800">
+            <div key={template.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:shadow-md transition-all group flex flex-col shadow-sm">
+              <div className="h-20 bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800">
                 <div className={`absolute inset-0 opacity-60 ${template.categoryColor.split(' ')[1]}`}></div>
-                <div className={`relative bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase shadow-sm tracking-wider ${template.categoryColor.split(' ')[0]}`}>
+                <div className={`relative bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md px-2 py-0.5 rounded text-[8px] font-bold uppercase shadow-sm tracking-wider ${template.categoryColor.split(' ')[0]}`}>
                   {template.category}
                 </div>
               </div>
               
-              <div className="p-5 flex-1 flex flex-col">
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{template.title}</h3>
-                <p className="text-zinc-500 dark:text-zinc-400 text-sm line-clamp-2 mb-4 italic">
+              <div className="p-3.5 flex-1 flex flex-col">
+                <h3 className="text-xs font-bold text-black dark:text-white mb-1">{template.title}</h3>
+                <p className="text-black/50 dark:text-white/50 text-xs line-clamp-2 mb-3 italic leading-relaxed">
                   {template.description}
                 </p>
-                <div className="flex items-center justify-between mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800">
-                  <div className="flex gap-2">
+                <div className="flex items-center justify-between mt-auto pt-2.5 border-t border-zinc-100 dark:border-zinc-800">
+                  <div className="flex gap-1.5">
                     {template.channels.map((chan, i) => (
-                      <div key={i} className="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 flex items-center justify-center" title={chan.title}>
-                        <chan.icon size={16} className="text-zinc-500 dark:text-zinc-400" />
+                      <div key={i} className="w-6 h-6 rounded bg-zinc-50 dark:bg-zinc-850 border border-zinc-100 dark:border-zinc-700 flex items-center justify-center" title={chan.title}>
+                        <chan.icon size={12} className="text-black/50 dark:text-white/50" />
                       </div>
                     ))}
                   </div>
-                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase font-bold tracking-wider">
+                  <span className="text-[9px] text-black/50 dark:text-white/50 uppercase font-bold tracking-wider">
                     Last used: {template.lastUsed}
                   </span>
                 </div>
               </div>
               
-              <div className="p-4 bg-zinc-50 dark:bg-zinc-950 flex items-center gap-2 border-t border-zinc-200 dark:border-zinc-800">
-                <button onClick={() => onSelectTemplate && onSelectTemplate(template)} className="flex-1 bg-[var(--primary)] text-white font-bold text-sm py-2.5 rounded-lg hover:bg-[var(--primary)]/90 active:scale-95 transition-all shadow-sm">
+              <div className="p-2.5 bg-zinc-50 dark:bg-zinc-950 flex items-center gap-1.5 border-t border-zinc-200 dark:border-zinc-800">
+                <button onClick={() => onSelectTemplate && onSelectTemplate(template)} className="flex-1 bg-[var(--primary)] text-white font-bold text-xs py-1.5 rounded-lg hover:bg-[var(--primary)]/90 active:scale-95 transition-all shadow-sm">
                   Use Template
                 </button>
-                <button className="p-2.5 text-zinc-500 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors border border-transparent hover:border-[var(--primary)]/20 bg-white dark:bg-zinc-900 shadow-sm">
-                  <Edit2 size={18} />
+                <button className="p-1.5 text-black/50 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors border border-transparent hover:border-[var(--primary)]/20 bg-white dark:bg-zinc-900 shadow-sm">
+                  <Edit2 size={14} />
                 </button>
-                <button className="p-2.5 text-zinc-500 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors border border-transparent hover:border-[var(--primary)]/20 bg-white dark:bg-zinc-900 shadow-sm">
-                  <Copy size={18} />
+                <button className="p-1.5 text-black/50 hover:text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors border border-transparent hover:border-[var(--primary)]/20 bg-white dark:bg-zinc-900 shadow-sm">
+                  <Copy size={14} />
                 </button>
               </div>
             </div>
@@ -139,8 +139,8 @@ export default function NotificationTemplate({ onBack, onSelectTemplate }) {
       </main>
 
       {/* Floating Action Button */}
-      <button onClick={() => onSelectTemplate && onSelectTemplate()} className="fixed bottom-8 right-8 w-14 h-14 bg-[var(--primary)] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group md:hidden">
-        <Plus size={28} />
+      <button onClick={() => onSelectTemplate && onSelectTemplate()} className="fixed bottom-6 right-6 w-11 h-11 bg-[var(--primary)] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group md:hidden">
+        <Plus size={20} />
       </button>
     </div>
   );

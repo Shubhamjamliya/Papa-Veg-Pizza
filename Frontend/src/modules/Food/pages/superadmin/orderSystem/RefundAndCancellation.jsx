@@ -107,67 +107,80 @@ export default function RefundAndCancellation() {
   };
 
   return (
-    <div className="p-4 md:p-6 pb-24 max-w-7xl mx-auto w-full">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-955 min-h-screen w-full space-y-4">
       {/* Header Search & Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-50">Refunds & Cancellations</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage and process multiple refund requests efficiently.</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2">
+        <div className="space-y-0.5">
+          <h1 className="text-lg font-bold text-black dark:text-white leading-tight">Refunds & Cancellations</h1>
+          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">Manage and process multiple refund requests efficiently.</p>
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <button className="p-2.5 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg transition-colors relative shrink-0">
-            <Bell size={18} className="text-zinc-600 dark:text-zinc-300" />
-            <span className="absolute top-2 right-2.5 w-2 h-2 bg-[var(--primary)] rounded-full"></span>
+        <div className="flex items-center gap-2 w-full sm:w-auto sm:justify-end">
+          <button className="p-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors relative shrink-0">
+            <Bell size={14} />
+            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[var(--primary)] rounded-full"></span>
           </button>
         </div>
       </div>
 
       {/* Quick Stats Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm transition-all hover:shadow-md">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2.5 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <Clock size={20} className="text-blue-600 dark:text-blue-400" />
-            </div>
-            <span className="text-emerald-700 dark:text-emerald-400 text-xs font-bold bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> 12 New
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+        {/* Card 1 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-all hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-black dark:text-white flex items-center gap-1.5">
+              <span>Pending Approvals</span>
+              <span className="text-emerald-700 dark:text-emerald-400 text-[8px] font-bold bg-emerald-100 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded-full flex items-center gap-0.5 shrink-0">
+                <span className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></span> 12 New
+              </span>
             </span>
+            <h3 className="text-lg font-black text-black dark:text-white mt-0.5">124</h3>
           </div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Pending Approvals</p>
-          <h3 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mt-1">124</h3>
+          <div className="p-1.5 bg-blue-50 dark:bg-blue-900/20 rounded-md shrink-0 border border-blue-100 dark:border-blue-900/30">
+            <Clock size={14} className="text-blue-600 dark:text-blue-400" />
+          </div>
         </div>
         
-        <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm transition-all hover:shadow-md">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-              <ClipboardList size={20} className="text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <span className="text-zinc-500 dark:text-zinc-400 text-xs font-bold">Total ₹4.2k</span>
+        {/* Card 2 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-all hover:shadow-md">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-black dark:text-white flex items-center gap-1.5">
+              <span>Processed Today</span>
+              <span className="text-black dark:text-white text-[8px] font-bold bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded-full shrink-0">
+                Total ₹4.2k
+              </span>
+            </span>
+            <h3 className="text-lg font-black text-black dark:text-white mt-0.5">87</h3>
           </div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Processed Today</p>
-          <h3 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mt-1">87</h3>
+          <div className="p-1.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-md shrink-0 border border-emerald-105 dark:border-emerald-900/30">
+            <ClipboardList size={14} className="text-emerald-600 dark:text-emerald-400" />
+          </div>
         </div>
         
-        <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm transition-all hover:shadow-md">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2.5 bg-red-50 dark:bg-red-900/20 rounded-lg">
-              <AlertTriangle size={20} className="text-red-600 dark:text-red-400" />
-            </div>
-            <span className="text-red-600 dark:text-red-400 text-xs font-bold">High Priority</span>
+        {/* Card 3 */}
+        <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex items-center justify-between transition-all hover:shadow-md border-t-2 border-t-red-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-black dark:text-white flex items-center gap-1.5">
+              <span>Disputed Items</span>
+              <span className="text-red-700 dark:text-red-400 text-[8px] font-bold bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full shrink-0">
+                High Priority
+              </span>
+            </span>
+            <h3 className="text-lg font-black text-red-650 dark:text-red-400 mt-0.5">05</h3>
           </div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Disputed Items</p>
-          <h3 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mt-1">05</h3>
+          <div className="p-1.5 bg-red-50 dark:bg-red-900/20 rounded-md shrink-0 border border-red-100 dark:border-red-900/30">
+            <AlertTriangle size={14} className="text-red-600 dark:text-red-400" />
+          </div>
         </div>
       </div>
 
       {/* Table Header Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-        <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Active Requests</h2>
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+        <h2 className="text-xs font-bold text-black dark:text-white">Active Requests</h2>
+        <div className="flex flex-col sm:flex-row items-center gap-1.5 w-full sm:w-auto">
           <div className="relative w-full sm:w-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/60 dark:text-white/60" size={14} />
             <input 
-              className="pl-9 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-full text-sm text-zinc-800 dark:text-zinc-200 focus:ring-1 focus:ring-[var(--primary)] outline-none w-full sm:w-64 transition-all" 
+              className="pl-8 pr-3 py-1.5 bg-white dark:bg-zinc-955 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] outline-none w-full sm:w-56 font-semibold placeholder-zinc-500" 
               placeholder="Search Refund ID..." 
               type="text"
               value={searchTerm}
@@ -176,30 +189,30 @@ export default function RefundAndCancellation() {
           </div>
           <button 
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border rounded-full transition-colors text-sm font-semibold \${showFilters ? 'border-[var(--primary)] text-[var(--primary)] bg-red-50 dark:bg-red-900/10' : 'border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`}
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-white dark:bg-zinc-950 border rounded-lg text-xs font-bold transition-all shadow-sm ${showFilters ? 'border-[var(--primary)] text-[var(--primary)] bg-red-50 dark:bg-red-900/10' : 'border-zinc-200 dark:border-zinc-800 text-black dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900'}`}
           >
-            <Filter size={16} />
-            Filters
+            <Filter size={12} />
+            <span>Filters</span>
           </button>
           <button 
             onClick={handleExportAll}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-[var(--primary)] text-white border border-transparent rounded-full hover:bg-red-800 transition-colors text-sm font-semibold"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2.5 py-1.5 bg-[var(--primary)] text-white border border-transparent rounded-lg hover:opacity-90 active:scale-95 transition-all text-xs font-bold shadow-md cursor-pointer"
           >
-            <Download size={16} />
-            Export All
+            <Download size={12} />
+            <span>Export All</span>
           </button>
         </div>
       </div>
 
       {/* Expanded Filters UI */}
       {showFilters && (
-        <div className="bg-white dark:bg-zinc-900 p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl mb-6 shadow-sm flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="flex-1 max-w-[200px]">
-            <label className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-2">Status</label>
+        <div className="bg-white dark:bg-zinc-900 p-2.5 border border-zinc-200 dark:border-zinc-800 rounded-lg mb-4 shadow-sm flex flex-col sm:flex-row gap-3 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex-1 max-w-[180px]">
+            <label className="block text-[9px] font-bold text-black dark:text-white uppercase tracking-wider mb-1">Status</label>
             <select 
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full h-10 px-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 text-sm font-medium text-zinc-800 dark:text-zinc-200 focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent outline-none transition-all"
+              className="w-full px-2.5 py-1 bg-white dark:bg-zinc-955 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-black dark:text-white focus:ring-2 focus:ring-[var(--primary)] outline-none"
             >
               <option value="All">All Statuses</option>
               <option value="New">New</option>
@@ -211,14 +224,14 @@ export default function RefundAndCancellation() {
       )}
 
       {/* High-Density List Container */}
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700">
+      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[800px]">
             <thead className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
               <tr>
-                <th className="p-4 w-12 text-center">
+                <th className="py-2 px-3 w-10 text-center">
                   <input 
-                    className="w-4 h-4 rounded border-zinc-300 dark:border-zinc-600 text-[var(--primary)] focus:ring-[var(--primary)] cursor-pointer" 
+                    className="w-3.5 h-3.5 rounded border-zinc-300 dark:border-zinc-600 text-[var(--primary)] focus:ring-[var(--primary)] cursor-pointer" 
                     type="checkbox"
                     checked={isAllSelected}
                     ref={input => {
@@ -227,18 +240,18 @@ export default function RefundAndCancellation() {
                     onChange={handleSelectAll}
                   />
                 </th>
-                <th className="p-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Refund ID</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Customer</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Amount</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Status</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Requested At</th>
-                <th className="p-4 w-12"></th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Refund ID</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Customer</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Amount</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Status</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Requested At</th>
+                <th className="px-3 py-2 w-10"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {filteredRefunds.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="p-8 text-center text-zinc-500 dark:text-zinc-400 text-sm font-medium">
+                  <td colSpan="7" className="px-3 py-6 text-center text-black/60 dark:text-white/60 text-xs font-semibold">
                     No refunds found matching "{searchTerm}"
                   </td>
                 </tr>
@@ -253,52 +266,52 @@ export default function RefundAndCancellation() {
                       }
                     }}
                   >
-                    <td className="p-4 text-center">
+                    <td className="px-3 py-2 text-center">
                       <input 
-                        className="w-4 h-4 rounded border-zinc-300 dark:border-zinc-600 text-[var(--primary)] focus:ring-[var(--primary)] cursor-pointer" 
+                        className="w-3.5 h-3.5 rounded border-zinc-300 dark:border-zinc-600 text-[var(--primary)] focus:ring-[var(--primary)] cursor-pointer" 
                         type="checkbox"
                         checked={selectedIds.includes(refund.id)}
                         onChange={() => handleSelectRow(refund.id)}
                       />
                     </td>
-                    <td className="p-4 text-sm font-semibold text-zinc-700 dark:text-zinc-300 font-mono tracking-tight">{refund.id}</td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-600 dark:text-zinc-400 shrink-0 border border-zinc-200 dark:border-zinc-700">
+                    <td className="px-3 py-2 text-xs font-bold text-[var(--primary)] font-mono tracking-tight">{refund.id}</td>
+                    <td className="px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-[8px] font-bold text-black dark:text-white shrink-0 border border-zinc-200 dark:border-zinc-700">
                           {refund.initials}
                         </div>
-                        <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{refund.customer}</span>
+                        <span className="text-xs font-bold text-black dark:text-white">{refund.customer}</span>
                       </div>
                     </td>
-                    <td className="p-4 text-sm font-bold text-zinc-900 dark:text-zinc-50">{refund.amount}</td>
-                    <td className="p-4">
+                    <td className="px-3 py-2 text-xs font-bold text-black dark:text-white">{refund.amount}</td>
+                    <td className="px-3 py-2">
                       {refund.status === 'New' && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold tracking-wide uppercase">
-                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> New
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[9px] font-bold tracking-wide uppercase">
+                          <span className="w-1 h-1 bg-emerald-500 rounded-full"></span> New
                         </span>
                       )}
                       {refund.status === 'Pending' && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[11px] font-bold tracking-wide uppercase">
-                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Pending
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[9px] font-bold tracking-wide uppercase">
+                          <span className="w-1 h-1 bg-blue-500 rounded-full"></span> Pending
                         </span>
                       )}
                       {refund.status === 'Priority' && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-[11px] font-bold tracking-wide uppercase">
-                          <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span> Priority
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-[9px] font-bold tracking-wide uppercase">
+                          <span className="w-1 h-1 bg-red-500 rounded-full animate-pulse"></span> Priority
                         </span>
                       )}
                     </td>
-                    <td className="p-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">{refund.requestedAt}</td>
-                    <td className="p-4 text-right">
+                    <td className="px-3 py-2 text-xs font-semibold text-black dark:text-white">{refund.requestedAt}</td>
+                    <td className="px-3 py-2 text-right">
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedRefundForDetails(refund);
                           setIsDetailsOpen(true);
                         }}
-                        className="p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-full text-zinc-500 dark:text-zinc-400 transition-colors"
+                        className="p-1 hover:bg-zinc-150 dark:hover:bg-zinc-800 rounded-lg text-black/60 dark:text-white/60 hover:text-[var(--primary)] dark:hover:text-[var(--primary)] transition-colors"
                       >
-                        <Eye size={18} />
+                        <Eye size={14} />
                       </button>
                     </td>
                   </tr>
@@ -309,19 +322,19 @@ export default function RefundAndCancellation() {
         </div>
         
         {/* Pagination */}
-        <div className="px-6 py-4 flex items-center justify-between border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-          <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+        <div className="px-3 py-2 border-t border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-3 bg-zinc-50 dark:bg-zinc-900/50">
+          <span className="text-[11px] font-semibold text-black/70 dark:text-white/70">
             Showing {filteredRefunds.length} of {initialRefunds.length} entries
           </span>
-          <div className="flex items-center gap-2">
-            <button className="p-2 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-colors disabled:opacity-50 text-zinc-500 bg-transparent" disabled>
-              <ChevronLeft size={16} />
+          <div className="flex items-center gap-1.5">
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+              <ChevronLeft size={12} />
             </button>
-            <span className="w-8 h-8 flex items-center justify-center bg-[var(--primary)] text-white rounded-lg text-sm font-bold shadow-sm">1</span>
-            <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-semibold hover:bg-white dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-400 bg-transparent">2</button>
-            <button className="w-8 h-8 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-semibold hover:bg-white dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-400 bg-transparent">3</button>
-            <button className="p-2 border border-zinc-200 dark:border-zinc-700 rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-colors text-zinc-500 bg-transparent">
-              <ChevronRight size={16} />
+            <span className="w-6 h-6 flex items-center justify-center bg-[var(--primary)] text-white rounded text-[10px] font-bold shadow-sm">1</span>
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white text-[10px] font-bold bg-transparent transition-colors">2</button>
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white text-[10px] font-bold bg-transparent transition-colors">3</button>
+            <button className="w-6 h-6 flex items-center justify-center border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-black dark:text-white transition-colors">
+              <ChevronRight size={12} />
             </button>
           </div>
         </div>
@@ -329,33 +342,33 @@ export default function RefundAndCancellation() {
 
       {/* Persistent Bulk Action Bar */}
       <div 
-        className={`fixed bottom-0 left-0 lg:left-[280px] right-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.4)] p-4 md:px-8 transition-transform duration-300 z-40 flex justify-center ${selectedIds.length > 0 ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`fixed bottom-0 left-0 lg:left-[280px] right-0 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.4)] p-3 md:px-6 transition-transform duration-300 z-40 flex justify-center ${selectedIds.length > 0 ? 'translate-y-0' : 'translate-y-full'}`}
       >
         <div className="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl text-blue-700 dark:text-blue-400 flex items-center justify-center shrink-0">
-              <CheckSquare size={24} />
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-700 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-900/20">
+              <CheckSquare size={16} />
             </div>
             <div>
-              <p className="text-lg font-bold text-[var(--primary)]">{selectedIds.length} Items Selected</p>
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Bulk actions will apply to all selected refund requests.</p>
+              <p className="text-xs font-bold text-[var(--primary)]">{selectedIds.length} Items Selected</p>
+              <p className="text-[10px] font-semibold text-black/70 dark:text-white/70">Bulk actions will apply to all selected refund requests.</p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-1.5 w-full sm:w-auto">
             <button 
               onClick={() => setIsReportModalOpen(true)}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors text-sm font-semibold"
+              className="flex items-center justify-center gap-1 px-2.5 py-1.5 border border-zinc-250 dark:border-zinc-750 bg-white dark:bg-zinc-950 text-black dark:text-white rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors text-[11px] font-bold cursor-pointer"
             >
-              <ExternalLink size={18} />
-              Export
+              <ExternalLink size={12} />
+              <span>Export</span>
             </button>
-            <button className="flex items-center justify-center gap-2 px-5 py-2.5 border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors text-sm font-semibold">
-              <X size={18} />
-              Reject
+            <button className="flex items-center justify-center gap-1 px-2.5 py-1.5 border border-red-250 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 text-red-650 dark:text-red-400 rounded-lg hover:opacity-90 transition-all text-[11px] font-bold cursor-pointer">
+              <X size={12} />
+              <span>Reject</span>
             </button>
-            <button className="flex items-center justify-center gap-2 px-6 py-2.5 bg-[var(--primary)] text-white rounded-xl hover:opacity-90 active:scale-[0.98] transition-all text-sm font-semibold shadow-lg shadow-[var(--primary)]/20">
-              <CheckCircle size={18} />
-              Approve
+            <button className="flex items-center justify-center gap-1 px-3 py-1.5 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 active:scale-[0.98] transition-all text-[11px] font-bold shadow-lg shadow-[var(--primary)]/20 cursor-pointer">
+              <CheckCircle size={12} />
+              <span>Approve</span>
             </button>
           </div>
         </div>

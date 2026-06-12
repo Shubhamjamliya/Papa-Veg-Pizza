@@ -91,15 +91,15 @@ export default function FranchiseStoresData({ onRowClick }) {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Filters Section */}
       <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50 dark:bg-zinc-900/50">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1">
+        <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50 dark:bg-zinc-900/50">
+          <div className="flex flex-wrap items-center gap-2 flex-1">
             <div className="relative w-full max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black dark:text-white" size={14} />
               <input
-                className="w-full pl-10 pr-4 py-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all text-sm outline-none dark:text-zinc-100"
+                className="w-full pl-8 pr-3 py-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-white placeholder-black/50 dark:placeholder-white/50 focus:border-[var(--primary)] focus:ring-0 outline-none transition-colors"
                 placeholder="Search by Store Name, ID or Owner..."
                 type="text"
                 value={searchTerm}
@@ -107,22 +107,22 @@ export default function FranchiseStoresData({ onRowClick }) {
               />
             </div>
             <button
-              className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300 font-semibold px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-1.5 text-black dark:text-white font-bold px-2.5 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 rounded-lg transition-colors text-xs"
               onClick={toggleFilters}
             >
-              <Filter size={18} />
-              Advanced Filters
+              <Filter size={14} />
+              <span>ADVANCED FILTERS</span>
             </button>
           </div>
-          <div className="text-xs text-zinc-500 hidden sm:block">Showing {filteredStores.length} results</div>
+          <div className="text-[11px] font-bold text-black/70 dark:text-white/70 hidden sm:block">Showing {filteredStores.length} results</div>
         </div>
         
         {showFilters && (
-          <div className="p-6 grid grid-cols-1 md:grid-cols-4 gap-4 bg-white dark:bg-zinc-900">
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
+          <div className="p-3 grid grid-cols-1 sm:grid-cols-4 gap-2 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="space-y-1">
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Status</label>
               <select 
-                className="w-full p-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm focus:border-[var(--primary)] outline-none dark:text-zinc-100"
+                className="w-full p-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold focus:border-[var(--primary)] outline-none text-black dark:text-white cursor-pointer"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -132,10 +132,10 @@ export default function FranchiseStoresData({ onRowClick }) {
                 <option>Suspended</option>
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Region</label>
+            <div className="space-y-1">
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Region</label>
               <select 
-                className="w-full p-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm focus:border-[var(--primary)] outline-none dark:text-zinc-100"
+                className="w-full p-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold focus:border-[var(--primary)] outline-none text-black dark:text-white cursor-pointer"
                 value={regionFilter}
                 onChange={(e) => setRegionFilter(e.target.value)}
               >
@@ -146,10 +146,10 @@ export default function FranchiseStoresData({ onRowClick }) {
                 <option>East India</option>
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Zone</label>
+            <div className="space-y-1">
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Zone</label>
               <select 
-                className="w-full p-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm focus:border-[var(--primary)] outline-none dark:text-zinc-100"
+                className="w-full p-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold focus:border-[var(--primary)] outline-none text-black dark:text-white cursor-pointer"
                 value={zoneFilter}
                 onChange={(e) => setZoneFilter(e.target.value)}
               >
@@ -159,10 +159,10 @@ export default function FranchiseStoresData({ onRowClick }) {
                 <option>Highway Side</option>
               </select>
             </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Setup Date</label>
+            <div className="space-y-1">
+              <label className="text-[9px] font-bold text-black dark:text-white uppercase tracking-wider">Setup Date</label>
               <input 
-                className="w-full p-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm focus:border-[var(--primary)] outline-none dark:text-zinc-400" 
+                className="w-full p-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-white focus:border-[var(--primary)] outline-none" 
                 type="date" 
               />
             </div>
@@ -172,58 +172,58 @@ export default function FranchiseStoresData({ onRowClick }) {
 
       {/* Enterprise Data Table */}
       <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[1000px]">
+        <div className="overflow-x-auto scrollbar-thin">
+          <table className="w-full text-left border-collapse min-w-[900px]">
             <thead>
-              <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Store ID</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Store Name</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Owner</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Region</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Monthly Revenue</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Live Orders</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Actions</th>
+               <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800">
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Store ID</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Store Name</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Owner</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Region</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Status</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Monthly Revenue</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Live Orders</th>
+                <th className="px-3 py-2 text-[10px] font-bold text-black dark:text-white uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
               {filteredStores.map((store, index) => (
-                <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer" onClick={() => onRowClick && onRowClick(store)}>
-                  <td className="px-6 py-4 font-medium text-sm text-zinc-900 dark:text-zinc-100">{store.id}</td>
-                  <td className="px-6 py-4">
+                <tr key={index} className="hover:bg-[var(--primary)]/5 dark:hover:bg-[var(--primary)]/10 transition-colors cursor-pointer group" onClick={() => onRowClick && onRowClick(store)}>
+                  <td className="px-3 py-2 font-bold text-xs text-black dark:text-white">{store.id}</td>
+                  <td className="px-3 py-2">
                     <div className="flex flex-col">
-                      <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{store.name}</span>
-                      <span className="text-xs text-zinc-500">{store.location}</span>
+                      <span className="font-bold text-xs text-black dark:text-white group-hover:text-[var(--primary)] transition-colors">{store.name}</span>
+                      <span className="text-[10px] text-black/70 dark:text-white/70 mt-0.5">{store.location}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col text-sm">
-                      <span className="text-zinc-900 dark:text-zinc-100">{store.owner}</span>
-                      <span className="text-xs text-zinc-500">{store.phone}</span>
+                  <td className="px-3 py-2">
+                    <div className="flex flex-col text-xs">
+                      <span className="font-bold text-black dark:text-white">{store.owner}</span>
+                      <span className="text-[10px] text-black/70 dark:text-white/70 mt-0.5">{store.phone}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-zinc-700 dark:text-zinc-300">{store.region}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase
-                      ${store.status === 'Active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 
-                        store.status === 'Pending' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' : 
-                        'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}`}>
+                  <td className="px-3 py-2 text-xs font-semibold text-black dark:text-white">{store.region}</td>
+                  <td className="px-3 py-2">
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase
+                      ${store.status === 'Active' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400' : 
+                        store.status === 'Pending' ? 'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-455' : 
+                        'bg-rose-50 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400'}`}>
                       {store.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 font-bold text-sm text-zinc-900 dark:text-zinc-100">{store.revenue}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 py-2 font-black text-xs text-black dark:text-white">{store.revenue}</td>
+                  <td className="px-3 py-2">
                     <div className="flex items-center gap-2">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs
-                        ${store.liveOrders > 0 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500'}`}>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px]
+                        ${store.liveOrders > 0 ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-zinc-100 text-black/50 dark:bg-zinc-800 dark:text-white/50'}`}>
                         {store.liveOrders}
                       </div>
-                      <span className="text-[10px] text-zinc-500">{store.liveOrdersStatus}</span>
+                      <span className="text-[10px] font-semibold text-black/70 dark:text-white/70">{store.liveOrdersStatus}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300">
-                      <Eye size={18} />
+                  <td className="px-3 py-2 text-right">
+                    <button className="p-1 hover:bg-zinc-150 dark:hover:bg-zinc-800 rounded-lg transition-colors text-black/60 dark:text-white/60 hover:text-blue-500 dark:hover:text-blue-400">
+                      <Eye size={14} />
                     </button>
                   </td>
                 </tr>
@@ -231,7 +231,7 @@ export default function FranchiseStoresData({ onRowClick }) {
               
               {filteredStores.length === 0 && (
                 <tr>
-                  <td colSpan="8" className="px-6 py-8 text-center text-zinc-500 text-sm">
+                  <td colSpan="8" className="px-3 py-6 text-center text-black/50 dark:text-white/50 text-xs">
                     No stores found matching your criteria.
                   </td>
                 </tr>
@@ -241,19 +241,19 @@ export default function FranchiseStoresData({ onRowClick }) {
         </div>
         
         {/* Pagination */}
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-center gap-4 bg-zinc-50 dark:bg-zinc-900/50">
-          <span className="text-sm text-zinc-500">Showing {Math.min(filteredStores.length, 1)} to {filteredStores.length} of {filteredStores.length} entries</span>
-          <div className="flex gap-2">
-            <button className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 transition-colors">
-              <ChevronLeft size={16} />
+        <div className="px-3 py-2 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50 dark:bg-zinc-900/50">
+          <span className="text-[11px] font-medium text-black/70 dark:text-white/70">Showing {Math.min(filteredStores.length, 1)} to {filteredStores.length} of {filteredStores.length} entries</span>
+          <div className="flex gap-1">
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors">
+              <ChevronLeft size={12} />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded bg-[var(--primary)] text-white font-bold text-sm">1</button>
-            <button className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 transition-colors text-sm">2</button>
-            <button className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 transition-colors text-sm">3</button>
-            <button className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 transition-colors text-sm">...</button>
-            <button className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 transition-colors text-sm">16</button>
-            <button className="w-8 h-8 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-700 hover:bg-white dark:hover:bg-zinc-800 text-zinc-500 transition-colors">
-              <ChevronRight size={16} />
+            <button className="w-6 h-6 flex items-center justify-center rounded bg-[var(--primary)] text-white font-bold text-[10px]">1</button>
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">2</button>
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">3</button>
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">...</button>
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors text-[10px]">16</button>
+            <button className="w-6 h-6 flex items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black dark:text-white transition-colors">
+              <ChevronRight size={12} />
             </button>
           </div>
         </div>

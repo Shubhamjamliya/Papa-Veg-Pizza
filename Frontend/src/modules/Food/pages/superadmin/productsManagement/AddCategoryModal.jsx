@@ -45,48 +45,46 @@ export default function AddCategoryModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm overflow-y-auto">
       {/* Multi-Step Modal Container */}
       <div className="bg-white dark:bg-zinc-950 w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
-        
+
         {/* Modal Header & Stepper */}
         <div className="px-6 pt-6 pb-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Add New Category</h2>
-            <button 
+            <button
               onClick={onClose}
               className="text-zinc-400 hover:text-[var(--primary)] transition-colors p-1 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800"
             >
               <X size={20} />
             </button>
           </div>
-          
+
           {/* Progress Stepper */}
           <div className="flex items-center justify-between px-4 relative">
             {/* Progress Line Background */}
             <div className="absolute top-1/2 left-0 w-full h-[2px] bg-zinc-200 dark:bg-zinc-800 -translate-y-1/2 z-0"></div>
             {/* Progress Line Active */}
-            <div 
+            <div
               className="absolute top-1/2 left-0 h-[2px] bg-[var(--primary)] -translate-y-1/2 z-0 transition-all duration-500"
               style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
             ></div>
-            
+
             {/* Steps */}
             {steps.map(step => {
               const isActiveStep = currentStep === step.num;
               const isCompletedStep = currentStep > step.num;
-              
+
               return (
                 <div key={step.num} className="relative z-10 flex flex-col items-center gap-1">
-                  <div 
-                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-zinc-50 dark:ring-zinc-900 transition-colors ${
-                      isActiveStep || isCompletedStep 
-                        ? "bg-[var(--primary)] text-white" 
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-zinc-50 dark:ring-zinc-900 transition-colors ${isActiveStep || isCompletedStep
+                        ? "bg-[var(--primary)] text-white"
                         : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500"
-                    }`}
+                      }`}
                   >
                     {isCompletedStep ? <Check size={16} strokeWidth={3} /> : step.num}
                   </div>
-                  <span className={`text-[10px] sm:text-xs font-bold hidden sm:block ${
-                    isActiveStep || isCompletedStep ? "text-[var(--primary)]" : "text-zinc-400"
-                  }`}>
+                  <span className={`text-[10px] sm:text-xs font-bold hidden sm:block ${isActiveStep || isCompletedStep ? "text-[var(--primary)]" : "text-zinc-400"
+                    }`}>
                     {step.label}
                   </span>
                 </div>
@@ -103,13 +101,13 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                 {/* Category Name */}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-zinc-700 dark:text-zinc-300" htmlFor="category_name">Category Name</label>
-                  <input 
-                    id="category_name" 
-                    type="text" 
+                  <input
+                    id="category_name"
+                    type="text"
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all" 
-                    placeholder="e.g. Signature Pizzas" 
+                    className="w-full px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all"
+                    placeholder="e.g. Signature Pizzas"
                   />
                   <p className="text-[10px] text-zinc-500 italic">Required for customer-facing menus.</p>
                 </div>
@@ -118,13 +116,13 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                   <label className="text-sm font-bold text-zinc-700 dark:text-zinc-300" htmlFor="category_slug">Slug</label>
                   <div className="relative flex items-center">
                     <span className="absolute left-3 text-zinc-400 font-medium text-sm">/cat/</span>
-                    <input 
-                      id="category_slug" 
-                      type="text" 
+                    <input
+                      id="category_slug"
+                      type="text"
                       value={slug}
                       onChange={(e) => setSlug(e.target.value)}
-                      className="w-full pl-12 pr-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all" 
-                      placeholder="signature-pizzas" 
+                      className="w-full pl-12 pr-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all"
+                      placeholder="signature-pizzas"
                     />
                   </div>
                   <p className="text-[10px] text-zinc-500 italic">Unique URL identifier.</p>
@@ -134,12 +132,12 @@ export default function AddCategoryModal({ isOpen, onClose }) {
               {/* Description */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-zinc-700 dark:text-zinc-300" htmlFor="category_desc">Description</label>
-                <textarea 
-                  id="category_desc" 
-                  rows="4" 
+                <textarea
+                  id="category_desc"
+                  rows="4"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all resize-none" 
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all resize-none"
                   placeholder="Describe the offerings in this category for the menu page..."
                 ></textarea>
               </div>
@@ -153,18 +151,17 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                   </div>
                   {/* Status Toggle Switch */}
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      className="sr-only peer" 
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
                       checked={isActive}
                       onChange={(e) => setIsActive(e.target.checked)}
                     />
                     <div className="w-11 h-6 bg-zinc-200 dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary)]"></div>
-                    <span className={`ml-3 text-xs font-bold px-2.5 py-1 rounded-lg transition-colors ${
-                      isActive 
-                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400" 
+                    <span className={`ml-3 text-xs font-bold px-2.5 py-1 rounded-lg transition-colors ${isActive
+                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
                         : "bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-                    }`}>
+                      }`}>
                       {isActive ? "Active" : "Inactive"}
                     </span>
                   </label>
@@ -173,10 +170,10 @@ export default function AddCategoryModal({ isOpen, onClose }) {
 
               {/* Visual Accent Card */}
               <div className="relative rounded-xl h-24 overflow-hidden group">
-                <img 
-                  className="w-full h-full object-cover grayscale opacity-30 dark:opacity-20 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCChcuhe5BVrEI9HY8ev0yqaymmjjVvA0QnSOgBVy9lXuHSDURuVshLvUN2cyIC-4fW4IdEFuYzd_BCcPSZzyrJcvaMGXMTGsn2OYlAW3I4a1JwcM3KDpXJoG4wjPjG_e8sWpUiNtwYuIfU-huxaqJ-TqQK73auOf1xdOH_KJvYmiULU-qL21zo6xJZm_MGq8sEYxNaCMBhguvTBaEs_faCg4CadAJ0SdemQu0kInytYNCFJI9n9OgiPniLVvJczUY9rUyiI45JSrk" 
-                  alt="Pizza Prep" 
+                <img
+                  className="w-full h-full object-cover grayscale opacity-30 dark:opacity-20 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCChcuhe5BVrEI9HY8ev0yqaymmjjVvA0QnSOgBVy9lXuHSDURuVshLvUN2cyIC-4fW4IdEFuYzd_BCcPSZzyrJcvaMGXMTGsn2OYlAW3I4a1JwcM3KDpXJoG4wjPjG_e8sWpUiNtwYuIfU-huxaqJ-TqQK73auOf1xdOH_KJvYmiULU-qL21zo6xJZm_MGq8sEYxNaCMBhguvTBaEs_faCg4CadAJ0SdemQu0kInytYNCFJI9n9OgiPniLVvJczUY9rUyiI45JSrk"
+                  alt="Pizza Prep"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-white/90 dark:from-zinc-950/90 to-transparent flex items-center px-6">
                   <p className="text-xs font-bold text-zinc-700 dark:text-zinc-300 italic max-w-xs leading-relaxed">
@@ -197,7 +194,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
 
               {/* Bento Grid Layout for Media Uploads */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                
+
                 {/* Thumbnail Section */}
                 <div className="md:col-span-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm flex flex-col">
                   <div className="flex items-center justify-between mb-4">
@@ -205,7 +202,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                     <HelpCircle className="text-[var(--primary)]" size={16} />
                   </div>
                   <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">A square image used in menu lists and filters (1:1 ratio).</p>
-                  
+
                   <div className="flex-1 w-full rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 aspect-square flex flex-col items-center justify-center gap-4 bg-zinc-50 dark:bg-zinc-900/50 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group">
                     <div className="p-4 rounded-full bg-[var(--primary)]/10 group-hover:bg-[var(--primary)]/20 transition-all">
                       <Camera className="text-[var(--primary)]" size={32} />
@@ -224,7 +221,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                     <div className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Recommended</div>
                   </div>
                   <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">Large format banner displayed at the top of the category page (16:9 ratio).</p>
-                  
+
                   <div className="flex-1 w-full rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 aspect-video flex flex-col items-center justify-center gap-4 bg-zinc-50 dark:bg-zinc-900/50 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors group">
                     <div className="p-4 rounded-full bg-[var(--primary)]/10 group-hover:bg-[var(--primary)]/20 transition-all">
                       <Image className="text-[var(--primary)]" size={32} />
@@ -275,17 +272,17 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                 <div className="w-1 bg-[var(--primary)] h-8 rounded-full"></div>
                 <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Attributes</h2>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="md:col-span-12 bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-6">
-                  
+
                   <form className="space-y-8">
                     {/* Parent Category & Display Priority */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300 block">Parent Category</label>
                         <div className="relative group">
-                          <select 
+                          <select
                             value={parentCategory}
                             onChange={(e) => setParentCategory(e.target.value)}
                             className="w-full h-12 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all dark:text-zinc-100"
@@ -304,12 +301,12 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                       <div className="space-y-2">
                         <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300 block">Display Priority</label>
                         <div className="relative">
-                          <input 
+                          <input
                             value={displayPriority}
                             onChange={(e) => setDisplayPriority(e.target.value)}
-                            className="w-full h-12 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all dark:text-zinc-100" 
-                            placeholder="0" 
-                            type="number" 
+                            className="w-full h-12 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] transition-all dark:text-zinc-100"
+                            placeholder="0"
+                            type="number"
                           />
                           <ArrowDownUp className="absolute right-4 top-3.5 text-zinc-400" size={18} />
                         </div>
@@ -328,7 +325,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                           if (badge === 'Vegetarian') Icon = Leaf;
 
                           return (
-                            <button 
+                            <button
                               key={badge}
                               onClick={() => {
                                 if (isSelected) {
@@ -337,13 +334,12 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                                   setSelectedBadges([...selectedBadges, badge]);
                                 }
                               }}
-                              className={`group flex items-center gap-2 px-4 py-2 border rounded-full text-xs font-medium transition-all active:scale-95 ${
-                                isSelected 
-                                  ? badge === 'Vegetarian' 
-                                    ? 'bg-emerald-100 text-emerald-800 border-emerald-500 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-500/50' 
+                              className={`group flex items-center gap-2 px-4 py-2 border rounded-full text-xs font-medium transition-all active:scale-95 ${isSelected
+                                  ? badge === 'Vegetarian'
+                                    ? 'bg-emerald-100 text-emerald-800 border-emerald-500 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-500/50'
                                     : 'bg-[var(--primary)] text-white border-[var(--primary)]'
                                   : 'bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-300 dark:border-zinc-700 hover:border-[var(--primary)] hover:text-[var(--primary)]'
-                              }`}
+                                }`}
                               type="button"
                             >
                               <Icon size={16} />
@@ -413,14 +409,14 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                           {metaTitle.length}/60
                         </span>
                       </div>
-                      <input 
+                      <input
                         id="meta-title"
                         type="text"
                         value={metaTitle}
                         onChange={(e) => setMetaTitle(e.target.value)}
                         maxLength={60}
                         className="w-full h-12 px-4 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20 outline-none transition-all text-sm"
-                        placeholder="e.g. Gourmet Veggie Pizzas | Papa Veg Pizza" 
+                        placeholder="e.g. Gourmet Veggie Pizzas | Papa Veg Pizza"
                       />
                       <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Appears as the clickable link in search results.</p>
                     </div>
@@ -433,7 +429,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                           {metaDesc.length}/160
                         </span>
                       </div>
-                      <textarea 
+                      <textarea
                         id="meta-desc"
                         value={metaDesc}
                         onChange={(e) => setMetaDesc(e.target.value)}
@@ -451,13 +447,13 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                         <span className="bg-zinc-50 dark:bg-zinc-900/50 px-4 py-2 sm:h-12 flex items-center text-zinc-500 dark:text-zinc-400 text-sm border-b sm:border-b-0 sm:border-r border-zinc-200 dark:border-zinc-800 whitespace-nowrap">
                           papavegpizza.com/menu/
                         </span>
-                        <input 
+                        <input
                           id="canonical-url"
                           type="text"
                           value={canonicalUrl}
                           onChange={(e) => setCanonicalUrl(e.target.value)}
                           className="flex-1 w-full h-12 px-4 bg-transparent text-zinc-900 dark:text-zinc-100 outline-none text-sm"
-                          placeholder="category-name" 
+                          placeholder="category-name"
                         />
                       </div>
                     </div>
@@ -509,10 +505,10 @@ export default function AddCategoryModal({ isOpen, onClose }) {
 
                   {/* Visual Context Asset */}
                   <div className="relative h-48 w-full rounded-xl overflow-hidden group shadow-md border border-zinc-200 dark:border-zinc-800">
-                    <img 
-                      alt="Professional Pizza Photography" 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8CgXu4EKWCTiUY1yeiW4FZcqfeJ_8u-FFfoidr6_O5hWztZeIgK-SN6WXjTAXRExJhKTMDrrFaQxla-v_tW7SXHKNyQflXBIw13MddGndakeME1zEW5Egi_BTlciyvxlaA7GQdJS9-Htmhg0mKCvpDuWKxowqLrRk1WEr47-km9YftR5ebfqUOv0lvYG7H2psgdlE3TIe4cOa-AvLflISzAIUCKt7S0pjHYgBYDVegu3OnahsbGlhzLULrE_RYySaNoHHNVLv7lI" 
+                    <img
+                      alt="Professional Pizza Photography"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8CgXu4EKWCTiUY1yeiW4FZcqfeJ_8u-FFfoidr6_O5hWztZeIgK-SN6WXjTAXRExJhKTMDrrFaQxla-v_tW7SXHKNyQflXBIw13MddGndakeME1zEW5Egi_BTlciyvxlaA7GQdJS9-Htmhg0mKCvpDuWKxowqLrRk1WEr47-km9YftR5ebfqUOv0lvYG7H2psgdlE3TIe4cOa-AvLflISzAIUCKt7S0pjHYgBYDVegu3OnahsbGlhzLULrE_RYySaNoHHNVLv7lI"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/80 to-transparent mix-blend-multiply"></div>
                     <div className="absolute bottom-4 left-4 right-4">
@@ -566,7 +562,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                         </div>
                         <div>
                           <dt className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Internal Code</dt>
-                          <dd className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mt-1">CAT-{categoryName.substring(0,4).toUpperCase() || "NEW"}-001</dd>
+                          <dd className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mt-1">CAT-{categoryName.substring(0, 4).toUpperCase() || "NEW"}-001</dd>
                         </div>
                       </div>
                     </dl>
@@ -583,10 +579,10 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                   </div>
                   <div className="p-6 pt-2">
                     <div className="relative group rounded-lg overflow-hidden h-40 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
-                      <img 
-                        alt="Category Thumbnail" 
-                        className="w-full h-full object-cover" 
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuU_VJFu2Jps9piZ1npHJGQeFiDoFZ5hmiMVy0Rivn2b4Vm4qkuMh7wZkyIqCaIg4IpHPr1ok50Rkf3RdcT05siTh8HWmeNs-p3hQgZCdjYfe0tBrFteK8sg_CVjR6t0fwFLJpy59cKa_ZKpZfRZD_rctcvfOO8KMKGDQq98WN-IODxSBGD87fEf7dNcUDW_8ku_h2J_T9b0xFK53OdJgBPvnSsN5rlFnzbkWJnPWx189dgH_Ust4JdyTpjR_u_AtiSlisE_Cctjw" 
+                      <img
+                        alt="Category Thumbnail"
+                        className="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuU_VJFu2Jps9piZ1npHJGQeFiDoFZ5hmiMVy0Rivn2b4Vm4qkuMh7wZkyIqCaIg4IpHPr1ok50Rkf3RdcT05siTh8HWmeNs-p3hQgZCdjYfe0tBrFteK8sg_CVjR6t0fwFLJpy59cKa_ZKpZfRZD_rctcvfOO8KMKGDQq98WN-IODxSBGD87fEf7dNcUDW_8ku_h2J_T9b0xFK53OdJgBPvnSsN5rlFnzbkWJnPWx189dgH_Ust4JdyTpjR_u_AtiSlisE_Cctjw"
                       />
                       <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm font-bold">
                         1.2 MB • JPG
@@ -696,24 +692,24 @@ export default function AddCategoryModal({ isOpen, onClose }) {
         {/* Modal Footer */}
         <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50">
           {currentStep === 1 ? (
-            <button 
+            <button
               onClick={onClose}
               className="px-6 py-2 rounded-xl text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
             >
               Cancel
             </button>
           ) : (
-            <button 
+            <button
               onClick={handlePrev}
               className="px-6 py-2 rounded-xl text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors flex items-center gap-2"
             >
               <ArrowLeft size={16} /> Previous
             </button>
           )}
-          
+
           <div className="flex items-center gap-3">
             {currentStep < 5 ? (
-              <button 
+              <button
                 onClick={handleNext}
                 className="bg-[var(--primary)] text-white px-6 py-2 rounded-xl text-sm font-bold shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
               >
@@ -721,7 +717,7 @@ export default function AddCategoryModal({ isOpen, onClose }) {
                 <ArrowRight size={16} />
               </button>
             ) : (
-              <button 
+              <button
                 onClick={onClose}
                 className="bg-emerald-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-md hover:brightness-110 active:scale-95 transition-all flex items-center gap-2"
               >

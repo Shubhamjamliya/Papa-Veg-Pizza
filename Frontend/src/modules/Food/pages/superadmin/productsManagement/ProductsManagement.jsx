@@ -14,68 +14,90 @@ export default function ProductsManagement() {
     setIsDetailOpen(true);
   };
   return (
-    <div className="p-4 md:p-6 lg:p-8 space-y-6 max-w-[1600px] mx-auto w-full">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-950 min-h-screen w-full space-y-4">
       {/* Header Section */}
-      <div className="flex flex-col gap-4 mb-6">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-zinc-100">Products Management</h2>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage your catalog and stock levels</p>
-          </div>
-          <button 
-            onClick={() => setIsAddProductOpen(true)}
-            className="bg-[var(--primary)] text-white font-bold text-sm px-6 py-2.5 rounded-xl shadow-md flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-[0.98] w-full md:w-auto"
-          >
-            <Plus size={20} />
-            Add Product
-          </button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2">
+        <div className="space-y-0.5">
+          <h1 className="text-lg font-bold text-black dark:text-white leading-tight">
+            Products Management
+          </h1>
+          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">
+            Manage your catalog and stock levels
+          </p>
         </div>
+        <button 
+          onClick={() => setIsAddProductOpen(true)}
+          className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
+        >
+          <Plus size={14} className="stroke-[3]" />
+          <span>ADD PRODUCT</span>
+        </button>
       </div>
 
       {/* Summary Cards */}
-      <section className="flex overflow-x-auto gap-4 scrollbar-none pb-2 -mx-4 px-4 md:mx-0 md:px-0">
-        <div className="min-w-[180px] flex-1 bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-center">
-            <Package className="text-[var(--primary)]" size={20} />
-            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <TrendingUp size={14} /> 4%
-            </span>
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4 select-none">
+        {/* Total Products */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Total Products</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">1,284</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> +4%
+              </span>
+            </div>
           </div>
-          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Total Products</span>
-          <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">1,284</span>
+          <div className="p-1.5 rounded-md bg-[var(--primary)]/10 text-[var(--primary)] shrink-0 border border-[var(--primary)]/20">
+            <Package size={14} />
+          </div>
         </div>
 
-        <div className="min-w-[180px] flex-1 bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2">
-          <div className="flex justify-between items-center">
-            <CheckCircle className="text-emerald-600 dark:text-emerald-500" size={20} />
-            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <TrendingUp size={14} /> 2%
-            </span>
+        {/* Active */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Active</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">1,210</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> +2%
+              </span>
+            </div>
           </div>
-          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Active</span>
-          <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">1,210</span>
+          <div className="p-1.5 rounded-md bg-emerald-555/10 text-emerald-600 dark:text-emerald-400 shrink-0 border border-emerald-100 dark:border-emerald-900/30">
+            <CheckCircle size={14} />
+          </div>
         </div>
 
-        <div className="min-w-[180px] flex-1 bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2 border-t-2 border-t-orange-500">
-          <div className="flex justify-between items-center">
-            <AlertTriangle className="text-orange-500" size={20} />
-            <span className="text-xs font-bold text-red-500 dark:text-red-400 flex items-center gap-1">
-              <TrendingUp size={14} /> 12%
-            </span>
+        {/* Low Stock */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow border-t-2 border-t-orange-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Low Stock</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-orange-600 dark:text-orange-455 mt-0.5">14</h3>
+              <span className="text-red-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingUp size={10} /> 12%
+              </span>
+            </div>
           </div>
-          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Low Stock</span>
-          <span className="text-2xl font-bold text-orange-500">14</span>
+          <div className="p-1.5 rounded-md bg-orange-500/10 text-orange-600 shrink-0 border border-orange-100 dark:border-orange-900/30">
+            <AlertTriangle size={14} />
+          </div>
         </div>
 
-        <div className="min-w-[180px] flex-1 bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-2 border-t-2 border-t-red-500">
-          <div className="flex justify-between items-center">
-            <Ban className="text-red-500" size={20} />
-            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <TrendingDown size={14} /> 5%
-            </span>
+        {/* Out of Stock */}
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow border-t-2 border-t-red-500">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Out of Stock</span>
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <h3 className="text-lg font-black text-rose-600 dark:text-rose-455 mt-0.5">8</h3>
+              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
+                <TrendingDown size={10} /> 5%
+              </span>
+            </div>
           </div>
-          <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Out of Stock</span>
-          <span className="text-2xl font-bold text-red-500">8</span>
+          <div className="p-1.5 rounded-md bg-red-500/10 text-rose-600 dark:text-rose-400 shrink-0 border border-red-100 dark:border-red-900/30">
+            <Ban size={14} />
+          </div>
         </div>
       </section>
 

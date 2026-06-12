@@ -53,24 +53,25 @@ export default function AppSettings() {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto p-4 md:p-6 lg:p-8 min-h-screen">
+    <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-955 min-h-screen w-full space-y-4 animate-fade-down">
       <EditSettings isOpen={isEditSettingsOpen} onClose={() => setIsEditSettingsOpen(false)} />
       <ConfigureMaintenance isOpen={isMaintenanceConfigOpen} onClose={() => setIsMaintenanceConfigOpen(false)} />
+      
       {/* Top App Bar Header inside the layout */}
-      <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-[var(--primary)]">App Settings</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage global platform configurations and maintenance</p>
+          <h1 className="text-lg font-bold text-black dark:text-white">App Settings</h1>
+          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">Manage global platform configurations and maintenance</p>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors duration-200">
-            <RefreshCw size={18} />
-            <span className="text-sm font-semibold">Refresh</span>
+        <div className="flex items-center gap-2">
+          <button className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black/70 dark:text-white/70 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 font-bold text-[11px]">
+            <RefreshCw size={12} />
+            <span>Refresh</span>
           </button>
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className={`px-4 py-2 rounded text-sm font-semibold text-white shadow-sm transition-all ${
+            className={`px-3.5 py-1.5 rounded text-[11px] font-bold text-white shadow-sm transition-all ${
               saveStatus === 'Saved' ? 'bg-emerald-600' : 'bg-[var(--primary)] hover:opacity-90 active:scale-95'
             }`}
           >
@@ -80,206 +81,201 @@ export default function AppSettings() {
       </header>
 
       {/* Section 1: Settings Overview (KPI Cards) */}
-      <section className="mb-8">
-        <div className="flex overflow-x-auto gap-4 pb-2 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700">
+      <section className="mb-2">
+        <div className="flex overflow-x-auto gap-3 pb-2 scrollbar-none">
           {/* General Settings KPI */}
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 flex flex-col gap-2">
-            <div className="flex justify-between items-start">
-              <span className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">General Status</span>
-              <button onClick={() => setIsEditSettingsOpen(true)} className="text-[var(--primary)] text-sm font-semibold hover:underline">Edit</button>
+          <div className="min-w-[240px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">General Status</span>
+              <span className="text-base font-black text-black dark:text-white">Active</span>
+              <span className="text-[10px] font-semibold text-black/70 dark:text-white/70">PizzaOS Enterprise</span>
+              <span className="text-[10px] text-[var(--primary)] font-semibold mt-0.5">admin.pizzaos.com</span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Active</span>
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">PizzaOS Enterprise</span>
-            </div>
-            <div className="mt-1">
-              <p className="text-xs text-[var(--primary)]">admin.pizzaos.com</p>
-            </div>
+            <button onClick={() => setIsEditSettingsOpen(true)} className="px-2 py-1 bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 text-[10px] font-bold rounded transition-colors">Edit</button>
           </div>
+          
           {/* Localization KPI */}
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 flex flex-col gap-2">
-            <div className="flex justify-between items-start">
-              <span className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">Region</span>
-              <button className="text-[var(--primary)] text-sm font-semibold hover:underline">Edit</button>
+          <div className="min-w-[240px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">Region</span>
+              <span className="text-base font-black text-black dark:text-white">INR (₹)</span>
+              <span className="text-[10px] font-semibold text-black/70 dark:text-white/70">Asia/Kolkata Timezone</span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">INR (₹)</span>
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Asia/Kolkata Timezone</span>
-            </div>
+            <button className="px-2 py-1 bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 text-[10px] font-bold rounded transition-colors">Edit</button>
           </div>
+          
           {/* Feature Flags KPI */}
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 flex flex-col gap-2">
-            <div className="flex justify-between items-start">
-              <span className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">Active Features</span>
-              <button className="text-[var(--primary)] text-sm font-semibold hover:underline">Manage</button>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">06</span>
-              <div className="flex flex-wrap gap-1 mt-1">
-                <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded text-[10px] font-bold">ORDERS</span>
-                <span className="px-1.5 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded text-[10px] font-bold">WALLET</span>
-                <span className="px-1.5 py-0.5 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400 rounded text-[10px] font-bold">FRANCHISE</span>
+          <div className="min-w-[240px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">Active Features</span>
+              <span className="text-base font-black text-black dark:text-white">06</span>
+              <div className="flex flex-wrap gap-1 mt-0.5">
+                <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded text-[9px] font-bold">ORDERS</span>
+                <span className="px-1.5 py-0.5 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded text-[9px] font-bold">WALLET</span>
+                <span className="px-1.5 py-0.5 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400 rounded text-[9px] font-bold">FRANCHISE</span>
               </div>
             </div>
+            <button className="px-2 py-1 bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 text-[10px] font-bold rounded transition-colors">Manage</button>
           </div>
+          
           {/* Maintenance KPI */}
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 flex flex-col gap-2">
-            <div className="flex justify-between items-start">
-              <span className="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">System Status</span>
-              <button onClick={() => setIsMaintenanceConfigOpen(true)} className="text-[var(--primary)] text-sm font-semibold hover:underline">Config</button>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-500">Online</span>
-              <div className="flex items-center gap-1 mt-1">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">Healthy</span>
+          <div className="min-w-[240px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 flex items-center justify-between shadow-sm">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">System Status</span>
+              <span className="text-base font-black text-emerald-600 dark:text-emerald-500">Online</span>
+              <div className="flex items-center gap-1 mt-0.5">
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">Healthy</span>
               </div>
             </div>
+            <button onClick={() => setIsMaintenanceConfigOpen(true)} className="px-2 py-1 bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 text-[10px] font-bold rounded transition-colors">Config</button>
           </div>
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* Left Column */}
-        <div className="lg:col-span-8 flex flex-col gap-6">
+        <div className="lg:col-span-8 flex flex-col gap-4">
           {/* Branding Management */}
-          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Branding Management</h2>
-              <MoreVertical size={20} className="text-zinc-400 cursor-pointer" />
+          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div className="px-3.5 py-2 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-955/50">
+              <h2 className="text-xs font-bold text-black dark:text-white">Branding Management</h2>
+              <MoreVertical size={14} className="text-black/50 dark:text-white/50 cursor-pointer" />
             </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
+            <div className="p-3.5 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <div>
-                  <label className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 block mb-2">Main App Logo</label>
-                  <div className="w-full h-32 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                    <UploadCloud size={32} className="text-zinc-400" />
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Drop image here or <span className="text-[var(--primary)] font-bold">Upload</span></p>
+                  <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block mb-1">Main App Logo</label>
+                  <div className="w-full h-20 bg-zinc-50 dark:bg-zinc-800/50 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                    <UploadCloud size={20} className="text-black/50 dark:text-white/50" />
+                    <p className="text-[10px] font-semibold text-black/50 dark:text-white/50">Drop image here or <span className="text-[var(--primary)] font-bold">Upload</span></p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded border border-zinc-200 dark:border-zinc-800">
-                  <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Current: primary_logo.webp</span>
-                  <Trash2 size={16} className="text-red-500 cursor-pointer" />
+                <div className="flex items-center justify-between p-1.5 bg-zinc-50 dark:bg-zinc-800/50 rounded border border-zinc-200 dark:border-zinc-800 text-xs">
+                  <span className="font-semibold text-black/70 dark:text-white/70">Current: primary_logo.webp</span>
+                  <Trash2 size={12} className="text-rose-500 cursor-pointer hover:text-rose-600" />
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              
+              <div className="space-y-2 flex flex-col justify-between">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 block mb-2">Dark Mode Logo</label>
-                    <div className="w-full h-20 bg-zinc-900 rounded-lg flex items-center justify-center">
-                      <ImageIcon size={24} className="text-white" />
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block mb-1">Dark Mode Logo</label>
+                    <div className="w-full h-12 bg-zinc-950 rounded-lg flex items-center justify-center">
+                      <ImageIcon size={16} className="text-white" />
                     </div>
-                    <button className="w-full mt-2 py-1 text-[11px] font-semibold border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Update</button>
+                    <button className="w-full mt-1.5 py-1 text-[10px] font-bold border border-zinc-300 dark:border-zinc-700 rounded text-black dark:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Update</button>
                   </div>
                   <div>
-                    <label className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 block mb-2">Favicon</label>
-                    <div className="w-full h-20 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-lg flex items-center justify-center">
-                      <div className="w-8 h-8 bg-[var(--primary)] rounded"></div>
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block mb-1">Favicon</label>
+                    <div className="w-full h-12 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-lg flex items-center justify-center">
+                      <div className="w-5 h-5 bg-[var(--primary)] rounded-sm"></div>
                     </div>
-                    <button className="w-full mt-2 py-1 text-[11px] font-semibold border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Update</button>
+                    <button className="w-full mt-1.5 py-1 text-[10px] font-bold border border-zinc-300 dark:border-zinc-700 rounded text-black dark:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">Update</button>
                   </div>
                 </div>
-                <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded flex items-center gap-2">
-                  <Folder size={16} className="text-zinc-400" />
-                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">Storage Path: uploads/settings/branding/v1/</span>
+                <div className="p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded flex items-center gap-1.5 border border-zinc-200 dark:border-zinc-800">
+                  <Folder size={12} className="text-black/50 dark:text-white/50" />
+                  <span className="text-[9px] text-black/70 dark:text-white/70 font-mono overflow-hidden text-ellipsis whitespace-nowrap">Storage Path: uploads/settings/branding/v1/</span>
                 </div>
               </div>
             </div>
           </article>
 
           {/* Feature Management */}
-          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Feature Management</h2>
+          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div className="px-3.5 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-955/50">
+              <h2 className="text-xs font-bold text-black dark:text-white">Feature Management</h2>
             </div>
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="divide-y divide-zinc-200 dark:divide-zinc-800/50">
               {/* Toggle Row */}
-              <div className="p-6 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-                    <ShoppingBag size={20} className="text-red-500" />
+              <div className="p-3.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 bg-rose-50 dark:bg-rose-955/20 rounded-lg flex items-center justify-center">
+                    <ShoppingBag size={14} className="text-rose-500" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Enable Orders</h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Allow customers to place real-time orders.</p>
+                    <h3 className="text-xs font-bold text-black dark:text-white">Enable Orders</h3>
+                    <p className="text-[10px] font-semibold text-black/70 dark:text-white/70">Allow customers to place real-time orders.</p>
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" defaultChecked className="sr-only peer" />
-                  <div className="w-11 h-6 bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-checked:bg-[var(--primary)] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                  <div className="w-9 h-5 bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-checked:bg-[var(--primary)] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
                 </label>
               </div>
+              
               {/* Toggle Row */}
-              <div className="p-6 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                    <UserPlus size={20} className="text-blue-500" />
+              <div className="p-3.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 bg-blue-50 dark:bg-blue-955/20 rounded-lg flex items-center justify-center">
+                    <UserPlus size={14} className="text-blue-500" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Guest Checkout</h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Allow orders without creating an account.</p>
+                    <h3 className="text-xs font-bold text-black dark:text-white">Guest Checkout</h3>
+                    <p className="text-[10px] font-semibold text-black/70 dark:text-white/70">Allow orders without creating an account.</p>
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" defaultChecked className="sr-only peer" />
-                  <div className="w-11 h-6 bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-checked:bg-[var(--primary)] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                  <div className="w-9 h-5 bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-checked:bg-[var(--primary)] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
                 </label>
               </div>
+              
               {/* Toggle Row */}
-              <div className="p-6 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                    <Wallet size={20} className="text-purple-500" />
+              <div className="p-3.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 bg-purple-50 dark:bg-purple-955/20 rounded-lg flex items-center justify-center">
+                    <Wallet size={14} className="text-purple-500" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Wallet System</h3>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Enable digital credits and top-ups.</p>
+                    <h3 className="text-xs font-bold text-black dark:text-white">Wallet System</h3>
+                    <p className="text-[10px] font-semibold text-black/70 dark:text-white/70">Enable digital credits and top-ups.</p>
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" defaultChecked className="sr-only peer" />
-                  <div className="w-11 h-6 bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-checked:bg-[var(--primary)] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                  <div className="w-9 h-5 bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-checked:bg-[var(--primary)] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
                 </label>
               </div>
             </div>
           </article>
 
           {/* Parameter Control */}
-          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Parameter Control</h2>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <div className="relative flex-1 sm:w-64">
-                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input 
-                    type="text" 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search parameters..." 
-                    className="w-full pl-9 pr-3 py-2 text-sm bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-shadow"
-                  />
-                </div>
+          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div className="px-3.5 py-2 border-b border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-zinc-50/50 dark:bg-zinc-955/50">
+              <h2 className="text-xs font-bold text-black dark:text-white">Parameter Control</h2>
+              <div className="relative w-full sm:w-48">
+                <input 
+                  type="text" 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search parameters..." 
+                  className="w-full pl-8 pr-2.5 py-1 text-xs font-semibold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-black dark:text-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
+                />
+                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/50 dark:text-white/50" />
               </div>
             </div>
+            
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
-                    <th className="px-6 py-3 text-xs font-semibold text-zinc-500 dark:text-zinc-400">NAME</th>
-                    <th className="px-6 py-3 text-xs font-semibold text-zinc-500 dark:text-zinc-400">VALUE</th>
-                    <th className="px-6 py-3 text-xs font-semibold text-zinc-500 dark:text-zinc-400">STATUS</th>
+                  <tr className="bg-zinc-50 dark:bg-zinc-955 border-b border-zinc-200 dark:border-zinc-800">
+                    <th className="px-3.5 py-1.5 text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">NAME</th>
+                    <th className="px-3.5 py-1.5 text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">VALUE</th>
+                    <th className="px-3.5 py-1.5 text-[10px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">STATUS</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800/50">
                   {[
                     { name: 'Min Order Value', value: '₹299.00', status: 'ACTIVE' },
                     { name: 'Global Tax Rate', value: '5% GST', status: 'ACTIVE' }
                   ].filter(item => item.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())).map((param, idx) => (
-                    <tr key={idx} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer">
-                      <td className="px-6 py-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">{param.name}</td>
-                      <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400">{param.value}</td>
-                      <td className="px-6 py-4">
-                        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full text-[10px] font-bold">
+                    <tr key={idx} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors cursor-pointer text-xs">
+                      <td className="px-3.5 py-2 font-bold text-black dark:text-white">{param.name}</td>
+                      <td className="px-3.5 py-2 font-mono font-black text-black/70 dark:text-white/70">{param.value}</td>
+                      <td className="px-3.5 py-2">
+                        <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full text-[9px] font-bold">
                           {param.status}
                         </span>
                       </td>
@@ -290,7 +286,7 @@ export default function AppSettings() {
                     { name: 'Global Tax Rate', value: '5% GST', status: 'ACTIVE' }
                   ].filter(item => item.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())).length === 0 && (
                     <tr>
-                      <td colSpan="3" className="px-6 py-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
+                      <td colSpan="3" className="px-3.5 py-6 text-center text-xs font-semibold text-black/50 dark:text-white/50">
                         No parameters found matching "{debouncedSearchTerm}"
                       </td>
                     </tr>
@@ -301,81 +297,81 @@ export default function AppSettings() {
           </article>
         </div>
 
-        {/* Right Column */}
-        <aside className="lg:col-span-4 flex flex-col gap-6">
+        {/* Right Column (Sidebar) */}
+        <aside className="lg:col-span-4 flex flex-col gap-4">
           {/* Maintenance Card */}
-          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-emerald-500 rounded-lg p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
+          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 border-l-4 border-l-emerald-500 rounded-xl p-3.5 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <CheckCircle size={20} className="text-emerald-600 dark:text-emerald-500" />
-                <h2 className="text-lg font-semibold text-emerald-800 dark:text-emerald-400">System Healthy</h2>
+                <CheckCircle size={16} className="text-emerald-600 dark:text-emerald-500" />
+                <h2 className="text-xs font-bold text-emerald-800 dark:text-emerald-400">System Healthy</h2>
               </div>
-              <span className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-200 dark:border-emerald-800 uppercase">Online</span>
+              <span className="px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[9px] font-bold rounded-full border border-emerald-200 dark:border-emerald-800 uppercase">Online</span>
             </div>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6">Maintenance mode is disabled. Platforms are operating normally.</p>
-            <div className="grid grid-cols-4 gap-2 mb-6">
-              <div className="flex flex-col items-center gap-1 p-2 bg-zinc-50 dark:bg-zinc-800 rounded opacity-60">
-                <Smartphone size={20} className="text-zinc-700 dark:text-zinc-300" />
-                <span className="text-[9px] font-bold text-zinc-700 dark:text-zinc-300">APP</span>
+            <p className="text-xs font-semibold text-black/70 dark:text-white/70 mb-3 leading-relaxed">Maintenance mode is disabled. Platforms are operating normally.</p>
+            <div className="grid grid-cols-4 gap-1.5 mb-3">
+              <div className="flex flex-col items-center gap-0.5 p-1.5 bg-zinc-50 dark:bg-zinc-800 rounded opacity-70 border border-zinc-200/50 dark:border-zinc-700/50">
+                <Smartphone size={14} className="text-black dark:text-white" />
+                <span className="text-[8px] font-bold text-black/70 dark:text-white/70">APP</span>
               </div>
-              <div className="flex flex-col items-center gap-1 p-2 bg-zinc-50 dark:bg-zinc-800 rounded opacity-60">
-                <Globe size={20} className="text-zinc-700 dark:text-zinc-300" />
-                <span className="text-[9px] font-bold text-zinc-700 dark:text-zinc-300">WEB</span>
+              <div className="flex flex-col items-center gap-0.5 p-1.5 bg-zinc-50 dark:bg-zinc-800 rounded opacity-70 border border-zinc-200/50 dark:border-zinc-700/50">
+                <Globe size={14} className="text-black dark:text-white" />
+                <span className="text-[8px] font-bold text-black/70 dark:text-white/70">WEB</span>
               </div>
-              <div className="flex flex-col items-center gap-1 p-2 bg-zinc-50 dark:bg-zinc-800 rounded opacity-60">
-                <Store size={20} className="text-zinc-700 dark:text-zinc-300" />
-                <span className="text-[9px] font-bold text-zinc-700 dark:text-zinc-300">POS</span>
+              <div className="flex flex-col items-center gap-0.5 p-1.5 bg-zinc-50 dark:bg-zinc-800 rounded opacity-70 border border-zinc-200/50 dark:border-zinc-700/50">
+                <Store size={14} className="text-black dark:text-white" />
+                <span className="text-[8px] font-bold text-black/70 dark:text-white/70">POS</span>
               </div>
-              <div className="flex flex-col items-center gap-1 p-2 bg-zinc-50 dark:bg-zinc-800 rounded opacity-60">
-                <Bike size={20} className="text-zinc-700 dark:text-zinc-300" />
-                <span className="text-[9px] font-bold text-zinc-700 dark:text-zinc-300">RIDER</span>
+              <div className="flex flex-col items-center gap-0.5 p-1.5 bg-zinc-50 dark:bg-zinc-800 rounded opacity-70 border border-zinc-200/50 dark:border-zinc-700/50">
+                <Bike size={14} className="text-black dark:text-white" />
+                <span className="text-[8px] font-bold text-black/70 dark:text-white/70">RIDER</span>
               </div>
             </div>
-            <button onClick={() => setIsMaintenanceConfigOpen(true)} className="w-full py-2 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-sm font-semibold rounded hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+            <button onClick={() => setIsMaintenanceConfigOpen(true)} className="w-full py-1.5 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-bold rounded transition-colors shadow-sm">
               Configure Maintenance
             </button>
           </article>
 
           {/* Activity Log */}
-          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-            <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-              <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">Recent Activity</h2>
-              <History size={18} className="text-zinc-400" />
+          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div className="px-3.5 py-2 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-955/50">
+              <h2 className="text-xs font-bold text-black dark:text-white uppercase tracking-wider">Recent Activity</h2>
+              <History size={14} className="text-black/50 dark:text-white/50" />
             </div>
-            <div className="p-6 space-y-6">
-              <div className="flex gap-4">
-                <div className="mt-1.5 w-2 h-2 rounded-full bg-[var(--primary)] flex-shrink-0"></div>
-                <div className="space-y-1">
-                  <p className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-100">Logo Updated</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Admin (sarah.d) changed Branding.</p>
-                  <p className="text-[10px] text-zinc-400">10:45 AM</p>
+            <div className="p-3.5 space-y-3">
+              <div className="flex gap-2">
+                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--primary)] flex-shrink-0 animate-pulse"></div>
+                <div className="space-y-0.5 flex-1 min-w-0">
+                  <p className="text-xs font-bold text-black dark:text-white truncate">Logo Updated</p>
+                  <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 leading-normal">Admin (sarah.d) changed Branding.</p>
+                  <p className="text-[9px] font-bold text-black/50 dark:text-white/50">10:45 AM</p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
-                <div className="space-y-1">
-                  <p className="text-[13px] font-semibold text-zinc-900 dark:text-zinc-100">Wallet Enabled</p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">System auto-triggered flag.</p>
-                  <p className="text-[10px] text-zinc-400">09:00 PM</p>
+              <div className="flex gap-2">
+                <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></div>
+                <div className="space-y-0.5 flex-1 min-w-0">
+                  <p className="text-xs font-bold text-black dark:text-white truncate">Wallet Enabled</p>
+                  <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 leading-normal">System auto-triggered flag.</p>
+                  <p className="text-[9px] font-bold text-black/50 dark:text-white/50">09:00 PM</p>
                 </div>
               </div>
             </div>
-            <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 text-center">
-              <button className="text-[var(--primary)] text-sm font-semibold hover:underline">Full Log</button>
+            <div className="p-2 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-955/50 text-center">
+              <button className="text-[var(--primary)] text-xs font-bold hover:underline">Full Log</button>
             </div>
           </article>
 
           {/* Help Card */}
-          <article className="bg-[var(--primary)] text-white p-6 rounded-xl shadow-md relative overflow-hidden">
+          <article className="bg-[var(--primary)] text-white p-3.5 rounded-xl shadow-md relative overflow-hidden group">
             <div className="relative z-10">
-              <h3 className="text-sm font-semibold mb-2">Need Assistance?</h3>
-              <p className="text-xs opacity-90 mb-4">Our technical team is available 24/7 for platform support.</p>
-              <button className="w-full py-2 bg-white text-[var(--primary)] rounded text-sm font-semibold shadow-sm active:scale-95 transition-transform hover:bg-zinc-50">
+              <h3 className="text-xs font-bold mb-1">Need Assistance?</h3>
+              <p className="text-[10px] opacity-90 mb-3 leading-relaxed">Our technical team is available 24/7 for platform support.</p>
+              <button className="w-full py-1.5 bg-white text-[var(--primary)] rounded text-xs font-bold shadow-sm active:scale-95 transition-transform hover:bg-zinc-50">
                 Support Ticket
               </button>
             </div>
-            <div className="absolute -right-4 -bottom-4 opacity-10">
-              <HeadphonesIcon size={80} />
+            <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-300">
+              <HeadphonesIcon size={64} />
             </div>
           </article>
         </aside>
