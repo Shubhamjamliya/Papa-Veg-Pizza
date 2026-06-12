@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { 
-  ShoppingCart, 
-  Plus, 
-  Package, 
-  TrendingUp, 
-  Wallet, 
-  ArrowRight, 
-  Lightbulb, 
-  CheckCircle 
+import {
+  ShoppingCart,
+  Plus,
+  Package,
+  TrendingUp,
+  Wallet,
+  ArrowRight,
+  Lightbulb,
+  CheckCircle
 } from "lucide-react";
 import InventoryData from "./InventoryData";
 import InventoryDetails from "./InventoryDetails";
@@ -31,11 +31,11 @@ export default function InventoryManagement() {
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Manage and monitor your pizza ingredients and kitchen supplies.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-xl font-bold text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors shadow-sm">
+          {/* <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-700 rounded-xl font-bold text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors shadow-sm">
             <ShoppingCart size={18} />
             Purchase Order
-          </button>
-          <button 
+          </button> */}
+          <button
             onClick={() => setIsAddModalOpen(true)}
             className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-[var(--primary)] text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-md active:scale-95"
           >
@@ -110,7 +110,7 @@ export default function InventoryManagement() {
 
       {/* Bento Style Info Grid (Extra Details) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-        
+
         {/* Automated Reordering */}
         <div className="bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 p-6 rounded-2xl flex flex-col justify-between">
           <div>
@@ -149,16 +149,16 @@ export default function InventoryManagement() {
       </div>
 
       {/* Inventory Details Drawer */}
-      <InventoryDetails 
-        isOpen={isDetailOpen} 
-        onClose={() => setIsDetailOpen(false)} 
-        item={selectedItem} 
+      <InventoryDetails
+        isOpen={isDetailOpen}
+        onClose={() => setIsDetailOpen(false)}
+        item={selectedItem}
       />
 
       {/* Add Inventory Modal */}
-      <AddInventory 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
+      <AddInventory
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
       />
     </div>
   );

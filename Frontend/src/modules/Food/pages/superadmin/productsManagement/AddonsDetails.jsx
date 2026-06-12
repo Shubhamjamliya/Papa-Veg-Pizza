@@ -197,12 +197,6 @@ export default function AddonsDetails({ isOpen, onClose, addon, onEdit }) {
           </button>
           <div className="flex gap-3 w-full sm:w-auto">
             <button 
-              onClick={onClose}
-              className="flex-1 sm:flex-none px-6 py-2 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold text-sm bg-white dark:bg-zinc-950 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors shadow-sm"
-            >
-              Discard
-            </button>
-            <button 
               onClick={() => {
                 onClose();
                 if (onEdit) onEdit(addon);

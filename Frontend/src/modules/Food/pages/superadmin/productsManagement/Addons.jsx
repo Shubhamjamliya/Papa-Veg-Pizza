@@ -3,6 +3,7 @@ import { PlusCircle, Plus, ClipboardList, CheckCircle, AlertTriangle, TrendingUp
 import AddonsData from "./AddonsData";
 import AddonsDetails from "./AddonsDetails";
 import AddAddonsModal from "./AddAddonsModal";
+import EditAddonsModal from "./EditAddonsModal";
 import AddGroupAddons from "./AddGroupAddons";
 import EditGroupAddons from "./EditGroupAddons";
 
@@ -10,6 +11,7 @@ export default function Addons() {
   const [selectedAddon, setSelectedAddon] = useState(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddGroupModalOpen, setIsAddGroupModalOpen] = useState(false);
   const [isEditGroupModalOpen, setIsEditGroupModalOpen] = useState(false);
   const [selectedGroupToEdit, setSelectedGroupToEdit] = useState(null);
@@ -27,7 +29,7 @@ export default function Addons() {
 
   const handleEditAddon = (addon) => {
     setSelectedAddonToEdit(addon);
-    setIsAddModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   return (
@@ -200,6 +202,12 @@ export default function Addons() {
       <AddAddonsModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
+      />
+
+      {/* Edit Add-on Modal */}
+      <EditAddonsModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
         addon={selectedAddonToEdit}
       />
 
