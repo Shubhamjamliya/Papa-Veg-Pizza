@@ -312,7 +312,7 @@ export default function DeliveryPartnersManagement() {
           </p>
         </div>
 
-        <button
+        {/* <button
           onClick={() => {
             setSelectedRider(null)
             setIsEditModalOpen(true)
@@ -321,7 +321,7 @@ export default function DeliveryPartnersManagement() {
         >
           <Plus size={14} className="stroke-[3]" />
           <span>Add Delivery Partner</span>
-        </button>
+        </button> */}
       </div>
 
       {/* KPI Cards Grid */}
@@ -536,7 +536,7 @@ export default function DeliveryPartnersManagement() {
                         >
                           <Eye size={13} />
                         </button>
-                        <button
+                        {/* <button
                           onClick={() => {
                             setSelectedRider(rider)
                             setIsEditModalOpen(true)
@@ -545,7 +545,7 @@ export default function DeliveryPartnersManagement() {
                           title="Edit Profile"
                         >
                           <Edit size={13} />
-                        </button>
+                        </button> */}
                         <button
                           onClick={() => handleSuspendToggle(rider)}
                           className={`p-1 rounded-lg border transition-all cursor-pointer ${rider.status === "Suspended"

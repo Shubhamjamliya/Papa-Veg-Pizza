@@ -310,13 +310,13 @@ export default function KitchenStaffManagement() {
           </p>
         </div>
 
-        <button
+        {/* <button
           onClick={handleOpenAddModal}
           className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
         >
           <Plus size={14} className="stroke-[3]" />
           <span>Add New Staff</span>
-        </button>
+        </button> */}
       </div>
 
       {/* KPI Stats Cards */}
@@ -508,13 +508,13 @@ export default function KitchenStaffManagement() {
                         >
                           <Eye size={13} />
                         </button>
-                        <button
+                        {/* <button
                           onClick={() => handleOpenEditModal(staff)}
                           className="p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-black/50 dark:text-white/50 hover:text-[var(--primary)] transition-all cursor-pointer"
                           title="Edit Employee"
                         >
                           <Edit size={13} />
-                        </button>
+                        </button> */}
                         <button
                           onClick={() => handleToggleStatus(staff)}
                           className={`p-1 rounded-lg border transition-all cursor-pointer ${staff.status === "Active"

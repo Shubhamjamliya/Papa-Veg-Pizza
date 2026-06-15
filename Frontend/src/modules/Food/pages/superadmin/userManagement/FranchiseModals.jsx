@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Ban } from "lucide-react"
+import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Ban, Lock, Clock } from "lucide-react"
 
 // Combined ADD / EDIT Franchise Admin Modal
 export function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
@@ -10,12 +10,17 @@ export function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
     name: "",
     email: "",
     phone: "",
+    password: "",
     franchiseName: "",
     city: "",
     state: "",
     type: "Single Store",
     totalStores: 1,
-    status: "ACTIVE"
+    status: "ACTIVE",
+    franchiseDuration: 3,
+    franchiseCost: "",
+    paidAmount: "",
+    dueAmount: ""
   })
 
   const [errors, setErrors] = useState({})
@@ -26,24 +31,34 @@ export function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
         name: admin.name || "",
         email: admin.email || "",
         phone: admin.phone || "",
+        password: "",
         franchiseName: admin.franchiseName || "",
         city: admin.city || "",
         state: admin.state || "",
         type: admin.type || "Single Store",
         totalStores: admin.totalStores || 1,
-        status: admin.status || "ACTIVE"
+        status: admin.status || "ACTIVE",
+        franchiseDuration: admin.franchiseDuration || 3,
+        franchiseCost: admin.franchiseCost || "",
+        paidAmount: admin.paidAmount || "",
+        dueAmount: admin.dueAmount || ""
       })
     } else {
       setFormData({
         name: "",
         email: "",
         phone: "",
+        password: "",
         franchiseName: "",
         city: "",
         state: "",
         type: "Single Store",
         totalStores: 1,
-        status: "ACTIVE"
+        status: "ACTIVE",
+        franchiseDuration: 3,
+        franchiseCost: "",
+        paidAmount: "",
+        dueAmount: ""
       })
     }
     setErrors({})
@@ -58,10 +73,23 @@ export function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
       newErrors.email = "Invalid email format"
     }
     if (!formData.phone.trim()) newErrors.phone = "Phone is required"
+    if (!isEdit && !formData.password.trim()) newErrors.password = "Password is required"
     if (!formData.franchiseName.trim()) newErrors.franchiseName = "Franchise name is required"
     if (!formData.city.trim()) newErrors.city = "City is required"
     if (!formData.state.trim()) newErrors.state = "State is required"
     if (formData.totalStores < 1) newErrors.totalStores = "Must have at least 1 store"
+    if (!formData.franchiseDuration || Number(formData.franchiseDuration) < 1) {
+      newErrors.franchiseDuration = "Duration must be at least 1 year"
+    }
+    if (formData.franchiseCost !== "" && Number(formData.franchiseCost) < 0) {
+      newErrors.franchiseCost = "Cost cannot be negative"
+    }
+    if (formData.paidAmount !== "" && Number(formData.paidAmount) < 0) {
+      newErrors.paidAmount = "Paid amount cannot be negative"
+    }
+    if (formData.dueAmount !== "" && Number(formData.dueAmount) < 0) {
+      newErrors.dueAmount = "Due amount cannot be negative"
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -188,6 +216,24 @@ export function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
                       {errors.phone && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.phone}</p>}
                     </div>
                   </div>
+
+                  {/* Password Input */}
+                  <div>
+                    <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Password</label>
+                    <div className="relative">
+                      <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-450 text-zinc-400" />
+                      <input
+                        type="password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        placeholder={isEdit ? "Leave blank to keep unchanged" : "Enter a strong password"}
+                        className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-55 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                          errors.password ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                        }`}
+                      />
+                    </div>
+                    {errors.password && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.password}</p>}
+                  </div>
                 </div>
 
                 {/* Franchise Details Section */}
@@ -299,6 +345,102 @@ export function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
                         <option value="INACTIVE">INACTIVE</option>
                         {isEdit && <option value="SUSPENDED">SUSPENDED</option>}
                       </select>
+                    </div>
+                  </div>
+
+                  {/* Duration and Cost Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Duration (Years)</label>
+                      <div className="relative">
+                        <Clock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="number"
+                          min="1"
+                          placeholder="e.g. 3"
+                          value={formData.franchiseDuration}
+                          onChange={(e) => setFormData({ ...formData, franchiseDuration: parseInt(e.target.value) || "" })}
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-55 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.franchiseDuration ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.franchiseDuration && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseDuration}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Total Franchise Cost (₹)</label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-zinc-400">₹</span>
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="e.g. 500000"
+                          value={formData.franchiseCost}
+                          onChange={(e) => {
+                            const costVal = e.target.value
+                            const cost = parseFloat(costVal) || 0
+                            const paid = parseFloat(formData.paidAmount) || 0
+                            setFormData({
+                              ...formData,
+                              franchiseCost: costVal,
+                              dueAmount: Math.max(0, cost - paid).toString()
+                            })
+                          }}
+                          className={`w-full text-xs pl-7 pr-3 py-1.5 border rounded-lg bg-zinc-55 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.franchiseCost ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.franchiseCost && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseCost}</p>}
+                    </div>
+                  </div>
+
+                  {/* Pay Amount and Due Amount Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Paid Amount (₹)</label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-zinc-400">₹</span>
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="e.g. 300000"
+                          value={formData.paidAmount}
+                          onChange={(e) => {
+                            const paidVal = e.target.value
+                            const cost = parseFloat(formData.franchiseCost) || 0
+                            const paid = parseFloat(paidVal) || 0
+                            setFormData({
+                              ...formData,
+                              paidAmount: paidVal,
+                              dueAmount: Math.max(0, cost - paid).toString()
+                            })
+                          }}
+                          className={`w-full text-xs pl-7 pr-3 py-1.5 border rounded-lg bg-zinc-55 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.paidAmount ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.paidAmount && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.paidAmount}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Due Amount (₹)</label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-zinc-400">₹</span>
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="e.g. 200000"
+                          value={formData.dueAmount}
+                          onChange={(e) => setFormData({ ...formData, dueAmount: e.target.value })}
+                          className={`w-full text-xs pl-7 pr-3 py-1.5 border rounded-lg bg-zinc-55 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.dueAmount ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.dueAmount && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.dueAmount}</p>}
                     </div>
                   </div>
                 </div>

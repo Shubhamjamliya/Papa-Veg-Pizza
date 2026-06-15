@@ -22,6 +22,7 @@ import {
 import EditUserProfile from "./EditUserProfile"
 import OrdersTransactionModal from "./OrdersTransactionModal"
 import SuspendCustomerModal from "./SuspendCustomerModal"
+import UserDetailsModal from "./UserDetailsModal"
 
 // Rich Mock Customers Data for robust filtering
 const INITIAL_CUSTOMERS = [
@@ -121,13 +122,20 @@ export default function CustomerList() {
   const [statusFilter, setStatusFilter] = useState("All Statuses")
   const [loyaltyFilter, setLoyaltyFilter] = useState("All Tiers")
   const [sortBy, setSortBy] = useState("Name A-Z")
+
+  // Applied Filters State (updates only on "Apply")
+  const [appliedFilters, setAppliedFilters] = useState({
+    status: "All Statuses",
+    loyalty: "All Tiers",
+    sortBy: "Name A-Z"
+  })
   
-  // Debounce Search Query
+  // Custom Debounce Implementation for Search Bar
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const handler = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery)
-    }, 300)
-    return () => clearTimeout(timer)
+    }, 500) // 500ms debounce delay
+    return () => clearTimeout(handler)
   }, [searchQuery])
   
   // Dropdown states for premium UI toggles
@@ -174,30 +182,40 @@ export default function CustomerList() {
 
         // Status Filter
         const matchesStatus =
-          statusFilter === "All Statuses" || cust.status === statusFilter
+          appliedFilters.status === "All Statuses" || cust.status === appliedFilters.status
 
         // Loyalty Filter
         const matchesLoyalty =
-          loyaltyFilter === "All Tiers" || cust.loyalty === loyaltyFilter
+          appliedFilters.loyalty === "All Tiers" || cust.loyalty === appliedFilters.loyalty
 
         return matchesSearch && matchesStatus && matchesLoyalty
       })
       .sort((a, b) => {
-        if (sortBy === "Name A-Z") {
+        if (appliedFilters.sortBy === "Name A-Z") {
           return a.name.localeCompare(b.name)
         }
-        if (sortBy === "Name Z-A") {
+        if (appliedFilters.sortBy === "Name Z-A") {
           return b.name.localeCompare(a.name)
         }
-        if (sortBy === "Orders Count") {
+        if (appliedFilters.sortBy === "Orders Count") {
           return b.orders - a.orders
         }
-        if (sortBy === "Revenue Spent") {
+        if (appliedFilters.sortBy === "Revenue Spent") {
           return b.spent - a.spent
         }
         return 0
       })
-  }, [customers, debouncedSearchQuery, statusFilter, loyaltyFilter, sortBy])
+  }, [customers, debouncedSearchQuery, appliedFilters])
+
+  // Handle Apply Filters Action
+  const handleApplyFilters = () => {
+    setAppliedFilters({
+      status: statusFilter,
+      loyalty: loyaltyFilter,
+      sortBy: sortBy
+    })
+    showToast("Filters applied successfully!", "success")
+  }
 
   // Account suspension toggler inside list state
   const handleToggleSuspension = (id) => {
@@ -407,7 +425,7 @@ export default function CustomerList() {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     className="absolute right-0 top-full mt-1 w-44 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 shadow-xl z-40 p-1"
                   >
-                    {["Name A-Z", "Name Z-A"].map((sort) => (
+                    {["Name A-Z", "Name Z-A", "Orders Count", "Revenue Spent"].map((sort) => (
                       <button
                         key={sort}
                         onClick={() => {
@@ -427,8 +445,21 @@ export default function CustomerList() {
             </AnimatePresence>
           </div>
 
+          {/* Apply Filters Button */}
+          {(statusFilter !== appliedFilters.status || loyaltyFilter !== appliedFilters.loyalty || sortBy !== appliedFilters.sortBy) && (
+            <div className="relative flex-shrink-0">
+              <button
+                onClick={handleApplyFilters}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 rounded-full text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+              >
+                <CheckCircle size={12} />
+                <span>Apply</span>
+              </button>
+            </div>
+          )}
+
           {/* Reset Filters Button */}
-          {(searchQuery || statusFilter !== "All Statuses" || loyaltyFilter !== "All Tiers" || sortBy !== "Name A-Z") && (
+          {(searchQuery || appliedFilters.status !== "All Statuses" || appliedFilters.loyalty !== "All Tiers" || appliedFilters.sortBy !== "Name A-Z" || statusFilter !== "All Statuses" || loyaltyFilter !== "All Tiers" || sortBy !== "Name A-Z") && (
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => {
@@ -436,6 +467,11 @@ export default function CustomerList() {
                   setStatusFilter("All Statuses")
                   setLoyaltyFilter("All Tiers")
                   setSortBy("Name A-Z")
+                  setAppliedFilters({
+                    status: "All Statuses",
+                    loyalty: "All Tiers",
+                    sortBy: "Name A-Z"
+                  })
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 rounded-full text-xs font-semibold shadow-sm transition-colors cursor-pointer"
               >
@@ -543,6 +579,12 @@ export default function CustomerList() {
         onClose={() => setSuspendingCustomer(null)}
         customer={suspendingCustomer}
         onSuspend={handleSuspendAction}
+      />
+
+      <UserDetailsModal
+        isOpen={!!selectedCustomer}
+        onClose={() => setSelectedCustomer(null)}
+        customer={selectedCustomer}
       />
     </div>
   )
