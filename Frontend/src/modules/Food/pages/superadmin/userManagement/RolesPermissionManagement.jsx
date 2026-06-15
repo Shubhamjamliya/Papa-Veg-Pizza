@@ -6,39 +6,27 @@ import CreateRoleModal from './CreateRoleModal';
 
 export const INITIAL_ROLES = [
   {
-    id: "2",
-    name: "Area Supervisor",
-    subtitle: "Customized for regional ops",
-    description: "Management of specific franchise territories including multiple stores and staff.",
-    type: "Custom",
-    users: 12,
-    permissionsCount: "64",
+    id: "1",
+    name: "Franchise Admin",
+    subtitle: "Zone & territory management",
+    description: "Franchise Admin has access only to their assigned zones and the stores under their zone (e.g. Indore zone and its stores), as assigned by the superadmin.",
+    type: "System",
+    users: 24,
+    permissionsCount: "86",
     permissionsTotal: 148,
-    scope: "Franchise",
+    scope: "Zone-Restricted",
     status: "Active"
   },
   {
-    id: "3",
-    name: "Delivery Lead",
-    subtitle: "Fleet management access",
-    description: "Standard role for delivery tracking and fleet management.",
-    type: "Custom",
-    users: 8,
-    permissionsCount: "24",
+    id: "2",
+    name: "Store Manager",
+    subtitle: "Single store operations",
+    description: "Store Manager has full control over a single assigned store location, inventory, and staff rosters.",
+    type: "System",
+    users: 112,
+    permissionsCount: "42",
     permissionsTotal: 148,
-    scope: "Store",
-    status: "Suspended"
-  },
-  {
-    id: "4",
-    name: "Audit Executive",
-    subtitle: "Read-only financial audit",
-    description: "Read-only access for financial and compliance audits.",
-    type: "Custom",
-    users: 3,
-    permissionsCount: "14",
-    permissionsTotal: 148,
-    scope: "Global",
+    scope: "Store-Restricted",
     status: "Active"
   }
 ];
@@ -87,9 +75,9 @@ export default function RolesPermissionManagement() {
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Total Roles</span>
             <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">12</h3>
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">2</h3>
               <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
-                <TrendingUp size={10} /> +2
+                <TrendingUp size={10} /> Active
               </span>
             </div>
           </div>
@@ -103,7 +91,7 @@ export default function RolesPermissionManagement() {
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Custom Roles</span>
             <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">6</h3>
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">0</h3>
               <span className="text-amber-500 font-bold text-[8px] flex items-center gap-0.5">
                 <TrendingUp size={10} /> 0
               </span>
@@ -119,9 +107,9 @@ export default function RolesPermissionManagement() {
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Total Permissions</span>
             <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">148</h3>
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">128</h3>
               <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
-                <TrendingUp size={10} /> +12
+                <TrendingUp size={10} /> Assigned
               </span>
             </div>
           </div>
@@ -135,7 +123,7 @@ export default function RolesPermissionManagement() {
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Recently Updated</span>
             <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">3</h3>
+              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">0</h3>
               <span className="text-[var(--primary)] font-bold text-[8px] flex items-center gap-0.5">
                 <History size={10} /> Today
               </span>
@@ -157,7 +145,10 @@ export default function RolesPermissionManagement() {
           </button>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3.5 rounded-lg hover:border-[var(--primary)] transition-colors cursor-pointer group">
+          <div 
+            onClick={() => handlePreviewRole(roles.find(r => r.name === "Franchise Admin") || roles[0])}
+            className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3.5 rounded-lg hover:border-[var(--primary)] transition-colors cursor-pointer group"
+          >
             <div className="flex justify-between items-center mb-3">
               <div className="w-8 h-8 rounded-md bg-blue-600 text-white flex items-center justify-center">
                 <Building2 size={18} />
@@ -165,7 +156,7 @@ export default function RolesPermissionManagement() {
               <span className="bg-zinc-100 dark:bg-zinc-800 text-black/50 dark:text-white/50 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">System</span>
             </div>
             <h4 className="text-sm font-bold mb-1 group-hover:text-[var(--primary)] text-black dark:text-white transition-colors">Franchise Admin</h4>
-            <p className="text-[11px] text-black/70 dark:text-white/70 mb-3 h-8 line-clamp-2">Management of specific franchise territories including multiple stores and staff.</p>
+            <p className="text-[11px] text-black/70 dark:text-white/70 mb-3 h-8 line-clamp-2">Access restricted only to assigned zones (e.g. Indore zone) and stores located within that zone as assigned by the superadmin.</p>
             <div className="flex gap-3 border-t border-zinc-200 dark:border-zinc-800 pt-2">
               <div>
                 <div className="text-[9px] font-bold text-black/50 dark:text-white/50">USERS</div>
@@ -178,7 +169,10 @@ export default function RolesPermissionManagement() {
             </div>
           </div>
 
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3.5 rounded-lg hover:border-[var(--primary)] transition-colors cursor-pointer group">
+          <div 
+            onClick={() => handlePreviewRole(roles.find(r => r.name === "Store Manager") || roles[1])}
+            className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3.5 rounded-lg hover:border-[var(--primary)] transition-colors cursor-pointer group"
+          >
             <div className="flex justify-between items-center mb-3">
               <div className="w-8 h-8 rounded-md bg-teal-600 text-white flex items-center justify-center">
                 <Store size={18} />
@@ -195,27 +189,6 @@ export default function RolesPermissionManagement() {
               <div className="border-l border-zinc-200 dark:border-zinc-800 pl-3">
                 <div className="text-[9px] font-bold text-black/50 dark:text-white/50">PERMISSIONS</div>
                 <div className="text-sm font-bold text-black dark:text-white">42</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="min-w-[280px] flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3.5 rounded-lg hover:border-[var(--primary)] transition-colors cursor-pointer group">
-            <div className="flex justify-between items-center mb-3">
-              <div className="w-8 h-8 rounded-md bg-amber-500 text-white flex items-center justify-center">
-                <ChefHat size={18} />
-              </div>
-              <span className="bg-zinc-100 dark:bg-zinc-800 text-black/50 dark:text-white/50 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">System</span>
-            </div>
-            <h4 className="text-sm font-bold mb-1 group-hover:text-[var(--primary)] text-black dark:text-white transition-colors">Kitchen Staff</h4>
-            <p className="text-[11px] text-black/70 dark:text-white/70 mb-3 h-8 line-clamp-2">Access to order fulfillment, inventory logs, and kitchen workflow tools.</p>
-            <div className="flex gap-3 border-t border-zinc-200 dark:border-zinc-800 pt-2">
-              <div>
-                <div className="text-[9px] font-bold text-black/50 dark:text-white/50">USERS</div>
-                <div className="text-sm font-bold text-black dark:text-white">450+</div>
-              </div>
-              <div className="border-l border-zinc-200 dark:border-zinc-800 pl-3">
-                <div className="text-[9px] font-bold text-black/50 dark:text-white/50">PERMISSIONS</div>
-                <div className="text-sm font-bold text-black dark:text-white">18</div>
               </div>
             </div>
           </div>

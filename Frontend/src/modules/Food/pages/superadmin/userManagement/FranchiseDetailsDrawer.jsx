@@ -285,6 +285,40 @@ export default function FranchiseDetailsDrawer({ isOpen, onClose, admin }) {
                         </div>
                       </div>
 
+                      <h4 className="text-[10px] font-extrabold text-[var(--primary)] uppercase tracking-wider pt-2">
+                        Contract & Financial Details
+                      </h4>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="p-2.5 bg-zinc-50 dark:bg-zinc-955 border border-zinc-100 dark:border-zinc-800 rounded-2xl">
+                          <p className="text-[9px] text-zinc-400 font-semibold">Franchise Duration</p>
+                          <p className="text-xs font-black text-zinc-800 dark:text-zinc-200 mt-1">
+                            {admin.franchiseDuration ? `${admin.franchiseDuration} Years` : "3 Years"}
+                          </p>
+                        </div>
+
+                        <div className="p-2.5 bg-zinc-50 dark:bg-zinc-955 border border-zinc-100 dark:border-zinc-800 rounded-2xl">
+                          <p className="text-[9px] text-zinc-400 font-semibold">Total Franchise Cost</p>
+                          <p className="text-xs font-black text-zinc-800 dark:text-zinc-200 mt-1">
+                            {admin.franchiseCost !== "" && admin.franchiseCost !== undefined ? `₹${Number(admin.franchiseCost).toLocaleString()}` : "—"}
+                          </p>
+                        </div>
+
+                        <div className="p-2.5 bg-zinc-50 dark:bg-zinc-955 border border-zinc-100 dark:border-zinc-800 rounded-2xl">
+                          <p className="text-[9px] text-zinc-400 font-semibold">Paid Amount</p>
+                          <p className="text-xs font-black text-zinc-800 dark:text-zinc-200 mt-1">
+                            {admin.paidAmount !== "" && admin.paidAmount !== undefined ? `₹${Number(admin.paidAmount).toLocaleString()}` : "—"}
+                          </p>
+                        </div>
+
+                        <div className="p-2.5 bg-zinc-50 dark:bg-zinc-955 border border-zinc-100 dark:border-zinc-850 rounded-2xl">
+                          <p className="text-[9px] text-zinc-400 font-semibold">Due Amount</p>
+                          <p className="text-xs font-black text-zinc-800 dark:text-zinc-200 mt-1">
+                            {admin.dueAmount !== "" && admin.dueAmount !== undefined ? `₹${Number(admin.dueAmount).toLocaleString()}` : "—"}
+                          </p>
+                        </div>
+                      </div>
+
                       <div className="p-2.5 border border-zinc-200 dark:border-zinc-800 rounded-2xl flex items-start gap-3 bg-zinc-50/50 dark:bg-zinc-900/50">
                         <ShieldAlert size={14} className="text-[var(--primary)] flex-shrink-0 mt-0.5" />
                         <div>

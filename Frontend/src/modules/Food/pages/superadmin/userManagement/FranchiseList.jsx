@@ -35,7 +35,11 @@ const INITIAL_FRANCHISES = [
     totalManagers: 6,
     revenue: 150000,
     status: "ACTIVE",
-    joinedDate: "Jan 12, 2024"
+    joinedDate: "Jan 12, 2024",
+    franchiseDuration: 3,
+    franchiseCost: 600000,
+    paidAmount: 450000,
+    dueAmount: 150000
   },
   {
     id: "FRAN-8832",
@@ -50,7 +54,11 @@ const INITIAL_FRANCHISES = [
     totalManagers: 4,
     revenue: 98000,
     status: "ACTIVE",
-    joinedDate: "Feb 20, 2024"
+    joinedDate: "Feb 20, 2024",
+    franchiseDuration: 5,
+    franchiseCost: 500000,
+    paidAmount: 500000,
+    dueAmount: 0
   },
   {
     id: "FRAN-1029",
@@ -65,7 +73,11 @@ const INITIAL_FRANCHISES = [
     totalManagers: 2,
     revenue: 45000,
     status: "INACTIVE",
-    joinedDate: "Mar 05, 2024"
+    joinedDate: "Mar 05, 2024",
+    franchiseDuration: 2,
+    franchiseCost: 300000,
+    paidAmount: 200000,
+    dueAmount: 100000
   },
   {
     id: "FRAN-7721",
@@ -80,7 +92,11 @@ const INITIAL_FRANCHISES = [
     totalManagers: 8,
     revenue: 215000,
     status: "ACTIVE",
-    joinedDate: "Nov 15, 2023"
+    joinedDate: "Nov 15, 2023",
+    franchiseDuration: 4,
+    franchiseCost: 800000,
+    paidAmount: 600000,
+    dueAmount: 200000
   },
   {
     id: "FRAN-5534",
@@ -95,7 +111,11 @@ const INITIAL_FRANCHISES = [
     totalManagers: 1,
     revenue: 32000,
     status: "SUSPENDED",
-    joinedDate: "Dec 01, 2023"
+    joinedDate: "Dec 01, 2023",
+    franchiseDuration: 3,
+    franchiseCost: 400000,
+    paidAmount: 150000,
+    dueAmount: 250000
   }
 ]
 

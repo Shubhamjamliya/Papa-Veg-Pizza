@@ -223,7 +223,7 @@ export default function StoreManagers() {
             Administrate localized store manager profiles, analytics, and active punchcard logs.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        {/* <div className="flex flex-wrap gap-2">
           <button
             onClick={() => openAddEditModal()}
             className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-xs"
@@ -231,7 +231,7 @@ export default function StoreManagers() {
             <Plus size={13} className="stroke-[3]" />
             <span>Add Store Manager</span>
           </button>
-        </div>
+        </div> */}
       </section>
 
       {/* High-Fidelity Bento KPI Grid with SVG Sparkline Charts */}
@@ -407,13 +407,13 @@ export default function StoreManagers() {
                   >
                     <Eye size={13} />
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => openAddEditModal(mgr)}
                     className="p-1 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-855 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-all cursor-pointer"
                     title="Edit Profile"
                   >
                     <Edit size={13} />
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => {
                       setManagerToDelete(mgr)

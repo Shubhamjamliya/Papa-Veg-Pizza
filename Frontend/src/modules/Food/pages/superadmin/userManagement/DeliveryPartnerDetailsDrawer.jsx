@@ -68,12 +68,12 @@ export default function DeliveryPartnerDetailsDrawer({ isOpen, onClose, rider, o
                 >
                   {rider.status === "Suspended" ? "Activate" : "Suspend"}
                 </button>
-                <button
+                {/* <button
                   onClick={() => onEdit(rider)}
                   className="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-white font-semibold text-xs hover:opacity-90 transition-opacity"
                 >
                   Edit Details
-                </button>
+                </button> */}
               </div>
             </div>
 
@@ -246,9 +246,8 @@ export default function DeliveryPartnerDetailsDrawer({ isOpen, onClose, rider, o
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wide ${
-                            del.status === "Delivered" ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-450" : "bg-rose-50 text-rose-600 dark:bg-rose-950/20 dark:text-rose-450"
-                          }`}>
+                          <span className={`px-1.5 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wide ${del.status === "Delivered" ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-450" : "bg-rose-50 text-rose-600 dark:bg-rose-950/20 dark:text-rose-450"
+                            }`}>
                             {del.status}
                           </span>
                           <p className="text-[10px] font-bold text-zinc-800 dark:text-zinc-150 mt-1">${del.earnings.toFixed(2)} Earnings</p>
