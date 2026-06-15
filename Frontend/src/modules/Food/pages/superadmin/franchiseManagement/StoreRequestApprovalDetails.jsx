@@ -12,7 +12,7 @@ export default function StoreRequestApprovalDetails({ isOpen, onClose, request }
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="modal-overlay">
+    <div className="fixed inset-0 lg:left-[280px] bg-black/40 dark:bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="modal-overlay">
       <div className="bg-zinc-50 dark:bg-zinc-950 w-full max-w-5xl h-[88vh] md:h-[650px] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-zinc-200 dark:border-zinc-800">
 
         {/* Scrollable Content */}
