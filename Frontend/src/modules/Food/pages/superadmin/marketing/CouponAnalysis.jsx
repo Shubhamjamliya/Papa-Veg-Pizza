@@ -23,9 +23,6 @@ export default function CouponAnalysis() {
           <button className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 border border-zinc-300 dark:border-zinc-700 rounded-lg text-xs font-bold text-black/70 dark:text-white/70 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all">
             <Download size={12} /> Export
           </button>
-          <button className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:opacity-90 active:scale-95 transition-all shadow-md">
-            <Zap size={12} /> Bulk Activate
-          </button>
         </div>
       </div>
 
@@ -47,7 +44,7 @@ export default function CouponAnalysis() {
         <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Revenue</span>
-            <h3 className="text-lg font-black text-black dark:text-white">$84.2k</h3>
+            <h3 className="text-lg font-black text-black dark:text-white">₹84.2k</h3>
             <p className="text-[10px] font-semibold flex items-center gap-0.5 text-emerald-600 dark:text-emerald-400 mt-0.5">
               <TrendingUp size={12} /> +8.5%
             </p>
@@ -60,7 +57,7 @@ export default function CouponAnalysis() {
         <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Discount Given</span>
-            <h3 className="text-lg font-black text-black dark:text-white">$12.4k</h3>
+            <h3 className="text-lg font-black text-black dark:text-white">₹12.4k</h3>
             <p className="text-[10px] font-semibold flex items-center gap-0.5 text-red-600 dark:text-red-400 mt-0.5">
               <TrendingDown size={12} /> -2.1%
             </p>
@@ -73,7 +70,7 @@ export default function CouponAnalysis() {
         <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">AOV</span>
-            <h3 className="text-lg font-black text-black dark:text-white">$28.40</h3>
+            <h3 className="text-lg font-black text-black dark:text-white">₹28.40</h3>
             <p className="text-[10px] font-semibold flex items-center gap-0.5 text-emerald-600 dark:text-emerald-400 mt-0.5">
               <TrendingUp size={12} /> +5.4%
             </p>
@@ -155,10 +152,10 @@ export default function CouponAnalysis() {
         </div>
         <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
           {[
-            { name: "Marcus Holloway", order: "#PZ-2938", store: "Brooklyn", code: "PIZZA50", discount: "-$14.50" },
-            { name: "Sarah Connor", order: "#PZ-2940", store: "Manhattan", code: "FIRST10", discount: "-$8.20" },
-            { name: "James Wilson", order: "#PZ-2945", store: "Queens", code: "BOGO_MON", discount: "-$22.00" },
-            { name: "Elena Rodriguez", order: "#PZ-2948", store: "Bronx", code: "WEEKEND20", discount: "-$12.00" }
+            { name: "Marcus Holloway", order: "#PZ-2938", store: "Brooklyn", code: "PIZZA50", discount: "-₹14.50" },
+            { name: "Sarah Connor", order: "#PZ-2940", store: "Manhattan", code: "FIRST10", discount: "-₹8.20" },
+            { name: "James Wilson", order: "#PZ-2945", store: "Queens", code: "BOGO_MON", discount: "-₹22.00" },
+            { name: "Elena Rodriguez", order: "#PZ-2948", store: "Bronx", code: "WEEKEND20", discount: "-₹12.00" }
           ].map((item, idx) => (
             <div key={idx} className="px-3 py-2 flex justify-between items-center hover:bg-zinc-50 dark:hover:bg-zinc-850/30 transition-colors group cursor-pointer">
               <div className="flex items-center gap-2.5">

@@ -11,14 +11,21 @@ import {
   Filter,
   ChevronDown
 } from 'lucide-react';
-import { CouponList } from './CouponsData';
+import { CouponList, initialCoupons } from './CouponsData';
 import CreateCoupon from './CreateCoupon';
+import EditCoupon from './EditCoupon';
+import CouponDetails from './CouponDetails';
 import CouponAnalysis from './CouponAnalysis';
 
 export default function CouponsManagement() {
   const [activeTab, setActiveTab] = useState('management');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [coupons, setCoupons] = useState(initialCoupons);
+  const [showRecommendation, setShowRecommendation] = useState(true);
   const [filters, setFilters] = useState({
     search: '',
     status: 'All Statuses',
@@ -38,6 +45,33 @@ export default function CouponsManagement() {
       type: 'Any Type',
       date: ''
     });
+  };
+
+  const handleEditClick = (coupon) => {
+    setSelectedCoupon(coupon);
+    setIsEditModalOpen(true);
+  };
+
+  const handleViewClick = (coupon) => {
+    setSelectedCoupon(coupon);
+    setIsViewModalOpen(true);
+  };
+
+  const handleSaveCoupon = (updatedCoupon) => {
+    setCoupons(prev => 
+      prev.map(c => c.id === updatedCoupon.id ? updatedCoupon : c)
+    );
+  };
+
+  const handleExtendLimit = () => {
+    setCoupons(prev => 
+      prev.map(c => 
+        c.code === 'SUMMER50' 
+          ? { ...c, maxRedemptions: Math.round(c.maxRedemptions * 1.2) } 
+          : c
+      )
+    );
+    setShowRecommendation(false);
   };
 
   return (
@@ -128,7 +162,7 @@ export default function CouponsManagement() {
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center justify-between">
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Revenue</span>
-            <p className="text-lg font-black text-black dark:text-white">$312k</p>
+            <p className="text-lg font-black text-black dark:text-white">₹312k</p>
             <div className="flex items-center gap-0.5 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold mt-0.5">
               <TrendingUp size={12} />
               <span>8% ROI</span>
@@ -143,7 +177,7 @@ export default function CouponsManagement() {
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl shadow-sm hover:shadow-md transition-shadow flex items-center justify-between">
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider">Discounted</span>
-            <p className="text-lg font-black text-black dark:text-white">$42.5k</p>
+            <p className="text-lg font-black text-black dark:text-white">₹42.5k</p>
             <div className="text-[10px] font-semibold text-black/60 dark:text-white/60 mt-0.5">Total gifted</div>
           </div>
           <div className="p-1.5 bg-amber-500/10 text-amber-500 rounded-lg shrink-0">
@@ -246,13 +280,32 @@ export default function CouponsManagement() {
       </div>
 
       {/* Coupon Cards List */}
-          <CouponList filters={filters} />
+          <CouponList 
+            filters={filters} 
+            coupons={coupons}
+            onEdit={handleEditClick}
+            onView={handleViewClick}
+            onExtendLimit={handleExtendLimit}
+            showRecommendation={showRecommendation}
+            onDismissRecommendation={() => setShowRecommendation(false)}
+          />
         </>
       ) : (
         <CouponAnalysis />
       )}
       
       <CreateCoupon isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+      <EditCoupon 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        coupon={selectedCoupon} 
+        onSave={handleSaveCoupon} 
+      />
+      <CouponDetails 
+        isOpen={isViewModalOpen} 
+        onClose={() => setIsViewModalOpen(false)} 
+        coupon={selectedCoupon} 
+      />
     </div>
   );
 }

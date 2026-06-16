@@ -33,7 +33,7 @@ export default function CreateBanners({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm transition-opacity">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center lg:pl-[280px] p-0 md:p-4 bg-black/60 backdrop-blur-sm transition-opacity">
       {/* Modal Container */}
       <div className="w-full h-full md:h-auto md:max-h-[80vh] md:max-w-lg bg-zinc-50 dark:bg-zinc-900 md:rounded-2xl flex flex-col shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-200">
         

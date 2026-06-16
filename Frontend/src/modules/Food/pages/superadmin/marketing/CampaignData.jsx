@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const initialData = [
   {
@@ -44,7 +44,7 @@ const initialData = [
   }
 ];
 
-export function CampaignTable({ onRowClick }) {
+export function CampaignTable({ campaigns, onRowClick }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All Statuses');
@@ -58,7 +58,9 @@ export function CampaignTable({ onRowClick }) {
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  const filteredData = initialData.filter(item => {
+  const dataToUse = campaigns || initialData;
+
+  const filteredData = dataToUse.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
                           item.code.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchesStatus = statusFilter === 'All Statuses' || item.status === statusFilter;
@@ -147,8 +149,11 @@ export function CampaignTable({ onRowClick }) {
                   </span>
                 </td>
                 <td className="px-3 py-2 text-right" onClick={(e) => e.stopPropagation()}>
-                  <button className="text-black/50 dark:text-white/50 hover:text-[var(--primary)] p-1 rounded-lg transition-colors">
-                    <MoreVertical size={14} />
+                  <button 
+                    onClick={() => onRowClick && onRowClick(item.id)}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 bg-[var(--primary)]/10 hover:bg-[var(--primary)] text-[var(--primary)] hover:text-white rounded text-[11px] font-bold transition-all shadow-sm"
+                  >
+                    <Eye size={12} /> View
                   </button>
                 </td>
               </tr>

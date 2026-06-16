@@ -47,7 +47,7 @@ export default function CreateCoupon({ isOpen, onClose }) {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center lg:pl-[280px] p-4">
       {/* Multi-step Modal */}
       <div className="bg-white dark:bg-zinc-950 w-full max-w-3xl h-[600px] max-h-[85vh] overflow-hidden rounded-xl shadow-2xl flex flex-col border border-zinc-200 dark:border-zinc-800">
         
