@@ -86,7 +86,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       title: "Franchise Management",
       items: [
         { name: "Franchise Stores", icon: Store },
-        { name: "Store Requests / Approvals", icon: FileCheck },
+        { name: "Franchise Approvals", icon: FileCheck },
         { name: "Store Zones / Regions", icon: Map }
       ]
     },
@@ -228,8 +228,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/customers")
                             } else if (item.name === "Franchise Stores") {
                               navigate("/food/superadmin/franchise-stores")
-                            } else if (item.name === "Store Requests / Approvals") {
-                              navigate("/food/superadmin/store-requests")
+                            } else if (item.name === "Franchise Approvals") {
+                              navigate("/food/superadmin/franchise-approvals")
                             } else if (item.name === "Store Zones / Regions") {
                               navigate("/food/superadmin/store-zones")
                             } else if (item.name === "Products") {
