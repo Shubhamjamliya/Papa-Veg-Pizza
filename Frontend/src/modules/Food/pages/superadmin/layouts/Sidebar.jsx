@@ -87,7 +87,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       items: [
         { name: "Franchise Stores", icon: Store },
         { name: "Franchise Approvals", icon: FileCheck },
-        { name: "Store Zones / Regions", icon: Map }
+        { name: "Regions & Zones", icon: Map }
       ]
     },
     {
@@ -230,8 +230,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/franchise-stores")
                             } else if (item.name === "Franchise Approvals") {
                               navigate("/food/superadmin/franchise-approvals")
-                            } else if (item.name === "Store Zones / Regions") {
-                              navigate("/food/superadmin/store-zones")
+                            } else if (item.name === "Regions & Zones") {
+                              navigate("/food/superadmin/regions-zones")
                             } else if (item.name === "Products") {
                               navigate("/food/superadmin/products")
                             } else if (item.name === "Categories") {
