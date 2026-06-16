@@ -19,19 +19,19 @@ export default function DeliveryZoneManagement() {
                     <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5 uppercase tracking-wider">Registry Management / Region 01</p>
                 </div>
                 <div className="flex gap-2">
-                    <button
+                    {/* <button
                         onClick={() => setIsCreateZoneOpen(true)}
                         className="flex-1 md:flex-none flex items-center justify-center gap-1.5 bg-[var(--primary)] text-white font-bold px-3.5 py-1.5 rounded-lg hover:opacity-90 active:scale-95 transition-all shadow-md shadow-[var(--primary)]/20"
                     >
                         <Plus size={14} />
                         <span className="text-[11px] uppercase tracking-wider">Create Zone</span>
-                    </button>
-                    <button className="flex items-center justify-center p-1.5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black/70 dark:text-white/70 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors rounded-lg shadow-sm active:scale-95">
+                    </button> */}
+                    {/* <button className="flex items-center justify-center p-1.5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black/70 dark:text-white/70 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors rounded-lg shadow-sm active:scale-95">
                         <Upload size={14} />
                     </button>
                     <button className="flex items-center justify-center p-1.5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black/70 dark:text-white/70 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors rounded-lg shadow-sm active:scale-95">
                         <Share size={14} />
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -114,7 +114,7 @@ export default function DeliveryZoneManagement() {
 
             <DeliveryZoneDetails zone={selectedZone} onClose={() => setSelectedZone(null)} />
             <ZonePricingRules zone={pricingRulesZone} onClose={() => setPricingRulesZone(null)} />
-            <CreateDeliveryZone isOpen={isCreateZoneOpen} onClose={() => setIsCreateZoneOpen(false)} />
+            {/* <CreateDeliveryZone isOpen={isCreateZoneOpen} onClose={() => setIsCreateZoneOpen(false)} /> */}
         </div>
     );
 }
