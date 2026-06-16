@@ -221,7 +221,7 @@ export default function AssignRider({ isOpen, onClose, orderId }) {
                     </div>
 
                     {/* Pagination/Status Footer */}
-                    <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-955/50 rounded-xl p-2 border border-zinc-200 dark:border-zinc-800">
+                    <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-950/50 rounded-xl p-2 border border-zinc-200 dark:border-zinc-800">
                         <div className="flex items-center gap-2 ml-1">
                             <Info size={14} className="text-blue-500" />
                             <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 italic">Optimization engine updated 12 seconds ago.</p>

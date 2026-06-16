@@ -26,7 +26,7 @@ export default function DeliveryDetails({ delivery, onClose }) {
                         <X size={18} />
                     </button>
                 </div>
-                
+
                 {/* Drawer Body */}
                 <div className="flex-1 overflow-y-auto custom-scrollbar p-3.5 space-y-4">
                     {/* Status & ETA Section */}
@@ -119,7 +119,7 @@ export default function DeliveryDetails({ delivery, onClose }) {
                             </div>
                             <div>
                                 <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Delivery Address</p>
-                                <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mt-0.5">452 Greenwich St,<br/>Unit 4B, NY 10013</p>
+                                <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 leading-tight mt-0.5">452 Greenwich St,<br />Unit 4B, NY 10013</p>
                             </div>
                         </div>
                     </div>
@@ -130,19 +130,19 @@ export default function DeliveryDetails({ delivery, onClose }) {
                         <div className="grid grid-cols-4 gap-2">
                             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-2.5 rounded-lg text-center shadow-sm">
                                 <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Fee</p>
-                                <p className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5">$4.50</p>
+                                <p className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5">₹4.50</p>
                             </div>
                             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-2.5 rounded-lg text-center shadow-sm">
                                 <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Tip</p>
-                                <p className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5">$8.00</p>
+                                <p className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5">₹8.00</p>
                             </div>
                             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-2.5 rounded-lg text-center shadow-sm">
                                 <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Payout</p>
-                                <p className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5">$12.50</p>
+                                <p className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5">₹12.50</p>
                             </div>
                             <div className="bg-[var(--primary)]/10 border border-[var(--primary)]/20 p-2.5 rounded-lg text-center shadow-sm">
                                 <p className="text-[9px] font-bold text-[var(--primary)] uppercase tracking-wider">Net</p>
-                                <p className="text-xs font-black text-[var(--primary)] mt-0.5">$3.20</p>
+                                <p className="text-xs font-black text-[var(--primary)] mt-0.5">₹3.20</p>
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@ export default function DeliveryDetails({ delivery, onClose }) {
                         <div className="space-y-0 relative pb-2">
                             {/* Connecting Line */}
                             <div className="absolute left-[13px] top-3.5 bottom-6 w-0.5 bg-zinc-200 dark:bg-zinc-800"></div>
-                            
+
                             {/* Timeline Item: Created */}
                             <div className="relative pl-8 pb-4">
                                 <div className="absolute left-[5px] top-0.5 w-4 h-4 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center z-10 border-2 border-white dark:border-zinc-900 shadow-sm">
@@ -167,7 +167,7 @@ export default function DeliveryDetails({ delivery, onClose }) {
                                     <span className="text-[9px] font-bold text-zinc-400">{delivery.created}</span>
                                 </div>
                             </div>
-                            
+
                             {/* Timeline Item: Picked Up */}
                             <div className="relative pl-8 pb-4">
                                 <div className="absolute left-[5px] top-0.5 w-4 h-4 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center z-10 border-2 border-white dark:border-zinc-900 shadow-sm">
@@ -181,7 +181,7 @@ export default function DeliveryDetails({ delivery, onClose }) {
                                     <span className="text-[9px] font-bold text-zinc-400">14:28</span>
                                 </div>
                             </div>
-                            
+
                             {/* Timeline Item: Active */}
                             <div className="relative pl-8 pb-4">
                                 <div className="absolute left-[2px] top-0 w-5 h-5 rounded-full bg-[var(--primary)] flex items-center justify-center z-10 border-2 border-white dark:border-zinc-900 shadow-md">
@@ -195,7 +195,7 @@ export default function DeliveryDetails({ delivery, onClose }) {
                                     <span className="text-[9px] font-black text-[var(--primary)] bg-[var(--primary)]/10 px-1.5 py-0.5 rounded tracking-wide uppercase">Live</span>
                                 </div>
                             </div>
-                            
+
                             {/* Timeline Item: Future */}
                             <div className="relative pl-8">
                                 <div className="absolute left-[8px] top-1 w-2 h-2 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 z-10"></div>
@@ -210,23 +210,23 @@ export default function DeliveryDetails({ delivery, onClose }) {
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Drawer Footer Actions */}
                 <div className="p-3.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-955/50 flex flex-col gap-2.5 text-xs">
                     <div className="grid grid-cols-2 gap-3">
-                        <button className="py-2 px-3 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-xs font-extrabold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm active:scale-95">
+                        {/* <button className="py-2 px-3 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-lg text-xs font-extrabold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm active:scale-95">
                             Reassign Rider
-                        </button>
+                        </button> */}
                         <button className="py-2 px-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg text-xs font-extrabold hover:opacity-90 transition-opacity shadow-sm active:scale-95">
                             Support Ticket
                         </button>
                     </div>
-                    <button 
+                    {/* <button 
                         onClick={() => setIsFailureModalOpen(true)}
                         className="w-full py-2 px-3 bg-rose-50 dark:bg-rose-900/10 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50 rounded-lg text-xs font-extrabold hover:bg-rose-100 dark:hover:bg-rose-900/20 transition-colors shadow-sm active:scale-95 flex justify-center items-center gap-2"
                     >
                         Mark Delivery Failed
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <DeliveryFailureModal isOpen={isFailureModalOpen} onClose={() => setIsFailureModalOpen(false)} orderId={delivery.id} />

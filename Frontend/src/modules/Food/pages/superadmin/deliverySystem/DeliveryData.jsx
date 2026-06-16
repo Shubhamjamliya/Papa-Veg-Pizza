@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown, Filter, MoreVertical, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import { Search, ChevronDown, Filter, Eye, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
 
-export default function DeliveryData({ onSelectDelivery }) {
+export default function DeliveryData({ onSelectDelivery, deliveries }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedTerm, setDebouncedTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All Status');
@@ -14,13 +14,15 @@ export default function DeliveryData({ onSelectDelivery }) {
         return () => clearTimeout(timer);
     }, [searchTerm]);
 
-    const allDeliveries = [
+    const defaultDeliveries = [
         { id: '#PV-9821', order: 'Lg. Margherita + Coke', customer: 'Sarah Jenkins', store: 'Downtown (D1)', rider: 'Marcus R.', status: 'PICKED UP', distance: '3.2 km', eta: '12 mins', created: '12:45 PM', statusColor: 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20' },
         { id: '#PV-9822', order: 'Family Feast Pk', customer: 'Robert Fox', store: 'West End (W4)', rider: 'Unassigned', status: 'PENDING', distance: '5.1 km', eta: '-', created: '12:52 PM', statusColor: 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20' },
         { id: '#PV-9819', order: 'Veg Supreme Med', customer: 'Elena Gilbert', store: 'East Side (E2)', rider: 'Jordan S.', status: 'DELIVERED', distance: '1.8 km', eta: 'Arrived', created: '12:30 PM', statusColor: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20' },
         { id: '#PV-9823', order: 'Garlic Bread x4', customer: 'Alex Wong', store: 'Downtown (D1)', rider: 'Lily T.', status: 'ASSIGNED', distance: '2.4 km', eta: '18 mins', created: '12:58 PM', statusColor: 'bg-purple-50 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20' },
         { id: '#PV-9818', order: 'Paneer Special', customer: 'Deepak K.', store: 'North Hub (N7)', rider: 'Amara L.', status: 'RETURNED', distance: '4.5 km', eta: '-', created: '12:15 PM', statusColor: 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20' },
     ];
+
+    const allDeliveries = deliveries || defaultDeliveries;
 
     const filteredDeliveries = allDeliveries.filter(delivery => {
         const matchesSearch = 
@@ -135,7 +137,7 @@ export default function DeliveryData({ onSelectDelivery }) {
                                             className="p-1 text-black/60 dark:text-white/60 hover:text-[var(--primary)] hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                                             onClick={(e) => { e.stopPropagation(); onSelectDelivery && onSelectDelivery(delivery); }}
                                         >
-                                            <MoreVertical size={14} />
+                                            <Eye size={14} />
                                         </button>
                                     </td>
                                 </tr>
