@@ -11,6 +11,7 @@ import {
   Store,
   FileCheck,
   Map,
+  MapPin,
   Pizza,
   Grid,
   Sparkles,
@@ -87,7 +88,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       items: [
         { name: "Franchise Stores", icon: Store },
         { name: "Franchise Approvals", icon: FileCheck },
-        { name: "Regions & Zones", icon: Map }
+        { name: "Regions & Zones", icon: Map },
+        { name: "Territory Management", icon: MapPin }
       ]
     },
     {
@@ -232,6 +234,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/franchise-approvals")
                             } else if (item.name === "Regions & Zones") {
                               navigate("/food/superadmin/regions-zones")
+                            } else if (item.name === "Territory Management") {
+                              navigate("/food/superadmin/territory-management")
                             } else if (item.name === "Products") {
                               navigate("/food/superadmin/products")
                             } else if (item.name === "Categories") {

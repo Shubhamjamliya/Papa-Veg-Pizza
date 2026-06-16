@@ -7,7 +7,6 @@ import FranchiseStoresData from "./FranchiseStoresData";
 import FranchiseStoresDetails from "./FranchiseStoresDetails";
 import AddFranchiseStores from "./AddFranchiseStores";
 import AnalyticsTabModal from "./AnalyticsTabModal";
-import BulkAction from "./BulkAction"; // Default import from BulkAction.jsx
 import ComplianceReport from "./ComplianceReport";
 
 export default function FranchiseStores() {
@@ -228,17 +227,17 @@ export default function FranchiseStores() {
       return;
     }
     const doc = new jsPDF({ orientation: "landscape" });
-    
+
     // Add title
     doc.setFontSize(14);
     doc.text("Franchise Stores Master Report", 14, 15);
     doc.setFontSize(8);
     doc.text(`Generated on: ${new Date().toLocaleDateString()} | Total Records: ${listToExport.length}`, 14, 20);
-    
+
     const headers = [
       ["Store Code", "Store Name", "Franchise", "Manager", "Region", "Zone", "Territory", "State", "City", "Orders Today", "Active Kitchen", "Inventory", "Status", "Revenue"]
     ];
-    
+
     const body = listToExport.map(store => [
       store.id,
       store.name,
@@ -255,7 +254,7 @@ export default function FranchiseStores() {
       store.status,
       store.revenue
     ]);
-    
+
     autoTable(doc, {
       head: headers,
       body: body,
@@ -264,7 +263,7 @@ export default function FranchiseStores() {
       styles: { fontSize: 7, cellPadding: 1.5, fontStyle: 'normal' },
       headStyles: { fillColor: [180, 30, 21], textColor: [255, 255, 255], fontStyle: 'bold' } // Red primary
     });
-    
+
     doc.save("franchise-stores-report.pdf");
     toast.success("PDF exported successfully");
   };
@@ -275,14 +274,14 @@ export default function FranchiseStores() {
       toast.error("No store data to download");
       return;
     }
-    
+
     const headers = [
-      "Store Code", "Store Name", "Franchise", "Manager", "Region", "Zone", 
-      "Territory", "Address", "State", "City", "Today's Orders", 
-      "Active Kitchen Orders", "Inventory Status", "Status", "Created Date", 
+      "Store Code", "Store Name", "Franchise", "Manager", "Region", "Zone",
+      "Territory", "Address", "State", "City", "Today's Orders",
+      "Active Kitchen Orders", "Inventory Status", "Status", "Created Date",
       "Phone", "Revenue"
     ];
-    
+
     const rows = listToExport.map(store => [
       store.id,
       store.name,
@@ -302,7 +301,7 @@ export default function FranchiseStores() {
       store.phone,
       store.revenue
     ]);
-    
+
     const csvContent = [
       headers.join(","),
       ...rows.map(row => row.map(val => {
@@ -313,7 +312,7 @@ export default function FranchiseStores() {
         return strVal;
       }).join(","))
     ].join("\r\n");
-    
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -596,7 +595,6 @@ export default function FranchiseStores() {
       />
 
       {/* Compliance & Bulk Action modals */}
-      <BulkAction isOpen={isBulkActionOpen} onClose={() => setIsBulkActionOpen(false)} />
       <ComplianceReport isOpen={isComplianceReportOpen} onClose={() => setIsComplianceReportOpen(false)} />
 
       {/* INLINE MODAL 1: Reassign Store Manager */}

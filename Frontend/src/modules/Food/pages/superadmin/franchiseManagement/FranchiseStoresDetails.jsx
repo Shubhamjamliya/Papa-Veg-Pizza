@@ -1,15 +1,15 @@
 import React from "react";
 import { X, Info, Phone, Mail, MapPin, User, ShieldAlert, Award, Star, Clock, Truck, BarChart2, AlertTriangle, CheckCircle, Ban, Edit2 } from "lucide-react";
 
-export default function FranchiseStoresDetails({ 
-  isOpen, 
-  onClose, 
-  store, 
-  onEdit, 
-  onReassignManager, 
-  onChangeFranchise, 
-  onViewAnalytics, 
-  onSuspendActivate 
+export default function FranchiseStoresDetails({
+  isOpen,
+  onClose,
+  store,
+  onEdit,
+  onReassignManager,
+  onChangeFranchise,
+  onViewAnalytics,
+  onSuspendActivate
 }) {
   if (!isOpen) return null;
 
@@ -73,10 +73,9 @@ export default function FranchiseStoresDetails({
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-[9px] font-bold text-zinc-500">
-              <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                displayStore.status === 'Active' ? 'bg-emerald-500' :
+              <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${displayStore.status === 'Active' ? 'bg-emerald-500' :
                 displayStore.status === 'Closed' ? 'bg-amber-500' : 'bg-rose-500'
-              }`}></span>
+                }`}></span>
               <span className="uppercase">{displayStore.status} Store</span>
               <span>•</span>
               <span>Manager: {displayStore.manager}</span>
@@ -92,7 +91,7 @@ export default function FranchiseStoresDetails({
 
         {/* Scrollable Content (6 Sections) */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-800">
-          
+
           {/* Section 1 – Basic Information */}
           <section className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5 space-y-3 shadow-sm">
             <h3 className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex items-center gap-1.5">
@@ -245,7 +244,7 @@ export default function FranchiseStoresDetails({
                 <span className="font-bold text-zinc-900 dark:text-zinc-100">Total Supervised SKUs</span>
                 <span className="font-black text-zinc-900 dark:text-zinc-100">{displayStore.totalSkus}</span>
               </div>
-              
+
               {/* Progress Bar of Stock status */}
               <div className="space-y-1.5 pt-1">
                 <div>
@@ -309,38 +308,37 @@ export default function FranchiseStoresDetails({
 
         {/* Drawer Action Footer */}
         <div className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-wrap gap-2 shrink-0">
-          <button 
+          <button
             onClick={() => onEdit(store || displayStore)}
-            className="flex-1 min-w-[90px] py-1.5 bg-red-650 hover:bg-red-700 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-all shadow-sm"
+            className="flex-1 min-w-[90px] py-1.5 bg-red-800 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-all shadow-sm"
           >
             <Edit2 size={12} />
             <span>Edit</span>
           </button>
-          <button 
+          <button
             onClick={() => onReassignManager(store || displayStore)}
             className="flex-1 min-w-[110px] py-1.5 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-bold rounded-lg transition-colors"
           >
             <span>Reassign Mgr</span>
           </button>
-          <button 
+          <button
             onClick={() => onChangeFranchise(store || displayStore)}
             className="flex-1 min-w-[110px] py-1.5 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-bold rounded-lg transition-colors"
           >
             <span>Franchise</span>
           </button>
-          <button 
+          <button
             onClick={() => onViewAnalytics(store || displayStore)}
             className="flex-1 min-w-[90px] py-1.5 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-bold rounded-lg transition-colors"
           >
             <span>Analytics</span>
           </button>
-          <button 
+          <button
             onClick={() => onSuspendActivate(store || displayStore)}
-            className={`w-full py-1.5 text-xs font-bold rounded-lg border transition-colors ${
-              displayStore.status === 'Active' 
-                ? 'border-rose-300 hover:bg-rose-50 text-rose-600 dark:border-rose-900/40 dark:hover:bg-rose-955/20' 
-                : 'border-emerald-300 hover:bg-emerald-50 text-emerald-600 dark:border-emerald-900/40 dark:hover:bg-emerald-955/20'
-            }`}
+            className={`w-full py-1.5 text-xs font-bold rounded-lg border transition-colors ${displayStore.status === 'Active'
+              ? 'border-rose-300 hover:bg-rose-50 text-rose-600 dark:border-rose-900/40 dark:hover:bg-rose-955/20'
+              : 'border-emerald-300 hover:bg-emerald-50 text-emerald-600 dark:border-emerald-900/40 dark:hover:bg-emerald-955/20'
+              }`}
           >
             {displayStore.status === 'Active' ? 'Suspend Location' : 'Activate Location'}
           </button>
