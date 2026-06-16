@@ -31,7 +31,7 @@ export default function StoreZones() {
   });
 
   const toggleExpand = (id) => {
-    setExpandedNodes(prev => ({...prev, [id]: !prev[id]}));
+    setExpandedNodes(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
   const territoryData = [
@@ -76,7 +76,7 @@ export default function StoreZones() {
     if (nodes.length === 0 && level === 0) {
       return <div className="text-xs text-black/50 dark:text-white/50 p-3 text-center font-bold bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-dashed border-zinc-200 dark:border-zinc-800">No matching regions or zones found.</div>;
     }
-    
+
     return nodes.map((node, index) => {
       const hasChildren = node.children && node.children.length > 0;
       const isExpanded = debouncedSearch ? true : expandedNodes[node.id];
@@ -96,8 +96,8 @@ export default function StoreZones() {
 
       const isRegion = node.type === "region";
       const Icon = node.icon;
-      
-      const buttonClass = isRegion 
+
+      const buttonClass = isRegion
         ? "flex items-center gap-1.5 w-full text-left font-bold text-[var(--primary)] bg-[var(--primary)]/10 p-1.5 rounded-lg"
         : node.type === "state" && !hasChildren
           ? "flex items-center gap-1.5 w-full text-left font-semibold text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white py-1 transition-colors text-xs"
@@ -112,13 +112,13 @@ export default function StoreZones() {
 
       return (
         <div key={node.id} className={containerClass}>
-          <button 
+          <button
             onClick={() => node.children && toggleExpand(node.id)}
             className={buttonClass}
           >
             {node.children && (
-              isExpanded 
-                ? <ChevronDown size={14} className={isRegion ? "" : "text-[var(--primary)]"} /> 
+              isExpanded
+                ? <ChevronDown size={14} className={isRegion ? "" : "text-[var(--primary)]"} />
                 : <ChevronRight size={14} className={`${isRegion ? "" : "text-[var(--primary)]"} group-hover:rotate-90 transition-transform`} />
             )}
             {!node.children && <div className="w-[14px]"></div>}
@@ -128,7 +128,7 @@ export default function StoreZones() {
 
           {hasChildren && isExpanded && (
             <div className={isRegion ? "pl-4 space-y-0.5 border-l border-zinc-200 dark:border-zinc-800 ml-1.5 mt-1" : ""}>
-               {renderTree(node.children, level + 1)}
+              {renderTree(node.children, level + 1)}
             </div>
           )}
         </div>
@@ -149,13 +149,13 @@ export default function StoreZones() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button 
+          {/* <button 
             onClick={() => setIsAssignModalOpen(true)}
             className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.01] transition-all cursor-pointer font-bold text-[11px]"
           >
             <Store size={14} />
             <span>ASSIGN STORES</span>
-          </button>
+          </button> */}
           <button
             onClick={() => setIsAddZoneModalOpen(true)}
             className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.01] transition-all cursor-pointer font-bold text-[11px]"
@@ -163,7 +163,7 @@ export default function StoreZones() {
             <Plus size={14} className="stroke-[3]" />
             <span>ADD ZONE</span>
           </button>
-          <button 
+          <button
             onClick={() => setIsAddRegionModalOpen(true)}
             className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
           >
@@ -290,14 +290,13 @@ export default function StoreZones() {
             <div className="px-3 overflow-x-auto border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 scrollbar-none">
               <div className="flex gap-6 min-w-max">
                 {["Overview", "Zones (6)", "Stores (35)", "Analytics", "Coverage Map"].map(tab => (
-                  <button 
+                  <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`py-1.5 font-bold text-xs transition-colors ${
-                      activeTab === tab 
-                        ? "border-b-2 border-[var(--primary)] text-[var(--primary)]" 
+                    className={`py-1.5 font-bold text-xs transition-colors ${activeTab === tab
+                        ? "border-b-2 border-[var(--primary)] text-[var(--primary)]"
                         : "text-black/60 dark:text-white/60 hover:text-[var(--primary)]"
-                    }`}
+                      }`}
                   >
                     {tab}
                   </button>
