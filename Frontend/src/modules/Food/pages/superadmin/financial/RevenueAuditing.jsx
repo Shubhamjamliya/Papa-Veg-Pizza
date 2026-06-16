@@ -100,10 +100,10 @@ export default function RevenueAuditing() {
                 <td className="px-3 py-2 sticky left-0 bg-white dark:bg-zinc-900 group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/50 z-10 shadow-[1px_0_0_0_#e4e4e7] dark:shadow-[1px_0_0_0_#27272a] font-medium text-zinc-900 dark:text-zinc-100">Store #1042 - Seattle</td>
                 <td className="px-3 py-2 text-zinc-500 dark:text-zinc-400 font-medium">Oct 24, 2023</td>
                 <td className="px-3 py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">1,248</td>
-                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">$54,290.00</td>
-                <td className="px-3 py-2 text-right font-mono text-zinc-500 dark:text-zinc-400">$4,343.20</td>
-                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-$1,120.50</td>
-                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">$48,826.30</td>
+                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">₹54,290.00</td>
+                <td className="px-3 py-2 text-right font-mono text-zinc-500 dark:text-zinc-400">₹4,343.20</td>
+                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-₹1,120.50</td>
+                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">₹48,826.30</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/30">
                     <TrendingUp size={10} /> +12.4%
@@ -118,10 +118,10 @@ export default function RevenueAuditing() {
                 <td className="px-3 py-2 sticky left-0 bg-white dark:bg-zinc-900 group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/50 z-10 shadow-[1px_0_0_0_#e4e4e7] dark:shadow-[1px_0_0_0_#27272a] font-medium text-zinc-900 dark:text-zinc-100">Store #1085 - Portland</td>
                 <td className="px-3 py-2 text-zinc-500 dark:text-zinc-400 font-medium">Oct 24, 2023</td>
                 <td className="px-3 py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">892</td>
-                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">$38,120.00</td>
-                <td className="px-3 py-2 text-right font-mono text-zinc-500 dark:text-zinc-400">$3,049.60</td>
-                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-$450.00</td>
-                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">$34,620.40</td>
+                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">₹38,120.00</td>
+                <td className="px-3 py-2 text-right font-mono text-zinc-555 dark:text-zinc-400">₹3,049.60</td>
+                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-₹450.00</td>
+                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">₹34,620.40</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/30">
                     <TrendingUp size={10} /> +4.1%
@@ -136,10 +136,10 @@ export default function RevenueAuditing() {
                 <td className="px-3 py-2 sticky left-0 bg-white dark:bg-zinc-900 group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/50 z-10 shadow-[1px_0_0_0_#e4e4e7] dark:shadow-[1px_0_0_0_#27272a] font-medium text-zinc-900 dark:text-zinc-100">Store #1201 - San Francisco</td>
                 <td className="px-3 py-2 text-zinc-500 dark:text-zinc-400 font-medium">Oct 23, 2023</td>
                 <td className="px-3 py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">2,105</td>
-                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">$89,450.00</td>
-                <td className="px-3 py-2 text-right font-mono text-zinc-500 dark:text-zinc-400">$7,603.25</td>
-                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-$2,840.10</td>
-                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">$79,006.65</td>
+                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">₹89,450.00</td>
+                <td className="px-3 py-2 text-right font-mono text-zinc-500 dark:text-zinc-400">₹7,603.25</td>
+                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-₹2,840.10</td>
+                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">₹79,006.65</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400 rounded-full text-[10px] font-bold border border-rose-200 dark:border-rose-800/30">
                     <TrendingDown size={10} /> -2.8%
@@ -154,10 +154,10 @@ export default function RevenueAuditing() {
                 <td className="px-3 py-2 sticky left-0 bg-white dark:bg-zinc-900 group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/50 z-10 shadow-[1px_0_0_0_#e4e4e7] dark:shadow-[1px_0_0_0_#27272a] font-medium text-zinc-900 dark:text-zinc-100">Store #1402 - Denver</td>
                 <td className="px-3 py-2 text-zinc-500 dark:text-zinc-400 font-medium">Oct 23, 2023</td>
                 <td className="px-3 py-2 text-right font-mono text-zinc-700 dark:text-zinc-300">542</td>
-                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">$22,180.00</td>
-                <td className="px-3 py-2 text-right font-mono text-zinc-500 dark:text-zinc-400">$1,774.40</td>
-                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-$120.00</td>
-                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">$20,285.60</td>
+                <td className="px-3 py-2 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">₹22,180.00</td>
+                <td className="px-3 py-2 text-right font-mono text-zinc-555 dark:text-zinc-400">₹1,774.40</td>
+                <td className="px-3 py-2 text-right font-mono text-rose-600 dark:text-rose-400 font-medium">-₹120.00</td>
+                <td className="px-3 py-2 text-right font-mono font-black text-[var(--primary)]">₹20,285.60</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full text-[10px] font-bold border border-emerald-200 dark:border-emerald-800/30">
                     <TrendingUp size={10} /> +18.7%
@@ -173,10 +173,10 @@ export default function RevenueAuditing() {
                 <td className="px-3 py-2.5 sticky left-0 bg-zinc-50 dark:bg-zinc-955 z-10 font-black text-zinc-900 dark:text-zinc-100 shadow-[1px_0_0_0_#e4e4e7] dark:shadow-[1px_0_0_0_#27272a]">TOTAL (Selected Filter)</td>
                 <td className="px-3 py-2.5"></td>
                 <td className="px-3 py-2.5 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">4,787</td>
-                <td className="px-3 py-2.5 text-right font-mono font-black text-zinc-900 dark:text-zinc-100">$204,040.00</td>
-                <td className="px-3 py-2.5 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">$16,770.45</td>
-                <td className="px-3 py-2.5 text-right font-mono font-bold text-rose-600 dark:text-rose-400">-$4,530.60</td>
-                <td className="px-3 py-2.5 text-right font-mono font-black text-[var(--primary)]">$182,738.95</td>
+                <td className="px-3 py-2.5 text-right font-mono font-black text-zinc-900 dark:text-zinc-100">₹204,040.00</td>
+                <td className="px-3 py-2.5 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">₹16,770.45</td>
+                <td className="px-3 py-2.5 text-right font-mono font-bold text-rose-600 dark:text-rose-400">-₹4,530.60</td>
+                <td className="px-3 py-2.5 text-right font-mono font-black text-[var(--primary)]">₹182,738.95</td>
                 <td className="px-3 py-2.5 text-center">
                   <span className="text-emerald-700 dark:text-emerald-400 font-black text-[10px]">+6.5% AVG</span>
                 </td>
@@ -197,7 +197,7 @@ export default function RevenueAuditing() {
             <span className="text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">+5.2% vs LW</span>
           </div>
           <h4 className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Total Net Settlement</h4>
-          <div className="text-xl font-black text-zinc-900 dark:text-zinc-100 mt-0.5">$182,738.95</div>
+          <div className="text-xl font-black text-zinc-900 dark:text-zinc-100 mt-0.5">₹182,738.95</div>
         </div>
         
         <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
@@ -214,12 +214,12 @@ export default function RevenueAuditing() {
         <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm relative overflow-hidden">
           <div className="z-10 relative">
             <div className="flex justify-between items-start mb-3">
-              <div className="p-1.5 bg-zinc-100 dark:bg-zinc-800 text-[var(--primary)] rounded-lg">
+              <div className="p-1.5 bg-zinc-100 dark:bg-zinc-800 text-[var(--primary)] text-xs font-bold rounded-lg">
                 <ShoppingCart size={18} />
               </div>
             </div>
             <h4 className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Average Order Value</h4>
-            <div className="text-xl font-black text-zinc-900 dark:text-zinc-100 mt-0.5">$42.62</div>
+            <div className="text-xl font-black text-zinc-900 dark:text-zinc-100 mt-0.5">₹42.62</div>
           </div>
           {/* Abstract pattern for high-end feel */}
           <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-[var(--primary)]/10 rounded-full blur-3xl"></div>
@@ -273,16 +273,16 @@ export default function RevenueAuditing() {
                 <div className="flex flex-col gap-2 text-xs">
                   <div className="flex justify-between font-medium text-zinc-700 dark:text-zinc-300">
                     <span>Premium Subscription (Annual)</span>
-                    <span className="font-mono">$149.00</span>
+                    <span className="font-mono">₹149.00</span>
                   </div>
                   <div className="flex justify-between font-medium text-zinc-700 dark:text-zinc-300">
                     <span>Priority Support Add-on</span>
-                    <span className="font-mono">$25.00</span>
+                    <span className="font-mono">₹25.00</span>
                   </div>
                   <div className="h-px bg-zinc-200 dark:bg-zinc-800 my-1"></div>
                   <div className="flex justify-between font-black text-sm text-zinc-900 dark:text-zinc-100">
                     <span>Total Paid</span>
-                    <span className="font-mono">$174.00</span>
+                    <span className="font-mono">₹174.00</span>
                   </div>
                 </div>
               </div>

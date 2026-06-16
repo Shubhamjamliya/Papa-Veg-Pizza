@@ -32,7 +32,7 @@ export default function ManualAdjustment({ onCancel }) {
           <div>
             <h1 className="text-base font-bold text-black dark:text-white mb-0.5">Create Manual Adjustment</h1>
             <p className="text-black/50 dark:text-white/50 max-w-xl text-[11px] font-semibold">
-              Use this form to correct settlement discrepancies or issue manual franchise credits. All adjustments require secondary approval for amounts exceeding $5,000.00.
+              Use this form to correct settlement discrepancies or issue manual franchise credits. All adjustments require secondary approval for amounts exceeding ₹5,000.00.
             </p>
           </div>
           <div className="flex gap-2 shrink-0">
@@ -88,17 +88,17 @@ export default function ManualAdjustment({ onCancel }) {
 
               {/* Amount */}
               <div className="flex flex-col gap-1">
-                <label className="text-[9px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">Amount (USD)</label>
+                <label className="text-[9px] font-bold text-black/50 dark:text-white/50 uppercase tracking-wider">Amount (INR)</label>
                 <div className="relative">
                   <input 
-                    className={`w-full rounded-lg border text-xs font-mono focus:ring-1 h-9 pl-7 pr-3 outline-none transition-all ${hasError ? 'border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 focus:border-rose-500 focus:ring-rose-500 text-rose-700 dark:text-rose-400 font-bold' : 'border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-black dark:text-white'}`}
+                    className={`w-full rounded-lg border text-xs font-mono focus:ring-1 h-9 pl-7 pr-3 outline-none transition-all ${hasError ? 'border-rose-500 bg-rose-50/50 dark:bg-rose-955/20 focus:border-rose-500 focus:ring-rose-500 text-rose-700 dark:text-rose-400 font-bold' : 'border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-black dark:text-white'}`}
                     placeholder="0.00" 
                     type="text" 
                     value={amount}
                     onChange={handleAmountChange}
                     onBlur={handleAmountBlur}
                   />
-                  <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/50 dark:text-white/50 font-bold">$</span>
+                  <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black/50 dark:text-white/50 font-bold">₹</span>
                 </div>
                 {hasError && (
                   <p className="text-[10px] text-rose-500 flex items-center gap-1 mt-0.5 font-semibold">
@@ -227,7 +227,7 @@ export default function ManualAdjustment({ onCancel }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold text-black dark:text-white">Auto-Approve</p>
-                  <p className="text-[10px] text-black/50 dark:text-white/50 font-semibold">Bypass workflow for values {'<$100'}</p>
+                  <p className="text-[10px] text-black/50 dark:text-white/50 font-semibold">Bypass workflow for values {'<₹100'}</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" />
