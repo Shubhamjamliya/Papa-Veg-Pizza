@@ -181,7 +181,7 @@ export default function BannerPreview({ banner, onBack }) {
       </main>
 
       {/* Sticky Footer Actions */}
-      <footer className="fixed bottom-0 left-0 right-0 p-2.5 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex justify-center gap-3 z-50">
+      <footer className="fixed bottom-0 left-0 lg:left-[280px] right-0 p-2.5 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex justify-center gap-3 z-50">
         <div className="w-full max-w-5xl mx-auto flex gap-3">
           <button className="flex-1 md:flex-none md:w-36 border border-[var(--primary)] text-[var(--primary)] font-bold py-1.5 rounded-lg text-xs hover:bg-[var(--primary)]/5 active:scale-95 transition-all flex items-center justify-center gap-1.5">
             <Edit size={14} /> Edit Banner

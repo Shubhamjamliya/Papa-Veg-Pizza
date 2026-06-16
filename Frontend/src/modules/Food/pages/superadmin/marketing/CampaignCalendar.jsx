@@ -1,13 +1,96 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, TrendingUp, CheckCircle, Download, RefreshCw } from 'lucide-react';
+import { jsPDF } from 'jspdf';
 
 export default function CampaignCalendar() {
   const [activeView, setActiveView] = useState('Month');
   const [showToast, setShowToast] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [toastMessage, setToastMessage] = useState('New campaign successfully scheduled');
 
   const handleAddCampaign = () => {
+    setToastMessage('New campaign successfully scheduled');
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleDownloadPDF = () => {
+    setIsDownloading(true);
+    setTimeout(() => {
+      try {
+        const doc = new jsPDF();
+        
+        // Brand Primary Color Header: #7e3866
+        doc.setFillColor(126, 56, 102);
+        doc.rect(0, 0, 210, 15, "F");
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(255, 255, 255);
+        doc.text("PizzaCorp Admin Portal", 15, 10);
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(22);
+        doc.setTextColor(126, 56, 102);
+        doc.text("Campaign Calendar", 15, 32);
+        
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(120, 120, 120);
+        doc.text("Report Month: October 2024", 15, 42);
+        doc.text("Generated: " + new Date().toLocaleDateString(), 15, 47);
+        
+        doc.setDrawColor(230, 230, 230);
+        doc.line(15, 52, 195, 52);
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.setTextColor(50, 50, 50);
+        doc.text("October 2024 Campaigns List", 15, 62);
+        
+        const items = [
+          { name: "Pepperoni BOGO Weekend", code: "BOGOFRIDAY", type: "BOGO", date: "Oct 4 - Oct 6", reach: "12,450" },
+          { name: "Autumn Discount 15%", code: "LATE20", type: "Discount", date: "Oct 8 - Oct 12", reach: "6,000" },
+          { name: "Founder's Day Festival", code: "FOUNDERS", type: "Festival", date: "Oct 14 - Oct 17", reach: "15,400" }
+        ];
+        
+        let y = 75;
+        items.forEach((item, index) => {
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(11);
+          doc.setTextColor(126, 56, 102);
+          doc.text(`${index + 1}. ${item.name}`, 15, y);
+          
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(100, 100, 100);
+          doc.text(`Code: ${item.code}   |   Type: ${item.type}   |   Dates: ${item.date}   |   Reach: ${item.reach} users`, 20, y + 6);
+          
+          y += 18;
+        });
+        
+        doc.save("campaign_calendar_october_2024.pdf");
+        
+        setToastMessage("Calendar PDF downloaded successfully!");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+      } finally {
+        setIsDownloading(false);
+      }
+    }, 1200);
+  };
+
+  const handleSyncCalendar = () => {
+    setIsSyncing(true);
+    setTimeout(() => {
+      setIsSyncing(false);
+      setToastMessage("Campaigns successfully synced to Google Calendar!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }, 1500);
   };
 
   return (
@@ -187,11 +270,35 @@ export default function CampaignCalendar() {
             </div>
           </div>
           <div className="flex flex-col gap-2 pt-1">
-            <button className="w-full py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg text-xs font-bold hover:opacity-90 transition-opacity shadow-sm flex justify-center items-center gap-1.5">
-              <Download size={12} /> Download Calendar PDF
+            <button 
+              onClick={handleDownloadPDF}
+              disabled={isDownloading}
+              className="w-full py-1.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg text-xs font-bold hover:opacity-90 transition-opacity shadow-sm flex justify-center items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isDownloading ? (
+                <>
+                  <RefreshCw size={12} className="animate-spin" /> Downloading...
+                </>
+              ) : (
+                <>
+                  <Download size={12} /> Download Calendar PDF
+                </>
+              )}
             </button>
-            <button className="w-full py-1.5 border border-zinc-200 dark:border-zinc-700 text-black/70 dark:text-white/70 rounded-lg text-xs font-bold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm flex justify-center items-center gap-1.5">
-              <RefreshCw size={12} /> Sync to Google Calendar
+            <button 
+              onClick={handleSyncCalendar}
+              disabled={isSyncing}
+              className="w-full py-1.5 border border-zinc-200 dark:border-zinc-700 text-black/70 dark:text-white/70 rounded-lg text-xs font-bold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm flex justify-center items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSyncing ? (
+                <>
+                  <RefreshCw size={12} className="animate-spin" /> Syncing...
+                </>
+              ) : (
+                <>
+                  <RefreshCw size={12} /> Sync to Google Calendar
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -200,7 +307,7 @@ export default function CampaignCalendar() {
       {/* Success Feedback Overlay */}
       <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-800 dark:bg-zinc-100 text-white dark:text-zinc-900 px-6 py-3 rounded-full flex items-center gap-3 shadow-xl transition-opacity duration-300 pointer-events-none z-50 ${showToast ? 'opacity-100' : 'opacity-0'}`}>
         <CheckCircle size={20} className="text-emerald-400 dark:text-emerald-600" />
-        <span className="text-sm font-bold">New campaign successfully scheduled</span>
+        <span className="text-sm font-bold">{toastMessage}</span>
       </div>
     </div>
   );

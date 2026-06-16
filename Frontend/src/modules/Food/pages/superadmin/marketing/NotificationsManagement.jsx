@@ -15,10 +15,6 @@ export default function NotificationsManagement() {
     return <NotificationAnalysis notification={selectedNotification} onBack={() => setSelectedNotification(null)} />;
   }
 
-  if (isCreateMode) {
-    return <CreateNotification onBack={() => setIsCreateMode(false)} />;
-  }
-
   if (isTemplateMode) {
     return (
       <NotificationTemplate 
@@ -152,6 +148,9 @@ export default function NotificationsManagement() {
         <h3 className="text-xs font-bold text-black dark:text-white uppercase tracking-wider px-1">Recent Notifications</h3>
         <NotificationList searchTerm={searchTerm} onSelect={setSelectedNotification} />
       </section>
+
+      {/* Create Notification Modal */}
+      <CreateNotification isOpen={isCreateMode} onClose={() => setIsCreateMode(false)} />
     </div>
   );
 }
