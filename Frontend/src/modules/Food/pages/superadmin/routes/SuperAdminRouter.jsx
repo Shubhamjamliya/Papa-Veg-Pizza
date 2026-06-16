@@ -9,7 +9,7 @@ const CustomerAnalysis = lazy(() => import("../userManagement/CustomerAnalysis")
 const CustomerList = lazy(() => import("../userManagement/CustomerList"))
 const UserProfile = lazy(() => import("../userManagement/UserProfile"))
 const FranchiseStores = lazy(() => import("../franchiseManagement/FranchiseStores"))
-const StoreRequestApproval = lazy(() => import("../franchiseManagement/StoreRequestApproval"))
+const FranchiseApprovals = lazy(() => import("../franchiseManagement/FranchiseApprovals"))
 const StoreZones = lazy(() => import("../franchiseManagement/StoreZones"))
 const FranchiseList = lazy(() => import("../userManagement/FranchiseList"))
 const StoreManagers = lazy(() => import("../userManagement/StoreManagers"))
@@ -72,8 +72,8 @@ function SuperAdminLayout() {
     activeItem = "Customers"
   } else if (location.pathname.includes("/franchise-stores")) {
     activeItem = "Franchise Stores"
-  } else if (location.pathname.includes("/store-requests")) {
-    activeItem = "Store Requests / Approvals"
+  } else if (location.pathname.includes("/franchise-approvals")) {
+    activeItem = "Franchise Approvals"
   } else if (location.pathname.includes("/store-zones")) {
     activeItem = "Store Zones / Regions"
   } else if (location.pathname.includes("/franchises")) {
@@ -156,6 +156,9 @@ function SuperAdminLayout() {
 }
 
 export default function SuperAdminRouter() {
+  const location = useLocation()
+  const base = location.pathname.startsWith("/food") ? "/food/superadmin" : "/superadmin"
+
   return (
     <Suspense
       fallback={
@@ -180,7 +183,7 @@ export default function SuperAdminRouter() {
           <Route path="/customers/profile/:id" element={<UserProfile />} />
           <Route path="/customers/profile" element={<UserProfile />} />
           <Route path="/franchise-stores" element={<FranchiseStores />} />
-          <Route path="/store-requests" element={<StoreRequestApproval />} />
+          <Route path="/franchise-approvals" element={<FranchiseApprovals />} />
           <Route path="/store-zones" element={<StoreZones />} />
           <Route path="/franchises" element={<FranchiseList />} />
           <Route path="/managers" element={<StoreManagers />} />
@@ -218,10 +221,10 @@ export default function SuperAdminRouter() {
         </Route>
 
         {/* Redirect empty paths to dashboard */}
-        <Route path="/" element={<Navigate to="dashboard" replace />} />
+        <Route path="/" element={<Navigate to={`${base}/dashboard`} replace />} />
 
         {/* Wildcard fallback to redirect unknown paths */}
-        <Route path="*" element={<Navigate to="dashboard" replace />} />
+        <Route path="*" element={<Navigate to={`${base}/dashboard`} replace />} />
       </Routes>
     </Suspense>
   )

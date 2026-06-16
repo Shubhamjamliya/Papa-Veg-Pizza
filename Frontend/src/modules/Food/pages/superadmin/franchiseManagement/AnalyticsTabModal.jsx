@@ -1,101 +1,235 @@
-import React from "react";
-import { LineChart, TrendingUp, Download } from "lucide-react";
+import React, { useState } from "react";
+import { X, LineChart, BarChart2, TrendingUp, Calendar, ShoppingBag, CreditCard, Users, Clock, Award } from "lucide-react";
 
-export default function AnalyticsTabModal() {
+export default function AnalyticsTabModal({ isOpen, onClose, store }) {
+  const [timeRange, setTimeRange] = useState("7 Days");
+
+  if (!isOpen) return null;
+
+  const storeName = store?.name || "Connaught Place Central";
+
   return (
-    <div className="space-y-4">
-      {/* Insight Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-        <div className="bg-[var(--primary)]/5 p-3.5 rounded-xl border border-[var(--primary)]/20 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white shrink-0 shadow-sm">
-            <LineChart size={16} />
-          </div>
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-3 lg:pl-[280px]">
+      <div className="bg-white dark:bg-zinc-900 w-full max-w-4xl h-[85vh] md:h-[600px] rounded-xl shadow-2xl flex flex-col overflow-hidden border border-zinc-200 dark:border-zinc-800 animate-in zoom-in-95">
+        
+        {/* Header */}
+        <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-55 dark:bg-zinc-950 shrink-0">
           <div>
-            <h3 className="text-[9px] font-bold text-[var(--primary)] uppercase tracking-wider">Key Growth Insight</h3>
-            <p className="text-sm text-zinc-900 dark:text-zinc-100 mt-0.5">Highest performing zone: <span className="font-bold">Zone A (Hinjewadi)</span></p>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">Zone A contributed to 42% of total region revenue this month.</p>
+            <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider flex items-center gap-1.5">
+              <BarChart2 size={14} className="text-red-650" />
+              Store Analytics: {storeName}
+            </h3>
+            <p className="text-zinc-500 text-[10px] font-semibold mt-0.5">
+              Detailed performance metrics, operational efficiency, and transaction trends.
+            </p>
           </div>
-        </div>
-        <div className="bg-emerald-500/5 p-3.5 rounded-xl border border-emerald-500/20 flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-sm">
-            <TrendingUp size={16} />
-          </div>
-          <div>
-            <h3 className="text-[9px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-wider">Performance Metric</h3>
-            <p className="text-sm text-zinc-900 dark:text-zinc-100 mt-0.5">Growth: <span className="font-bold text-emerald-600 dark:text-emerald-500">+12.5% vs last month</span></p>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-0.5">Average daily orders increased by 115 across all active stores.</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Revenue Growth Line Chart (Mock) */}
-        <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-          <div className="flex justify-between items-center mb-3.5">
-            <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-100">Revenue Growth</h3>
-            <select className="bg-transparent border-none text-xs font-bold text-zinc-500 dark:text-zinc-400 focus:ring-0 cursor-pointer outline-none">
-              <option>Last 6 Months</option>
-              <option>Last 12 Months</option>
-            </select>
-          </div>
-          <div className="h-40 relative flex items-end justify-between gap-2 border-b border-l border-zinc-200 dark:border-zinc-800 px-2 pb-1">
-            {/* Mock Chart Bars */}
-            {[
-              { height: '40%', label: '₹8.2M', active: false },
-              { height: '55%', label: '₹9.1M', active: false },
-              { height: '48%', label: '₹8.7M', active: false },
-              { height: '65%', label: '₹10.4M', active: false },
-              { height: '78%', label: '₹11.8M', active: false },
-              { height: '92%', label: '₹12.4M', active: true }
-            ].map((bar, i) => (
-              <div key={i} className="flex-1 bg-[var(--primary)]/10 rounded-t group relative" style={{ height: bar.height }}>
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 text-[9px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap shadow-lg">
-                  {bar.label}
-                </div>
-                <div className={`w-full h-full bg-gradient-to-t from-[var(--primary)]/20 to-[var(--primary)]/40 rounded-t ${bar.active ? 'border-t-4 border-[var(--primary)]' : ''}`}></div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-between mt-2 text-[10px] font-bold text-zinc-500 uppercase px-2">
-            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
-          </div>
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full text-zinc-500 transition-colors"
+          >
+            <X size={16} />
+          </button>
         </div>
 
-        {/* Store Performance Bar Chart */}
-        <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-          <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-3.5">Top 5 Stores (Order Volume)</h3>
-          <div className="space-y-2.5">
-            {[
-              { name: 'Hinjewadi', orders: '5,420', percent: '95%' },
-              { name: 'Baner', orders: '4,890', percent: '85%' },
-              { name: 'Kharadi', orders: '3,200', percent: '60%' },
-              { name: 'Kothrud', orders: '2,850', percent: '50%' },
-              { name: 'Viman Nagar', orders: '2,100', percent: '35%' }
-            ].map((store, i) => (
-              <div key={i} className="space-y-1">
-                <div className="flex justify-between text-[10px] font-bold uppercase text-zinc-500">
-                  <span>{store.name}</span>
-                  <span className="text-zinc-900 dark:text-zinc-100">{store.orders} orders</span>
-                </div>
-                <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-[var(--primary)] rounded-full" style={{ width: store.percent }}></div>
-                </div>
-              </div>
+        {/* Time Filters Sub-bar */}
+        <div className="px-4 py-2 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">Historical Timeframe</span>
+          <div className="inline-flex p-0.5 bg-white dark:bg-zinc-950 border border-zinc-250 dark:border-zinc-750 rounded-lg text-[10px] font-bold">
+            {["Today", "7 Days", "30 Days", "Custom Range"].map((range) => (
+              <button
+                key={range}
+                onClick={() => setTimeRange(range)}
+                className={`px-3 py-1 rounded transition-all ${
+                  timeRange === range
+                    ? "bg-red-650 text-white shadow-sm"
+                    : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-350"
+                }`}
+              >
+                {range}
+              </button>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Async Actionable Area */}
-      <div className="bg-zinc-900 dark:bg-zinc-850 text-white p-3.5 rounded-xl flex flex-col md:flex-row justify-between items-center gap-3.5 shadow-md">
-        <div className="text-center md:text-left">
-          <h4 className="text-sm font-bold">Operational Efficiency Report</h4>
-          <p className="text-xs text-zinc-400 mt-0.5">The June report for Pune Region is now available for deep-dive analysis.</p>
+        {/* Analytics Dashboard Grid */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-50 dark:bg-zinc-950 scrollbar-thin">
+          
+          {/* Key Metrics Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <p className="text-[9px] font-bold text-zinc-500 uppercase">Gross Revenue</p>
+              <h4 className="text-base font-black text-zinc-900 dark:text-zinc-100 mt-1">₹ 2,45,800</h4>
+              <span className="text-emerald-500 text-[8px] font-bold">+12.4% vs last period</span>
+            </div>
+            <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <p className="text-[9px] font-bold text-zinc-500 uppercase">Average Order Value</p>
+              <h4 className="text-base font-black text-zinc-900 dark:text-zinc-100 mt-1">₹ 652.00</h4>
+              <span className="text-emerald-500 text-[8px] font-bold">+3.2% vs last period</span>
+            </div>
+            <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <p className="text-[9px] font-bold text-zinc-500 uppercase">Completed Orders</p>
+              <h4 className="text-base font-black text-zinc-900 dark:text-zinc-100 mt-1">376</h4>
+              <span className="text-red-500 text-[8px] font-bold">-1.5% vs last period</span>
+            </div>
+            <div className="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <p className="text-[9px] font-bold text-zinc-500 uppercase">Preparation Speed</p>
+              <h4 className="text-base font-black text-zinc-900 dark:text-zinc-100 mt-1">14.2 min</h4>
+              <span className="text-emerald-500 text-[8px] font-bold">Fastest 5% in Region</span>
+            </div>
+          </div>
+
+          {/* Charts Row 1: Revenue & Orders Trends */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            {/* Revenue Trend Chart */}
+            <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-3 uppercase tracking-wider flex items-center gap-1">
+                <CreditCard size={12} className="text-red-650" />
+                Revenue Trend (₹)
+              </h4>
+              <div className="h-32 flex items-end gap-1.5 border-b border-l border-zinc-200 dark:border-zinc-800 px-2 pb-1.5">
+                {[30, 45, 38, 55, 62, 70, 65, 80, 78, 92, 85, 100].map((h, i) => (
+                  <div key={i} className="flex-1 bg-red-650/20 hover:bg-red-650 rounded-t transition-all cursor-pointer group relative" style={{ height: `${h}%` }}>
+                    <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[8px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap shadow font-bold">
+                      ₹ {(h * 150).toLocaleString("en-IN")}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between text-[8px] font-bold text-zinc-500 mt-1 uppercase px-1">
+                <span>01 Jun</span><span>10 Jun</span><span>20 Jun</span><span>30 Jun</span>
+              </div>
+            </div>
+
+            {/* Orders Trend Chart */}
+            <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-3 uppercase tracking-wider flex items-center gap-1">
+                <ShoppingBag size={12} className="text-red-650" />
+                Orders Volume Trend
+              </h4>
+              <div className="h-32 flex items-end gap-1.5 border-b border-l border-zinc-200 dark:border-zinc-800 px-2 pb-1.5">
+                {[45, 50, 40, 60, 58, 65, 75, 70, 85, 80, 95, 90].map((h, i) => (
+                  <div key={i} className="flex-1 bg-emerald-500/20 hover:bg-emerald-500 rounded-t transition-all cursor-pointer group relative" style={{ height: `${h}%` }}>
+                    <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[8px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap shadow font-bold">
+                      {Math.round(h * 1.5)} Orders
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between text-[8px] font-bold text-zinc-500 mt-1 uppercase px-1">
+                <span>01 Jun</span><span>10 Jun</span><span>20 Jun</span><span>30 Jun</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Charts Row 2: Hourly Sales, Status, Top Items */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            {/* Hourly Sales */}
+            <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-3 uppercase tracking-wider flex items-center gap-1">
+                <Clock size={12} className="text-red-650" />
+                Hourly Sales (Peak)
+              </h4>
+              <div className="space-y-2 text-xs">
+                {[
+                  { hour: "12 PM - 2 PM (Lunch)", pct: "75%", color: "bg-red-650" },
+                  { hour: "4 PM - 6 PM (Snack)", pct: "30%", color: "bg-zinc-400" },
+                  { hour: "7 PM - 10 PM (Dinner)", pct: "95%", color: "bg-red-650" },
+                  { hour: "10 PM - 12 AM (Late)", pct: "40%", color: "bg-zinc-400" }
+                ].map((item, idx) => (
+                  <div key={idx} className="space-y-0.5">
+                    <div className="flex justify-between text-[9px] font-semibold text-zinc-500">
+                      <span>{item.hour}</span>
+                      <span className="font-bold text-zinc-800 dark:text-zinc-200">{item.pct} Peak</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                      <div className={`h-full ${item.color} rounded-full`} style={{ width: item.pct }}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Order Status Distribution */}
+            <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-3 uppercase tracking-wider flex items-center gap-1">
+                <Users size={12} className="text-red-650" />
+                Order Distribution
+              </h4>
+              <div className="space-y-2.5 text-xs pt-1">
+                <div className="flex justify-between items-center py-1 border-b border-zinc-100 dark:border-zinc-850">
+                  <span className="flex items-center gap-1.5 font-semibold text-zinc-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Delivered
+                  </span>
+                  <span className="font-bold text-zinc-850 dark:text-zinc-200">92.5%</span>
+                </div>
+                <div className="flex justify-between items-center py-1 border-b border-zinc-100 dark:border-zinc-850">
+                  <span className="flex items-center gap-1.5 font-semibold text-zinc-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                    Cancelled
+                  </span>
+                  <span className="font-bold text-zinc-850 dark:text-zinc-200">3.8%</span>
+                </div>
+                <div className="flex justify-between items-center py-1 border-b border-zinc-100 dark:border-zinc-850">
+                  <span className="flex items-center gap-1.5 font-semibold text-zinc-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Refunded
+                  </span>
+                  <span className="font-bold text-zinc-850 dark:text-zinc-200">2.1%</span>
+                </div>
+                <div className="flex justify-between items-center py-1 border-b border-zinc-100 dark:border-zinc-850">
+                  <span className="flex items-center gap-1.5 font-semibold text-zinc-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
+                    Failed / Void
+                  </span>
+                  <span className="font-bold text-zinc-850 dark:text-zinc-200">1.6%</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Selling Items */}
+            <div className="bg-white dark:bg-zinc-900 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-3 uppercase tracking-wider flex items-center gap-1">
+                <Award size={12} className="text-red-650" />
+                Top Items (Volume)
+              </h4>
+              <div className="space-y-2 text-xs">
+                {[
+                  { name: "Double Cheese Margherita", vol: 245, pct: "90%" },
+                  { name: "Peppy Paneer Classic", vol: 180, pct: "70%" },
+                  { name: "Farmhouse Fresh Veggie", vol: 154, pct: "60%" },
+                  { name: "Spicy Capsicum & Onion", vol: 92, pct: "35%" }
+                ].map((item, idx) => (
+                  <div key={idx} className="space-y-0.5">
+                    <div className="flex justify-between text-[9px] font-semibold text-zinc-500">
+                      <span className="truncate max-w-[150px]">{item.name}</span>
+                      <span className="font-bold text-zinc-800 dark:text-zinc-200">{item.vol} Sold</span>
+                    </div>
+                    <div className="h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-500 rounded-full" style={{ width: item.pct }}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
         </div>
-        <button className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:brightness-110 transition-all flex items-center justify-center gap-1.5 shadow-sm whitespace-nowrap active:scale-95">
-          <Download size={14} /> Export Region Data
-        </button>
+
+        {/* Footer */}
+        <div className="px-4 py-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-55 dark:bg-zinc-950 flex justify-end shrink-0">
+          <button
+            onClick={onClose}
+            className="px-5 h-8.5 bg-zinc-850 dark:bg-zinc-750 text-white font-bold text-xs hover:opacity-90 transition-all rounded-lg"
+          >
+            Close Dashboard
+          </button>
+        </div>
+
       </div>
     </div>
   );
