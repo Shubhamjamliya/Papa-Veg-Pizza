@@ -1,119 +1,259 @@
 import React, { useState } from "react";
-import { Plus, Package, CheckCircle, AlertTriangle, Ban, TrendingUp, TrendingDown } from "lucide-react";
+import { Plus, Package, CheckCircle, AlertTriangle, Ban, TrendingUp, RefreshCw, X } from "lucide-react";
+import StatsCards from "./StatsCards";
 import ProductsData from "./ProductsData";
 import ProductsDetail from "./ProductsDetail";
 import AddProducts from "./AddProducts";
+import CloneModal from "./CloneModal";
+import ArchiveModal from "./ArchiveModal";
+import DeleteModal from "./DeleteModal";
 
 export default function ProductsManagement() {
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
 
+  // Modal states
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formMode, setFormMode] = useState("add"); // "add", "edit", "clone"
+
+  const [isCloneModalOpen, setIsCloneModalOpen] = useState(false);
+  const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  // Toast / Alert banner state
+  const [alert, setAlert] = useState(null);
+
+  // Statistical counters (reactive simulation)
+  const [stats, setStats] = useState({
+    totalProducts: 1284,
+    activeProducts: 1210,
+    draftProducts: 53,
+    archivedProducts: 21,
+    vegProducts: 1150,
+    customizableProducts: 840,
+    outOfStockProducts: 8,
+    addedThisMonth: 74
+  });
+
+  const triggerAlert = (message, type = "success") => {
+    setAlert({ message, type });
+    setTimeout(() => setAlert(null), 4000);
+  };
+
+  // Row operation handlers
   const handleViewProduct = (product) => {
     setSelectedProduct(product);
     setIsDetailOpen(true);
   };
+
+  const handleEditProduct = (product) => {
+    setSelectedProduct(product);
+    setFormMode("edit");
+    setIsFormOpen(true);
+  };
+
+  const handleCloneRequest = (product) => {
+    setSelectedProduct(product);
+    setIsCloneModalOpen(true);
+  };
+
+  const handleArchiveRequest = (product) => {
+    setSelectedProduct(product);
+    setIsArchiveModalOpen(true);
+  };
+
+  const handleDeleteRequest = (product) => {
+    setSelectedProduct(product);
+    setIsDeleteModalOpen(true);
+  };
+
+  // Confirmations
+  const handleConfirmClone = (product, cloneOptions) => {
+    // Open the Form drawer prefilled in clone mode
+    setFormMode("clone");
+    setIsFormOpen(true);
+    triggerAlert(`Cloned specifications loaded for ${product.name}!`, "success");
+  };
+
+  const handleConfirmArchive = (product) => {
+    // Update local stats and status
+    triggerAlert(`Product "${product.name}" has been successfully archived.`, "warning");
+    setStats((prev) => ({
+      ...prev,
+      activeProducts: prev.activeProducts - 1,
+      archivedProducts: prev.archivedProducts + 1
+    }));
+  };
+
+  const handleConfirmDelete = (product) => {
+    triggerAlert(`Product "${product.name}" (SKU: ${product.id}) soft-deleted successfully.`, "error");
+    setStats((prev) => ({
+      ...prev,
+      totalProducts: prev.totalProducts - 1,
+      activeProducts: product.status === "Active" ? prev.activeProducts - 1 : prev.activeProducts,
+      draftProducts: product.status === "Draft" ? prev.draftProducts - 1 : prev.draftProducts,
+      archivedProducts: product.status === "Archived" ? prev.archivedProducts - 1 : prev.archivedProducts
+    }));
+  };
+
+  const handleSaveProduct = (formData, mode) => {
+    if (mode === "add") {
+      triggerAlert(`New product "${formData.name}" added to catalog successfully!`, "success");
+      setStats((prev) => ({
+        ...prev,
+        totalProducts: prev.totalProducts + 1,
+        activeProducts: formData.status === "Active" ? prev.activeProducts + 1 : prev.activeProducts,
+        draftProducts: formData.status === "Draft" ? prev.draftProducts + 1 : prev.draftProducts,
+        addedThisMonth: prev.addedThisMonth + 1
+      }));
+    } else if (mode === "edit") {
+      triggerAlert(`Product configurations updated for "${formData.name}".`, "success");
+    } else if (mode === "clone") {
+      triggerAlert(`Cloned product published as "${formData.name}".`, "success");
+      setStats((prev) => ({
+        ...prev,
+        totalProducts: prev.totalProducts + 1,
+        activeProducts: formData.status === "Active" ? prev.activeProducts + 1 : prev.activeProducts,
+        draftProducts: formData.status === "Draft" ? prev.draftProducts + 1 : prev.draftProducts
+      }));
+    }
+  };
+
+  // Bulk operation actions
+  const handleBulkAction = (action, productIds) => {
+    triggerAlert(`Bulk action "${action}" completed successfully on ${productIds.length} items.`, "success");
+  };
+
+  const refreshCatalog = () => {
+    triggerAlert("POS catalog channels synchronized and refreshed.", "success");
+  };
+
   return (
     <div className="p-3 md:p-4 pb-12 max-w-7xl mx-auto bg-zinc-50 dark:bg-zinc-950 min-h-screen w-full space-y-4">
-      {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2">
+
+      {/* Toast Alert Banner */}
+      {alert && (
+        <div className={`fixed top-4 right-4 z-[90] p-3 rounded-lg border shadow-xl flex items-center justify-between gap-3 text-xs font-bold animate-in fade-in slide-in-from-top-4 duration-300 ${alert.type === "success"
+            ? "bg-emerald-50 dark:bg-emerald-950/90 text-emerald-800 dark:text-emerald-400 border-emerald-500/20"
+            : alert.type === "warning"
+              ? "bg-amber-50 dark:bg-amber-955/90 text-amber-800 dark:text-amber-450 border-amber-500/20"
+              : "bg-rose-50 dark:bg-rose-955/90 text-rose-800 dark:text-rose-400 border-rose-500/20"
+          }`}>
+          <div className="flex items-center gap-2">
+            {alert.type === "success" ? (
+              <CheckCircle size={14} className="text-emerald-500" />
+            ) : (
+              <AlertTriangle size={14} className={alert.type === "warning" ? "text-amber-500" : "text-rose-500"} />
+            )}
+            <span>{alert.message}</span>
+          </div>
+          <button onClick={() => setAlert(null)} className="p-0.5 hover:bg-black/5 dark:hover:bg-white/10 rounded">
+            <X size={12} />
+          </button>
+        </div>
+      )}
+
+      {/* Header and Breadcrumb Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-2 select-none">
         <div className="space-y-0.5">
-          <h1 className="text-lg font-bold text-black dark:text-white leading-tight">
-            Products Management
+
+          <h1 className="text-base md:text-lg font-bold text-black dark:text-white leading-tight">
+            Products Catalog
           </h1>
-          <p className="text-[10px] font-semibold text-black/70 dark:text-white/70 mt-0.5">
-            Manage your catalog and stock levels
+          <p className="text-[10px] font-semibold text-zinc-550 dark:text-zinc-400">
+            Manage stores, size variants, custom toppings, pricing strategy, and publish status.
           </p>
         </div>
-        <button 
-          onClick={() => setIsAddProductOpen(true)}
-          className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
-        >
-          <Plus size={14} className="stroke-[3]" />
-          <span>ADD PRODUCT</span>
-        </button>
+
+        <div className="flex items-center gap-2 self-start sm:self-center">
+          <button
+            onClick={refreshCatalog}
+            className="p-2 border border-zinc-250 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg text-zinc-550 dark:text-zinc-400 transition-colors shadow-sm"
+            title="Refresh Catalog"
+          >
+            <RefreshCw size={12} />
+          </button>
+
+          <button
+            onClick={() => {
+              setSelectedProduct(null);
+              setFormMode("add");
+              setIsFormOpen(true);
+            }}
+            className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
+          >
+            <Plus size={14} className="stroke-[3]" />
+            <span>ADD PRODUCT</span>
+          </button>
+        </div>
       </div>
 
-      {/* Summary Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4 select-none">
-        {/* Total Products */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Total Products</span>
-            <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">1,284</h3>
-              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
-                <TrendingUp size={10} /> +4%
-              </span>
-            </div>
-          </div>
-          <div className="p-1.5 rounded-md bg-[var(--primary)]/10 text-[var(--primary)] shrink-0 border border-[var(--primary)]/20">
-            <Package size={14} />
-          </div>
-        </div>
+      {/* Statistics Cards */}
+      <StatsCards stats={stats} />
 
-        {/* Active */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Active</span>
-            <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-black dark:text-white mt-0.5">1,210</h3>
-              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
-                <TrendingUp size={10} /> +2%
-              </span>
-            </div>
-          </div>
-          <div className="p-1.5 rounded-md bg-emerald-555/10 text-emerald-600 dark:text-emerald-400 shrink-0 border border-emerald-100 dark:border-emerald-900/30">
-            <CheckCircle size={14} />
-          </div>
-        </div>
-
-        {/* Low Stock */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow border-t-2 border-t-orange-500">
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Low Stock</span>
-            <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-orange-600 dark:text-orange-455 mt-0.5">14</h3>
-              <span className="text-red-500 font-bold text-[8px] flex items-center gap-0.5">
-                <TrendingUp size={10} /> 12%
-              </span>
-            </div>
-          </div>
-          <div className="p-1.5 rounded-md bg-orange-500/10 text-orange-600 shrink-0 border border-orange-100 dark:border-orange-900/30">
-            <AlertTriangle size={14} />
-          </div>
-        </div>
-
-        {/* Out of Stock */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-3 rounded-xl flex items-center justify-between shadow-sm hover:shadow-md transition-shadow border-t-2 border-t-red-500">
-          <div className="flex flex-col gap-0.5 min-w-0">
-            <span className="text-[10px] font-bold text-black dark:text-white uppercase tracking-wider truncate">Out of Stock</span>
-            <div className="flex items-baseline gap-1.5 flex-wrap">
-              <h3 className="text-lg font-black text-rose-600 dark:text-rose-455 mt-0.5">8</h3>
-              <span className="text-emerald-500 font-bold text-[8px] flex items-center gap-0.5">
-                <TrendingDown size={10} /> 5%
-              </span>
-            </div>
-          </div>
-          <div className="p-1.5 rounded-md bg-red-500/10 text-rose-600 dark:text-rose-400 shrink-0 border border-red-100 dark:border-red-900/30">
-            <Ban size={14} />
-          </div>
-        </div>
-      </section>
-
-      {/* Products Data (Filters & List) */}
-      <ProductsData onViewProduct={handleViewProduct} />
-
-      <ProductsDetail 
-        isOpen={isDetailOpen} 
-        onClose={() => setIsDetailOpen(false)} 
-        product={selectedProduct} 
+      {/* Products Table and Filtering */}
+      <ProductsData
+        onViewProduct={handleViewProduct}
+        onEditProduct={handleEditProduct}
+        onCloneProduct={handleCloneRequest}
+        onArchiveProduct={handleArchiveRequest}
+        onDeleteProduct={handleDeleteRequest}
+        onBulkAction={handleBulkAction}
       />
 
-      <AddProducts 
-        isOpen={isAddProductOpen} 
-        onClose={() => setIsAddProductOpen(false)} 
+      {/* Product Details Side Drawer */}
+      <ProductsDetail
+        isOpen={isDetailOpen}
+        onClose={() => {
+          setIsDetailOpen(false);
+          setSelectedProduct(null);
+        }}
+        product={selectedProduct}
       />
+
+      {/* Add / Edit / Clone Multi-step Form Drawer */}
+      <AddProducts
+        isOpen={isFormOpen}
+        onClose={() => {
+          setIsFormOpen(false);
+          setSelectedProduct(null);
+        }}
+        product={selectedProduct}
+        mode={formMode}
+        onSave={handleSaveProduct}
+      />
+
+      {/* Confirmations modals */}
+      <CloneModal
+        isOpen={isCloneModalOpen}
+        onClose={() => {
+          setIsCloneModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        product={selectedProduct}
+        onConfirm={handleConfirmClone}
+      />
+
+      <ArchiveModal
+        isOpen={isArchiveModalOpen}
+        onClose={() => {
+          setIsArchiveModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        product={selectedProduct}
+        onConfirm={handleConfirmArchive}
+      />
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        product={selectedProduct}
+        onConfirm={handleConfirmDelete}
+      />
+
     </div>
   );
 }
