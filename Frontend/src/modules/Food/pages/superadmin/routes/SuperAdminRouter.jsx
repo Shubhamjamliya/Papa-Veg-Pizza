@@ -11,6 +11,7 @@ const UserProfile = lazy(() => import("../userManagement/UserProfile"))
 const FranchiseStores = lazy(() => import("../franchiseManagement/FranchiseStores"))
 const FranchiseApprovals = lazy(() => import("../franchiseManagement/FranchiseApprovals"))
 const RegionsZones = lazy(() => import("../franchiseManagement/RegionsZones"))
+const TerritoryManagement = lazy(() => import("../franchiseManagement/TerritoryManagement"))
 const FranchiseList = lazy(() => import("../userManagement/FranchiseList"))
 const StoreManagers = lazy(() => import("../userManagement/StoreManagers"))
 const StoreManagersList = lazy(() => import("../userManagement/StoreManagersList"))
@@ -76,6 +77,8 @@ function SuperAdminLayout() {
     activeItem = "Franchise Approvals"
   } else if (location.pathname.includes("/regions-zones")) {
     activeItem = "Regions & Zones"
+  } else if (location.pathname.includes("/territory-management")) {
+    activeItem = "Territory Management"
   } else if (location.pathname.includes("/franchises")) {
     activeItem = "Franchise Owners"
   } else if (location.pathname.includes("/managers")) {
@@ -139,7 +142,7 @@ function SuperAdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-955 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
       <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       <Sidebar
         isOpen={sidebarOpen}
@@ -185,6 +188,7 @@ export default function SuperAdminRouter() {
           <Route path="/franchise-stores" element={<FranchiseStores />} />
           <Route path="/franchise-approvals" element={<FranchiseApprovals />} />
           <Route path="/regions-zones" element={<RegionsZones />} />
+          <Route path="/territory-management" element={<TerritoryManagement />} />
           <Route path="/franchises" element={<FranchiseList />} />
           <Route path="/managers" element={<StoreManagers />} />
           <Route path="/managers/list" element={<StoreManagersList />} />
