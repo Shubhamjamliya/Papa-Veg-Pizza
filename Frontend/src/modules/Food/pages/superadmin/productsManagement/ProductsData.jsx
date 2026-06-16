@@ -557,7 +557,7 @@ export default function ProductsData({
         <div className="overflow-x-auto w-full relative">
           <table className="w-full border-collapse text-left text-xs min-w-[1200px]">
             {/* Sticky Header */}
-            <thead className="bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-850 text-zinc-500 font-bold uppercase sticky top-0 z-20">
+            <thead className="bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-850 text-zinc-500 font-bold uppercase sticky top-0 z-30">
               <tr>
                 <th className="px-3 py-2.5 w-10 text-center">
                   <input
@@ -594,7 +594,7 @@ export default function ProductsData({
                   Last Updated
                 </th>
                 <th className="px-3 py-2.5">Created By</th>
-                <th className="px-3 py-2.5 text-right sticky right-0 bg-zinc-50 dark:bg-zinc-950 shadow-l z-10 w-24">Actions</th>
+                <th className="px-3 py-2.5 text-right sticky right-0 bg-zinc-50 dark:bg-zinc-950 shadow-l z-30 w-24">Actions</th>
               </tr>
             </thead>
             
@@ -653,7 +653,9 @@ export default function ProductsData({
                     <td className="px-3 py-2 text-zinc-600 dark:text-zinc-400 font-semibold">{p.createdBy}</td>
                     
                     {/* Row Actions Menu */}
-                    <td className="px-3 py-2 text-right sticky right-0 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-850 shadow-l transition-colors z-10">
+                    <td className={`px-3 py-2 text-right sticky right-0 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-850 shadow-l transition-colors ${
+                      activeDropdown === p.id ? "z-20" : "z-10"
+                    }`}>
                       <div className="relative inline-block text-left">
                         <button
                           type="button"
