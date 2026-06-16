@@ -4,6 +4,7 @@ import ContentData from './ContentData';
 import CreateCms from './CreateCms';
 import FaqManagement from './FaqManagement';
 import MediaLibrary from './MediaLibrary';
+import PolicyManagement from './PolicyManagement';
 
 export default function ContentManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,6 +42,15 @@ export default function ContentManagement() {
           <ImageIcon size={12} />
           Media
         </button>
+        <button 
+          onClick={() => setActiveMainTab('policies')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            activeMainTab === 'policies' ? 'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900'
+          }`}
+        >
+          <FileText size={12} />
+          Policies
+        </button>
       </div>
 
       {activeMainTab === 'dashboard' ? (
@@ -58,7 +68,7 @@ export default function ContentManagement() {
           </button>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-1.5 bg-red-650 hover:bg-red-700 text-white px-3 py-1.5 rounded hover:shadow-lg transition-all active:scale-95"
+            className="flex items-center gap-1.5 bg-red-650 text-white px-3 py-1.5 rounded transition-all active:scale-95"
           >
             <Plus size={12} />
             <span className="text-[11px] font-bold">Create New Page</span>
@@ -184,6 +194,8 @@ export default function ContentManagement() {
       </div>
       ) : activeMainTab === 'faqs' ? (
         <FaqManagement />
+      ) : activeMainTab === 'policies' ? (
+        <PolicyManagement />
       ) : (
         <MediaLibrary />
       )}

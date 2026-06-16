@@ -16,7 +16,8 @@ import {
   Bike,
   History,
   HeadphonesIcon,
-  MoreVertical
+  MoreVertical,
+  Info
 } from 'lucide-react';
 import EditSettings from './EditSettings';
 import ConfigureMaintenance from './ConfigureMaintenance';
@@ -28,6 +29,20 @@ export default function AppSettings() {
   const [saveStatus, setSaveStatus] = useState('Save Changes');
   const [isEditSettingsOpen, setIsEditSettingsOpen] = useState(false);
   const [isMaintenanceConfigOpen, setIsMaintenanceConfigOpen] = useState(false);
+
+  const [companyInfo, setCompanyInfo] = useState({
+    companyName: 'Papa Veg Pizza',
+    email: 'admin@gmail.com',
+    region: 'India',
+    phoneCountryCode: '+91 (IN)',
+    phone: '9999999999',
+    address: 'Bholaram Ustad Marg Indore',
+    state: 'Madhya Pradesh',
+    pincode: '450001',
+    supportEmail: '',
+    supportPhone: '',
+    supportHours: '',
+  });
 
   // Debouncing for search bar
   useEffect(() => {
@@ -177,6 +192,184 @@ export default function AppSettings() {
                 <div className="p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded flex items-center gap-1.5 border border-zinc-200 dark:border-zinc-800">
                   <Folder size={12} className="text-black/50 dark:text-white/50" />
                   <span className="text-[9px] text-black/70 dark:text-white/70 font-mono overflow-hidden text-ellipsis whitespace-nowrap">Storage Path: uploads/settings/branding/v1/</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          {/* Company & Support Information */}
+          <article className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+            <div className="px-3.5 py-2 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-955/50">
+              <h2 className="text-xs font-bold text-black dark:text-white">Company &amp; Support Settings</h2>
+              <MoreVertical size={14} className="text-black/50 dark:text-white/50 cursor-pointer" />
+            </div>
+            
+            <div className="p-3.5 space-y-6">
+              {/* Company Information Section */}
+              <div>
+                <h3 className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3.5">Company Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                  {/* Company name */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Company name <span className="text-red-500">*</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      required 
+                      value={companyInfo.companyName}
+                      onChange={(e) => setCompanyInfo({...companyInfo, companyName: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input 
+                      type="email" 
+                      required 
+                      value={companyInfo.email}
+                      onChange={(e) => setCompanyInfo({...companyInfo, email: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+
+                  {/* Region */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Region <span className="text-red-500">*</span>
+                    </label>
+                    <select 
+                      required
+                      value={companyInfo.region}
+                      onChange={(e) => setCompanyInfo({...companyInfo, region: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    >
+                      <option value="India">India</option>
+                      <option value="United States">United States</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                    </select>
+                  </div>
+
+                  {/* Phone */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Phone <span className="text-red-500">*</span>
+                    </label>
+                    <div className="flex gap-2">
+                      <div className="relative flex-shrink-0 w-32">
+                        <select 
+                          value={companyInfo.phoneCountryCode}
+                          onChange={(e) => setCompanyInfo({...companyInfo, phoneCountryCode: e.target.value})}
+                          className="w-full h-8.5 pl-3 pr-7 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white appearance-none"
+                        >
+                          <option value="+91 (IN)">+91 (IN)</option>
+                          <option value="+1 (US)">+1 (US)</option>
+                          <option value="+44 (UK)">+44 (UK)</option>
+                        </select>
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500 text-xs pointer-events-none">?</span>
+                      </div>
+                      <input 
+                        type="tel" 
+                        required 
+                        value={companyInfo.phone}
+                        onChange={(e) => setCompanyInfo({...companyInfo, phone: e.target.value})}
+                        className="flex-1 h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Address */}
+                  <div className="space-y-1 md:col-span-2">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Address
+                    </label>
+                    <input 
+                      type="text" 
+                      value={companyInfo.address}
+                      onChange={(e) => setCompanyInfo({...companyInfo, address: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+
+                  {/* State */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      State
+                    </label>
+                    <input 
+                      type="text" 
+                      value={companyInfo.state}
+                      onChange={(e) => setCompanyInfo({...companyInfo, state: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+
+                  {/* Pincode */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Pincode
+                    </label>
+                    <input 
+                      type="text" 
+                      value={companyInfo.pincode}
+                      onChange={(e) => setCompanyInfo({...companyInfo, pincode: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <hr className="border-zinc-200 dark:border-zinc-800" />
+
+              {/* Support Information Section */}
+              <div>
+                <h3 className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3.5">Support Information (Dynamic Support Page)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                  {/* Support Email */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Support Email
+                    </label>
+                    <input 
+                      type="email" 
+                      placeholder="support@foodelo.com"
+                      value={companyInfo.supportEmail}
+                      onChange={(e) => setCompanyInfo({...companyInfo, supportEmail: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+
+                  {/* Support Phone */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Support Phone
+                    </label>
+                    <input 
+                      type="tel" 
+                      placeholder="+91 1234567890"
+                      value={companyInfo.supportPhone}
+                      onChange={(e) => setCompanyInfo({...companyInfo, supportPhone: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
+
+                  {/* Support Availability Hours */}
+                  <div className="space-y-1 md:col-span-2">
+                    <label className="text-[10px] font-bold text-black/70 dark:text-white/70 block">
+                      Support Availability Hours
+                    </label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g., 24/7 Availability"
+                      value={companyInfo.supportHours}
+                      onChange={(e) => setCompanyInfo({...companyInfo, supportHours: e.target.value})}
+                      className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-black dark:text-white"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

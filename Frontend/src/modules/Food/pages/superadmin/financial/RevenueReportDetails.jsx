@@ -88,9 +88,9 @@ export default function RevenueReportDetails({ onBack }) {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-              <div className="p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-950/50 border border-zinc-100 dark:border-zinc-800/50">
+              <div className="p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-955/50 border border-zinc-100 dark:border-zinc-800/50">
                 <p className="text-[9px] font-bold text-black/50 dark:text-white/50 mb-1.5 uppercase tracking-wider">Gross Revenue</p>
-                <p className="text-sm font-black text-black dark:text-white">$482,900.00</p>
+                <p className="text-sm font-black text-black dark:text-white">₹482,900.00</p>
                 <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-500 mt-2 font-bold text-xs">
                   <TrendingUp size={12} />
                   <span>+12.4% vs Prev Month</span>
@@ -98,7 +98,7 @@ export default function RevenueReportDetails({ onBack }) {
               </div>
               <div className="p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-955 border border-zinc-100 dark:border-zinc-800/50">
                 <p className="text-[9px] font-bold text-black/50 dark:text-white/50 mb-1.5 uppercase tracking-wider">Net Revenue</p>
-                <p className="text-sm font-black text-black dark:text-white">$444,268.00</p>
+                <p className="text-sm font-black text-black dark:text-white">₹444,268.00</p>
                 <div className="flex items-center gap-1 text-rose-600 dark:text-rose-500 mt-2 font-bold text-xs">
                   <TrendingDown size={12} />
                   <span>-2.1% from Gross Gap</span>
@@ -111,8 +111,8 @@ export default function RevenueReportDetails({ onBack }) {
                 <div className="absolute top-0 left-0 h-full bg-[var(--primary)] rounded-full transition-all duration-1000" style={{ width: '92%' }}></div>
               </div>
               <div className="flex justify-between mt-1.5">
-                <span className="text-[10px] font-bold text-black/50 dark:text-white/50">$0</span>
-                <span className="text-[10px] font-bold text-black/50 dark:text-white/50">Target: $525,000</span>
+                <span className="text-[10px] font-bold text-black/50 dark:text-white/50">₹0</span>
+                <span className="text-[10px] font-bold text-black/50 dark:text-white/50">Target: ₹525,000</span>
               </div>
             </div>
           </div>
@@ -132,21 +132,21 @@ export default function RevenueReportDetails({ onBack }) {
                 <span className="text-xl font-black leading-none">18.5%</span>
                 <span className="text-xs font-bold mb-0.5 opacity-90">Margin</span>
               </div>
-              <p className="text-[10px] font-semibold mt-1.5 text-white/90">Net profit of $82,190.00 this month</p>
+              <p className="text-[10px] font-semibold mt-1.5 text-white/90">Net profit of ₹82,190.00 this month</p>
             </div>
             
             <div className="space-y-2 relative z-10">
               <div className="flex justify-between items-center py-1.5 border-b border-white/20 text-xs">
                 <span className="font-bold text-white/90">Operating Costs</span>
-                <span className="font-mono font-bold">$242,000.00</span>
+                <span className="font-mono font-bold">₹242,000.00</span>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-white/20 text-xs">
                 <span className="font-bold text-white/90">Commissions</span>
-                <span className="font-mono font-bold">$120,078.00</span>
+                <span className="font-mono font-bold">₹120,078.00</span>
               </div>
               <div className="flex justify-between items-center py-1.5 text-xs">
                 <span className="font-bold text-white/90">Net Profit</span>
-                <span className="font-mono text-sm font-black">$82,190.00</span>
+                <span className="font-mono text-sm font-black">₹82,190.00</span>
               </div>
             </div>
           </div>
@@ -191,7 +191,7 @@ export default function RevenueReportDetails({ onBack }) {
                 </div>
                 <div>
                   <p className="font-mono text-xs font-bold text-black dark:text-white">4,821 Orders</p>
-                  <p className="text-[10px] font-semibold text-black/50 dark:text-white/50 mt-0.5">Avg. Order Value: $100.16</p>
+                  <p className="text-[10px] font-semibold text-black/50 dark:text-white/50 mt-0.5">Avg. Order Value: ₹100.16</p>
                 </div>
               </div>
             </div>
@@ -211,25 +211,25 @@ export default function RevenueReportDetails({ onBack }) {
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
                   <tr>
                     <td className="py-2 text-xs font-bold text-black dark:text-white">GST (Total)</td>
-                    <td className="py-2 font-mono text-xs font-bold text-right text-black dark:text-white">$43,461.00</td>
+                    <td className="py-2 font-mono text-xs font-bold text-right text-black dark:text-white">₹43,461.00</td>
                   </tr>
                   <tr>
                     <td className="py-1.5 text-xs font-semibold text-black/50 dark:text-white/50 pl-2">CGST (9%)</td>
-                    <td className="py-1.5 font-mono text-xs font-semibold text-right text-black/50 dark:text-white/50">$21,730.50</td>
+                    <td className="py-1.5 font-mono text-xs font-semibold text-right text-black/50 dark:text-white/50">₹21,730.50</td>
                   </tr>
                   <tr>
                     <td className="py-1.5 text-xs font-semibold text-black/50 dark:text-white/50 pl-2">SGST (9%)</td>
-                    <td className="py-1.5 font-mono text-xs font-semibold text-right text-black/50 dark:text-white/50">$21,730.50</td>
+                    <td className="py-1.5 font-mono text-xs font-semibold text-right text-black/50 dark:text-white/50">₹21,730.50</td>
                   </tr>
                   <tr>
                     <td className="py-2 text-xs font-bold text-black dark:text-white">Service Charge</td>
-                    <td className="py-2 font-mono text-xs font-bold text-right text-black dark:text-white">$12,072.00</td>
+                    <td className="py-2 font-mono text-xs font-bold text-right text-black dark:text-white">₹12,072.00</td>
                   </tr>
                 </tbody>
                 <tfoot className="border-t border-zinc-200 dark:border-zinc-800">
                   <tr>
                     <td className="py-2 text-xs font-black text-black dark:text-white">Total Deductions</td>
-                    <td className="py-2 font-mono text-sm font-black text-right text-black dark:text-white">$55,533.00</td>
+                    <td className="py-2 font-mono text-sm font-black text-right text-black dark:text-white">₹55,533.00</td>
                   </tr>
                 </tfoot>
               </table>
@@ -247,7 +247,7 @@ export default function RevenueReportDetails({ onBack }) {
             
             <div className="mb-3.5 p-2.5 bg-rose-50 dark:bg-rose-955 rounded-lg border border-rose-100 dark:border-rose-900/30">
               <p className="text-[9px] font-bold text-rose-600 dark:text-rose-500 uppercase tracking-widest mb-0.5">Net Impact</p>
-              <p className="text-sm font-black text-rose-700 dark:text-rose-400">-$18,240.00</p>
+              <p className="text-sm font-black text-rose-700 dark:text-rose-400">-₹18,240.00</p>
               <p className="text-[10px] font-semibold text-rose-600 dark:text-rose-500 opacity-80 mt-1">Total of 214 refund events</p>
             </div>
             
