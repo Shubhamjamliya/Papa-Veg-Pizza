@@ -4,7 +4,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import FranchiseStoresData from "./FranchiseStoresData";
 import FranchiseStoresDetails from "./FranchiseStoresDetails";
-import AddFranchiseStores from "./AddFranchiseStores";
+// import AddFranchiseStores from "./AddFranchiseStores";
 import BulkAction from "./BulkAction";
 import ComplianceReport from "./ComplianceReport";
 
@@ -48,27 +48,27 @@ export default function FranchiseStores() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button 
+          <button
             onClick={handleExportPDF}
             className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.01] transition-all cursor-pointer font-bold text-[11px]"
           >
             <Download size={14} />
             <span>EXPORT</span>
           </button>
-          <button 
+          {/* <button 
             onClick={() => setIsBulkActionOpen(true)}
             className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-black dark:text-white px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:scale-[1.01] transition-all cursor-pointer font-bold text-[11px]"
           >
             <span>BULK ACTIONS</span>
             <ChevronDown size={14} />
-          </button>
-          <button
+          </button> */}
+          {/* <button
             onClick={() => { setEditStoreData(null); setIsAddStoreOpen(true); }}
             className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
           >
             <Plus size={14} className="stroke-[3]" />
             <span>ADD NEW STORE</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export default function FranchiseStores() {
           <p className="text-zinc-300 opacity-90 text-[11px] leading-relaxed">
             92% of franchise stores have successfully integrated the new Papa Veg 'Green-Chain' inventory management system. Compliance reviews for the remaining 12 units are scheduled for next quarter.
           </p>
-          <button 
+          <button
             onClick={() => setIsComplianceReportOpen(true)}
             className="px-4 py-1.5 bg-white text-zinc-900 font-bold rounded-lg hover:bg-zinc-100 transition-all text-[11px] mt-1"
           >
@@ -170,11 +170,11 @@ export default function FranchiseStores() {
       />
 
       {/* Add New Store Wizard */}
-      <AddFranchiseStores
+      {/* <AddFranchiseStores
         isOpen={isAddStoreOpen}
         onClose={() => setIsAddStoreOpen(false)}
         store={editStoreData}
-      />
+      /> */}
 
       {/* Bulk Action Modal */}
       <BulkAction

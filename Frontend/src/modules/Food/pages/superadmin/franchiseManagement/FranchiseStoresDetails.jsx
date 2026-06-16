@@ -26,13 +26,13 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
   return (
     <>
       {/* Overlay */}
-      <div 
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} 
+      <div
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
 
       {/* Drawer */}
-      <div 
+      <div
         className={`fixed right-0 top-0 h-screen w-full sm:w-[420px] lg:w-[450px] bg-white dark:bg-zinc-950 z-50 shadow-2xl transition-transform duration-300 flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {/* Drawer Header */}
@@ -53,8 +53,8 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
               <span className="text-zinc-500 font-semibold">Joined May 2022</span>
             </div>
           </div>
-          <button 
-            className="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400" 
+          <button
+            className="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-500 dark:text-zinc-400"
             onClick={onClose}
           >
             <X size={18} />
@@ -66,11 +66,10 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
           {['basic', 'contact', 'location', 'operations', 'performance'].map((tab) => (
             <button
               key={tab}
-              className={`py-2 text-xs font-semibold whitespace-nowrap transition-all border-b-2 ${
-                activeTab === tab 
-                  ? 'border-[var(--primary)] text-[var(--primary)]' 
+              className={`py-2 text-xs font-semibold whitespace-nowrap transition-all border-b-2 ${activeTab === tab
+                  ? 'border-[var(--primary)] text-[var(--primary)]'
                   : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
-              }`}
+                }`}
               onClick={() => setActiveTab(tab)}
             >
               {tab === 'basic' && "Basic Info"}
@@ -84,7 +83,7 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
 
         {/* Scrollable Content Canvas */}
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-300 p-3.5 bg-white dark:bg-zinc-950">
-          
+
           {/* Basic Information Section */}
           {activeTab === 'basic' && (
             <section className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -154,9 +153,9 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
           {activeTab === 'location' && (
             <section className="space-y-3.5 animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="w-full h-40 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-800 relative group">
-                <img 
-                  className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" 
-                  alt="Map view" 
+                <img
+                  className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500"
+                  alt="Map view"
                   src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80&fm=webp"
                 />
                 <div className="absolute bottom-2 left-2 bg-white dark:bg-zinc-900 shadow-lg px-2 py-1 rounded-md flex items-center gap-1.5">
@@ -196,7 +195,7 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 mb-2">Store Hours</h4>
                 <div className="space-y-1">
@@ -263,15 +262,15 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
                   {/* Mock Chart Visualization */}
                   <div className="h-24 w-full flex items-end gap-1">
                     {[40, 55, 45, 70, 60, 85, 75, 95, 80, 90, 85, 100].map((h, i) => (
-                      <div 
-                        key={i} 
-                        className={`flex-1 rounded-t-sm transition-colors cursor-pointer ${h === 95 ? 'bg-[var(--primary)]' : 'bg-[var(--primary)]/20 hover:bg-[var(--primary)]'}`} 
+                      <div
+                        key={i}
+                        className={`flex-1 rounded-t-sm transition-colors cursor-pointer ${h === 95 ? 'bg-[var(--primary)]' : 'bg-[var(--primary)]/20 hover:bg-[var(--primary)]'}`}
                         style={{ height: `${h}%` }}
                       ></div>
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-3.5 bg-zinc-50 dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
                     <h5 className="text-[10px] font-bold text-zinc-500 uppercase mb-2">Customer Ratings</h5>
@@ -304,7 +303,7 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
 
         {/* Drawer Footer */}
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex justify-between gap-3">
-          <button 
+          {/* <button 
             onClick={handleArchive}
             className="flex-1 py-2 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold text-xs rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
           >
@@ -315,7 +314,7 @@ export default function FranchiseStoresDetails({ isOpen, onClose, store, onEdit 
             className="flex-1 py-2 bg-[var(--primary)] text-white font-semibold text-xs rounded-lg hover:brightness-110 shadow-md active:scale-95 transition-all"
           >
             Edit Information
-          </button>
+          </button> */}
         </div>
       </div>
     </>

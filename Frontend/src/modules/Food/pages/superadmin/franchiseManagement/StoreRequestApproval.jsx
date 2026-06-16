@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronRight, Download, SlidersHorizontal, Layers, Store, Eye, CheckCircle, XCircle } from "lucide-react";
 import StoreRequestApprovalData from "./StoreRequestApprovalData";
 import StoreRequestApprovalDetails from "./StoreRequestApprovalDetails";
-import BulkActionStore from "./BulkActionStore";
+// import BulkActionStore from "./BulkActionStore";
 
 export default function StoreRequestApproval() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -114,13 +114,13 @@ export default function StoreRequestApproval() {
             <Download size={14} />
             <span>EXPORT REQUESTS</span>
           </button>
-          <button
+          {/* <button
             onClick={() => setIsBulkActionOpen(true)}
             className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white px-3.5 py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer font-bold text-[11px]"
           >
             <Layers size={14} className="stroke-[3]" />
             <span>BULK ACTIONS {selectedRequestIds.length > 0 && `(${selectedRequestIds.length})`}</span>
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -266,13 +266,13 @@ export default function StoreRequestApproval() {
         request={selectedRequest}
       />
 
-      <BulkActionStore
+      {/* <BulkActionStore
         isOpen={isBulkActionOpen}
         onClose={() => setIsBulkActionOpen(false)}
         selectedRequests={requests.filter((r) => selectedRequestIds.includes(r.id))}
         onClearSelection={handleClearSelection}
         onApplyAction={handleApplyBulkAction}
-      />
+      /> */}
     </div>
   );
 }
