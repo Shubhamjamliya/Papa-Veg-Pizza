@@ -36,6 +36,7 @@ const PaymentsManagement = lazy(() => import("../financial/PaymentsManagement"))
 const TransactionManagement = lazy(() => import("../financial/TransactionManagement"))
 const FranchiseCommission = lazy(() => import("../financial/FranchiseCommission"))
 const Revenue = lazy(() => import("../financial/Revenue"))
+const Payouts = lazy(() => import("../financial/Payouts"))
 const SalesAnalytics = lazy(() => import("../analytics/SalesAnalytics"))
 const CustomerAnalytics = lazy(() => import("../analytics/CustomerAnalytics"))
 const OperationalAnalytics = lazy(() => import("../analytics/OperationalAnalytics"))
@@ -122,6 +123,8 @@ function SuperAdminLayout() {
     activeItem = "Transactions"
   } else if (location.pathname.includes("/commissions")) {
     activeItem = "Franchise Commissions"
+  } else if (location.pathname.includes("/payouts")) {
+    activeItem = "Payouts"
   } else if (location.pathname.includes("/revenue")) {
     activeItem = "Revenue"
   } else if (location.pathname.includes("/sales-analytics")) {
@@ -215,6 +218,7 @@ export default function SuperAdminRouter() {
           <Route path="/payments" element={<PaymentsManagement />} />
           <Route path="/transactions" element={<TransactionManagement />} />
           <Route path="/commissions" element={<FranchiseCommission />} />
+          <Route path="/payouts" element={<Payouts />} />
           <Route path="/revenue" element={<Revenue />} />
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
           <Route path="/customer-analytics" element={<CustomerAnalytics />} />

@@ -27,6 +27,7 @@ import {
   History,
   Percent,
   TrendingUp,
+  Landmark,
   BarChart3,
   LineChart,
   PieChart,
@@ -112,6 +113,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       items: [
         { name: "Revenue", icon: TrendingUp },
         { name: "Franchise Commissions", icon: Percent },
+        { name: "Payouts", icon: Landmark },
         { name: "Payments", icon: CreditCard },
         { name: "Transactions", icon: History }
       ]
@@ -258,6 +260,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/transactions")
                             } else if (item.name === "Franchise Commissions") {
                               navigate("/food/superadmin/commissions")
+                            } else if (item.name === "Payouts") {
+                              navigate("/food/superadmin/payouts")
                             } else if (item.name === "Revenue") {
                               navigate("/food/superadmin/revenue")
                             } else if (item.name === "Sales Analytics") {
