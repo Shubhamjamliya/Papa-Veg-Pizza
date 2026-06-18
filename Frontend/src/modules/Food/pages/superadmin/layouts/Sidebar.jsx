@@ -122,7 +122,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       title: "Marketing",
       items: [
         { name: "Coupons", icon: Ticket },
-        { name: "Offers & Campaigns", icon: Megaphone },
+        { name: "Campaigns", icon: Megaphone },
         { name: "Banners / Promotions", icon: Image },
         { name: "Notifications", icon: Bell }
       ]
@@ -248,8 +248,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/refund-requests")
                             } else if (item.name === "Coupons") {
                               navigate("/food/superadmin/coupons")
-                            } else if (item.name === "Offers & Campaigns") {
-                              navigate("/food/superadmin/offers-campaigns")
+                            } else if (item.name === "Campaigns") {
+                              navigate("/food/superadmin/campaigns")
                             } else if (item.name === "Banners / Promotions") {
                               navigate("/food/superadmin/banners-promotions")
                             } else if (item.name === "Notifications") {
