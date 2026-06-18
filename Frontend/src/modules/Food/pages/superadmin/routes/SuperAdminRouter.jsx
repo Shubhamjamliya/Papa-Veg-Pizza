@@ -23,9 +23,9 @@ const CategoriesManagement = lazy(() => import("../productsManagement/Categories
 const Addons = lazy(() => import("../productsManagement/Addons"))
 const ComboDeals = lazy(() => import("../productsManagement/ComboDeals"))
 const GlobalPrice = lazy(() => import("../productsManagement/GlobalPrice"))
-const OrdersManagement = lazy(() => import("../orderSystem/OrdersManagement"))
-const RefundAndCancellation = lazy(() => import("../orderSystem/RefundAndCancellation"))
-const LiveOrderMonitor = lazy(() => import("../orderSystem/LiveOrderMonitor"))
+const AllOrders = lazy(() => import("../orderManagement/AllOrders"))
+const RefundAndCancellation = lazy(() => import("../orderManagement/RefundAndCancellation"))
+const LiveOrderMonitor = lazy(() => import("../orderManagement/LiveOrderMonitor"))
 const DeliveryManagement = lazy(() => import("../deliverySystem/DeliveryManagement"))
 const RiderTracking = lazy(() => import("../deliverySystem/RiderTracking"))
 const DeliveryZoneManagement = lazy(() => import("../deliverySystem/DeliveryZoneManagement"))
@@ -101,7 +101,7 @@ function SuperAdminLayout() {
   } else if (location.pathname.includes("/global-pricing")) {
     activeItem = "Global Pricing"
   } else if (location.pathname.includes("/orders")) {
-    activeItem = "Orders"
+    activeItem = "All Orders"
   } else if (location.pathname.includes("/live-monitoring")) {
     activeItem = "Live Order Monitoring"
   } else if (location.pathname.includes("/refunds-cancellations")) {
@@ -203,7 +203,7 @@ export default function SuperAdminRouter() {
           <Route path="/addons" element={<Addons />} />
           <Route path="/combos-deals" element={<ComboDeals />} />
           <Route path="/global-pricing" element={<GlobalPrice />} />
-          <Route path="/orders" element={<OrdersManagement />} />
+          <Route path="/orders" element={<AllOrders />} />
           <Route path="/live-monitoring" element={<LiveOrderMonitor />} />
           <Route path="/refunds-cancellations" element={<RefundAndCancellation />} />
           <Route path="/delivery-management" element={<DeliveryManagement />} />
