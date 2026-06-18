@@ -106,6 +106,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       title: "Order Management",
       items: [
         { name: "All Orders", icon: ClipboardList },
+        { name: "Order Tracking", icon: Truck },
         { name: "Refunds & Cancellations", icon: FileX },
         { name: "Live Order Monitoring", icon: Activity }
       ]
@@ -249,6 +250,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/global-pricing")
                             } else if (item.name === "All Orders") {
                               navigate("/food/superadmin/orders")
+                            } else if (item.name === "Order Tracking") {
+                              navigate("/food/superadmin/order-tracking")
                             } else if (item.name === "Live Order Monitoring") {
                               navigate("/food/superadmin/live-monitoring")
                             } else if (item.name === "Refunds & Cancellations") {
