@@ -115,7 +115,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Franchise Commissions", icon: Percent },
         { name: "Payouts", icon: Landmark },
         { name: "Transactions", icon: History },
-        { name: "Payments", icon: CreditCard }
+        { name: "Tax Reports", icon: FileText }
       ]
     },
     {
@@ -254,8 +254,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/banners-promotions")
                             } else if (item.name === "Notifications") {
                               navigate("/food/superadmin/notifications")
-                            } else if (item.name === "Payments") {
-                              navigate("/food/superadmin/payments")
+                            } else if (item.name === "Tax Reports") {
+                              navigate("/food/superadmin/tax-reports")
                             } else if (item.name === "Transactions") {
                               navigate("/food/superadmin/transactions")
                             } else if (item.name === "Franchise Commissions") {
