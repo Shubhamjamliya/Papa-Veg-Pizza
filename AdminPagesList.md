@@ -61,39 +61,33 @@ Here is a categorized list of all superadmin pages, grouped into sets of 5 files
 
 ---
 
-## 📂 Group 4: Inventory, Order Routing & Returns
+## 📂 Group 4: Inventory, Order Routing & Support
 16. **Inventory Management**
     - **File Path**: [InventoryManagement.jsx](./Frontend/src/modules/Food/pages/superadmin/productsManagement/InventoryManagement.jsx)
     - **Description**: Stock adjustment controls, alerts, and ingredient trackers.
 17. **Orders Dashboard**
-    - **File Path**: [OrdersManagement.jsx](./Frontend/src/modules/Food/pages/superadmin/orderSystem/OrdersManagement.jsx)
+    - **File Path**: [AllOrders.jsx](./Frontend/src/modules/Food/pages/superadmin/orderManagement/AllOrders.jsx)
     - **Description**: Complete catalog of active, dispatched, and delivered orders.
-18. **Refunds & Cancellations**
-    - **File Path**: [RefundAndCancellation.jsx](./Frontend/src/modules/Food/pages/superadmin/orderSystem/RefundAndCancellation.jsx)
+18. **Refund Requests**
+    - **File Path**: [RefundRequests.jsx](./Frontend/src/modules/Food/pages/superadmin/orderManagement/RefundRequests.jsx)
     - **Description**: Interface to process customer refund claims and transaction disputes.
-19. **Live Order Monitoring**
-    - **File Path**: [LiveOrderMonitor.jsx](./Frontend/src/modules/Food/pages/superadmin/orderSystem/LiveOrderMonitor.jsx)
-    - **Description**: Live dashboard tracking cooking, preparing, and rider status in real-time.
-20. **Delivery Management**
-    - **File Path**: [DeliveryManagement.jsx](./Frontend/src/modules/Food/pages/superadmin/deliverySystem/DeliveryManagement.jsx)
-    - **Description**: Delivery pricing settings, timing thresholds, and distance rates.
+19. **Disputes Support Desk**
+    - **File Path**: [Disputes.jsx](./Frontend/src/modules/Food/pages/superadmin/orderManagement/Disputes.jsx)
+    - **Description**: High-fidelity support desk to handle platform-wide disputes, participants, SLAs, and evidence.
+20. **Order Tracking**
+    - **File Path**: [OrderTracking.jsx](./Frontend/src/modules/Food/pages/superadmin/orderManagement/OrderTracking.jsx)
+    - **Description**: Real-time order tracking dashboard with active status monitoring.
 
 ---
 
-## 📂 Group 5: Rider Tracking, Marketing & Payments
-21. **Rider Tracking Map**
-    - **File Path**: [RiderTracking.jsx](./Frontend/src/modules/Food/pages/superadmin/deliverySystem/RiderTracking.jsx)
-    - **Description**: Visual routing map tracking delivery riders actively on trips.
-22. **Delivery Zone Management**
-    - **File Path**: [DeliveryZoneManagement.jsx](./Frontend/src/modules/Food/pages/superadmin/deliverySystem/DeliveryZoneManagement.jsx)
-    - **Description**: Specific coordinates setup for dispatch zones.
-23. **Coupons Management**
+## 📂 Group 5: Marketing & Promotions
+21. **Coupons Management**
     - **File Path**: [CouponsManagement.jsx](./Frontend/src/modules/Food/pages/superadmin/marketing/CouponsManagement.jsx)
     - **Description**: Promo codes configuration, minimum cart values, and expiration rules.
-24. **Offers & Campaigns**
+22. **Offers & Campaigns**
     - **File Path**: [OffersAndCampaign.jsx](./Frontend/src/modules/Food/pages/superadmin/marketing/OffersAndCampaign.jsx)
     - **Description**: Seasonal campaigns and discount percentage settings.
-25. **Banners & Promotions**
+23. **Banners & Promotions**
     - **File Path**: [BannersAndPromotions.jsx](./Frontend/src/modules/Food/pages/superadmin/marketing/BannersAndPromotions.jsx)
     - **Description**: Media assets manager for user homepage sliders.
 
