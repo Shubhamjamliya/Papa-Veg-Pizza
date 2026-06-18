@@ -27,9 +27,7 @@ const AllOrders = lazy(() => import("../orderManagement/AllOrders"))
 const OrderTracking = lazy(() => import("../orderManagement/OrderTracking"))
 const RefundRequests = lazy(() => import("../orderManagement/RefundRequests"))
 const Disputes = lazy(() => import("../orderManagement/Disputes"))
-const DeliveryManagement = lazy(() => import("../deliverySystem/DeliveryManagement"))
-const RiderTracking = lazy(() => import("../deliverySystem/RiderTracking"))
-const DeliveryZoneManagement = lazy(() => import("../deliverySystem/DeliveryZoneManagement"))
+
 const CouponsManagement = lazy(() => import("../marketing/CouponsManagement"))
 const OffersAndCampaign = lazy(() => import("../marketing/OffersAndCampaign"))
 const BannersAndPromotions = lazy(() => import("../marketing/BannersAndPromotions"))
@@ -37,7 +35,7 @@ const NotificationsManagement = lazy(() => import("../marketing/NotificationsMan
 const PaymentsManagement = lazy(() => import("../financial/PaymentsManagement"))
 const TransactionManagement = lazy(() => import("../financial/TransactionManagement"))
 const FranchiseCommission = lazy(() => import("../financial/FranchiseCommission"))
-const RevenueReport = lazy(() => import("../financial/RevenueReport"))
+const Revenue = lazy(() => import("../financial/Revenue"))
 const SalesAnalytics = lazy(() => import("../analytics/SalesAnalytics"))
 const CustomerAnalytics = lazy(() => import("../analytics/CustomerAnalytics"))
 const OperationalAnalytics = lazy(() => import("../analytics/OperationalAnalytics"))
@@ -109,8 +107,7 @@ function SuperAdminLayout() {
     activeItem = "Disputes"
   } else if (location.pathname.includes("/refund-requests")) {
     activeItem = "Refund Requests"
-  } else if (location.pathname.includes("/delivery-management")) {
-    activeItem = "Delivery Management"
+
   } else if (location.pathname.includes("/coupons")) {
     activeItem = "Coupons"
   } else if (location.pathname.includes("/offers-campaigns")) {
@@ -125,8 +122,8 @@ function SuperAdminLayout() {
     activeItem = "Transactions"
   } else if (location.pathname.includes("/commissions")) {
     activeItem = "Franchise Commissions"
-  } else if (location.pathname.includes("/revenue-reports")) {
-    activeItem = "Revenue Reports"
+  } else if (location.pathname.includes("/revenue")) {
+    activeItem = "Revenue"
   } else if (location.pathname.includes("/sales-analytics")) {
     activeItem = "Sales Analytics"
   } else if (location.pathname.includes("/customer-analytics")) {
@@ -210,9 +207,7 @@ export default function SuperAdminRouter() {
           <Route path="/order-tracking" element={<OrderTracking />} />
           <Route path="/disputes" element={<Disputes />} />
           <Route path="/refund-requests" element={<RefundRequests />} />
-          <Route path="/delivery-management" element={<DeliveryManagement />} />
-          <Route path="/rider-tracking" element={<RiderTracking />} />
-          <Route path="/delivery-zones" element={<DeliveryZoneManagement />} />
+
           <Route path="/coupons" element={<CouponsManagement />} />
           <Route path="/offers-campaigns" element={<OffersAndCampaign />} />
           <Route path="/banners-promotions" element={<BannersAndPromotions />} />
@@ -220,7 +215,7 @@ export default function SuperAdminRouter() {
           <Route path="/payments" element={<PaymentsManagement />} />
           <Route path="/transactions" element={<TransactionManagement />} />
           <Route path="/commissions" element={<FranchiseCommission />} />
-          <Route path="/revenue-reports" element={<RevenueReport />} />
+          <Route path="/revenue" element={<Revenue />} />
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
           <Route path="/customer-analytics" element={<CustomerAnalytics />} />
           <Route path="/operational-analytics" element={<OperationalAnalytics />} />

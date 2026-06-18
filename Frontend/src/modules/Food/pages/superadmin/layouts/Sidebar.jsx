@@ -19,9 +19,6 @@ import {
   ClipboardList,
   FileX,
   Activity,
-  Milestone,
-  Navigation,
-  Locate,
   Ticket,
   Megaphone,
   Image,
@@ -50,7 +47,6 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
     "Franchise Management": false,
     "Product Management": false,
     "Order System": false,
-    "Delivery System": false,
     "Marketing": false,
     "Financial": false,
     "Analytics": false,
@@ -112,11 +108,12 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       ]
     },
     {
-      title: "Delivery System",
+      title: "Financial",
       items: [
-        { name: "Delivery Management", icon: Milestone },
-        { name: "Rider Tracking", icon: Navigation },
-        { name: "Delivery Zones", icon: Locate }
+        { name: "Revenue", icon: TrendingUp },
+        { name: "Payments", icon: CreditCard },
+        { name: "Transactions", icon: History },
+        { name: "Franchise Commissions", icon: Percent }
       ]
     },
     {
@@ -126,15 +123,6 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Offers & Campaigns", icon: Megaphone },
         { name: "Banners / Promotions", icon: Image },
         { name: "Notifications", icon: Bell }
-      ]
-    },
-    {
-      title: "Financial",
-      items: [
-        { name: "Payments", icon: CreditCard },
-        { name: "Transactions", icon: History },
-        { name: "Franchise Commissions", icon: Percent },
-        { name: "Revenue Reports", icon: TrendingUp }
       ]
     },
     {
@@ -256,12 +244,6 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/disputes")
                             } else if (item.name === "Refund Requests") {
                               navigate("/food/superadmin/refund-requests")
-                            } else if (item.name === "Delivery Management") {
-                              navigate("/food/superadmin/delivery-management")
-                            } else if (item.name === "Delivery Zones") {
-                              navigate("/food/superadmin/delivery-zones")
-                            } else if (item.name === "Rider Tracking") {
-                              navigate("/food/superadmin/rider-tracking")
                             } else if (item.name === "Coupons") {
                               navigate("/food/superadmin/coupons")
                             } else if (item.name === "Offers & Campaigns") {
@@ -276,8 +258,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/transactions")
                             } else if (item.name === "Franchise Commissions") {
                               navigate("/food/superadmin/commissions")
-                            } else if (item.name === "Revenue Reports") {
-                              navigate("/food/superadmin/revenue-reports")
+                            } else if (item.name === "Revenue") {
+                              navigate("/food/superadmin/revenue")
                             } else if (item.name === "Sales Analytics") {
                               navigate("/food/superadmin/sales-analytics")
                             } else if (item.name === "Customer Analytics") {
