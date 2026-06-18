@@ -124,7 +124,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Coupons", icon: Ticket },
         { name: "Campaigns", icon: Megaphone },
         { name: "Push Notifications", icon: Bell },
-        { name: "Banners / Promotions", icon: Image }
+        { name: "Banners", icon: Image }
       ]
     },
     {
@@ -252,8 +252,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/campaigns")
                             } else if (item.name === "Push Notifications") {
                               navigate("/food/superadmin/push-notifications")
-                            } else if (item.name === "Banners / Promotions") {
-                              navigate("/food/superadmin/banners-promotions")
+                            } else if (item.name === "Banners") {
+                              navigate("/food/superadmin/banners")
                             } else if (item.name === "Tax Reports") {
                               navigate("/food/superadmin/tax-reports")
                             } else if (item.name === "Transactions") {

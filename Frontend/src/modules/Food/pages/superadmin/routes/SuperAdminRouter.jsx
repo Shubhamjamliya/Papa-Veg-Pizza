@@ -31,7 +31,7 @@ const Disputes = lazy(() => import("../orderManagement/Disputes"))
 const CouponsManagement = lazy(() => import("../marketing/CouponsManagement"))
 const Campaign = lazy(() => import("../marketing/Campaign"))
 const PushNotification = lazy(() => import("../marketing/PushNotification"))
-const BannersAndPromotions = lazy(() => import("../marketing/BannersAndPromotions"))
+const Banners = lazy(() => import("../marketing/Banners"))
 const TaxReports = lazy(() => import("../financial/TaxReports"))
 const TransactionManagement = lazy(() => import("../financial/TransactionManagement"))
 const FranchiseCommission = lazy(() => import("../financial/FranchiseCommission"))
@@ -214,7 +214,7 @@ export default function SuperAdminRouter() {
           <Route path="/coupons" element={<CouponsManagement />} />
           <Route path="/campaigns" element={<Campaign />} />
           <Route path="/push-notifications" element={<PushNotification />} />
-          <Route path="/banners-promotions" element={<BannersAndPromotions />} />
+          <Route path="/banners" element={<Banners />} />
           <Route path="/tax-reports" element={<TaxReports />} />
           <Route path="/transactions" element={<TransactionManagement />} />
           <Route path="/commissions" element={<FranchiseCommission />} />
