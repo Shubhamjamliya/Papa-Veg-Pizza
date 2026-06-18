@@ -114,8 +114,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Revenue", icon: TrendingUp },
         { name: "Franchise Commissions", icon: Percent },
         { name: "Payouts", icon: Landmark },
-        { name: "Payments", icon: CreditCard },
-        { name: "Transactions", icon: History }
+        { name: "Transactions", icon: History },
+        { name: "Payments", icon: CreditCard }
       ]
     },
     {
