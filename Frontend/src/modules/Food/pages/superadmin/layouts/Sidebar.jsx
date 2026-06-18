@@ -103,9 +103,9 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       ]
     },
     {
-      title: "Order System",
+      title: "Order Management",
       items: [
-        { name: "Orders", icon: ClipboardList },
+        { name: "All Orders", icon: ClipboardList },
         { name: "Refunds & Cancellations", icon: FileX },
         { name: "Live Order Monitoring", icon: Activity }
       ]
@@ -210,7 +210,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                   <span>{group.title}</span>
                   <span className={`transition-transform duration-200 text-black dark:text-white ${isExpanded ? 'rotate-180' : ''}`}>
                     <svg width="8" height="5" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
                 </button>
@@ -247,7 +247,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/combos-deals")
                             } else if (item.name === "Global Pricing") {
                               navigate("/food/superadmin/global-pricing")
-                            } else if (item.name === "Orders") {
+                            } else if (item.name === "All Orders") {
                               navigate("/food/superadmin/orders")
                             } else if (item.name === "Live Order Monitoring") {
                               navigate("/food/superadmin/live-monitoring")
