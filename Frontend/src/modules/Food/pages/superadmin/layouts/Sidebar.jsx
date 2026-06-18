@@ -107,7 +107,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       items: [
         { name: "All Orders", icon: ClipboardList },
         { name: "Order Tracking", icon: Truck },
-        { name: "Refunds & Cancellations", icon: FileX },
+        { name: "Refund Requests", icon: FileX },
         { name: "Live Order Monitoring", icon: Activity }
       ]
     },
@@ -254,8 +254,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/order-tracking")
                             } else if (item.name === "Live Order Monitoring") {
                               navigate("/food/superadmin/live-monitoring")
-                            } else if (item.name === "Refunds & Cancellations") {
-                              navigate("/food/superadmin/refunds-cancellations")
+                            } else if (item.name === "Refund Requests") {
+                              navigate("/food/superadmin/refund-requests")
                             } else if (item.name === "Delivery Management") {
                               navigate("/food/superadmin/delivery-management")
                             } else if (item.name === "Delivery Zones") {
