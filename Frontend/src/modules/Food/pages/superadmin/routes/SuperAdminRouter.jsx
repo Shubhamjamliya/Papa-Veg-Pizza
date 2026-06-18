@@ -24,6 +24,7 @@ const Addons = lazy(() => import("../productsManagement/Addons"))
 const ComboDeals = lazy(() => import("../productsManagement/ComboDeals"))
 const GlobalPrice = lazy(() => import("../productsManagement/GlobalPrice"))
 const AllOrders = lazy(() => import("../orderManagement/AllOrders"))
+const OrderTracking = lazy(() => import("../orderManagement/OrderTracking"))
 const RefundAndCancellation = lazy(() => import("../orderManagement/RefundAndCancellation"))
 const LiveOrderMonitor = lazy(() => import("../orderManagement/LiveOrderMonitor"))
 const DeliveryManagement = lazy(() => import("../deliverySystem/DeliveryManagement"))
@@ -100,6 +101,8 @@ function SuperAdminLayout() {
     activeItem = "Combos & Deals"
   } else if (location.pathname.includes("/global-pricing")) {
     activeItem = "Global Pricing"
+  } else if (location.pathname.includes("/order-tracking")) {
+    activeItem = "Order Tracking"
   } else if (location.pathname.includes("/orders")) {
     activeItem = "All Orders"
   } else if (location.pathname.includes("/live-monitoring")) {
@@ -204,6 +207,7 @@ export default function SuperAdminRouter() {
           <Route path="/combos-deals" element={<ComboDeals />} />
           <Route path="/global-pricing" element={<GlobalPrice />} />
           <Route path="/orders" element={<AllOrders />} />
+          <Route path="/order-tracking" element={<OrderTracking />} />
           <Route path="/live-monitoring" element={<LiveOrderMonitor />} />
           <Route path="/refunds-cancellations" element={<RefundAndCancellation />} />
           <Route path="/delivery-management" element={<DeliveryManagement />} />

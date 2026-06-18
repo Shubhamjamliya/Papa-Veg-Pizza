@@ -644,3 +644,299 @@ export function useDebounce(value, delay) {
   return debouncedValue;
 }
 
+// --- COLLECTION: GPS LOCATIONS (Simulated MongoDB Collection) ---
+export let dbGpsLocations = [
+  { _id: 'gps-1001', orderId: 'ord-1001', riderId: 'rider-001', latitude: 19.0680, longitude: 72.8250, speed: 32, heading: 120, timestamp: '2026-06-18T16:50:00Z' },
+  { _id: 'gps-1002', orderId: 'ord-1002', riderId: 'rider-002', latitude: 12.9790, longitude: 77.6420, speed: 28, heading: 90, timestamp: '2026-06-18T16:51:00Z' },
+  { _id: 'gps-1004', orderId: 'ord-1004', riderId: 'rider-003', latitude: 22.7540, longitude: 75.8950, speed: 0, heading: 0, timestamp: '2026-06-18T16:50:30Z' }
+];
+
+// --- EXTRA COLLECTION DATA FOR DETAILED MODALS ---
+export const mockCustomerDetails = {
+  'cust-001': { lifetimeOrders: 42, lifetimeSpend: 18450, recentOrders: ['PV-9042', 'PV-8920', 'PV-8812'], notes: 'Ring doorbell twice. Customer prefers contact-less drop.' },
+  'cust-002': { lifetimeOrders: 18, lifetimeSpend: 8200, recentOrders: ['PV-9041', 'PV-8750'], notes: 'Call customer upon arrival. Tower B, Flat 12B.' },
+  'cust-003': { lifetimeOrders: 29, lifetimeSpend: 13950, recentOrders: ['PV-9040', 'PV-8815'], notes: 'Deliver to security desk if unreachable.' },
+  'cust-004': { lifetimeOrders: 8, lifetimeSpend: 3450, recentOrders: ['PV-9039'], notes: 'Cash on delivery. Keep change ready.' },
+  'cust-005': { lifetimeOrders: 54, lifetimeSpend: 24100, recentOrders: ['PV-9038', 'PV-8904'], notes: 'Beware of stray dogs near gate.' },
+  'cust-006': { lifetimeOrders: 3, lifetimeSpend: 1100, recentOrders: ['PV-9037'], notes: '' }
+};
+
+export const mockRiderDetails = {
+  'rider-001': { avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150', todayDeliveries: 14, rating: 4.9, speed: 32, activeStatus: 'Transit' },
+  'rider-002': { avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150', todayDeliveries: 9, rating: 4.7, speed: 28, activeStatus: 'Transit' },
+  'rider-003': { avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150', todayDeliveries: 11, rating: 4.5, speed: 0, activeStatus: 'Waiting at Store' },
+  'rider-004': { avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150', todayDeliveries: 16, rating: 4.8, speed: 35, activeStatus: 'Transit' }
+};
+
+// --- SIMULATED APIS FOR LIVE ORDER TRACKING PAGE ---
+
+// GET /orders/live (returns only active preparation & delivery orders)
+export const getLiveOrders = (filters = {}, page = 1, limit = 5, sortBy = 'createdAt', sortOrder = 'desc') => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Filter out Delivered and Cancelled orders
+      let active = dbOrders.filter(o => o.orderStatus !== 'Delivered' && o.orderStatus !== 'Cancelled');
+
+      // 1. Search Query
+      if (filters.search) {
+        const query = filters.search.toLowerCase();
+        active = active.filter(order => {
+          const customer = mockCustomers.find(c => c._id === order.customerId);
+          return (
+            order.orderNumber.toLowerCase().includes(query) ||
+            (customer && customer.name.toLowerCase().includes(query)) ||
+            (customer && customer.phone.toLowerCase().includes(query))
+          );
+        });
+      }
+
+      // 2. Franchise
+      if (filters.franchise && filters.franchise !== 'All') {
+        active = active.filter(o => o.franchiseId === filters.franchise);
+      }
+
+      // 3. Store
+      if (filters.store && filters.store !== 'All') {
+        active = active.filter(o => o.storeId === filters.store);
+      }
+
+      // 4. Rider
+      if (filters.rider && filters.rider !== 'All') {
+        active = active.filter(o => o.deliveryPartnerId === filters.rider);
+      }
+
+      // 5. Status
+      if (filters.orderStatus && filters.orderStatus !== 'All') {
+        active = active.filter(o => o.orderStatus === filters.orderStatus);
+      }
+
+      // 6. Delayed Only
+      // Simulated: ord-1001 is set to Out For Delivery, let's treat it as delayed by 15 mins.
+      // We will add custom delay flag mapping for testing delay lists.
+      if (filters.delayedOnly) {
+        active = active.filter(o => {
+          // Mocking ord-1001 as delayed
+          return o._id === 'ord-1001';
+        });
+      }
+
+      // Join customer, store, and rider details
+      let joined = active.map(order => {
+        const customer = mockCustomers.find(c => c._id === order.customerId) || {};
+        const store = mockStores.find(s => s._id === order.storeId) || {};
+        const franchise = mockFranchises.find(f => f._id === order.franchiseId) || {};
+        const deliveryPartner = mockDeliveryPartners.find(dp => dp._id === order.deliveryPartnerId) || {};
+        const gps = dbGpsLocations.find(g => g.orderId === order._id) || {};
+        
+        // Calculate delay text
+        let delayText = 'No Delay';
+        let delayMinutes = 0;
+        if (order._id === 'ord-1001') {
+          delayText = '15 min delay';
+          delayMinutes = 15;
+        }
+
+        return {
+          ...order,
+          customer,
+          store,
+          franchise,
+          deliveryPartner: deliveryPartner.name ? deliveryPartner : null,
+          gps,
+          delayMinutes,
+          delayText,
+          expectedDeliveryTime: order._id === 'ord-1001' ? '14:55 PM' : order.eta
+        };
+      });
+
+      // Sorting
+      joined.sort((a, b) => {
+        let valA = a[sortBy];
+        let valB = b[sortBy];
+
+        if (sortBy === 'customerName') {
+          valA = (a.customer.name || '').toLowerCase();
+          valB = (b.customer.name || '').toLowerCase();
+        } else if (sortBy === 'storeName') {
+          valA = (a.store.name || '').toLowerCase();
+          valB = (b.store.name || '').toLowerCase();
+        }
+
+        if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+        if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      const total = joined.length;
+      const startIndex = (page - 1) * limit;
+      const paginated = joined.slice(startIndex, startIndex + limit);
+
+      resolve({
+        orders: paginated,
+        total,
+        page,
+        pages: Math.ceil(total / limit)
+      });
+    }, 400);
+  });
+};
+
+// GET /orders/:id/tracking (detailed stats for right panel map and cards)
+export const getLiveOrderTracking = (orderId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const order = dbOrders.find(o => o._id === orderId || o.orderNumber === orderId);
+      if (!order) return reject(new Error('Order not found'));
+
+      const customer = mockCustomers.find(c => c._id === order.customerId) || {};
+      const store = mockStores.find(s => s._id === order.storeId) || {};
+      const franchise = mockFranchises.find(f => f._id === order.franchiseId) || {};
+      const rider = mockDeliveryPartners.find(dp => dp._id === order.deliveryPartnerId) || {};
+      const gps = dbGpsLocations.find(g => g.orderId === order._id) || {
+        latitude: 19.0680, longitude: 72.8250, speed: 0, heading: 0
+      };
+
+      const riderDetails = mockRiderDetails[order.deliveryPartnerId] || {};
+      const customerDetails = mockCustomerDetails[order.customerId] || {};
+
+      resolve({
+        orderId: order._id,
+        orderNumber: order.orderNumber,
+        orderStatus: order.orderStatus,
+        createdAt: order.createdAt,
+        expectedDeliveryTime: order._id === 'ord-1001' ? '14:55 PM' : order.eta,
+        delayMinutes: order._id === 'ord-1001' ? 15 : 0,
+        grandTotal: order.grandTotal,
+        paymentMethod: order.paymentMethod,
+        orderType: order.orderType,
+
+        customer: {
+          _id: customer._id,
+          name: customer.name,
+          phone: customer.phone,
+          address: customer.address,
+          lat: customer.lat,
+          lng: customer.lng,
+          ...customerDetails
+        },
+
+        store: {
+          _id: store._id,
+          name: store.name,
+          address: store.address,
+          manager: store.manager,
+          phone: store.phone,
+          lat: 19.0650, // Mock coordinates
+          lng: 72.8200
+        },
+
+        franchise: {
+          name: franchise.name
+        },
+
+        rider: rider.name ? {
+          _id: rider._id,
+          name: rider.name,
+          phone: rider.phone,
+          vehicleNumber: rider.vehicleNumber,
+          lat: gps.latitude,
+          lng: gps.longitude,
+          speed: gps.speed || riderDetails.speed || 0,
+          heading: gps.heading || 0,
+          status: riderDetails.activeStatus || 'Idle',
+          rating: riderDetails.rating || 4.5,
+          todayDeliveries: riderDetails.todayDeliveries || 0,
+          batteryLevel: 82,
+          lastPing: new Date().toLocaleTimeString(),
+          distanceRemaining: '1.2 km',
+          eta: '8 mins'
+        } : null
+      });
+    }, 350);
+  });
+};
+
+// GET /delivery-partners/:id
+export const getRiderDetailsApi = (riderId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const rider = mockDeliveryPartners.find(dp => dp._id === riderId);
+      if (!rider) return reject(new Error('Rider not found'));
+      const details = mockRiderDetails[riderId] || {};
+
+      resolve({
+        _id: rider._id,
+        name: rider.name,
+        phone: rider.phone,
+        vehicleNumber: rider.vehicleNumber,
+        status: details.activeStatus || 'Offline',
+        todayDeliveries: details.todayDeliveries || 0,
+        averageRating: details.rating || 4.5,
+        avatar: details.avatar || '',
+        speed: details.speed || 0,
+        lat: rider.currentLat,
+        lng: rider.currentLng,
+        lastActiveTime: new Date().toLocaleTimeString()
+      });
+    }, 200);
+  });
+};
+
+// GET /customers/:id
+export const getCustomerDetailsApi = (customerId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const customer = mockCustomers.find(c => c._id === customerId);
+      if (!customer) return reject(new Error('Customer not found'));
+      const details = mockCustomerDetails[customerId] || {};
+
+      resolve({
+        _id: customer._id,
+        name: customer.name,
+        phone: customer.phone,
+        address: customer.address,
+        recentOrders: details.recentOrders || [],
+        lifetimeOrders: details.lifetimeOrders || 0,
+        lifetimeSpend: details.lifetimeSpend || 0,
+        notes: details.notes || ''
+      });
+    }, 200);
+  });
+};
+
+// POST /order-delay-alert
+export const postOrderDelayAlert = (orderId, reason) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // Append order log entry
+      dbOrderStatusLogs.push({
+        _id: `log-delay-${Date.now()}`,
+        orderId,
+        status: 'Preparing', // Keep status but add log
+        updatedBy: 'System Dispatcher',
+        role: 'System',
+        remarks: `DELAY ALERT RESOLVED: ${reason}. Escalation notified to Store Manager and rider.`,
+        createdAt: new Date().toISOString()
+      });
+      resolve({ success: true });
+    }, 400);
+  });
+};
+
+// Helper to generate live timeline event logs for streaming
+export const getLiveEventsStream = (orderId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { id: 'ev-1', event: 'Order Confirmed', time: '16:17 PM', user: 'Amit Malhotra', role: 'Store Manager' },
+        { id: 'ev-2', event: 'Preparing Started', time: '16:20 PM', user: 'Chef Harpal', role: 'Kitchen Staff' },
+        { id: 'ev-3', event: 'Packed', time: '16:35 PM', user: 'Amit Malhotra', role: 'Store Manager' },
+        { id: 'ev-4', event: 'Assigned Rider', time: '16:38 PM', user: 'Allocation Engine', role: 'System' },
+        { id: 'ev-5', event: 'Location Updated', time: '16:42 PM', user: 'Rahul Dev', role: 'Rider' },
+        { id: 'ev-6', event: 'Out For Delivery', time: '16:46 PM', user: 'Rahul Dev', role: 'Rider' }
+      ]);
+    }, 200);
+  });
+};
+
+
