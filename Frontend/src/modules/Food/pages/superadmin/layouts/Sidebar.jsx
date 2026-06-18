@@ -15,7 +15,6 @@ import {
   Pizza,
   Grid,
   Sparkles,
-  Layers,
   Gift,
   ClipboardList,
   FileX,
@@ -99,8 +98,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Products", icon: Pizza },
         { name: "Categories", icon: Grid },
         { name: "Add-ons / Toppings", icon: Sparkles },
-        { name: "Inventory Management", icon: Layers },
-        { name: "Combos & Deals", icon: Gift }
+        { name: "Combos & Deals", icon: Gift },
+        { name: "Global Pricing", icon: DollarSign }
       ]
     },
     {
@@ -244,10 +243,10 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/categories")
                             } else if (item.name === "Add-ons / Toppings") {
                               navigate("/food/superadmin/addons")
-                            } else if (item.name === "Inventory Management") {
-                              navigate("/food/superadmin/inventory")
                             } else if (item.name === "Combos & Deals") {
                               navigate("/food/superadmin/combos-deals")
+                            } else if (item.name === "Global Pricing") {
+                              navigate("/food/superadmin/global-pricing")
                             } else if (item.name === "Orders") {
                               navigate("/food/superadmin/orders")
                             } else if (item.name === "Live Order Monitoring") {
