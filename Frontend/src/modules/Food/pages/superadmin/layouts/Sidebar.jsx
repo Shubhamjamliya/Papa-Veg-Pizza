@@ -108,7 +108,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "All Orders", icon: ClipboardList },
         { name: "Order Tracking", icon: Truck },
         { name: "Refund Requests", icon: FileX },
-        { name: "Live Order Monitoring", icon: Activity }
+        { name: "Disputes", icon: Activity }
       ]
     },
     {
@@ -252,8 +252,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/orders")
                             } else if (item.name === "Order Tracking") {
                               navigate("/food/superadmin/order-tracking")
-                            } else if (item.name === "Live Order Monitoring") {
-                              navigate("/food/superadmin/live-monitoring")
+                            } else if (item.name === "Disputes") {
+                              navigate("/food/superadmin/disputes")
                             } else if (item.name === "Refund Requests") {
                               navigate("/food/superadmin/refund-requests")
                             } else if (item.name === "Delivery Management") {
