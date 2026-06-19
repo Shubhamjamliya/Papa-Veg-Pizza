@@ -51,6 +51,7 @@ const AuditLogs = lazy(() => import("../settings/AuditLogs"))
 const ContentManagement = lazy(() => import("../settings/ContentManagement"))
 const SupportTicket = lazy(() => import("../support/SupportTicket"))
 const FeedbackAndReview = lazy(() => import("../support/FeedbackAndReview"))
+const CustomerComplaints = lazy(() => import("../support/CustomerComplaints"))
 
 // Shared layout shell for user management pages to inherit Sidebar and Navbar
 function SuperAdminLayout() {
@@ -158,6 +159,8 @@ function SuperAdminLayout() {
     activeItem = "Content Management"
   } else if (location.pathname.includes("/support-tickets")) {
     activeItem = "Support Tickets"
+  } else if (location.pathname.includes("/customer-complaints")) {
+    activeItem = "Customer Complaints"
   } else if (location.pathname.includes("/feedback-reviews")) {
     activeItem = "Feedback & Reviews"
   }
@@ -248,6 +251,7 @@ export default function SuperAdminRouter() {
           <Route path="/audit-logs" element={<AuditLogs />} />
           <Route path="/content-management" element={<ContentManagement />} />
           <Route path="/support-tickets" element={<SupportTicket />} />
+          <Route path="/customer-complaints" element={<CustomerComplaints />} />
           <Route path="/feedback-reviews" element={<FeedbackAndReview />} />
         </Route>
 
