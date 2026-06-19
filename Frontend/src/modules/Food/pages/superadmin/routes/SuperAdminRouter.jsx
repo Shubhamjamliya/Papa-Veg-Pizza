@@ -40,6 +40,7 @@ const Revenue = lazy(() => import("../financial/Revenue"))
 const Payouts = lazy(() => import("../financial/Payouts"))
 const SalesAnalytics = lazy(() => import("../analytics/SalesAnalytics"))
 const CustomerAnalytics = lazy(() => import("../analytics/CustomerAnalytics"))
+const StoreAnalytics = lazy(() => import("../analytics/StoreAnalytics"))
 const OperationalAnalytics = lazy(() => import("../analytics/OperationalAnalytics"))
 const AppSettings = lazy(() => import("../settings/AppSettings"))
 const TaxSettings = lazy(() => import("../settings/TaxSettings"))
@@ -134,6 +135,8 @@ function SuperAdminLayout() {
     activeItem = "Sales Analytics"
   } else if (location.pathname.includes("/customer-analytics")) {
     activeItem = "Customer Analytics"
+  } else if (location.pathname.includes("/store-analytics")) {
+    activeItem = "Store Analytics"
   } else if (location.pathname.includes("/operational-analytics")) {
     activeItem = "Operational Analytics"
   } else if (location.pathname.includes("/app-settings")) {
@@ -226,6 +229,7 @@ export default function SuperAdminRouter() {
           <Route path="/revenue" element={<Revenue />} />
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
           <Route path="/customer-analytics" element={<CustomerAnalytics />} />
+          <Route path="/store-analytics" element={<StoreAnalytics />} />
           <Route path="/operational-analytics" element={<OperationalAnalytics />} />
           <Route path="/app-settings" element={<AppSettings />} />
           <Route path="/tax-settings" element={<TaxSettings />} />
