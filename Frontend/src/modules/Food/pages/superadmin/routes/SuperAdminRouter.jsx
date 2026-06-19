@@ -49,7 +49,7 @@ const PaymentGateways = lazy(() => import("../settings/PaymentGateways"))
 const NotificationsSettings = lazy(() => import("../settings/NotificationsSettings"))
 const AuditLogs = lazy(() => import("../settings/AuditLogs"))
 const ContentManagement = lazy(() => import("../settings/ContentManagement"))
-const SupportTicket = lazy(() => import("../support/SupportTicket"))
+const FranchiseTicket = lazy(() => import("../support/FranchiseTicket"))
 const FeedbackAndReview = lazy(() => import("../support/FeedbackAndReview"))
 const CustomerComplaints = lazy(() => import("../support/CustomerComplaints"))
 
@@ -157,8 +157,8 @@ function SuperAdminLayout() {
     activeItem = "Settings"
   } else if (location.pathname.includes("/content-management")) {
     activeItem = "Content Management"
-  } else if (location.pathname.includes("/support-tickets")) {
-    activeItem = "Support Tickets"
+  } else if (location.pathname.includes("/franchise-tickets")) {
+    activeItem = "Franchise Tickets"
   } else if (location.pathname.includes("/customer-complaints")) {
     activeItem = "Customer Complaints"
   } else if (location.pathname.includes("/feedback-reviews")) {
@@ -250,7 +250,7 @@ export default function SuperAdminRouter() {
           <Route path="/notification-settings" element={<NotificationsSettings />} />
           <Route path="/audit-logs" element={<AuditLogs />} />
           <Route path="/content-management" element={<ContentManagement />} />
-          <Route path="/support-tickets" element={<SupportTicket />} />
+          <Route path="/franchise-tickets" element={<FranchiseTicket />} />
           <Route path="/customer-complaints" element={<CustomerComplaints />} />
           <Route path="/feedback-reviews" element={<FeedbackAndReview />} />
         </Route>
