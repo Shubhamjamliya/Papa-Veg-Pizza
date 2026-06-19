@@ -156,7 +156,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       title: "Support",
       items: [
         { name: "Customer Complaints", icon: ShieldAlert },
-        { name: "Franchise Tickets", icon: LifeBuoy },
+        { name: "Franchise Tickets", icon: Ticket },
+        { name: "Support Requests", icon: LifeBuoy },
         { name: "Feedback & Reviews", icon: Star }
       ]
     }
@@ -299,6 +300,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/content-management")
                             } else if (item.name === "Franchise Tickets") {
                               navigate("/food/superadmin/franchise-tickets")
+                            } else if (item.name === "Support Requests") {
+                              navigate("/food/superadmin/support-requests")
                             } else if (item.name === "Customer Complaints") {
                               navigate("/food/superadmin/customer-complaints")
                             } else if (item.name === "Feedback & Reviews") {
