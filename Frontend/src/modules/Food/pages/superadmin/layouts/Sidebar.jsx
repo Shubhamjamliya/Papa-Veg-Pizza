@@ -144,9 +144,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       title: "Settings",
       items: [
         { name: "Settings", icon: Settings },
-        { name: "App Settings", icon: Settings },
-        { name: "Tax Settings", icon: DollarSign },
-        { name: "SEO Settings", icon: Search },
+        { name: "App Configuration", icon: Settings },
+        { name: "Payment Gateways", icon: CreditCard },
         { name: "Content Management", icon: FileText }
       ]
     },
@@ -284,12 +283,10 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/growth-reports")
                             } else if (item.name === "Settings") {
                               navigate("/food/superadmin/settings")
-                            } else if (item.name === "App Settings") {
-                              navigate("/food/superadmin/app-settings")
-                            } else if (item.name === "Tax Settings") {
-                              navigate("/food/superadmin/tax-settings")
-                            } else if (item.name === "SEO Settings") {
-                              navigate("/food/superadmin/seo-settings")
+                            } else if (item.name === "App Configuration") {
+                              navigate("/food/superadmin/app-configuration")
+                            } else if (item.name === "Payment Gateways") {
+                              navigate("/food/superadmin/payment-gateways")
                             } else if (item.name === "Content Management") {
                               navigate("/food/superadmin/content-management")
                             } else if (item.name === "Support Tickets") {
