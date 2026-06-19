@@ -147,6 +147,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "App Configuration", icon: Settings },
         { name: "Payment Gateways", icon: CreditCard },
         { name: "Notification Settings", icon: Bell },
+        { name: "Audit Logs", icon: ClipboardList },
         { name: "Content Management", icon: FileText }
       ]
     },
@@ -290,6 +291,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/payment-gateways")
                             } else if (item.name === "Notification Settings") {
                               navigate("/food/superadmin/notification-settings")
+                            } else if (item.name === "Audit Logs") {
+                              navigate("/food/superadmin/audit-logs")
                             } else if (item.name === "Content Management") {
                               navigate("/food/superadmin/content-management")
                             } else if (item.name === "Support Tickets") {
