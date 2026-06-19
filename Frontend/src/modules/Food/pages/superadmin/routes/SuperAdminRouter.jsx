@@ -41,7 +41,8 @@ const Payouts = lazy(() => import("../financial/Payouts"))
 const SalesAnalytics = lazy(() => import("../analytics/SalesAnalytics"))
 const CustomerAnalytics = lazy(() => import("../analytics/CustomerAnalytics"))
 const StoreAnalytics = lazy(() => import("../analytics/StoreAnalytics"))
-const OperationalAnalytics = lazy(() => import("../analytics/OperationalAnalytics"))
+const DeliveryAnalytics = lazy(() => import("../analytics/DeliveryAnalytics"))
+const GrowthReport = lazy(() => import("../analytics/GrowthReport"))
 const AppSettings = lazy(() => import("../settings/AppSettings"))
 const TaxSettings = lazy(() => import("../settings/TaxSettings"))
 const SeoSettings = lazy(() => import("../settings/SeoSettings"))
@@ -137,8 +138,10 @@ function SuperAdminLayout() {
     activeItem = "Customer Analytics"
   } else if (location.pathname.includes("/store-analytics")) {
     activeItem = "Store Analytics"
-  } else if (location.pathname.includes("/operational-analytics")) {
-    activeItem = "Operational Analytics"
+  } else if (location.pathname.includes("/delivery-analytics")) {
+    activeItem = "Delivery Analytics"
+  } else if (location.pathname.includes("/growth-reports")) {
+    activeItem = "Growth Reports"
   } else if (location.pathname.includes("/app-settings")) {
     activeItem = "App Settings"
   } else if (location.pathname.includes("/tax-settings")) {
@@ -230,7 +233,8 @@ export default function SuperAdminRouter() {
           <Route path="/sales-analytics" element={<SalesAnalytics />} />
           <Route path="/customer-analytics" element={<CustomerAnalytics />} />
           <Route path="/store-analytics" element={<StoreAnalytics />} />
-          <Route path="/operational-analytics" element={<OperationalAnalytics />} />
+          <Route path="/delivery-analytics" element={<DeliveryAnalytics />} />
+          <Route path="/growth-reports" element={<GrowthReport />} />
           <Route path="/app-settings" element={<AppSettings />} />
           <Route path="/tax-settings" element={<TaxSettings />} />
           <Route path="/seo-settings" element={<SeoSettings />} />

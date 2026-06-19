@@ -205,7 +205,7 @@ export function useZones(regionId) {
 
   useEffect(() => {
     if (!regionId) {
-      setData([]);
+      setData(prev => (prev.length === 0 ? prev : []));
       return;
     }
     (async () => {
@@ -236,7 +236,7 @@ export function useTerritories(zoneId) {
 
   useEffect(() => {
     if (!zoneId) {
-      setData([]);
+      setData(prev => (prev.length === 0 ? prev : []));
       return;
     }
     (async () => {
@@ -318,27 +318,29 @@ export function useStoreStats(filters) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const isOnline = await verifyConnection();
-      if (!isOnline) {
-        setData(MOCK_SUMMARY);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await apiClient.get('/analytics/stores', { params: filters, timeout: 1000 });
-        setData(res.data?.data || res.data || MOCK_SUMMARY);
-      } catch {
-        setData(MOCK_SUMMARY);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchStats = useCallback(async () => {
+    setLoading(true);
+    const isOnline = await verifyConnection();
+    if (!isOnline) {
+      setData(MOCK_SUMMARY);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await apiClient.get('/analytics/stores', { params: filters, timeout: 1000 });
+      setData(res.data?.data || res.data || MOCK_SUMMARY);
+    } catch {
+      setData(MOCK_SUMMARY);
+    } finally {
+      setLoading(false);
+    }
   }, [filters]);
 
-  return { data, loading };
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  return { data, loading, refetch: fetchStats };
 }
 
 // Revenue Comparison Chart Hook
@@ -346,27 +348,29 @@ export function useStoreRevenueComparison(filters) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const isOnline = await verifyConnection();
-      if (!isOnline) {
-        setData(MOCK_REVENUE_COMPARISON);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await apiClient.get('/analytics/stores/revenue', { params: filters, timeout: 1000 });
-        setData(res.data?.data || res.data || MOCK_REVENUE_COMPARISON);
-      } catch {
-        setData(MOCK_REVENUE_COMPARISON);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchRevenue = useCallback(async () => {
+    setLoading(true);
+    const isOnline = await verifyConnection();
+    if (!isOnline) {
+      setData(MOCK_REVENUE_COMPARISON);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await apiClient.get('/analytics/stores/revenue', { params: filters, timeout: 1000 });
+      setData(res.data?.data || res.data || MOCK_REVENUE_COMPARISON);
+    } catch {
+      setData(MOCK_REVENUE_COMPARISON);
+    } finally {
+      setLoading(false);
+    }
   }, [filters]);
 
-  return { data, loading };
+  useEffect(() => {
+    fetchRevenue();
+  }, [fetchRevenue]);
+
+  return { data, loading, refetch: fetchRevenue };
 }
 
 // Orders Trend Volume Hook
@@ -374,27 +378,29 @@ export function useStoreOrdersVolume(filters, interval) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const isOnline = await verifyConnection();
-      if (!isOnline) {
-        setData(interval === 'daily' ? MOCK_ORDERS_DAILY : interval === 'weekly' ? MOCK_ORDERS_WEEKLY : MOCK_ORDERS_MONTHLY);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await apiClient.get('/analytics/stores/orders', { params: { ...filters, interval }, timeout: 1000 });
-        setData(res.data?.data || res.data || (interval === 'daily' ? MOCK_ORDERS_DAILY : interval === 'weekly' ? MOCK_ORDERS_WEEKLY : MOCK_ORDERS_MONTHLY));
-      } catch {
-        setData(interval === 'daily' ? MOCK_ORDERS_DAILY : interval === 'weekly' ? MOCK_ORDERS_WEEKLY : MOCK_ORDERS_MONTHLY);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
+    const isOnline = await verifyConnection();
+    if (!isOnline) {
+      setData(interval === 'daily' ? MOCK_ORDERS_DAILY : interval === 'weekly' ? MOCK_ORDERS_WEEKLY : MOCK_ORDERS_MONTHLY);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await apiClient.get('/analytics/stores/orders', { params: { ...filters, interval }, timeout: 1000 });
+      setData(res.data?.data || res.data || (interval === 'daily' ? MOCK_ORDERS_DAILY : interval === 'weekly' ? MOCK_ORDERS_WEEKLY : MOCK_ORDERS_MONTHLY));
+    } catch {
+      setData(interval === 'daily' ? MOCK_ORDERS_DAILY : interval === 'weekly' ? MOCK_ORDERS_WEEKLY : MOCK_ORDERS_MONTHLY);
+    } finally {
+      setLoading(false);
+    }
   }, [filters, interval]);
 
-  return { data, loading };
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  return { data, loading, refetch: fetchOrders };
 }
 
 // Ratings Share Hook
@@ -402,27 +408,29 @@ export function useStoreRatingDistribution(filters) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const isOnline = await verifyConnection();
-      if (!isOnline) {
-        setData(MOCK_RATING_DISTRIBUTION);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await apiClient.get('/analytics/stores/rating-distribution', { params: filters, timeout: 1000 });
-        setData(res.data?.data || res.data || MOCK_RATING_DISTRIBUTION);
-      } catch {
-        setData(MOCK_RATING_DISTRIBUTION);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchRatings = useCallback(async () => {
+    setLoading(true);
+    const isOnline = await verifyConnection();
+    if (!isOnline) {
+      setData(MOCK_RATING_DISTRIBUTION);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await apiClient.get('/analytics/stores/rating-distribution', { params: filters, timeout: 1000 });
+      setData(res.data?.data || res.data || MOCK_RATING_DISTRIBUTION);
+    } catch {
+      setData(MOCK_RATING_DISTRIBUTION);
+    } finally {
+      setLoading(false);
+    }
   }, [filters]);
 
-  return { data, loading };
+  useEffect(() => {
+    fetchRatings();
+  }, [fetchRatings]);
+
+  return { data, loading, refetch: fetchRatings };
 }
 
 // Prep Time Heatmap Hook
@@ -430,27 +438,29 @@ export function useStorePrepTimeHeatmap(filters) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const isOnline = await verifyConnection();
-      if (!isOnline) {
-        setData(MOCK_PREP_TIME_HEATMAP);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await apiClient.get('/analytics/stores/prep-time', { params: filters, timeout: 1000 });
-        setData(res.data?.data || res.data || MOCK_PREP_TIME_HEATMAP);
-      } catch {
-        setData(MOCK_PREP_TIME_HEATMAP);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchHeatmap = useCallback(async () => {
+    setLoading(true);
+    const isOnline = await verifyConnection();
+    if (!isOnline) {
+      setData(MOCK_PREP_TIME_HEATMAP);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await apiClient.get('/analytics/stores/prep-time', { params: filters, timeout: 1000 });
+      setData(res.data?.data || res.data || MOCK_PREP_TIME_HEATMAP);
+    } catch {
+      setData(MOCK_PREP_TIME_HEATMAP);
+    } finally {
+      setLoading(false);
+    }
   }, [filters]);
 
-  return { data, loading };
+  useEffect(() => {
+    fetchHeatmap();
+  }, [fetchHeatmap]);
+
+  return { data, loading, refetch: fetchHeatmap };
 }
 
 // Profit Comparison Hook
@@ -458,27 +468,29 @@ export function useStoreProfitComparison(filters) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const isOnline = await verifyConnection();
-      if (!isOnline) {
-        setData(MOCK_PROFIT_COMPARISON);
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await apiClient.get('/analytics/stores/profit', { params: filters, timeout: 1000 });
-        setData(res.data?.data || res.data || MOCK_PROFIT_COMPARISON);
-      } catch {
-        setData(MOCK_PROFIT_COMPARISON);
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const fetchProfit = useCallback(async () => {
+    setLoading(true);
+    const isOnline = await verifyConnection();
+    if (!isOnline) {
+      setData(MOCK_PROFIT_COMPARISON);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await apiClient.get('/analytics/stores/profit', { params: filters, timeout: 1000 });
+      setData(res.data?.data || res.data || MOCK_PROFIT_COMPARISON);
+    } catch {
+      setData(MOCK_PROFIT_COMPARISON);
+    } finally {
+      setLoading(false);
+    }
   }, [filters]);
 
-  return { data, loading };
+  useEffect(() => {
+    fetchProfit();
+  }, [fetchProfit]);
+
+  return { data, loading, refetch: fetchProfit };
 }
 
 // Store Table Hook (supports searching, sorting, filters, server-side simulation)
