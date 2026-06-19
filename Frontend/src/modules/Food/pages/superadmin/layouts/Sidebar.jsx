@@ -143,6 +143,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
     {
       title: "Settings",
       items: [
+        { name: "Settings", icon: Settings },
         { name: "App Settings", icon: Settings },
         { name: "Tax Settings", icon: DollarSign },
         { name: "SEO Settings", icon: Search },
@@ -281,6 +282,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/delivery-analytics")
                             } else if (item.name === "Growth Reports") {
                               navigate("/food/superadmin/growth-reports")
+                            } else if (item.name === "Settings") {
+                              navigate("/food/superadmin/settings")
                             } else if (item.name === "App Settings") {
                               navigate("/food/superadmin/app-settings")
                             } else if (item.name === "Tax Settings") {

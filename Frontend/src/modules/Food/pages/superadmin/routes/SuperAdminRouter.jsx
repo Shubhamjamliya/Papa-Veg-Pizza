@@ -43,6 +43,7 @@ const CustomerAnalytics = lazy(() => import("../analytics/CustomerAnalytics"))
 const StoreAnalytics = lazy(() => import("../analytics/StoreAnalytics"))
 const DeliveryAnalytics = lazy(() => import("../analytics/DeliveryAnalytics"))
 const GrowthReport = lazy(() => import("../analytics/GrowthReport"))
+const Settings = lazy(() => import("../settings/Settings"))
 const AppSettings = lazy(() => import("../settings/AppSettings"))
 const TaxSettings = lazy(() => import("../settings/TaxSettings"))
 const SeoSettings = lazy(() => import("../settings/SeoSettings"))
@@ -144,6 +145,8 @@ function SuperAdminLayout() {
     activeItem = "Growth Reports"
   } else if (location.pathname.includes("/app-settings")) {
     activeItem = "App Settings"
+  } else if (location.pathname.includes("/settings")) {
+    activeItem = "Settings"
   } else if (location.pathname.includes("/tax-settings")) {
     activeItem = "Tax Settings"
   } else if (location.pathname.includes("/seo-settings")) {
@@ -235,6 +238,7 @@ export default function SuperAdminRouter() {
           <Route path="/store-analytics" element={<StoreAnalytics />} />
           <Route path="/delivery-analytics" element={<DeliveryAnalytics />} />
           <Route path="/growth-reports" element={<GrowthReport />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/app-settings" element={<AppSettings />} />
           <Route path="/tax-settings" element={<TaxSettings />} />
           <Route path="/seo-settings" element={<SeoSettings />} />
