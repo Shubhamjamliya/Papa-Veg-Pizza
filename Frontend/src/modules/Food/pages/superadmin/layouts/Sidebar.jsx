@@ -38,6 +38,7 @@ import {
   FileText,
   LifeBuoy,
   Star,
+  Bike,
   X
 } from "lucide-react"
 
@@ -135,11 +136,12 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Sales Analytics", icon: BarChart3 },
         { name: "Customer Analytics", icon: LineChart },
         { name: "Store Analytics", icon: Store },
-        { name: "Operational Analytics", icon: PieChart }
+        { name: "Delivery Analytics", icon: Bike },
+        { name: "Growth Reports", icon: TrendingUp }
       ]
     },
     {
-      title: "CMS / Settings",
+      title: "Settings",
       items: [
         { name: "App Settings", icon: Settings },
         { name: "Tax Settings", icon: DollarSign },
@@ -275,8 +277,10 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/customer-analytics")
                             } else if (item.name === "Store Analytics") {
                               navigate("/food/superadmin/store-analytics")
-                            } else if (item.name === "Operational Analytics") {
-                              navigate("/food/superadmin/operational-analytics")
+                            } else if (item.name === "Delivery Analytics") {
+                              navigate("/food/superadmin/delivery-analytics")
+                            } else if (item.name === "Growth Reports") {
+                              navigate("/food/superadmin/growth-reports")
                             } else if (item.name === "App Settings") {
                               navigate("/food/superadmin/app-settings")
                             } else if (item.name === "Tax Settings") {
