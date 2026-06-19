@@ -17,7 +17,7 @@ export default function CompareStore({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end animate-fade-in">
+    <div className="fixed inset-0 lg:left-[280px] z-50 bg-black/60 backdrop-blur-sm flex justify-end animate-fade-in">
       <div className="w-full max-w-md h-full bg-zinc-50 dark:bg-zinc-950 flex flex-col shadow-2xl border-l border-zinc-200 dark:border-zinc-800 transform transition-transform duration-300 translate-x-0">
         
         {/* Header */}
@@ -44,11 +44,11 @@ export default function CompareStore({ isOpen, onClose }) {
           </div>
           <div className="w-1/3 p-2.5 text-center border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-inner">
             <p className="text-[9px] font-bold text-[var(--primary)] mb-0.5 uppercase tracking-wider">STORE #402</p>
-            <p className="text-xs font-black text-zinc-900 dark:text-zinc-100 truncate">Downtown</p>
+            <p className="text-xs font-black text-zinc-900 dark:text-zinc-100 truncate">CP New Delhi</p>
           </div>
           <div className="w-1/3 p-2.5 text-center">
             <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 mb-0.5 uppercase tracking-wider">STORE #118</p>
-            <p className="text-xs font-black text-zinc-900 dark:text-zinc-100 truncate">Suburbia</p>
+            <p className="text-xs font-black text-zinc-900 dark:text-zinc-100 truncate">Koramangala</p>
           </div>
         </div>
 
@@ -64,8 +64,8 @@ export default function CompareStore({ isOpen, onClose }) {
             <div className="flex items-center gap-3 mb-1">
               <div className="flex-1 space-y-1.5">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-lg font-black text-zinc-900 dark:text-zinc-50 leading-tight">$428k</span>
-                  <span className="text-[9px] font-mono font-bold text-zinc-400">Downtown</span>
+                  <span className="text-lg font-black text-zinc-900 dark:text-zinc-50 leading-tight">₹42.8L</span>
+                  <span className="text-[9px] font-mono font-bold text-zinc-400">CP Delhi</span>
                 </div>
                 <div className="h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden w-full">
                   <div 
@@ -76,8 +76,8 @@ export default function CompareStore({ isOpen, onClose }) {
               </div>
               <div className="flex-1 space-y-1.5">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-lg font-black text-zinc-900 dark:text-zinc-50 leading-tight">$381k</span>
-                  <span className="text-[9px] font-mono font-bold text-zinc-400">Suburbia</span>
+                  <span className="text-lg font-black text-zinc-900 dark:text-zinc-50 leading-tight">₹38.1L</span>
+                  <span className="text-[9px] font-mono font-bold text-zinc-400">Koramangala</span>
                 </div>
                 <div className="h-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden w-full">
                   <div 
@@ -96,11 +96,11 @@ export default function CompareStore({ isOpen, onClose }) {
               <div className="space-y-2.5">
                 <div className="flex flex-col">
                   <span className="text-base font-black text-zinc-900 dark:text-zinc-50">12.4k</span>
-                  <span className="text-[9px] font-bold text-[var(--primary)] mt-0.5 uppercase">DOWNTOWN</span>
+                  <span className="text-[9px] font-bold text-[var(--primary)] mt-0.5 uppercase">CP DELHI</span>
                 </div>
                 <div className="flex flex-col opacity-60">
                   <span className="text-base font-black text-zinc-900 dark:text-zinc-50">9.8k</span>
-                  <span className="text-[9px] font-bold text-zinc-500 mt-0.5 uppercase">SUBURBIA</span>
+                  <span className="text-[9px] font-bold text-zinc-500 mt-0.5 uppercase">KORAMANGALA</span>
                 </div>
               </div>
             </div>
@@ -108,12 +108,12 @@ export default function CompareStore({ isOpen, onClose }) {
               <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-3">Avg Order Value</h3>
               <div className="space-y-2.5">
                 <div className="flex flex-col">
-                  <span className="text-base font-black text-zinc-900 dark:text-zinc-50">$34.50</span>
-                  <span className="text-[9px] font-bold text-[var(--primary)] mt-0.5 uppercase">DOWNTOWN</span>
+                  <span className="text-base font-black text-zinc-900 dark:text-zinc-50">₹450</span>
+                  <span className="text-[9px] font-bold text-[var(--primary)] mt-0.5 uppercase">CP DELHI</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-base font-black text-zinc-900 dark:text-zinc-50">$38.90</span>
-                  <span className="text-[9px] font-bold text-zinc-500 mt-0.5 uppercase">SUBURBIA</span>
+                  <span className="text-base font-black text-zinc-900 dark:text-zinc-50">₹520</span>
+                  <span className="text-[9px] font-bold text-zinc-500 mt-0.5 uppercase">KORAMANGALA</span>
                 </div>
               </div>
             </div>
@@ -174,11 +174,11 @@ export default function CompareStore({ isOpen, onClose }) {
               <div className="flex justify-between mt-3">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[var(--primary)] shadow-sm shadow-[var(--primary)]/50"></div>
-                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-wider">Downtown (+24%)</span>
+                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-wider">CP Delhi (+24%)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-zinc-600 shadow-sm"></div>
-                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-wider">Suburbia (+12%)</span>
+                  <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-wider">Koramangala (+12%)</span>
                 </div>
               </div>
             </div>

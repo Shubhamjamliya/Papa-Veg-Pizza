@@ -51,7 +51,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
     "Order System": false,
     "Marketing": false,
     "Financial": false,
-    "Analytics": false,
+    "Analytics & Reports": false,
     "CMS / Settings": false,
     "Support": false,
   })
@@ -130,7 +130,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       ]
     },
     {
-      title: "Analytics",
+      title: "Analytics & Reports",
       items: [
         { name: "Sales Analytics", icon: BarChart3 },
         { name: "Customer Analytics", icon: LineChart },

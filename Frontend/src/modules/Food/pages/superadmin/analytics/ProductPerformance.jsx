@@ -15,7 +15,7 @@ export default function ProductPerformance({ isOpen, onClose, product }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-center lg:justify-end animate-fade-in overflow-hidden">
+    <div className="fixed inset-0 lg:left-[280px] z-50 bg-black/60 backdrop-blur-sm flex justify-center lg:justify-end animate-fade-in overflow-hidden">
       <div className="w-full max-w-screen-md h-full bg-zinc-50 dark:bg-zinc-950 flex flex-col shadow-2xl border-x border-zinc-200 dark:border-zinc-800 transform transition-transform duration-300">
         
         {/* Top Navigation Bar */}
@@ -68,7 +68,7 @@ export default function ProductPerformance({ isOpen, onClose, product }) {
               </div>
               <div className="space-y-0.5">
                 <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider">Base Price</p>
-                <p className="text-base font-black text-zinc-900 dark:text-zinc-100">$18.99</p>
+                <p className="text-base font-black text-zinc-900 dark:text-zinc-100">₹349</p>
               </div>
               <div className="space-y-0.5">
                 <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider">Margin</p>
@@ -90,7 +90,7 @@ export default function ProductPerformance({ isOpen, onClose, product }) {
                 </span>
               </div>
               <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider mb-0.5">MTD Revenue</p>
-              <h3 className="text-base font-black text-zinc-900 dark:text-zinc-50">$142.5k</h3>
+              <h3 className="text-base font-black text-zinc-900 dark:text-zinc-50">₹14.2L</h3>
             </div>
             
             {/* Quantity Sold */}
@@ -180,11 +180,11 @@ export default function ProductPerformance({ isOpen, onClose, product }) {
                   #1
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100">Downtown Manhattan</p>
+                  <p className="font-bold text-zinc-900 dark:text-zinc-100">Connaught Place, New Delhi</p>
                   <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">842 Units Sold</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100">$15,989</p>
+                  <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100">₹2,93,858</p>
                   <p className="text-[9px] font-bold text-emerald-600 dark:text-emerald-500 mt-0.5">+5.2%</p>
                 </div>
               </div>
@@ -195,11 +195,11 @@ export default function ProductPerformance({ isOpen, onClose, product }) {
                   #2
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100">Brooklyn Heights</p>
+                  <p className="font-bold text-zinc-900 dark:text-zinc-100">Koramangala, Bengaluru</p>
                   <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">715 Units Sold</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100">$13,577</p>
+                  <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100">₹2,49,535</p>
                   <p className="text-[9px] font-bold text-emerald-600 dark:text-emerald-500 mt-0.5">+2.1%</p>
                 </div>
               </div>
@@ -210,11 +210,11 @@ export default function ProductPerformance({ isOpen, onClose, product }) {
                   #3
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-zinc-900 dark:text-zinc-100">West Village</p>
+                  <p className="font-bold text-zinc-900 dark:text-zinc-100">Bandra West, Mumbai</p>
                   <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">688 Units Sold</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100">$13,065</p>
+                  <p className="font-mono font-bold text-zinc-900 dark:text-zinc-100">₹2,40,112</p>
                   <p className="text-[9px] font-bold text-rose-500 mt-0.5">-0.4%</p>
                 </div>
               </div>
