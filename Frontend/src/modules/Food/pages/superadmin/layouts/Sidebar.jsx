@@ -20,6 +20,7 @@ import {
   FileX,
   Activity,
   Ticket,
+  Trophy,
   Megaphone,
   Image,
   Bell,
@@ -124,7 +125,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
         { name: "Coupons", icon: Ticket },
         { name: "Campaigns", icon: Megaphone },
         { name: "Push Notifications", icon: Bell },
-        { name: "Banners", icon: Image }
+        { name: "Banners", icon: Image },
+        { name: "Loyalty Program", icon: Trophy }
       ]
     },
     {
@@ -254,6 +256,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/push-notifications")
                             } else if (item.name === "Banners") {
                               navigate("/food/superadmin/banners")
+                            } else if (item.name === "Loyalty Program") {
+                              navigate("/food/superadmin/loyalty")
                             } else if (item.name === "Tax Reports") {
                               navigate("/food/superadmin/tax-reports")
                             } else if (item.name === "Transactions") {

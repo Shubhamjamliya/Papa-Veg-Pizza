@@ -32,6 +32,7 @@ const CouponsManagement = lazy(() => import("../marketing/CouponsManagement"))
 const Campaign = lazy(() => import("../marketing/Campaign"))
 const PushNotification = lazy(() => import("../marketing/PushNotification"))
 const Banners = lazy(() => import("../marketing/Banners"))
+const LoyaltyProgram = lazy(() => import("../marketing/LoyaltyProgram"))
 const TaxReports = lazy(() => import("../financial/TaxReports"))
 const TransactionManagement = lazy(() => import("../financial/TransactionManagement"))
 const FranchiseCommission = lazy(() => import("../financial/FranchiseCommission"))
@@ -117,6 +118,8 @@ function SuperAdminLayout() {
     activeItem = "Push Notifications"
   } else if (location.pathname.includes("/banners-promotions")) {
     activeItem = "Banners / Promotions"
+  } else if (location.pathname.includes("/loyalty")) {
+    activeItem = "Loyalty Program"
   } else if (location.pathname.includes("/tax-reports")) {
     activeItem = "Tax Reports"
   } else if (location.pathname.includes("/transactions")) {
@@ -215,6 +218,7 @@ export default function SuperAdminRouter() {
           <Route path="/campaigns" element={<Campaign />} />
           <Route path="/push-notifications" element={<PushNotification />} />
           <Route path="/banners" element={<Banners />} />
+          <Route path="/loyalty" element={<LoyaltyProgram />} />
           <Route path="/tax-reports" element={<TaxReports />} />
           <Route path="/transactions" element={<TransactionManagement />} />
           <Route path="/commissions" element={<FranchiseCommission />} />
