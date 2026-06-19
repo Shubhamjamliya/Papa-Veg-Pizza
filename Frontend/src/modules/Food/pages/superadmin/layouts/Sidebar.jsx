@@ -134,6 +134,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       items: [
         { name: "Sales Analytics", icon: BarChart3 },
         { name: "Customer Analytics", icon: LineChart },
+        { name: "Store Analytics", icon: Store },
         { name: "Operational Analytics", icon: PieChart }
       ]
     },
@@ -272,6 +273,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/sales-analytics")
                             } else if (item.name === "Customer Analytics") {
                               navigate("/food/superadmin/customer-analytics")
+                            } else if (item.name === "Store Analytics") {
+                              navigate("/food/superadmin/store-analytics")
                             } else if (item.name === "Operational Analytics") {
                               navigate("/food/superadmin/operational-analytics")
                             } else if (item.name === "App Settings") {
