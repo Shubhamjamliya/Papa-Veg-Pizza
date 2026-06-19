@@ -39,6 +39,7 @@ import {
   LifeBuoy,
   Star,
   Bike,
+  ShieldAlert,
   X
 } from "lucide-react"
 
@@ -155,6 +156,7 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
       title: "Support",
       items: [
         { name: "Support Tickets", icon: LifeBuoy },
+        { name: "Customer Complaints", icon: ShieldAlert },
         { name: "Feedback & Reviews", icon: Star }
       ]
     }
@@ -297,6 +299,8 @@ export default function Sidebar({ isOpen, onClose, activeItem, setActiveItem }) 
                               navigate("/food/superadmin/content-management")
                             } else if (item.name === "Support Tickets") {
                               navigate("/food/superadmin/support-tickets")
+                            } else if (item.name === "Customer Complaints") {
+                              navigate("/food/superadmin/customer-complaints")
                             } else if (item.name === "Feedback & Reviews") {
                               navigate("/food/superadmin/feedback-reviews")
                             } else if (item.name === "Franchise Owners") {
