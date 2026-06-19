@@ -44,9 +44,8 @@ const StoreAnalytics = lazy(() => import("../analytics/StoreAnalytics"))
 const DeliveryAnalytics = lazy(() => import("../analytics/DeliveryAnalytics"))
 const GrowthReport = lazy(() => import("../analytics/GrowthReport"))
 const Settings = lazy(() => import("../settings/Settings"))
-const AppSettings = lazy(() => import("../settings/AppSettings"))
-const TaxSettings = lazy(() => import("../settings/TaxSettings"))
-const SeoSettings = lazy(() => import("../settings/SeoSettings"))
+const AppConfiguration = lazy(() => import("../settings/AppConfiguration"))
+const PaymentGateways = lazy(() => import("../settings/PaymentGateways"))
 const ContentManagement = lazy(() => import("../settings/ContentManagement"))
 const SupportTicket = lazy(() => import("../support/SupportTicket"))
 const FeedbackAndReview = lazy(() => import("../support/FeedbackAndReview"))
@@ -143,14 +142,12 @@ function SuperAdminLayout() {
     activeItem = "Delivery Analytics"
   } else if (location.pathname.includes("/growth-reports")) {
     activeItem = "Growth Reports"
-  } else if (location.pathname.includes("/app-settings")) {
-    activeItem = "App Settings"
+  } else if (location.pathname.includes("/app-configuration")) {
+    activeItem = "App Configuration"
+  } else if (location.pathname.includes("/payment-gateways")) {
+    activeItem = "Payment Gateways"
   } else if (location.pathname.includes("/settings")) {
     activeItem = "Settings"
-  } else if (location.pathname.includes("/tax-settings")) {
-    activeItem = "Tax Settings"
-  } else if (location.pathname.includes("/seo-settings")) {
-    activeItem = "SEO Settings"
   } else if (location.pathname.includes("/content-management")) {
     activeItem = "Content Management"
   } else if (location.pathname.includes("/support-tickets")) {
@@ -239,9 +236,8 @@ export default function SuperAdminRouter() {
           <Route path="/delivery-analytics" element={<DeliveryAnalytics />} />
           <Route path="/growth-reports" element={<GrowthReport />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/app-settings" element={<AppSettings />} />
-          <Route path="/tax-settings" element={<TaxSettings />} />
-          <Route path="/seo-settings" element={<SeoSettings />} />
+          <Route path="/app-configuration" element={<AppConfiguration />} />
+          <Route path="/payment-gateways" element={<PaymentGateways />} />
           <Route path="/content-management" element={<ContentManagement />} />
           <Route path="/support-tickets" element={<SupportTicket />} />
           <Route path="/feedback-reviews" element={<FeedbackAndReview />} />

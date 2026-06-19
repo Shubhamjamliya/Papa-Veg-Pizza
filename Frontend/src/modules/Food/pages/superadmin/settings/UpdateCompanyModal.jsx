@@ -86,11 +86,11 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
         <header className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
           <div>
             <h3 className="text-base font-extrabold text-zinc-950 dark:text-zinc-50">Update Company Settings</h3>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">Edit company details, branding, logos, and support details</p>
+            <p className="text-[10px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">Edit company details, branding, logos, and support details</p>
           </div>
           <button 
             onClick={onClose}
-            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-black dark:text-zinc-100 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
           >
             <X size={16} />
           </button>
@@ -109,7 +109,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Company Name */}
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Company Name <span className="text-red-500">*</span>
                 </label>
                 <input 
@@ -124,7 +124,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
 
               {/* Website */}
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Website URL
                 </label>
                 <input 
@@ -138,7 +138,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
 
               {/* Support Email */}
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Support Email <span className="text-red-500">*</span>
                 </label>
                 <input 
@@ -153,7 +153,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
 
               {/* Support Phone */}
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Support Phone
                 </label>
                 <input 
@@ -171,7 +171,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Logo Upload */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Company Logo (.webp recommended)
                 </label>
                 <div className="flex gap-3 items-center">
@@ -179,7 +179,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
                     {logoPreview ? (
                       <img src={logoPreview} alt="Logo preview" className="w-full h-full object-contain" />
                     ) : (
-                      <ImageIcon className="text-zinc-400" size={24} />
+                      <ImageIcon className="text-black dark:text-zinc-100" size={24} />
                     )}
                   </div>
                   <div className="flex-1">
@@ -193,14 +193,14 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
                         className="hidden" 
                       />
                     </label>
-                    <p className="text-[9px] text-zinc-500 dark:text-zinc-400 mt-1">Recommended size: 512x512px. Max 2MB.</p>
+                    <p className="text-[9px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-1">Recommended size: 512x512px. Max 2MB.</p>
                   </div>
                 </div>
               </div>
 
               {/* Favicon Upload */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Favicon Icon (.ico or .webp)
                 </label>
                 <div className="flex gap-3 items-center">
@@ -208,7 +208,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
                     {faviconPreview ? (
                       <img src={faviconPreview} alt="Favicon preview" className="w-10 h-10 object-contain" />
                     ) : (
-                      <ImageIcon className="text-zinc-400" size={24} />
+                      <ImageIcon className="text-black dark:text-zinc-100" size={24} />
                     )}
                   </div>
                   <div className="flex-1">
@@ -222,7 +222,7 @@ export default function UpdateCompanyModal({ isOpen, onClose, initialData, onSav
                         className="hidden" 
                       />
                     </label>
-                    <p className="text-[9px] text-zinc-500 dark:text-zinc-400 mt-1">Recommended size: 64x64px. Max 500KB.</p>
+                    <p className="text-[9px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-1">Recommended size: 64x64px. Max 500KB.</p>
                   </div>
                 </div>
               </div>

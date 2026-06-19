@@ -80,11 +80,11 @@ export default function MaintenanceModeModal({ isOpen, onClose, onConfirm }) {
               <AlertTriangle className="text-amber-500 shrink-0" size={18} />
               Enable Platform Maintenance
             </h3>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">Configure scheduled or emergency offline mode for specific platform segments</p>
+            <p className="text-[10px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">Configure scheduled or emergency offline mode for specific platform segments</p>
           </div>
           <button 
             onClick={onClose}
-            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-black dark:text-zinc-100 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
           >
             <X size={16} />
           </button>
@@ -106,7 +106,7 @@ export default function MaintenanceModeModal({ isOpen, onClose, onConfirm }) {
               <AlertTriangle size={20} className="text-amber-500 shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-xs font-black text-amber-800 dark:text-amber-400">Confirmation Warning</h4>
-                <p className="text-[10px] leading-relaxed text-zinc-650 dark:text-zinc-400 mt-1">
+                <p className="text-[10px] leading-relaxed text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-1">
                   Enabling maintenance mode will display an offline/maintenance banner or block access to customers and store staff for selected modules. Active database processes will complete, but new requests will be blocked.
                 </p>
               </div>
@@ -114,7 +114,7 @@ export default function MaintenanceModeModal({ isOpen, onClose, onConfirm }) {
 
             {/* Maintenance Reason */}
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                 Reason for Maintenance
               </label>
               <textarea 
@@ -130,7 +130,7 @@ export default function MaintenanceModeModal({ isOpen, onClose, onConfirm }) {
             {/* Time Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Start Date & Time
                 </label>
                 <input 
@@ -143,7 +143,7 @@ export default function MaintenanceModeModal({ isOpen, onClose, onConfirm }) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+                <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                   Estimated End Date & Time
                 </label>
                 <input 
@@ -158,7 +158,7 @@ export default function MaintenanceModeModal({ isOpen, onClose, onConfirm }) {
 
             {/* Affected Modules Group */}
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                 Affected Modules / Channels
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">

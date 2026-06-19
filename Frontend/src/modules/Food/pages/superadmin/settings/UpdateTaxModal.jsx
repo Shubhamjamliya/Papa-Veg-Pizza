@@ -60,11 +60,11 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
         <header className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
           <div>
             <h3 className="text-base font-extrabold text-zinc-950 dark:text-zinc-50">Update Tax Settings</h3>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">Manage global tax and charges policies for calculations</p>
+            <p className="text-[10px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">Manage global tax and charges policies for calculations</p>
           </div>
           <button 
             onClick={onClose}
-            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+            className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-black dark:text-zinc-100 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
           >
             <X size={16} />
           </button>
@@ -82,7 +82,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
           <form id="updateTaxForm" onSubmit={handleSubmit} className="space-y-4">
             {/* GST Percent */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                 GST (Goods & Services Tax) %
               </label>
               <div className="relative">
@@ -96,7 +96,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
                   onChange={(e) => setFormData(prev => ({ ...prev, gstPercent: parseFloat(e.target.value) || 0 }))}
                   className="w-full h-8.5 pl-3 pr-8 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-zinc-900 dark:text-zinc-150"
                 />
-                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-zinc-450 dark:text-zinc-500 text-xs">
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 text-xs">
                   %
                 </div>
               </div>
@@ -104,7 +104,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
 
             {/* Service Charge Percent */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                 Service Charge %
               </label>
               <div className="relative">
@@ -118,7 +118,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
                   onChange={(e) => setFormData(prev => ({ ...prev, serviceTaxPercent: parseFloat(e.target.value) || 0 }))}
                   className="w-full h-8.5 pl-3 pr-8 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-zinc-900 dark:text-zinc-150"
                 />
-                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-zinc-450 dark:text-zinc-500 text-xs">
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 text-xs">
                   %
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
 
             {/* Packaging Charge */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">
+              <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">
                 Packaging Charge (Fixed)
               </label>
               <div className="relative">
@@ -139,7 +139,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
                   onChange={(e) => setFormData(prev => ({ ...prev, packagingCharge: parseFloat(e.target.value) || 0 }))}
                   className="w-full h-8.5 pl-7 pr-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-zinc-900 dark:text-zinc-150"
                 />
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-450 dark:text-zinc-500 text-xs font-bold">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 text-xs font-bold">
                   ₹
                 </div>
               </div>
@@ -149,7 +149,7 @@ export default function UpdateTaxModal({ isOpen, onClose, initialData, onSave })
             <div className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 rounded-lg">
               <div>
                 <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Prices Include Tax</p>
-                <p className="text-[9px] text-zinc-500 dark:text-zinc-400 mt-0.5">Toggle if product prices show taxes included</p>
+                <p className="text-[9px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">Toggle if product prices show taxes included</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input 

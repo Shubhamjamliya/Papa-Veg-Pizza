@@ -391,11 +391,11 @@ export default function Settings() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-extrabold text-black dark:text-white">Settings</h1>
-            <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-650 dark:text-zinc-400 text-[9px] font-bold px-1.5 py-0.2 rounded border border-zinc-205 dark:border-zinc-750">
+            <span className="bg-zinc-100 dark:bg-zinc-800 text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 text-[9px] font-bold px-1.5 py-0.2 rounded border border-zinc-205 dark:border-zinc-750">
               v1.4.2
             </span>
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <p className="text-xs text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">
             Manage platform-wide configurations, localization, taxation, security, delivery, invoices and maintenance mode.
           </p>
         </div>
@@ -403,7 +403,7 @@ export default function Settings() {
         {/* Global Toolbar */}
         <div className="flex items-center gap-1.5 flex-nowrap overflow-x-auto pb-1 md:pb-0 scrollbar-none shrink-0">
           <div className="relative w-40 sm:w-48 shrink-0">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-450 dark:text-zinc-500" size={13} />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100" size={13} />
             <input 
               type="text" 
               placeholder="Search setting..."
@@ -451,7 +451,7 @@ export default function Settings() {
       <section className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
         {/* KPI 1 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm relative group hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Platform Status</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Platform Status</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block flex items-center gap-1">
             {settings.maintenanceMode ? 'Maintenance' : 'Active'}
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
@@ -463,15 +463,15 @@ export default function Settings() {
 
         {/* KPI 2 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Maintenance Mode</span>
-          <span className={`text-xs font-black mt-0.5 block ${settings.maintenanceMode ? 'text-red-500' : 'text-zinc-500'}`}>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Maintenance Mode</span>
+          <span className={`text-xs font-black mt-0.5 block ${settings.maintenanceMode ? 'text-red-500' : 'text-black dark:text-zinc-100'}`}>
             {settings.maintenanceMode ? 'Enabled' : 'Disabled'}
           </span>
         </div>
 
         {/* KPI 3 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Default Currency</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Default Currency</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block font-mono">
             {settings.currencySymbol} {settings.currency}
           </span>
@@ -479,7 +479,7 @@ export default function Settings() {
 
         {/* KPI 4 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Tax Index</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Tax Index</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block">
             {settings.gstPercent + settings.serviceTaxPercent}% GST
           </span>
@@ -487,7 +487,7 @@ export default function Settings() {
 
         {/* KPI 5 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Timezone</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Timezone</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block truncate">
             {settings.timezone}
           </span>
@@ -495,7 +495,7 @@ export default function Settings() {
 
         {/* KPI 6 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Min Order Value</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Min Order Value</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block font-mono">
             ₹{settings.minimumOrderAmount}
           </span>
@@ -503,7 +503,7 @@ export default function Settings() {
 
         {/* KPI 7 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Max Delivery Radius</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Max Delivery Radius</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block">
             {settings.maxDeliveryRadius} KM
           </span>
@@ -511,7 +511,7 @@ export default function Settings() {
 
         {/* KPI 8 */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 p-2.5 rounded-xl shadow-sm hover:shadow-md transition-all">
-          <span className="text-[8px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">Invoice Prefix</span>
+          <span className="text-[8px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Invoice Prefix</span>
           <span className="text-xs font-black text-zinc-900 dark:text-zinc-50 mt-0.5 block font-mono">
             {settings.invoicePrefix}
           </span>
@@ -567,10 +567,10 @@ export default function Settings() {
           ) : isEmpty ? (
             /* EMPTY STATE */
             <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-8 text-center flex flex-col items-center justify-center gap-3 shadow-sm">
-              <Database size={48} className="text-zinc-400 stroke-[1.2]" />
+              <Database size={48} className="text-black dark:text-zinc-100 stroke-[1.2]" />
               <div>
                 <h3 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">No configurations found</h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">The platform settings collection is empty or unreachable.</p>
+                <p className="text-xs text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">The platform settings collection is empty or unreachable.</p>
               </div>
               <button 
                 onClick={() => {
@@ -592,8 +592,8 @@ export default function Settings() {
                 <div className="p-4 space-y-4">
                   <header className="flex justify-between items-center pb-2 border-b border-zinc-200 dark:border-zinc-800">
                     <div>
-                      <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Company Information</h2>
-                      <p className="text-[10px] text-zinc-500 mt-0.5">Manage global business identifiers and channels</p>
+                      <h2 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider">Company Information</h2>
+                      <p className="text-[10px] text-black dark:text-zinc-100 mt-0.5">Manage global business identifiers and channels</p>
                     </div>
                     <button 
                       onClick={() => setIsCompanyModalOpen(true)}
@@ -605,12 +605,12 @@ export default function Settings() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Company Name</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Company Name</span>
                       <p className="text-xs font-black text-zinc-900 dark:text-zinc-50">{settings.companyName}</p>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Website URL</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Website URL</span>
                       <a href={settings.website} target="_blank" rel="noreferrer" className="text-xs font-bold text-[var(--primary)] hover:underline flex items-center gap-1">
                         {settings.website}
                         <ExternalLink size={10} />
@@ -618,46 +618,46 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Support Email</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Support Email</span>
                       <p className="text-xs font-bold text-zinc-900 dark:text-zinc-50">{settings.supportEmail}</p>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Support Phone</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Support Phone</span>
                       <p className="text-xs font-bold text-zinc-900 dark:text-zinc-50">{settings.supportPhone}</p>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Logo Preview</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Logo Preview</span>
                       <div className="w-16 h-16 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-850 flex items-center justify-center overflow-hidden">
                         <img src={settings.logo} alt="Brand Logo" className="w-full h-full object-contain" />
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Favicon Preview</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Favicon Preview</span>
                       <div className="w-8 h-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-850 flex items-center justify-center overflow-hidden">
                         <img src={settings.favicon} alt="Favicon" className="w-full h-full object-contain" />
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">GST Number</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">GST Number</span>
                       <input 
                         type="text"
                         value="22AAAAA0000A1Z5"
                         disabled
-                        className="w-full h-8 px-3 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-500 cursor-not-allowed outline-none"
+                        className="w-full h-8 px-3 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-xs text-black dark:text-zinc-100 cursor-not-allowed outline-none"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Store Location / Address</span>
+                      <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">Store Location / Address</span>
                       <p className="text-xs text-zinc-900 dark:text-zinc-50">Bholaram Ustad Marg, Indore, Madhya Pradesh - 452001</p>
                     </div>
                   </div>
 
-                  <div className="pt-2 flex justify-between items-center text-[10px] text-zinc-500 border-t border-zinc-150 dark:border-zinc-800">
+                  <div className="pt-2 flex justify-between items-center text-[10px] text-black dark:text-zinc-100 border-t border-zinc-150 dark:border-zinc-800">
                     <span>Last updated by: <strong>{settings.updatedBy}</strong></span>
                     <span>Sync: {new Date(settings.updatedAt).toLocaleString('en-IN')}</span>
                   </div>
@@ -668,13 +668,13 @@ export default function Settings() {
               {activeTab === 'localization' && (
                 <div className="p-4 space-y-4">
                   <header className="pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                    <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Localization</h2>
-                    <p className="text-[10px] text-zinc-500 mt-0.5">Configure local business environments, currency symbols, and default language sets</p>
+                    <h2 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider">Localization</h2>
+                    <p className="text-[10px] text-black dark:text-zinc-100 mt-0.5">Configure local business environments, currency symbols, and default language sets</p>
                   </header>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Currency</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Currency</label>
                       <select 
                         value={settings.currency}
                         onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
@@ -687,7 +687,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Currency Symbol</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Currency Symbol</label>
                       <input 
                         type="text"
                         value={settings.currencySymbol}
@@ -697,7 +697,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Language</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Language</label>
                       <select 
                         value={settings.language}
                         onChange={(e) => setSettings({ ...settings, language: e.target.value })}
@@ -710,7 +710,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Timezone</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Timezone</label>
                       <select 
                         value={settings.timezone}
                         onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
@@ -722,7 +722,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Date Format</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Date Format</label>
                       <select 
                         defaultValue="DD/MM/YYYY"
                         className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
@@ -733,7 +733,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Number Format</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Number Format</label>
                       <select 
                         defaultValue="IN"
                         className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
@@ -765,13 +765,13 @@ export default function Settings() {
               {activeTab === 'orders' && (
                 <div className="p-4 space-y-4">
                   <header className="pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                    <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Order & Delivery Configurations</h2>
-                    <p className="text-[10px] text-zinc-500 mt-0.5">Control minimum order amounts, delivery rules, buffer intervals, and cancellation rules</p>
+                    <h2 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider">Order & Delivery Configurations</h2>
+                    <p className="text-[10px] text-black dark:text-zinc-100 mt-0.5">Control minimum order amounts, delivery rules, buffer intervals, and cancellation rules</p>
                   </header>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Minimum Order Amount (₹)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Minimum Order Amount (₹)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -779,12 +779,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, minimumOrderAmount: parseFloat(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-7 pr-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 left-3 flex items-center text-zinc-400 font-extrabold text-[11px]">₹</div>
+                        <div className="absolute inset-y-0 left-3 flex items-center text-black dark:text-zinc-100 font-extrabold text-[11px]">₹</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Maximum Delivery Radius (KM)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Maximum Delivery Radius (KM)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -792,12 +792,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, maxDeliveryRadius: parseFloat(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-8 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-bold">KM</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-bold">KM</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Order Cancellation Window (Minutes)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Order Cancellation Window (Minutes)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -805,12 +805,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, orderCancellationTime: parseInt(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">mins</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">mins</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Refund Request Window (Hours)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Refund Request Window (Hours)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -818,19 +818,19 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, refundWindowHours: parseInt(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">hours</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">hours</div>
                       </div>
                     </div>
 
                     <div className="space-y-1 md:col-span-2">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Average Delivery Buffer Time (Minutes)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Average Delivery Buffer Time (Minutes)</label>
                       <div className="relative">
                         <input 
                           type="number"
                           defaultValue={10}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">mins</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">mins</div>
                       </div>
                     </div>
                   </div>
@@ -857,8 +857,8 @@ export default function Settings() {
                 <div className="p-4 space-y-4">
                   <header className="flex justify-between items-center pb-2 border-b border-zinc-200 dark:border-zinc-800">
                     <div>
-                      <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Tax & Calculations</h2>
-                      <p className="text-[10px] text-zinc-500 mt-0.5">GST rates, service fee structure, packaging charges, and tax policies</p>
+                      <h2 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider">Tax & Calculations</h2>
+                      <p className="text-[10px] text-black dark:text-zinc-100 mt-0.5">GST rates, service fee structure, packaging charges, and tax policies</p>
                     </div>
                     <button 
                       onClick={() => setIsTaxModalOpen(true)}
@@ -870,7 +870,7 @@ export default function Settings() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">GST Rate (%)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">GST Rate (%)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -879,12 +879,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, gstPercent: parseFloat(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-8 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-xs">%</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-xs">%</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Service Charge (%)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Service Charge (%)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -893,12 +893,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, serviceTaxPercent: parseFloat(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-8 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-xs">%</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-xs">%</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Packaging Charge (₹)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Packaging Charge (₹)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -906,14 +906,14 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, packagingCharge: parseFloat(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-7 pr-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 left-3 flex items-center text-zinc-400 text-[11px] font-extrabold">₹</div>
+                        <div className="absolute inset-y-0 left-3 flex items-center text-black dark:text-zinc-100 text-[11px] font-extrabold">₹</div>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between p-3.5 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 rounded-lg self-end">
                       <div>
                         <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Include Tax in Product Prices</p>
-                        <p className="text-[9px] text-zinc-500 dark:text-zinc-400 mt-0.5">Toggle taxes calculation layout</p>
+                        <p className="text-[9px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">Toggle taxes calculation layout</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -948,13 +948,13 @@ export default function Settings() {
               {activeTab === 'invoices' && (
                 <div className="p-4 space-y-4">
                   <header className="pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                    <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Invoice Configurations</h2>
-                    <p className="text-[10px] text-zinc-500 mt-0.5">Configure PDF receipt templates, serial prefixes, and billing signatures</p>
+                    <h2 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider">Invoice Configurations</h2>
+                    <p className="text-[10px] text-black dark:text-zinc-100 mt-0.5">Configure PDF receipt templates, serial prefixes, and billing signatures</p>
                   </header>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Invoice Prefix</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Invoice Prefix</label>
                       <input 
                         type="text"
                         value={settings.invoicePrefix}
@@ -965,7 +965,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Invoice Number Format</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Invoice Number Format</label>
                       <select 
                         defaultValue="YEAR-SEQ"
                         className="w-full h-8.5 px-3 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
@@ -976,7 +976,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1 md:col-span-2">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Invoice Footer Message</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Invoice Footer Message</label>
                       <input 
                         type="text"
                         value={settings.invoiceFooter}
@@ -987,7 +987,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-1 md:col-span-2">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Invoice Terms &amp; Conditions</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Invoice Terms &amp; Conditions</label>
                       <textarea 
                         rows="3"
                         defaultValue="1. Taxes calculated according to state norms. 2. For refund disputes, reach out to customer support with transaction hash details within 24 hours."
@@ -1027,13 +1027,13 @@ export default function Settings() {
               {activeTab === 'security' && (
                 <div className="p-4 space-y-4">
                   <header className="pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                    <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Security & Session Policies</h2>
-                    <p className="text-[10px] text-zinc-500 mt-0.5">Manage session timeout windows, OTP validation duration, password cycles, and 2FA settings</p>
+                    <h2 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider">Security & Session Policies</h2>
+                    <p className="text-[10px] text-black dark:text-zinc-100 mt-0.5">Manage session timeout windows, OTP validation duration, password cycles, and 2FA settings</p>
                   </header>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Password Expiry Cycle (Days)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Password Expiry Cycle (Days)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -1041,12 +1041,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, passwordExpiryDays: parseInt(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">days</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">days</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Session Timeout Threshold (Minutes)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Session Timeout Threshold (Minutes)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -1054,12 +1054,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, sessionTimeoutMinutes: parseInt(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">mins</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">mins</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">OTP Validation Lifetime (Seconds)</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">OTP Validation Lifetime (Seconds)</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -1067,12 +1067,12 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, otpExpirySeconds: parseInt(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">secs</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">secs</div>
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider block">Maximum Login Attempts Limit</label>
+                      <label className="text-[10px] font-bold text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 uppercase tracking-wider block">Maximum Login Attempts Limit</label>
                       <div className="relative">
                         <input 
                           type="number"
@@ -1080,14 +1080,14 @@ export default function Settings() {
                           onChange={(e) => setSettings({ ...settings, loginAttemptsLimit: parseInt(e.target.value) || 0 })}
                           className="w-full h-8.5 pl-3 pr-10 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
                         />
-                        <div className="absolute inset-y-0 right-3 flex items-center text-zinc-400 text-[10px] font-semibold">tries</div>
+                        <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">tries</div>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between p-3.5 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 rounded-lg md:col-span-2">
                       <div>
                         <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200">Require Two-Factor Authentication (2FA) for Admins</p>
-                        <p className="text-[9px] text-zinc-500 dark:text-zinc-400 mt-0.5">Mandates verification codes for admin logins</p>
+                        <p className="text-[9px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 mt-0.5">Mandates verification codes for admin logins</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -1131,11 +1131,11 @@ export default function Settings() {
           
           {/* Sync Status Box */}
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3.5 shadow-sm space-y-3">
-            <h3 className="text-[10px] font-black uppercase text-zinc-400 tracking-wider">Sync & Operations</h3>
+            <h3 className="text-[10px] font-black uppercase text-black dark:text-zinc-100 tracking-wider">Sync & Operations</h3>
             
             <div className="space-y-2 text-xs">
               <div className="flex justify-between items-center">
-                <span className="text-zinc-500 font-semibold">API Health Status</span>
+                <span className="text-black dark:text-zinc-100 font-semibold">API Health Status</span>
                 <span className="flex items-center gap-1 text-emerald-600 font-extrabold text-[10px]">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping" />
                   Active (99.8%)
@@ -1143,19 +1143,19 @@ export default function Settings() {
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-zinc-500 font-semibold">Last DB Backup</span>
+                <span className="text-black dark:text-zinc-100 font-semibold">Last DB Backup</span>
                 <span className="text-zinc-800 dark:text-zinc-250 font-bold font-mono text-[10px]">4h ago</span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-zinc-500 font-semibold">MongoDB Clusters</span>
+                <span className="text-black dark:text-zinc-100 font-semibold">MongoDB Clusters</span>
                 <span className="text-zinc-850 dark:text-zinc-250 font-bold text-[10px]">ReplicaSet (Primary)</span>
               </div>
             </div>
             
             <hr className="border-zinc-200 dark:border-zinc-800" />
             
-            <div className="flex flex-col gap-1.5 text-[9px] text-zinc-500 leading-normal">
+            <div className="flex flex-col gap-1.5 text-[9px] text-black dark:text-zinc-100 leading-normal">
               <span><strong>Updated By:</strong> {settings.updatedBy}</span>
               <span><strong>Last Saved:</strong> {new Date(settings.updatedAt).toLocaleString('en-IN')}</span>
             </div>
@@ -1164,8 +1164,8 @@ export default function Settings() {
           {/* Activity Logs Timeline */}
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm flex-1 flex flex-col justify-between min-h-[300px]">
             <div className="px-3.5 py-2.5 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/20 flex justify-between items-center">
-              <h3 className="text-[10px] font-black uppercase text-zinc-450 tracking-wider">Configuration History</h3>
-              <Clock size={12} className="text-zinc-400" />
+              <h3 className="text-[10px] font-black uppercase text-black dark:text-zinc-100 tracking-wider">Configuration History</h3>
+              <Clock size={12} className="text-black dark:text-zinc-100" />
             </div>
 
             <div className="p-3.5 space-y-4 flex-1 overflow-y-auto max-h-[350px] scrollbar-thin">
@@ -1182,7 +1182,7 @@ export default function Settings() {
                   }`} />
                   <div className="space-y-0.5">
                     <p className="text-xs font-bold text-zinc-900 dark:text-zinc-150 leading-tight">{log.desc}</p>
-                    <p className="text-[9px] text-zinc-500 dark:text-zinc-400 font-semibold">{log.user} • {log.time}</p>
+                    <p className="text-[9px] text-black dark:text-zinc-100 dark:text-black dark:text-zinc-100 font-semibold">{log.user} • {log.time}</p>
                   </div>
                 </div>
               ))}
