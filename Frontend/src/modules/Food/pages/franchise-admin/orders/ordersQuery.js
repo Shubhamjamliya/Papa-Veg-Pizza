@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { mockOrders as initialOrders, mockStores, mockDeliveryPartners } from "./mockOrders";
+import { mockOrders as initialOrders, mockStores, mockDeliveryPartners, mockReorderAnalytics } from "./mockOrders";
 import { toast } from "sonner";
 
 // In-memory database state
@@ -394,4 +394,161 @@ export function simulateNewOrder() {
   dbOrders = [newOrder, ...dbOrders];
   notifyListeners();
   return newOrder;
+}
+
+// Hook for Completed Orders list query
+export function useCompletedOrders(filters = {}) {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchOrders = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      let filtered = dbOrders.filter((o) => o.orderStatus === "Delivered");
+
+      // Filter by Store
+      if (filters.storeId && filters.storeId !== "all") {
+        filtered = filtered.filter((o) => o.store.storeId === filters.storeId);
+      }
+      // Filter by Rider
+      if (filters.riderId && filters.riderId !== "all") {
+        filtered = filtered.filter((o) => o.deliveryPartner?.riderId === filters.riderId);
+      }
+      // Filter by Rating
+      if (filters.rating && filters.rating !== "all") {
+        const targetRating = Number(filters.rating);
+        filtered = filtered.filter((o) => o.rating?.rating === targetRating);
+      }
+      // Filter by Min / Max Amount
+      if (filters.minAmount) {
+        filtered = filtered.filter((o) => o.pricing.total >= Number(filters.minAmount));
+      }
+      if (filters.maxAmount) {
+        filtered = filtered.filter((o) => o.pricing.total <= Number(filters.maxAmount));
+      }
+      // Filter by search query
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(
+          (o) =>
+            o.orderNumber.toLowerCase().includes(query) ||
+            o.customer.name.toLowerCase().includes(query) ||
+            o.customer.phone.includes(query)
+        );
+      }
+
+      setData(filtered);
+      setIsLoading(false);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [
+    filters.storeId,
+    filters.riderId,
+    filters.rating,
+    filters.minAmount,
+    filters.maxAmount,
+    filters.searchQuery,
+  ]);
+
+  useEffect(() => {
+    fetchOrders();
+    return subscribe(fetchOrders);
+  }, [fetchOrders]);
+
+  return {
+    data,
+    isLoading,
+    refetch: fetchOrders,
+  };
+}
+
+export function useOrderDetails(orderId) {
+  return useOrder(orderId);
+}
+
+export function useOrderReview(orderId) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!orderId) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const order = dbOrders.find((o) => o.id === orderId);
+      setData(order?.rating || null);
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [orderId]);
+
+  return { data, isLoading };
+}
+
+export function useInvoice(orderId) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!orderId) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const order = dbOrders.find((o) => o.id === orderId);
+      setData(order || null);
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [orderId]);
+
+  return { data, isLoading };
+}
+
+export function useReorderAnalytics(orderId) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!orderId) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const analytics = mockReorderAnalytics[orderId] || {
+        lifetimeOrders: 4,
+        previousOrderCount: 3,
+        avgSpend: 320,
+        repeatFrequency: "Once every 10 days",
+        favoriteCategory: "Margherita Crusts",
+        recommendedUpsell: [
+          { productName: "Cheesy Garlic Bread", price: 150, image: "https://images.unsplash.com/photo-1573145959986-a142c6e68ea8?w=100" }
+        ],
+        mostOrderedProducts: [
+          { name: "Double Cheese Margherita Pizza", count: 3, spend: 1197 }
+        ],
+        chartData: [
+          { month: "Apr", orders: 1 },
+          { month: "May", orders: 2 },
+          { month: "Jun", orders: 1 }
+        ]
+      };
+      setData(analytics);
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [orderId]);
+
+  return { data, isLoading };
 }
