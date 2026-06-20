@@ -494,3 +494,483 @@ export const getDashboardStats = (managersList) => {
     ordersManagedToday
   };
 };
+
+export const initialKitchenStaff = [
+  {
+    id: "kit-1",
+    name: "Rajesh Patel",
+    email: "rajesh.patel@papaveg.com",
+    phone: "9826011111",
+    employeeCode: "PVK-101",
+    joinedDate: "2023-01-10",
+    status: "Active",
+    experience: "3.5 years",
+    storeId: "store-1",
+    shiftType: "Morning",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    profileImage: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "22, Palasia Square, Indore, MP",
+      emergencyContact: "Sudha Patel (Wife) - 9826011110",
+      salary: 28000
+    }
+  },
+  {
+    id: "kit-2",
+    name: "Amit Verma",
+    email: "amit.verma@papaveg.com",
+    phone: "9988111222",
+    employeeCode: "PVK-102",
+    joinedDate: "2022-05-15",
+    status: "Active",
+    experience: "4.2 years",
+    storeId: "store-2",
+    shiftType: "Afternoon",
+    weeklyDays: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "102, MP Nagar, Bhopal, MP",
+      emergencyContact: "K. Verma (Father) - 9988111220",
+      salary: 31000
+    }
+  },
+  {
+    id: "kit-3",
+    name: "Sunil Singh",
+    email: "sunil.singh@papaveg.com",
+    phone: "9111222333",
+    employeeCode: "PVK-103",
+    joinedDate: "2024-02-10",
+    status: "Active",
+    experience: "2.1 years",
+    storeId: "store-3",
+    shiftType: "Night",
+    weeklyDays: ["Monday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "15, Tower Chowk, Ujjain, MP",
+      emergencyContact: "B. Singh (Brother) - 9111222330",
+      salary: 25000
+    }
+  },
+  {
+    id: "kit-4",
+    name: "Sanjay Gupta",
+    email: "sanjay.g@papaveg.com",
+    phone: "9893022233",
+    employeeCode: "PVK-104",
+    joinedDate: "2021-09-01",
+    status: "Active",
+    experience: "5.0 years",
+    storeId: "store-4",
+    shiftType: "Morning",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "DD Nagar, Gwalior, MP",
+      emergencyContact: "Usha Gupta (Wife) - 9893022230",
+      salary: 35000
+    }
+  },
+  {
+    id: "kit-5",
+    name: "Priya Sharma",
+    email: "priya.s@papaveg.com",
+    phone: "9755044455",
+    employeeCode: "PVK-105",
+    joinedDate: "2023-07-20",
+    status: "Active",
+    experience: "2.8 years",
+    storeId: "store-5",
+    shiftType: "Afternoon",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Napier Town, Jabalpur, MP",
+      emergencyContact: "M. Sharma (Husband) - 9755044450",
+      salary: 27500
+    }
+  },
+  {
+    id: "kit-6",
+    name: "Deepa Yadav",
+    email: "deepa.y@papaveg.com",
+    phone: "9926088899",
+    employeeCode: "PVK-106",
+    joinedDate: "2024-11-15",
+    status: "Active",
+    experience: "1.2 years",
+    storeId: "store-6",
+    shiftType: "Night",
+    weeklyDays: ["Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Scheme 74, Dewas, MP",
+      emergencyContact: "S. Yadav (Father) - 9926088890",
+      salary: 22000
+    }
+  },
+  {
+    id: "kit-7",
+    name: "Manoj Trivedi",
+    email: "manoj.t@papaveg.com",
+    phone: "9826266677",
+    employeeCode: "PVK-107",
+    joinedDate: "2025-03-01",
+    status: "On Leave",
+    experience: "0.9 years",
+    storeId: "store-7",
+    shiftType: "Morning",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Pithampur Sec 1, Indore, MP",
+      emergencyContact: "J. Trivedi (Brother) - 9826266670",
+      salary: 20000
+    }
+  },
+  {
+    id: "kit-8",
+    name: "Vikram Deshmukh",
+    email: "vikram.d@papaveg.com",
+    phone: "9977566677",
+    employeeCode: "PVK-108",
+    joinedDate: "2020-05-10",
+    status: "Active",
+    experience: "5.5 years",
+    storeId: "store-8",
+    shiftType: "Night",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Station Road, Ratlam, MP",
+      emergencyContact: "R. Deshmukh (Wife) - 9977566670",
+      salary: 36000
+    }
+  },
+  {
+    id: "kit-9",
+    name: "Rohan Patil",
+    email: "rohan.patil@papaveg.com",
+    phone: "9893233344",
+    employeeCode: "PVK-109",
+    joinedDate: "2023-10-15",
+    status: "Active",
+    experience: "2.4 years",
+    storeId: "store-9",
+    shiftType: "Afternoon",
+    weeklyDays: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Civil Lines, Sagar, MP",
+      emergencyContact: "G. Patil (Father) - 9893233340",
+      salary: 26000
+    }
+  },
+  {
+    id: "kit-10",
+    name: "Kavita Rao",
+    email: "kavita.rao@papaveg.com",
+    phone: "9754122233",
+    employeeCode: "PVK-110",
+    joinedDate: "2022-08-20",
+    status: "Active",
+    experience: "3.8 years",
+    storeId: "store-10",
+    shiftType: "Morning",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    profileImage: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "College Road, Rewa, MP",
+      emergencyContact: "A. Rao (Brother) - 9754122230",
+      salary: 29000
+    }
+  },
+  {
+    id: "kit-11",
+    name: "Sunita Joshi",
+    email: "sunita.j@papaveg.com",
+    phone: "9926877788",
+    employeeCode: "PVK-111",
+    joinedDate: "2025-01-15",
+    status: "Suspended",
+    experience: "0.6 years",
+    storeId: "store-1",
+    shiftType: "Afternoon",
+    weeklyDays: ["Monday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    profileImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "12, Scheme 54, Indore, MP",
+      emergencyContact: "R. Joshi (Father) - 9926877780",
+      salary: 19500
+    }
+  },
+  {
+    id: "kit-12",
+    name: "Aarav Kumar",
+    email: "aarav.k@papaveg.com",
+    phone: "9826044455",
+    employeeCode: "PVK-112",
+    joinedDate: "2024-04-01",
+    status: "Active",
+    experience: "1.9 years",
+    storeId: "store-3",
+    shiftType: "Morning",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    profileImage: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Freeganj, Ujjain, MP",
+      emergencyContact: "S. Kumar (Father) - 9826044450",
+      salary: 24000
+    }
+  },
+  {
+    id: "kit-13",
+    name: "Sameer Malhotra",
+    email: "sameer.m@papaveg.com",
+    phone: "9879033344",
+    employeeCode: "PVK-113",
+    joinedDate: "2023-03-10",
+    status: "Active",
+    experience: "3.1 years",
+    storeId: "store-4",
+    shiftType: "Night",
+    weeklyDays: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "DD Nagar, Gwalior, MP",
+      emergencyContact: "N. Malhotra (Father) - 9879033340",
+      salary: 28000
+    }
+  },
+  {
+    id: "kit-14",
+    name: "Shalini Verma",
+    email: "shalini.verma@papaveg.com",
+    phone: "9988133344",
+    employeeCode: "PVK-114",
+    joinedDate: "2024-08-01",
+    status: "Active",
+    experience: "1.8 years",
+    storeId: "store-5",
+    shiftType: "Afternoon",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Friday", "Saturday", "Sunday"],
+    profileImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Madan Mahal, Jabalpur, MP",
+      emergencyContact: "R. Verma (Husband) - 9988133340",
+      salary: 24500
+    }
+  },
+  {
+    id: "kit-15",
+    name: "Neha Gupta",
+    email: "neha.gupta@papaveg.com",
+    phone: "9926133344",
+    employeeCode: "PVK-115",
+    joinedDate: "2022-12-10",
+    status: "Active",
+    experience: "3.4 years",
+    storeId: "store-2",
+    shiftType: "Morning",
+    weeklyDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    profileImage: "https://images.unsplash.com/photo-1558203728-00f45181dd84?auto=format&fit=crop&q=80&w=150&fm=webp",
+    personalDetails: {
+      address: "Arera Colony, Bhopal, MP",
+      emergencyContact: "M. Gupta (Husband) - 9926133340",
+      salary: 28500
+    }
+  }
+];
+
+export const getKitchenPerformance = (staffId) => {
+  const seed = parseInt(staffId.split("-")[1] || 1);
+  const pizzas = 800 + seed * 80;
+  const cookingTime = 8 + (seed % 5); // Average minutes to bake/prep a pizza
+  const qualityScore = 92 + (seed % 7); // quality score %
+  const cancelled = seed % 3;
+  const attRate = 94 + (seed % 5);
+
+  const dailyTrend = [
+    { day: "Mon", pizzas: Math.floor(pizzas / 30) },
+    { day: "Tue", pizzas: Math.floor(pizzas / 28) },
+    { day: "Wed", pizzas: Math.floor(pizzas / 32) },
+    { day: "Thu", pizzas: Math.floor(pizzas / 29) },
+    { day: "Fri", pizzas: Math.floor(pizzas / 25) },
+    { day: "Sat", pizzas: Math.floor(pizzas / 22) },
+    { day: "Sun", pizzas: Math.floor(pizzas / 20) }
+  ];
+
+  const weeklyTrend = [
+    { label: "W1", pizzas: Math.floor(pizzas / 4) },
+    { label: "W2", pizzas: Math.floor(pizzas / 3.8) },
+    { label: "W3", pizzas: Math.floor(pizzas / 4.2) },
+    { label: "W4", pizzas: Math.floor(pizzas / 3.5) }
+  ];
+
+  const monthlyTrend = [
+    { label: "Jan", pizzas: Math.floor(pizzas * 0.8) },
+    { label: "Feb", pizzas: Math.floor(pizzas * 0.95) },
+    { label: "Mar", pizzas: Math.floor(pizzas * 1.05) },
+    { label: "Apr", pizzas: pizzas }
+  ];
+
+  const cookingTimeTrend = [
+    { label: "W1", mins: cookingTime + 1.2 },
+    { label: "W2", mins: cookingTime + 0.5 },
+    { label: "W3", mins: cookingTime - 0.3 },
+    { label: "W4", mins: cookingTime }
+  ];
+
+  return {
+    pizzasPrepared: pizzas,
+    avgCookingTime: cookingTime,
+    qualityScore,
+    cancelledOrders: cancelled,
+    attendanceRate: attRate,
+    trends: {
+      daily: dailyTrend,
+      weekly: weeklyTrend,
+      monthly: monthlyTrend,
+      cooking: cookingTimeTrend
+    }
+  };
+};
+
+export const getKitchenAttendance = (staffId) => {
+  const seed = parseInt(staffId.split("-")[1] || 1);
+  const totalDays = 30;
+  const lateCount = seed % 3;
+  const leavesTaken = seed % 2;
+  const absentCount = seed % 4 === 0 ? 1 : 0;
+  const presentCount = totalDays - lateCount - leavesTaken - absentCount;
+  const attendanceRate = ((presentCount + lateCount) / totalDays * 100).toFixed(1);
+  const overtimeHours = (seed % 3) * 5 + 4; // Simulated overtime hours
+
+  const calendarLogs = [];
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dateStr = d.toISOString().split("T")[0];
+    
+    let status = "Present";
+    let checkIn = "09:00 AM";
+    let checkOut = "06:00 PM";
+    let ot = 0;
+
+    if (i % 8 === 0 && lateCount > 0 && calendarLogs.filter(l => l.status === "Late").length < lateCount) {
+      status = "Late";
+      checkIn = "09:35 AM";
+    } else if (i % 11 === 0 && leavesTaken > 0 && calendarLogs.filter(l => l.status === "Leave").length < leavesTaken) {
+      status = "Leave";
+      checkIn = "-";
+      checkOut = "-";
+    } else if (i === 12 && absentCount > 0) {
+      status = "Absent";
+      checkIn = "-";
+      checkOut = "-";
+    } else if (i % 5 === 0) {
+      ot = 2; // 2 hours overtime
+      checkOut = "08:00 PM";
+    }
+
+    calendarLogs.push({
+      date: dateStr,
+      status,
+      checkIn,
+      checkOut,
+      overtimeHours: ot
+    });
+  }
+
+  return {
+    attendanceRate: parseFloat(attendanceRate),
+    workingDays: presentCount + lateCount,
+    lateCount,
+    leavesTaken,
+    absentCount,
+    overtimeHours,
+    calendarLogs
+  };
+};
+
+export const getKitchenShifts = (staffId, defaultShift = "Morning") => {
+  const seed = parseInt(staffId.split("-")[1] || 1);
+  const shiftsMap = {
+    Morning: { type: "Morning", start: "08:00 AM", end: "04:00 PM" },
+    Afternoon: { type: "Afternoon", start: "04:00 PM", end: "12:00 AM" },
+    Night: { type: "Night", start: "12:00 AM", end: "08:00 AM" }
+  };
+
+  const current = shiftsMap[defaultShift] || shiftsMap.Morning;
+  
+  const history = [
+    { period: "June 2026 - Present", shiftType: current.type, storeCode: "PVP-IND-01", status: "Active" },
+    { period: "Jan 2026 - May 2026", shiftType: current.type === "Morning" ? "Afternoon" : "Morning", storeCode: "PVP-IND-01", status: "Completed" }
+  ];
+
+  return {
+    current,
+    history
+  };
+};
+
+export const getKitchenSalary = (staffId, baseSalary) => {
+  const seed = parseInt(staffId.split("-")[1] || 1);
+  const bonus = seed % 2 === 0 ? 3000 : 1500;
+  const deductions = seed % 3 === 0 ? 1000 : 500;
+  const netSalary = baseSalary + bonus - deductions;
+
+  const months = ["May 2026", "April 2026", "March 2026", "February 2026", "January 2026"];
+  const salaryHistory = months.map((m, idx) => {
+    const monthSeed = idx + seed;
+    const mBonus = monthSeed % 2 === 0 ? 2500 : 1000;
+    const mDeductions = monthSeed % 3 === 0 ? 500 : 0;
+    return {
+      month: m,
+      baseSalary,
+      bonus: mBonus,
+      deduction: mDeductions,
+      net: baseSalary + mBonus - mDeductions,
+      status: "Paid"
+    };
+  });
+
+  return {
+    monthlySalary: baseSalary,
+    bonus,
+    deductions,
+    netSalary,
+    history: salaryHistory
+  };
+};
+
+export const getKitchenAuditLogs = (staffId) => {
+  const seed = parseInt(staffId.split("-")[1] || 1);
+  return [
+    { id: 1, action: "Shift Changed", details: "Relocated to Afternoon Shift for operational pizza loads", date: "Today, 10:30 AM", type: "shift" },
+    { id: 2, action: "Profile Updated", details: "Updated emergency contact and residential address details", date: "Yesterday, 02:45 PM", type: "profile" },
+    { id: 3, action: "Attendance Edited", details: "Manually matched check-out time adjustment (Approved by Store Manager)", date: "2026-06-15, 06:10 PM", type: "attendance" },
+    { id: 4, action: "Performance Updated", details: "Monthly review rating scored 94/100 by kitchen lead", date: "2026-06-01, 12:00 PM", type: "performance" },
+    { id: 5, action: "Login History", details: "Logged into Kitchen Display System (Terminal ID: KDS-02)", date: "2026-06-01, 07:55 AM", type: "system" }
+  ];
+};
+
+export const getKitchenDashboardStats = (staffList) => {
+  const total = staffList.length;
+  const active = staffList.filter((m) => m.status === "Active").length;
+  const onShift = staffList.filter((m) => m.status === "Active" && m.shiftType === "Morning").length; // Mock count
+  const avgCookingTime = 11.4; // mins
+  const pizzasPreparedToday = 240;
+  const attendancePercentage = 95.8;
+
+  return {
+    totalStaff: total,
+    activeStaff: active,
+    onShift,
+    avgCookingTime,
+    pizzasPreparedToday,
+    attendancePercentage
+  };
+};

@@ -32,6 +32,7 @@ const StoreApprovals = lazy(() => import("@food/pages/franchise-admin/storeManag
 const StorePerformance = lazy(() => import("@food/pages/franchise-admin/storeManagement/StorePerformance"));
 const OperatingHours = lazy(() => import("@food/pages/franchise-admin/storeManagement/OperatingHours"));
 const StoreManagers = lazy(() => import("@food/pages/franchise-admin/staffManagement/StoreManagers"));
+const KitchenStaff = lazy(() => import("@food/pages/franchise-admin/staffManagement/KitchenStaff"));
 
 // Help & Support
 const Chattings = lazy(() => import("@food/pages/franchise-admin/Chattings"));
@@ -158,6 +159,7 @@ export default function FranchiseAdminRouter() {
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="stores" element={<Stores />} />
           <Route path="store-managers" element={<StoreManagers />} />
+          <Route path="employees" element={<KitchenStaff />} />
           <Route path="store-approvals" element={<StoreApprovals />} />
           <Route path="store-performance" element={<StorePerformance />} />
           <Route path="operating-hours" element={<OperatingHours />} />
