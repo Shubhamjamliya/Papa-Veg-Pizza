@@ -55,7 +55,7 @@ export default function AdminLogin() {
 
       setAuthData("admin", accessToken, adminUser, refreshToken)
       toast.success("Welcome, Administrator")
-      navigate("/admin/food", { replace: true })
+      navigate("/franchise-admin/dashboard", { replace: true })
     } catch (err) {
       const msg = err?.response?.data?.message || err?.message || "Login failed. Check your credentials."
       toast.error(msg)
@@ -171,7 +171,7 @@ export default function AdminLogin() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center px-1">
                     <label className="text-[10px] font-black text-[#E53935] uppercase tracking-[0.2em]">Password</label>
-                    <Link to="/admin/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 hover:text-[#E53935] uppercase tracking-wider transition-colors">Forgot?</Link>
+                    <Link to="/franchise-admin/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 hover:text-[#E53935] uppercase tracking-wider transition-colors">Forgot?</Link>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />

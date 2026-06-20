@@ -153,6 +153,28 @@ export const notificationAPI = {
 export const adminAPI = {
   getSidebarBadges: () =>
     adminClient.get("/food/admin/sidebar-badges"),
+  getStores: (params = {}) => adminClient.get("/stores", { params }),
+  getStoresKPIs: () => adminClient.get("/stores/dashboard-kpis"),
+  createStore: (body) => adminClient.post("/stores", body),
+  updateStore: (id, body) => adminClient.patch(`/stores/${id}`, body),
+  updateStoreStatus: (id, status, reason) => adminClient.patch(`/stores/${id}/status`, { status, reason }),
+  updateStoreHours: (id, hours) => adminClient.patch(`/stores/${id}/hours`, { hours }),
+  getStoreHours: (id) => adminClient.get(`/stores/${id}/hours`),
+  getStorePerformance: (id) => adminClient.get(`/stores/${id}/performance`),
+  deleteStore: (id) => adminClient.delete(`/stores/${id}`),
+  getStoreOrders: (storeId) => adminClient.get("/orders", { params: { storeId } }),
+  getStoreInventory: (storeId) => adminClient.get("/inventory", { params: { storeId } }),
+  getStoreStaff: (storeId) => adminClient.get("/users", { params: { storeId } }),
+  getStoreReviews: (storeId) => adminClient.get("/reviews", { params: { storeId } }),
+  getStoreManagers: () => adminClient.get("/users", { params: { role: "store_manager" } }),
+  getDashboardSummary: () => adminClient.get("/admin/dashboard"),
+  getDashboardRevenue: () => adminClient.get("/admin/dashboard/revenue"),
+  getDashboardLiveOrders: () => adminClient.get("/admin/dashboard/live-orders"),
+  getDashboardStorePerformance: () => adminClient.get("/admin/dashboard/store-performance"),
+  getDashboardInventoryAlerts: () => adminClient.get("/admin/dashboard/inventory-alerts"),
+  getDashboardDeliveryPerformance: () => adminClient.get("/admin/dashboard/delivery-performance"),
+  getDashboardCustomerActivity: () => adminClient.get("/admin/dashboard/customer-activity"),
+  globalSearch: (q) => adminClient.get("/search", { params: { q } }),
   login: (email, password) => authService.adminLogin(email, password),
   /** POST /auth/admin/forgot-password/request-otp – only accepts registered admin email */
   requestForgotPasswordOtp: (email) =>

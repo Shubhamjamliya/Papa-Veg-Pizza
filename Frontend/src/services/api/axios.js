@@ -5,12 +5,42 @@
  */
 
 import axios from "axios";
+import { handleMockRequest } from "./mockService.js";
 
 // Prefer explicit env. If not set, default to /api/v1 so the Vite proxy can forward to backend.
 const baseURL =
   typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE_URL
     ? String(import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "")
     : "/api/v1";
+
+const mockAdapter = (config) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = handleMockRequest(config);
+      if (response.success) {
+        resolve({
+          data: response.data,
+          status: response.status || 200,
+          statusText: "OK",
+          headers: response.headers || {},
+          config,
+        });
+      } else {
+        const error = new Error(response.data?.message || "Mock Request Failed");
+        error.response = {
+          data: response.data,
+          status: response.status || 400,
+          statusText: "Bad Request",
+          headers: response.headers || {},
+          config,
+        };
+        reject(error);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
 /** 
  * Common Helpers 
@@ -64,6 +94,10 @@ function createModuleClient(moduleName) {
     timeout: 30000,
     headers: { "Content-Type": "application/json" },
   });
+
+  if (typeof import.meta !== "undefined" && import.meta.env?.VITE_STANDALONE_MOCK === "true") {
+    client.defaults.adapter = mockAdapter;
+  }
 
   let isRefreshing = false;
   let subscribers = [];
@@ -195,6 +229,10 @@ const apiClient = axios.create({
   timeout: 30000,
   headers: { "Content-Type": "application/json" },
 });
+
+if (typeof import.meta !== "undefined" && import.meta.env?.VITE_STANDALONE_MOCK === "true") {
+  apiClient.defaults.adapter = mockAdapter;
+}
 
 // Reuse the existing smart detection for the legacy client
 function getModuleFromUrl(url = "") {
