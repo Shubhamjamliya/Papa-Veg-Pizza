@@ -11,6 +11,7 @@ const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettin
 const NewRefundRequests = lazy(() => import("@food/pages/franchise-admin/refunds/NewRefundRequests"));
 const OrdersPage = lazy(() => import("@food/pages/franchise-admin/orders/OrdersPage"));
 const LiveOrders = lazy(() => import("@food/pages/franchise-admin/orders/LiveOrders"));
+const CompletedOrders = lazy(() => import("@food/pages/franchise-admin/orders/CompletedOrders"));
 const OrderDetectDelivery = lazy(() => import("@food/pages/franchise-admin/OrderDetectDelivery"));
 const Category = lazy(() => import("@food/pages/franchise-admin/categories/Category"));
 const FeeSettings = lazy(() => import("@food/pages/franchise-admin/fee-settings/FeeSettings"));
@@ -156,6 +157,7 @@ export default function FranchiseAdminRouter() {
           <Route path="store-performance" element={<StorePerformance />} />
           <Route path="operating-hours" element={<OperatingHours />} />
           <Route path="live-orders" element={<LiveOrders />} />
+          <Route path="completed-orders" element={<CompletedOrders />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -171,7 +173,7 @@ export default function FranchiseAdminRouter() {
             <Route path="orders/accepted" element={<OrdersPage statusKey="accepted" />} />
             <Route path="orders/processing" element={<OrdersPage statusKey="processing" />} />
             <Route path="orders/food-on-the-way" element={<OrdersPage statusKey="food-on-the-way" />} />
-            <Route path="orders/delivered" element={<OrdersPage statusKey="delivered" />} />
+            <Route path="orders/delivered" element={<Navigate to="/franchise-admin/completed-orders" replace />} />
             <Route path="orders/canceled" element={<OrdersPage statusKey="canceled" />} />
             <Route path="orders/restaurant-cancelled" element={<OrdersPage statusKey="restaurant-cancelled" />} />
             <Route path="orders/payment-failed" element={<OrdersPage statusKey="payment-failed" />} />
