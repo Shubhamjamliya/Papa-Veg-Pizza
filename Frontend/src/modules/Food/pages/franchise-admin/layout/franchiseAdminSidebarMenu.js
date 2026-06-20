@@ -28,7 +28,7 @@ export const franchiseAdminSidebarMenu = [
     type: "section",
     label: "ORDERS",
     items: [
-      { type: "link", label: "Live Orders", path: "/franchise-admin/dashboard/orders/all", icon: "Activity" },
+      { type: "link", label: "Live Orders", path: "/franchise-admin/live-orders", icon: "Activity" },
       { type: "link", label: "Completed Orders", path: "/franchise-admin/dashboard/orders/delivered", icon: "CheckCircle" },
       { type: "link", label: "Cancelled Orders", path: "/franchise-admin/dashboard/orders/canceled", icon: "XCircle" },
       { type: "link", label: "Refund Requests", path: "/franchise-admin/dashboard/order-refunds/new", icon: "RotateCcw" },
