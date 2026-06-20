@@ -11,26 +11,20 @@ import {
 } from "@food/components/ui/card"
 import { Input } from "@food/components/ui/input"
 import { Label } from "@food/components/ui/label"
-import { Mail, User, Lock, Eye, EyeOff, ArrowLeft, Shield } from "lucide-react"
+import { Mail, ArrowLeft, Shield } from "lucide-react"
 import quickSpicyLogo from "@food/assets/quicky-spicy-logo.png"
-import { authAPI, adminAPI } from "@food/api"
-import { setAuthData } from "@food/utils/auth"
+import { adminAPI } from "@food/api"
+import { useCompanyName } from "@food/hooks/useCompanyName"
 import { loadBusinessSettings } from "@food/utils/businessSettings"
-const debugLog = (...args) => {}
-const debugWarn = (...args) => {}
-const debugError = (...args) => {}
 
-
-export default function AdminSignup() {
+export default function AdminForgotPassword() {
+  const companyName = useCompanyName()
   const navigate = useNavigate()
-  const [step, setStep] = useState(1) // 1: signup form, 2: OTP verification
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  })
+  const [step, setStep] = useState(1) // 1: email, 2: OTP, 3: new password
+  const [email, setEmail] = useState("")
   const [otp, setOtp] = useState(["", "", "", "", "", ""])
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -48,15 +42,13 @@ export default function AdminSignup() {
           setLogoUrl(settings.logo.url)
         }
       } catch (error) {
-        // Silently fail and use default logo
-        debugWarn("Failed to load business settings logo:", error)
+        // Silently fail
       }
     }
     fetchLogo()
 
     // Listen for business settings updates
     const handleSettingsUpdate = async () => {
-      // Force reload settings from backend
       const settings = await loadBusinessSettings();
       if (settings?.logo?.url) {
         setLogoUrl(settings.logo.url);
@@ -66,40 +58,20 @@ export default function AdminSignup() {
     return () => window.removeEventListener('businessSettingsUpdated', handleSettingsUpdate);
   }, [])
 
-  const handleFormSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault()
     setError("")
 
-    // Validation
-    if (!formData.name.trim()) {
-      setError("Name is required")
-      return
-    }
-
-    if (!formData.email.trim()) {
+    const trimmedEmail = email.trim().toLowerCase()
+    if (!trimmedEmail) {
       setError("Email is required")
-      return
-    }
-
-    if (!formData.password) {
-      setError("Password is required")
-      return
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long")
-      return
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
       return
     }
 
     setIsLoading(true)
     try {
-      // Send OTP for registration
-      await authAPI.sendOTP(null, "register", formData.email)
+      await adminAPI.requestForgotPasswordOtp(trimmedEmail)
+      setEmail(trimmedEmail)
       setStep(2)
       setResendTimer(60)
       const timer = setInterval(() => {
@@ -116,7 +88,7 @@ export default function AdminSignup() {
         err?.response?.data?.message ||
         err?.response?.data?.error ||
         err?.message ||
-        "Failed to send verification code. Please try again."
+        "This email is not registered as an admin account or something went wrong."
       setError(message)
     } finally {
       setIsLoading(false)
@@ -159,50 +131,16 @@ export default function AdminSignup() {
     }
   }
 
-  const handleOtpSubmit = async (e) => {
+  const handleOtpSubmit = (e) => {
     e.preventDefault()
     setError("")
 
     const otpCode = otp.join("")
     if (otpCode.length !== 6) {
-      setError("Please enter the complete OTP")
+      setError("Please enter the complete 6-digit OTP")
       return
     }
-
-    setIsLoading(true)
-    try {
-      // Use admin-specific signup endpoint with OTP
-      const response = await adminAPI.signupWithOTP(
-        formData.name,
-        formData.email,
-        formData.password,
-        otpCode
-      )
-
-      const data = response?.data?.data || response?.data
-
-      // If registration successful, store tokens and redirect
-      if (data.accessToken && data.admin) {
-        // Store admin token and data
-        setAuthData("admin", data.accessToken, data.admin)
-
-        // Navigate to admin dashboard
-        navigate("/admin", { replace: true })
-      } else {
-        throw new Error("Registration failed. Please try again.")
-      }
-    } catch (err) {
-      const message =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        err?.message ||
-        "Invalid OTP or registration failed. Please try again."
-      setError(message)
-      setOtp(["", "", "", "", "", ""])
-      inputRefs.current[0]?.focus()
-    } finally {
-      setIsLoading(false)
-    }
+    setStep(3)
   }
 
   const handleResendOtp = async () => {
@@ -211,7 +149,7 @@ export default function AdminSignup() {
     setIsLoading(true)
     setError("")
     try {
-      await authAPI.sendOTP(null, "register", formData.email)
+      await adminAPI.requestForgotPasswordOtp(email)
       setResendTimer(60)
       const timer = setInterval(() => {
         setResendTimer((prev) => {
@@ -234,6 +172,44 @@ export default function AdminSignup() {
     }
   }
 
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault()
+    setError("")
+
+    if (!newPassword || !confirmPassword) {
+      setError("Please fill in all fields")
+      return
+    }
+
+    if (newPassword.length < 6) {
+      setError("Password must be at least 6 characters long")
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match")
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      await adminAPI.resetPasswordWithOtp(email, otp.join(""), newPassword)
+
+      navigate("/franchise-admin/login", {
+        state: { message: "Password reset successfully. Please login with your new password." },
+      })
+    } catch (err) {
+      const message =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        "Failed to reset password. Please try again."
+      setError(message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-linear-to-br from-neutral-50 via-gray-100 to-white relative">
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -248,11 +224,10 @@ export default function AdminSignup() {
               <div className="flex h-14 w-28 shrink-0 items-center justify-center rounded-xl bg-gray-900/5 ring-1 ring-neutral-200">
                 <img
                   src={logoUrl || quickSpicyLogo}
-                  alt="Logo"
+                  alt={companyName}
                   className="h-10 w-24 object-contain"
                   loading="lazy"
                   onError={(e) => {
-                    // Fallback to default logo if business logo fails to load
                     if (e.target.src !== quickSpicyLogo) {
                       e.target.src = quickSpicyLogo
                     }
@@ -261,12 +236,14 @@ export default function AdminSignup() {
               </div>
               <div className="flex flex-col gap-1">
                 <CardTitle className="text-3xl leading-tight text-gray-900">
-                  {step === 1 ? "Admin Sign Up" : "Verify Email"}
+                  {step === 1 && "Forgot Password"}
+                  {step === 2 && "Verify OTP"}
+                  {step === 3 && "Reset Password"}
                 </CardTitle>
                 <CardDescription className="text-base text-gray-600">
-                  {step === 1
-                    ? "Create your admin account"
-                    : "Enter the verification code sent to your email"}
+                  {step === 1 && "Enter your email to receive a verification code"}
+                  {step === 2 && "Enter the 6-digit code sent to your email"}
+                  {step === 3 && "Enter your new password"}
                 </CardDescription>
               </div>
             </div>
@@ -280,31 +257,7 @@ export default function AdminSignup() {
             )}
 
             {step === 1 && (
-              <form onSubmit={handleFormSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-base font-medium text-gray-900">
-                    Full Name
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
-                      <User className="h-5 w-5" />
-                    </span>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="John Doe"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      disabled={isLoading}
-                      autoComplete="name"
-                      required
-                      className="h-12 pl-10 text-base"
-                    />
-                  </div>
-                </div>
-
+              <form onSubmit={handleEmailSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-base font-medium text-gray-900">
                     Email Address
@@ -317,10 +270,8 @@ export default function AdminSignup() {
                       id="email"
                       type="email"
                       placeholder="admin@domain.com"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       disabled={isLoading}
                       autoComplete="email"
                       required
@@ -329,80 +280,12 @@ export default function AdminSignup() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-base font-medium text-gray-900">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
-                      <Lock className="h-5 w-5" />
-                    </span>
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter password (min 6 characters)"
-                      value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
-                      disabled={isLoading}
-                      autoComplete="new-password"
-                      required
-                      className="h-12 pl-10 pr-10 text-base"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800"
-                      disabled={isLoading}
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-900">
-                    Confirm Password
-                  </Label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
-                      <Lock className="h-5 w-5" />
-                    </span>
-                    <Input
-                      id="confirmPassword"
-                      type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Confirm password"
-                      value={formData.confirmPassword}
-                      onChange={(e) =>
-                        setFormData({ ...formData, confirmPassword: e.target.value })
-                      }
-                      disabled={isLoading}
-                      autoComplete="new-password"
-                      required
-                      className="h-12 pl-10 pr-10 text-base"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800"
-                      disabled={isLoading}
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff className="h-5 w-5" />
-                      ) : (
-                        <Eye className="h-5 w-5" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-
                 <Button
                   type="submit"
                   className="h-12 w-full bg-black text-white transition-colors hover:bg-neutral-900"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Sending..." : "Continue"}
+                  {isLoading ? "Sending..." : "Send Verification Code"}
                 </Button>
               </form>
             )}
@@ -435,7 +318,7 @@ export default function AdminSignup() {
                     ))}
                   </div>
                   <p className="text-sm text-gray-500 text-center">
-                    Code sent to <span className="font-medium">{formData.email}</span>
+                    Code sent to <span className="font-medium">{email}</span>
                   </p>
                 </div>
 
@@ -464,7 +347,79 @@ export default function AdminSignup() {
                   className="h-12 w-full bg-black text-white transition-colors hover:bg-neutral-900"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Verifying..." : "Verify & Sign Up"}
+                  {isLoading ? "Verifying..." : "Verify Code"}
+                </Button>
+              </form>
+            )}
+
+            {step === 3 && (
+              <form onSubmit={handlePasswordSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword" className="text-base font-medium text-gray-900">
+                    New Password
+                  </Label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
+                      <Shield className="h-5 w-5" />
+                    </span>
+                    <Input
+                      id="newPassword"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter new password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      disabled={isLoading}
+                      autoComplete="new-password"
+                      required
+                      className="h-12 pl-10 pr-10 text-base"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800"
+                      disabled={isLoading}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword" className="text-base font-medium text-gray-900">
+                    Confirm Password
+                  </Label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
+                      <Shield className="h-5 w-5" />
+                    </span>
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      disabled={isLoading}
+                      autoComplete="new-password"
+                      required
+                      className="h-12 pl-10 pr-10 text-base"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800"
+                      disabled={isLoading}
+                    >
+                      {showConfirmPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="h-12 w-full bg-black text-white transition-colors hover:bg-neutral-900"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Resetting..." : "Reset Password"}
                 </Button>
               </form>
             )}
@@ -472,25 +427,16 @@ export default function AdminSignup() {
 
           <CardFooter className="flex-col items-start gap-2 text-sm text-gray-500">
             <button
-              onClick={() => navigate("/admin/login")}
+              onClick={() => navigate("/franchise-admin/login")}
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to login
             </button>
-            <span>Already have an account?{" "}
-              <button
-                onClick={() => navigate("/admin/login")}
-                className="text-black hover:underline font-medium"
-              >
-                Sign in
-              </button>
-            </span>
           </CardFooter>
         </Card>
       </div>
     </div>
   )
 }
-
 

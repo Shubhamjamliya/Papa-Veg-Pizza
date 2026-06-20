@@ -69,10 +69,13 @@ function SuperAdminLayout() {
       document.documentElement.classList.remove("dark");
     }
 
-    // Apply primary colors
+    // Apply primary & secondary colors
     const primaryColor = localStorage.getItem("sa_primary") || "#a43c12";
+    const secondaryColor = localStorage.getItem("sa_secondary") || "#ff7f50";
     document.documentElement.style.setProperty("--primary", primaryColor);
     document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`);
+    document.documentElement.style.setProperty("--secondary", secondaryColor);
+    document.documentElement.style.setProperty("--secondary-hover", `${secondaryColor}cc`);
   }, [location.pathname])
 
   // Sync active sidebar state based on route path
