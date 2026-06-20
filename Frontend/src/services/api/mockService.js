@@ -1,4 +1,4 @@
-import { initialStores, initialManagers } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
+import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -18,7 +18,7 @@ const setStorageItem = (key, val) => {
 
 // Initial Seed Data
 const initialCategories = [
-  { id: "cat-1", name: "Pizzas", status: "Active", description: "Freshly baked vegetarian pizzas", order: 1, isGlobal: true, isApproved: true },
+  { id: "cat-1", name: "Pizzas", status: "Active", description: "Freshly vegetarian pizzas", order: 1, isGlobal: true, isApproved: true },
   { id: "cat-2", name: "Beverages", status: "Active", description: "Soft drinks and milkshakes", order: 2, isGlobal: true, isApproved: true },
   { id: "cat-3", name: "Sides", status: "Active", description: "Garlic breads, dips and sides", order: 3, isGlobal: true, isApproved: true },
   { id: "cat-4", name: "Desserts", status: "Draft", description: "Choco lava cakes and ice creams", order: 4, isGlobal: false, isApproved: false }
@@ -51,7 +51,6 @@ const initialEmergencyReports = [
   { id: "report-1", title: "Accident reported", description: "Rider reported a minor road incident near sector 62", status: "pending", priority: "high", createdAt: new Date().toISOString() }
 ];
 
-
 // Initialize Database Collections
 let db = {
   categories: getStorageItem("categories", initialCategories),
@@ -61,14 +60,55 @@ let db = {
   tickets: getStorageItem("tickets", initialTickets),
   emergencyReports: getStorageItem("emergencyReports", initialEmergencyReports),
   stores: getStorageItem("stores", initialStores),
-  managers: getStorageItem("managers", initialManagers)
+  managers: getStorageItem("managers", initialManagers),
+  storeApprovals: getStorageItem("storeApprovals", initialStoreApprovals),
+  storePerformance: getStorageItem("storePerformance", initialStorePerformance),
+  operatingHours: getStorageItem("operatingHours", initialOperatingHours)
 };
+
+// Sync stores and managers to ensure new approvals data is available in existing localStorage
+initialStores.forEach(s => {
+  if (!db.stores.some(ds => ds._id === s._id)) {
+    db.stores.push(s);
+  }
+});
+initialManagers.forEach(m => {
+  const existingIdx = db.managers.findIndex(dm => dm.id === m.id);
+  if (existingIdx === -1) {
+    db.managers.push(m);
+  } else if (db.managers[existingIdx].name !== m.name) {
+    db.managers[existingIdx] = { ...db.managers[existingIdx], ...m };
+  }
+});
+initialStorePerformance.forEach(p => {
+  const existingIdx = db.storePerformance.findIndex(dp => dp._id === p._id);
+  if (existingIdx === -1) {
+    db.storePerformance.push(p);
+  } else {
+    // If the local record has 0 revenue/orders or missing storeId (which indicates placeholder data), overwrite with seeded data
+    if ((db.storePerformance[existingIdx].revenue === 0 || !db.storePerformance[existingIdx].storeId) && p.revenue > 0) {
+      db.storePerformance[existingIdx] = { ...db.storePerformance[existingIdx], ...p };
+    } else {
+      db.storePerformance[existingIdx] = { ...p, ...db.storePerformance[existingIdx] };
+    }
+  }
+});
+initialOperatingHours.forEach(oh => {
+  const existingIdx = db.operatingHours.findIndex(doh => doh._id === oh._id);
+  if (existingIdx === -1) {
+    db.operatingHours.push(oh);
+  } else {
+    db.operatingHours[existingIdx] = { ...oh, ...db.operatingHours[existingIdx] };
+  }
+});
 
 const saveDB = () => {
   Object.keys(db).forEach((key) => {
     setStorageItem(key, db[key]);
   });
 };
+
+saveDB();
 
 // Request Processor
 export function handleMockRequest(config) {
@@ -565,6 +605,15 @@ export function handleMockRequest(config) {
 
   // --- STORES MANAGEMENT MOCK ENDPOINTS ---
 
+  // GET /users/:id
+  const userIdMatch = url.match(/\/users\/([^/]+)$/);
+  if (userIdMatch && method === "get") {
+    const id = userIdMatch[1];
+    const mgr = db.managers.find(m => m.id === id);
+    if (mgr) return successRes(mgr);
+    return errorRes("User not found", 404);
+  }
+
   // GET /users (managers or staff)
   if (url.includes("/users")) {
     const role = config.params?.role || "";
@@ -769,6 +818,182 @@ export function handleMockRequest(config) {
     }
   }
 
+  // 10. Store Approvals Dashboard endpoint
+  if (url.includes("/store-approvals/dashboard")) {
+    const pending = db.storeApprovals.filter(s => s.status === "Pending").length;
+    const approved = db.storeApprovals.filter(s => s.status === "Approved").length;
+    const rejected = db.storeApprovals.filter(s => s.status === "Rejected").length;
+    return successRes({
+      pendingApprovals: pending || 18,
+      approvedToday: approved || 7,
+      rejectedStores: rejected || 4,
+      avgApprovalTime: 3.2
+    });
+  }
+
+  // 11. Store Approvals Audit timeline
+  const auditMatch = url.match(/\/store-approvals\/([^/]+)\/audit$/);
+  if (auditMatch) {
+    const id = auditMatch[1];
+    const app = db.storeApprovals.find(s => s._id === id);
+    if (!app) return errorRes("Approval record not found", 404);
+    
+    const logs = [
+      { actor: app.submittedBy || "Franchise Manager", action: "Submitted", date: app.createdAt, remarks: app.remarks || "No remarks" }
+    ];
+    if (app.status === "Approved") {
+      logs.push({ actor: app.approvedBy || "Super Admin", action: "Approved", date: app.approvedAt || new Date().toISOString(), remarks: "Store approved and configuration activated." });
+    } else if (app.status === "Rejected") {
+      logs.push({ actor: "Super Admin", action: "Rejected", date: app.approvedAt || new Date().toISOString(), remarks: `Rejected: ${app.rejectionReason}` });
+    }
+    return successRes(logs);
+  }
+
+  // 12. Store Approvals Documents Zip download
+  if (url.match(/\/store-approvals\/([^/]+)\/documents$/)) {
+    return successMsg("Document zip download simulation started.");
+  }
+
+  // 13. PATCH approve store approval
+  if (method === "patch" && url.match(/\/store-approvals\/([^/]+)\/approve$/)) {
+    const match = url.match(/\/store-approvals\/([^/]+)\/approve$/);
+    const id = match[1];
+    const appIdx = db.storeApprovals.findIndex(s => s._id === id);
+    if (appIdx !== -1) {
+      db.storeApprovals[appIdx].status = "Approved";
+      db.storeApprovals[appIdx].approvedBy = "Super Admin";
+      db.storeApprovals[appIdx].approvedAt = new Date().toISOString();
+      
+      // Also ensure corresponding store in db.stores is set to Active and isOpen is true
+      const storeId = db.storeApprovals[appIdx].storeId;
+      const storeIdx = db.stores.findIndex(s => s._id === storeId);
+      if (storeIdx !== -1) {
+        db.stores[storeIdx].status = "Active";
+        db.stores[storeIdx].isOpen = true;
+        db.stores[storeIdx].updatedAt = new Date().toISOString();
+      } else {
+        // Create new store if it doesn't exist
+        const app = db.storeApprovals[appIdx];
+        const newStore = {
+          _id: storeId,
+          franchiseId: app.franchiseId || "fran-1",
+          storeCode: app.storeCode,
+          storeName: app.storeName,
+          managerId: app.managerId,
+          phone: app.phone,
+          email: app.email,
+          address: app.address,
+          status: "Active",
+          storeType: app.storeType,
+          openingDate: new Date().toISOString().split("T")[0],
+          currentCapacity: 0,
+          totalOrders: 0,
+          averageRating: 5.0,
+          isOpen: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        db.stores.unshift(newStore);
+      }
+      saveDB();
+      return successMsg("Store approved successfully", db.storeApprovals[appIdx]);
+    }
+    return errorRes("Approval record not found", 404);
+  }
+
+  // 14. PATCH reject store approval
+  if (method === "patch" && url.match(/\/store-approvals\/([^/]+)\/reject$/)) {
+    const match = url.match(/\/store-approvals\/([^/]+)\/reject$/);
+    const id = match[1];
+    const appIdx = db.storeApprovals.findIndex(s => s._id === id);
+    if (appIdx !== -1) {
+      db.storeApprovals[appIdx].status = "Rejected";
+      db.storeApprovals[appIdx].rejectionReason = data.reason || "Documents Incomplete";
+      db.storeApprovals[appIdx].approvedBy = "Super Admin";
+      db.storeApprovals[appIdx].approvedAt = new Date().toISOString();
+      db.storeApprovals[appIdx].remarks = data.comments || "";
+      
+      // Update corresponding store in db.stores to Inactive / Closed
+      const storeId = db.storeApprovals[appIdx].storeId;
+      const storeIdx = db.stores.findIndex(s => s._id === storeId);
+      if (storeIdx !== -1) {
+        db.stores[storeIdx].status = "Closed";
+        db.stores[storeIdx].isOpen = false;
+        db.stores[storeIdx].updatedAt = new Date().toISOString();
+      }
+      saveDB();
+      return successMsg("Store rejected successfully", db.storeApprovals[appIdx]);
+    }
+    return errorRes("Approval record not found", 404);
+  }
+
+  // 15. GET list of approvals
+  if (url.includes("/store-approvals")) {
+    if (method === "get") {
+      let filtered = [...db.storeApprovals];
+      const search = config.params?.search || "";
+      const status = config.params?.status || "";
+      const city = config.params?.city || "";
+      const managerId = config.params?.managerId || "";
+      const startDate = config.params?.startDate || "";
+      const endDate = config.params?.endDate || "";
+      const sort = config.params?.sort || "createdAt";
+      const order = config.params?.order || "desc";
+
+      if (search) {
+        const q = search.toLowerCase().trim();
+        filtered = filtered.filter(s => 
+          s.storeName.toLowerCase().includes(q) ||
+          s._id.toLowerCase().includes(q) ||
+          (s.managerName || "").toLowerCase().includes(q)
+        );
+      }
+
+      if (status && status !== "All") {
+        filtered = filtered.filter(s => s.status === status);
+      }
+
+      if (city && city !== "All") {
+        filtered = filtered.filter(s => s.address?.city === city);
+      }
+
+      if (managerId && managerId !== "All") {
+        filtered = filtered.filter(s => s.managerId === managerId);
+      }
+
+      if (startDate) {
+        filtered = filtered.filter(s => new Date(s.createdAt) >= new Date(startDate));
+      }
+      if (endDate) {
+        filtered = filtered.filter(s => new Date(s.createdAt) <= new Date(endDate + "T23:59:59.999Z"));
+      }
+
+      // Sorting
+      filtered.sort((a, b) => {
+        let valA = a[sort];
+        let valB = b[sort];
+        if (typeof valA === "string") {
+          return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return order === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+      });
+
+      const page = parseInt(config.params?.page || "1", 10);
+      const limit = parseInt(config.params?.limit || "10", 10);
+      const totalCount = filtered.length;
+
+      const startIndex = (page - 1) * limit;
+      const paginated = filtered.slice(startIndex, startIndex + limit);
+
+      return successRes({
+        approvals: paginated,
+        totalCount,
+        page,
+        limit
+      });
+    }
+  }
+
   // GET or POST /stores
   if (url.includes("/stores")) {
     if (method === "get") {
@@ -869,6 +1094,630 @@ export function handleMockRequest(config) {
       saveDB();
       return successMsg("Store created successfully", newStore);
     }
+  }
+
+  // --- STORE PERFORMANCE ANALYTICS MOCK ENDPOINTS ---
+
+  // GET /store-performance/dashboard
+  if (url.includes("/store-performance/dashboard")) {
+    const activePerfs = db.storePerformance.filter(p => p.status === "Active");
+    const totalRev = activePerfs.reduce((sum, p) => sum + (p.revenue || 0), 0);
+    const totalOrd = activePerfs.reduce((sum, p) => sum + (p.totalOrders || 0), 0);
+    const avgPrep = activePerfs.length > 0 ? Math.round(activePerfs.reduce((sum, p) => sum + (p.avgPreparationTime || 0), 0) / activePerfs.length) : 14;
+    const avgDel = activePerfs.length > 0 ? Math.round(activePerfs.reduce((sum, p) => sum + (p.avgDeliveryTime || 0), 0) / activePerfs.length) : 24;
+    const avgRating = activePerfs.length > 0 ? (activePerfs.reduce((sum, p) => sum + (p.customerRating || 0), 0) / activePerfs.length).toFixed(1) : "4.8";
+    
+    // Best store is the one with the highest performanceScore
+    let bestStoreName = "Papa Veg Pizza - Indore Central";
+    if (activePerfs.length > 0) {
+      const sortedByScore = [...activePerfs].sort((a, b) => b.performanceScore - a.performanceScore);
+      bestStoreName = sortedByScore[0].storeName;
+    }
+
+    return successRes({
+      revenueToday: totalRev || 185000,
+      ordersToday: totalOrd || 1260,
+      avgPreparationTime: avgPrep || 14,
+      avgDeliveryTime: avgDel || 24,
+      customerRating: parseFloat(avgRating) || 4.8,
+      cancellationRate: 2.1,
+      inventoryWaste: 3.0,
+      bestStore: bestStoreName
+    });
+  }
+
+  // GET /store-performance/revenue
+  if (url.includes("/store-performance/revenue")) {
+    return successRes({
+      daily: [
+        { time: "Mon", revenue: 85000 },
+        { time: "Tue", revenue: 98000 },
+        { time: "Wed", revenue: 112000 },
+        { time: "Thu", revenue: 95000 },
+        { time: "Fri", revenue: 142050 },
+        { time: "Sat", revenue: 185000 },
+        { time: "Sun", revenue: 165000 }
+      ],
+      weekly: [
+        { time: "Week 1", revenue: 650000 },
+        { time: "Week 2", revenue: 780000 },
+        { time: "Week 3", revenue: 890000 },
+        { time: "Week 4", revenue: 1120000 }
+      ],
+      monthly: [
+        { time: "Jan", revenue: 2400000 },
+        { time: "Feb", revenue: 2800000 },
+        { time: "Mar", revenue: 3100000 },
+        { time: "Apr", revenue: 2900000 },
+        { time: "May", revenue: 3800000 },
+        { time: "Jun", revenue: 4200000 }
+      ]
+    });
+  }
+
+  // GET /store-performance/orders
+  if (url.includes("/store-performance/orders")) {
+    return successRes([
+      { time: "Mon", completed: 580, cancelled: 12 },
+      { time: "Tue", completed: 620, cancelled: 15 },
+      { time: "Wed", completed: 740, cancelled: 18 },
+      { time: "Thu", completed: 690, cancelled: 10 },
+      { time: "Fri", completed: 950, cancelled: 22 },
+      { time: "Sat", completed: 1260, cancelled: 26 },
+      { time: "Sun", completed: 1100, cancelled: 20 }
+    ]);
+  }
+
+  // GET /store-performance/ratings
+  if (url.includes("/store-performance/ratings")) {
+    return successRes([
+      { time: "Mon", rating: 4.6 },
+      { time: "Tue", rating: 4.7 },
+      { time: "Wed", rating: 4.8 },
+      { time: "Thu", rating: 4.6 },
+      { time: "Fri", rating: 4.7 },
+      { time: "Sat", rating: 4.8 },
+      { time: "Sun", rating: 4.9 }
+    ]);
+  }
+
+  // GET /store-performance/comparison
+  if (url.includes("/store-performance/comparison")) {
+    const list = db.storePerformance.filter(p => p.status === "Active").slice(0, 5);
+    return successRes(
+      list.map(p => ({
+        name: p.storeName.replace("Papa Veg Pizza - ", ""),
+        revenue: p.revenue,
+        orders: p.totalOrders,
+        rating: p.customerRating,
+        cancellation: parseFloat(((p.cancelledOrders / (p.totalOrders || 1)) * 100).toFixed(1))
+      }))
+    );
+  }
+
+  // GET /store-performance/busy-hours
+  if (url.includes("/store-performance/busy-hours")) {
+    return successRes([
+      { hour: "11 AM", density: 30 },
+      { hour: "12 PM", density: 55 },
+      { hour: "1 PM", density: 85 },
+      { hour: "2 PM", density: 60 },
+      { hour: "3 PM", density: 40 },
+      { hour: "4 PM", density: 35 },
+      { hour: "5 PM", density: 45 },
+      { hour: "6 PM", density: 70 },
+      { hour: "7 PM", density: 90 },
+      { hour: "8 PM", density: 100 },
+      { hour: "9 PM", density: 95 },
+      { hour: "10 PM", density: 75 },
+      { hour: "11 PM", density: 40 }
+    ]);
+  }
+
+  // GET /store-performance/compare
+  if (url.includes("/store-performance/compare")) {
+    let storeIdsStr = config.params?.storeIds || "";
+    if (!storeIdsStr) {
+      const match = url.match(/[?&]storeIds=([^&]+)/);
+      if (match) storeIdsStr = decodeURIComponent(match[1]);
+    }
+    const storeIds = storeIdsStr ? storeIdsStr.split(",") : [];
+    
+    // Find matching performance records
+    let perfs = db.storePerformance.filter(p => storeIds.includes(p.storeId) || storeIds.includes(p._id));
+    
+    // Fallback to seed data if localStorage db is out of sync or missing these records
+    if (perfs.length === 0 && initialStorePerformance) {
+      perfs = initialStorePerformance.filter(p => storeIds.includes(p.storeId) || storeIds.includes(p._id));
+    }
+    
+    return successRes(perfs);
+  }
+
+  // GET /store-performance/export
+  if (url.includes("/store-performance/export")) {
+    return successMsg("Report export started. Your file will download automatically.");
+  }
+
+  // Single Store Analytics subroutes
+  const singleStorePerfMatch = url.match(/\/store-performance\/([^/]+)\/([^/]+)$/);
+  if (singleStorePerfMatch) {
+    const storeId = singleStorePerfMatch[1];
+    const subRoute = singleStorePerfMatch[2];
+    const perf = db.storePerformance.find(p => p.storeId === storeId) || db.storePerformance[0];
+
+    if (subRoute === "revenue") {
+      return successRes({
+        todayRevenue: perf.revenue || 56000,
+        weeklyRevenue: (perf.revenue * 6.5) || 364000,
+        monthlyRevenue: (perf.revenue * 27) || 1512000,
+        avgOrderValue: perf.avgOrderValue || 200,
+        trend: [
+          { time: "Mon", revenue: perf.revenue * 0.7 },
+          { time: "Tue", revenue: perf.revenue * 0.8 },
+          { time: "Wed", revenue: perf.revenue * 0.9 },
+          { time: "Thu", revenue: perf.revenue * 0.8 },
+          { time: "Fri", revenue: perf.revenue * 1.1 },
+          { time: "Sat", revenue: perf.revenue },
+          { time: "Sun", revenue: perf.revenue * 0.95 }
+        ],
+        paymentMethods: [
+          { name: "UPI / NetBanking", value: 65 },
+          { name: "Credit / Debit Cards", value: 25 },
+          { name: "Cash on Delivery", value: 10 }
+        ],
+        distribution: [
+          { category: "Pizzas", value: 60 },
+          { category: "Sides & Garlic Bread", value: 25 },
+          { category: "Beverages", value: 10 },
+          { category: "Desserts", value: 5 }
+        ]
+      });
+    }
+
+    if (subRoute === "orders") {
+      return successRes({
+        totalOrders: perf.totalOrders || 280,
+        completedOrders: perf.completedOrders || 274,
+        cancelledOrders: perf.cancelledOrders || 6,
+        completionRate: parseFloat(((perf.completedOrders / (perf.totalOrders || 1)) * 100).toFixed(1)) || 97.9,
+        avgOrdersPerHour: Math.round(perf.totalOrders / 12) || 23,
+        dailyOrders: [
+          { time: "Mon", completed: 180, cancelled: 4 },
+          { time: "Tue", completed: 210, cancelled: 5 },
+          { time: "Wed", completed: 230, cancelled: 6 },
+          { time: "Thu", completed: 220, cancelled: 3 },
+          { time: "Fri", completed: 260, cancelled: 8 },
+          { time: "Sat", completed: perf.completedOrders, cancelled: perf.cancelledOrders },
+          { time: "Sun", completed: 250, cancelled: 5 }
+        ],
+        statusDistribution: [
+          { name: "Delivered", value: 92 },
+          { name: "Cancelled", value: 2.1 },
+          { name: "Returned / Failed", value: 5.9 }
+        ],
+        peakHours: [
+          { hour: "12 PM - 2 PM", count: 85 },
+          { hour: "2 PM - 6 PM", count: 45 },
+          { hour: "6 PM - 9 PM", count: 120 },
+          { hour: "9 PM - 11 PM", count: 70 }
+        ]
+      });
+    }
+
+    if (subRoute === "ratings") {
+      return successRes({
+        avgRating: perf.customerRating || 4.8,
+        totalReviews: 840,
+        positiveReviews: 790,
+        negativeReviews: 50,
+        distribution: [
+          { rating: "5 Star", count: 680 },
+          { rating: "4 Star", count: 110 },
+          { rating: "3 Star", count: 35 },
+          { rating: "2 Star", count: 10 },
+          { rating: "1 Star", count: 5 }
+        ],
+        trend: [
+          { time: "Jan", rating: 4.5 },
+          { time: "Feb", rating: 4.6 },
+          { time: "Mar", rating: 4.6 },
+          { time: "Apr", rating: 4.7 },
+          { time: "May", rating: 4.8 },
+          { time: "Jun", rating: perf.customerRating || 4.8 }
+        ],
+        recentReviews: [
+          { customer: "Rohan Malhotra", rating: 5, comment: "Double cheese margherita was extremely hot and loaded!", date: "2026-06-20" },
+          { customer: "Isha Sharma", rating: 4, comment: "Quick delivery and nice service. Dips were super tasty.", date: "2026-06-20" },
+          { customer: "Amit Patel", rating: 5, comment: "Perfect crust and amazing paneer tikka pizza!", date: "2026-06-19" },
+          { customer: "Sneha Varma", rating: 3, comment: "Pizza was good but delivery took around 40 minutes.", date: "2026-06-18" },
+          { customer: "Manoj Joshi", rating: 5, comment: "Fabulous, standard taste is maintained.", date: "2026-06-17" }
+        ]
+      });
+    }
+
+    if (subRoute === "inventory") {
+      return successRes({
+        wastePercent: perf.inventoryWaste || 2.2,
+        outOfStockItems: 2,
+        stockTurnover: 12.4,
+        lowStockAlerts: 4,
+        wasteTrend: [
+          { time: "Mon", waste: perf.inventoryWaste * 0.9 },
+          { time: "Tue", waste: perf.inventoryWaste * 1.1 },
+          { time: "Wed", waste: perf.inventoryWaste * 0.8 },
+          { time: "Thu", waste: perf.inventoryWaste },
+          { time: "Fri", waste: perf.inventoryWaste * 1.2 },
+          { time: "Sat", waste: perf.inventoryWaste },
+          { time: "Sun", waste: perf.inventoryWaste * 0.95 }
+        ],
+        consumption: [
+          { ingredient: "Processed Cheese", consumed: 85, reorder: false },
+          { ingredient: "Pizza Sauce", consumed: 72, reorder: false },
+          { ingredient: "Wheat Flour", consumed: 94, reorder: true },
+          { ingredient: "Fresh Paneer", consumed: 60, reorder: false }
+        ]
+      });
+    }
+
+    if (subRoute === "products") {
+      return successRes({
+        list: [
+          { product: "Double Cheese Margherita", sold: 1200, revenue: 298800, rating: 4.9, popularity: 98 },
+          { product: "Paneer Tikka Pizza", sold: 950, revenue: 379050, rating: 4.8, popularity: 95 },
+          { product: "Garlic Breadsticks", sold: 800, revenue: 103200, rating: 4.7, popularity: 89 },
+          { product: "Veg Supreme Pizza", sold: 680, revenue: 271320, rating: 4.6, popularity: 85 },
+          { product: "Choco Lava Cake", sold: 620, revenue: 61380, rating: 4.8, popularity: 82 }
+        ],
+        chart: [
+          { name: "Margherita", sold: 1200 },
+          { name: "Paneer Tikka", sold: 950 },
+          { name: "Garlic Bread", sold: 800 },
+          { name: "Veg Supreme", sold: 680 },
+          { name: "Choco Lava", sold: 620 }
+        ]
+      });
+    }
+
+    if (subRoute === "staff") {
+      return successRes({
+        ordersProcessed: perf.completedOrders || 274,
+        avgPrepTime: perf.avgPreparationTime || 12,
+        efficiencyScore: 92,
+        performance: [
+          { name: "Chef Suresh (Kitchen)", orders: 120, rating: 4.9 },
+          { name: "Chef Anil (Oven)", orders: 95, rating: 4.8 },
+          { name: "Rider Karan (Delivery)", orders: 35, rating: 4.7 },
+          { name: "Rider Rahul (Delivery)", orders: 24, rating: 4.6 }
+        ],
+        productivity: [
+          { hour: "11 AM - 3 PM", speed: 90 },
+          { hour: "3 PM - 7 PM", speed: 94 },
+          { hour: "7 PM - 11 PM", speed: 92 }
+        ]
+      });
+    }
+  }
+
+  // GET /store-performance
+  if (url.includes("/store-performance")) {
+    if (method === "get") {
+      let filtered = [...db.storePerformance];
+      
+      const search = config.params?.search || "";
+      const storeId = config.params?.storeId || "";
+      const status = config.params?.status || "";
+      const type = config.params?.type || "";
+      const city = config.params?.city || "";
+      const sort = config.params?.sort || "";
+      const order = config.params?.order || "asc";
+
+      if (search) {
+        const q = search.toLowerCase().trim();
+        filtered = filtered.filter(p => 
+          p.storeName.toLowerCase().includes(q) ||
+          p.storeId.toLowerCase().includes(q)
+        );
+      }
+
+      if (storeId && storeId !== "All") {
+        filtered = filtered.filter(p => p.storeId === storeId);
+      }
+
+      if (status && status !== "All") {
+        filtered = filtered.filter(p => p.status === status);
+      }
+
+      if (type && type !== "All") {
+        filtered = filtered.filter(p => p.storeType === type);
+      }
+
+      if (city && city !== "All") {
+        filtered = filtered.filter(p => p.city === city);
+      }
+
+      // Sorting
+      if (sort) {
+        filtered.sort((a, b) => {
+          let valA = a[sort];
+          let valB = b[sort];
+          if (typeof valA === "string") {
+            return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+          }
+          return order === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+        });
+      }
+
+      const page = parseInt(config.params?.page || "1", 10);
+      const limit = parseInt(config.params?.limit || "10", 10);
+      const totalCount = filtered.length;
+
+      const startIndex = (page - 1) * limit;
+      const paginated = filtered.slice(startIndex, startIndex + limit);
+
+      return successRes({
+        list: paginated,
+        totalCount,
+        page,
+        limit
+      });
+    }
+  }
+
+  // GET /operating-hours/dashboard
+  if (url.includes("/operating-hours/dashboard")) {
+    const activeStores = db.stores.filter(s => s.status === "Active" && s.isArchived !== true);
+    const openNow = activeStores.filter(s => s.isOpen === true).length;
+    const closedStores = db.stores.filter(s => s.isOpen === false || s.status === "Closed").length;
+    
+    // Count 24x7 stores
+    const count24x7 = db.operatingHours.filter(oh => {
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+      return days.every(d => oh[d] && oh[d].open === "12:00 AM" && oh[d].close === "12:00 AM" && !oh[d].isClosed);
+    }).length;
+
+    // Count holiday closures
+    const holidayCount = db.operatingHours.filter(oh => oh.holidaySchedule && oh.holidaySchedule.length > 0).length;
+
+    return successRes({
+      storesOpenNow: openNow || 8,
+      storesClosed: closedStores || 4,
+      stores24x7: count24x7 || 2,
+      holidayClosures: holidayCount || 5,
+      upcomingChanges: 3
+    });
+  }
+
+  // GET /operating-hours/export
+  if (url.includes("/operating-hours/export")) {
+    return successMsg("Report export started. Your file will download automatically.");
+  }
+
+  // POST /operating-hours/copy
+  if (url.includes("/operating-hours/copy")) {
+    const sourceStoreId = data?.sourceStoreId;
+    const destStoreId = data?.destStoreId;
+    
+    const sourceOh = db.operatingHours.find(oh => oh.storeId === sourceStoreId);
+    const destIdx = db.operatingHours.findIndex(oh => oh.storeId === destStoreId);
+    
+    if (sourceOh && destIdx !== -1) {
+      db.operatingHours[destIdx] = {
+        ...db.operatingHours[destIdx],
+        monday: { ...sourceOh.monday },
+        tuesday: { ...sourceOh.tuesday },
+        wednesday: { ...sourceOh.wednesday },
+        thursday: { ...sourceOh.thursday },
+        friday: { ...sourceOh.friday },
+        saturday: { ...sourceOh.saturday },
+        sunday: { ...sourceOh.sunday },
+        updatedBy: "Super Admin",
+        updatedAt: new Date().toISOString()
+      };
+      if (!db.operatingHours[destIdx].auditLogs) db.operatingHours[destIdx].auditLogs = [];
+      db.operatingHours[destIdx].auditLogs.unshift({
+        updatedBy: "Super Admin",
+        action: "Copied Timings",
+        date: new Date().toISOString(),
+        remarks: `Copied schedule from store ${sourceStoreId}`
+      });
+      saveDB();
+      return successMsg("Schedule copied successfully.");
+    }
+    return errorRes("Source or destination store not found.", 404);
+  }
+
+  // PATCH /operating-hours/bulk-update
+  if (url.includes("/operating-hours/bulk-update")) {
+    const storeIds = data?.storeIds || [];
+    const weekdays = data?.weekdays || [];
+    const open = data?.open || "09:00 AM";
+    const close = data?.close || "10:00 PM";
+    const isClosed = data?.isClosed || false;
+
+    db.operatingHours.forEach((oh) => {
+      if (storeIds.includes(oh.storeId)) {
+        weekdays.forEach(day => {
+          const d = day.toLowerCase();
+          if (oh[d]) {
+            oh[d] = { open, close, isClosed };
+          }
+        });
+        oh.updatedBy = "Super Admin";
+        oh.updatedAt = new Date().toISOString();
+        if (!oh.auditLogs) oh.auditLogs = [];
+        oh.auditLogs.unshift({
+          updatedBy: "Super Admin",
+          action: "Bulk Updated Timings",
+          date: new Date().toISOString(),
+          remarks: `Bulk updated days: ${weekdays.join(", ")}`
+        });
+      }
+    });
+    saveDB();
+    return successMsg("Bulk update completed successfully.");
+  }
+
+  // Store-specific operations
+  const storeStatusMatch = url.match(/\/stores\/([^/]+)\/status$/);
+  if (storeStatusMatch && method === "patch") {
+    const storeId = storeStatusMatch[1];
+    const storeIdx = db.stores.findIndex(s => s._id === storeId);
+    
+    if (storeIdx !== -1) {
+      const newStatus = data?.status || "Closed";
+      const newIsOpen = data?.isOpen !== undefined ? data.isOpen : false;
+      
+      db.stores[storeIdx].status = newStatus;
+      db.stores[storeIdx].isOpen = newIsOpen;
+      db.stores[storeIdx].updatedAt = new Date().toISOString();
+      
+      // Also add audit log
+      const ohIdx = db.operatingHours.findIndex(oh => oh.storeId === storeId);
+      if (ohIdx !== -1) {
+        if (!db.operatingHours[ohIdx].auditLogs) db.operatingHours[ohIdx].auditLogs = [];
+        db.operatingHours[ohIdx].auditLogs.unshift({
+          updatedBy: "Super Admin",
+          action: "Status Changed / Temporary Closure",
+          date: new Date().toISOString(),
+          remarks: `Status updated to ${newStatus}. Closure reason: ${data?.reason || "N/A"}`
+        });
+        db.operatingHours[ohIdx].updatedAt = new Date().toISOString();
+      }
+      
+      saveDB();
+      return successMsg("Store status updated successfully.");
+    }
+    return errorRes("Store not found.", 404);
+  }
+
+  const specificOhHolidaysMatch = url.match(/\/operating-hours\/([^/]+)\/holidays$/);
+  if (specificOhHolidaysMatch && method === "patch") {
+    const storeId = specificOhHolidaysMatch[1];
+    const ohIdx = db.operatingHours.findIndex(oh => oh.storeId === storeId);
+    
+    if (ohIdx !== -1) {
+      db.operatingHours[ohIdx].holidaySchedule = data?.holidaySchedule || [];
+      db.operatingHours[ohIdx].updatedBy = "Super Admin";
+      db.operatingHours[ohIdx].updatedAt = new Date().toISOString();
+      
+      if (!db.operatingHours[ohIdx].auditLogs) db.operatingHours[ohIdx].auditLogs = [];
+      db.operatingHours[ohIdx].auditLogs.unshift({
+        updatedBy: "Super Admin",
+        action: "Updated Holiday Schedule",
+        date: new Date().toISOString(),
+        remarks: `Updated holidays. Total defined: ${data?.holidaySchedule?.length || 0}`
+      });
+      
+      saveDB();
+      return successRes(db.operatingHours[ohIdx]);
+    }
+    return errorRes("Operating hours not found.", 404);
+  }
+
+  const specificOhMatch = url.match(/\/operating-hours\/([^/]+)$/);
+  if (specificOhMatch) {
+    const storeId = specificOhMatch[1];
+    const oh = db.operatingHours.find(o => o.storeId === storeId);
+    
+    if (method === "get") {
+      if (oh) return successRes(oh);
+      return errorRes("Operating hours not found.", 404);
+    }
+    
+    if (method === "patch") {
+      const ohIdx = db.operatingHours.findIndex(o => o.storeId === storeId);
+      if (ohIdx !== -1) {
+        db.operatingHours[ohIdx] = {
+          ...db.operatingHours[ohIdx],
+          ...data,
+          updatedBy: "Super Admin",
+          updatedAt: new Date().toISOString()
+        };
+        if (!db.operatingHours[ohIdx].auditLogs) db.operatingHours[ohIdx].auditLogs = [];
+        db.operatingHours[ohIdx].auditLogs.unshift({
+          updatedBy: "Super Admin",
+          action: "Updated Weekly Hours",
+          date: new Date().toISOString(),
+          remarks: "Modified days of week timings"
+        });
+        
+        saveDB();
+        return successRes(db.operatingHours[ohIdx]);
+      }
+      return errorRes("Operating hours not found.", 404);
+    }
+  }
+
+  // GET /operating-hours (Listing with search, pagination, sort, filter)
+  if (url.includes("/operating-hours") && method === "get") {
+    let list = db.operatingHours.map(oh => {
+      const store = db.stores.find(s => s._id === oh.storeId) || { storeName: "Unknown Store", storeCode: "N/A", status: "Closed", isOpen: false, storeType: "Regular", address: { city: "Indore" } };
+      return {
+        _id: oh._id,
+        storeId: oh.storeId,
+        storeName: store.storeName,
+        storeCode: store.storeCode,
+        status: store.status,
+        isOpen: store.isOpen,
+        storeType: store.storeType,
+        city: store.address?.city || "Indore",
+        schedule: oh,
+        lastUpdated: oh.updatedAt
+      };
+    });
+
+    const search = config.params?.search || "";
+    const status = config.params?.status || "";
+    const type = config.params?.type || "";
+    const city = config.params?.city || "";
+    const sort = config.params?.sort || "storeName";
+    const order = config.params?.order || "asc";
+
+    if (search) {
+      const q = search.toLowerCase().trim();
+      list = list.filter(item => 
+        item.storeName.toLowerCase().includes(q) ||
+        item.storeCode.toLowerCase().includes(q)
+      );
+    }
+
+    if (status && status !== "All") {
+      const isOpenVal = status === "Open";
+      list = list.filter(item => item.isOpen === isOpenVal);
+    }
+
+    if (type && type !== "All") {
+      list = list.filter(item => item.storeType === type);
+    }
+
+    if (city && city !== "All") {
+      list = list.filter(item => item.city.toLowerCase() === city.toLowerCase());
+    }
+
+    // Sort
+    list.sort((a, b) => {
+      let valA = a[sort];
+      let valB = b[sort];
+      if (typeof valA === "string") {
+        return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return order === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+    });
+
+    const page = parseInt(config.params?.page || "1", 10);
+    const limit = parseInt(config.params?.limit || "10", 10);
+    const totalCount = list.length;
+
+    const startIndex = (page - 1) * limit;
+    const paginated = list.slice(startIndex, startIndex + limit);
+
+    return successRes({
+      list: paginated,
+      totalCount,
+      page,
+      limit
+    });
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working

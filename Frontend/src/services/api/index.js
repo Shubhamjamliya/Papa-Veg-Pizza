@@ -167,6 +167,14 @@ export const adminAPI = {
   getStoreStaff: (storeId) => adminClient.get("/users", { params: { storeId } }),
   getStoreReviews: (storeId) => adminClient.get("/reviews", { params: { storeId } }),
   getStoreManagers: () => adminClient.get("/users", { params: { role: "store_manager" } }),
+  getStoreApprovalsDashboard: () => adminClient.get("/store-approvals/dashboard"),
+  getStoreApprovals: (params = {}) => adminClient.get("/store-approvals", { params }),
+  approveStoreApproval: (id, remarks) => adminClient.patch(`/store-approvals/${id}/approve`, { remarks }),
+  rejectStoreApproval: (id, payload) => adminClient.patch(`/store-approvals/${id}/reject`, payload),
+  getStoreApprovalAudit: (id) => adminClient.get(`/store-approvals/${id}/audit`),
+  getStoreApprovalDocumentsZip: (id) => adminClient.get(`/store-approvals/${id}/documents`),
+  getSingleStore: (id) => adminClient.get(`/stores/${id}`),
+  getSingleUser: (id) => adminClient.get(`/users/${id}`),
   getDashboardSummary: () => adminClient.get("/admin/dashboard"),
   getDashboardRevenue: () => adminClient.get("/admin/dashboard/revenue"),
   getDashboardLiveOrders: () => adminClient.get("/admin/dashboard/live-orders"),
@@ -176,6 +184,35 @@ export const adminAPI = {
   getDashboardCustomerActivity: () => adminClient.get("/admin/dashboard/customer-activity"),
   globalSearch: (q) => adminClient.get("/search", { params: { q } }),
   login: (email, password) => authService.adminLogin(email, password),
+
+  // Store Performance Endpoints
+  getStorePerformanceDashboard: () => adminClient.get("/store-performance/dashboard"),
+  getStorePerformanceRevenue: () => adminClient.get("/store-performance/revenue"),
+  getStorePerformanceOrders: () => adminClient.get("/store-performance/orders"),
+  getStorePerformanceRatings: () => adminClient.get("/store-performance/ratings"),
+  getStorePerformanceComparison: () => adminClient.get("/store-performance/comparison"),
+  getStorePerformanceBusyHours: () => adminClient.get("/store-performance/busy-hours"),
+  getStorePerformanceList: (params = {}) => adminClient.get("/store-performance", { params }),
+  getStorePerformanceCompare: (params = {}) => adminClient.get("/store-performance/compare", { params }),
+  exportStorePerformanceReport: (params = {}) => adminClient.get("/store-performance/export", { params }),
+  getStoreSpecificRevenue: (storeId) => adminClient.get(`/store-performance/${storeId}/revenue`),
+  getStoreSpecificOrders: (storeId) => adminClient.get(`/store-performance/${storeId}/orders`),
+  getStoreSpecificRatings: (storeId) => adminClient.get(`/store-performance/${storeId}/ratings`),
+  getStoreSpecificInventory: (storeId) => adminClient.get(`/store-performance/${storeId}/inventory`),
+  getStoreSpecificProducts: (storeId) => adminClient.get(`/store-performance/${storeId}/products`),
+  getStoreSpecificStaff: (storeId) => adminClient.get(`/store-performance/${storeId}/staff`),
+
+  // Operating Hours Endpoints
+  getOperatingHoursDashboard: () => adminClient.get("/operating-hours/dashboard"),
+  getOperatingHours: (params = {}) => adminClient.get("/operating-hours", { params }),
+  getStoreOperatingHours: (storeId) => adminClient.get(`/operating-hours/${storeId}`),
+  updateStoreOperatingHours: (storeId, data) => adminClient.patch(`/operating-hours/${storeId}`, data),
+  updateStoreTemporaryClosure: (storeId, data) => adminClient.patch(`/stores/${storeId}/status`, data),
+  updateStoreHolidays: (storeId, data) => adminClient.patch(`/operating-hours/${storeId}/holidays`, data),
+  copyStoreOperatingHours: (data) => adminClient.post("/operating-hours/copy", data),
+  bulkUpdateStoreOperatingHours: (data) => adminClient.patch("/operating-hours/bulk-update", data),
+  exportOperatingHoursReport: (params = {}) => adminClient.get("/operating-hours/export", { params }),
+
   /** POST /auth/admin/forgot-password/request-otp – only accepts registered admin email */
   requestForgotPasswordOtp: (email) =>
     adminClient.post("/auth/admin/forgot-password/request-otp", {

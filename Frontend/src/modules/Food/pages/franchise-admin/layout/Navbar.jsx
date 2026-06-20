@@ -373,7 +373,7 @@ export default function Navbar({ onToggleSidebar }) {
 
   return (
     <>
-      <header className="sticky top-0 w-full flex justify-between items-center px-4 md:px-6 h-16 bg-white/90 dark:bg-slate-950/90 border-b border-zinc-100 dark:border-zinc-900 z-40 transition-all duration-300">
+      <header className="sticky top-0 w-full flex justify-between items-center px-4 md:px-6 h-16 bg-white dark:bg-zinc-900 border-b border-zinc-150 dark:border-zinc-800 z-40 transition-all duration-300">
         
         {/* LEFT SECTION: Minimal Logo & Inline Store Selector */}
         <div className="flex items-center gap-4 shrink-0">

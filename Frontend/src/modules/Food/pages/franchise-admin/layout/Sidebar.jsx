@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import * as Icons from "lucide-react"
-import { adminSidebarMenu } from "../../../utils/adminSidebarMenu"
+import { franchiseAdminSidebarMenu } from "./franchiseAdminSidebarMenu"
 import { adminAPI } from "@food/api"
 import { clearModuleAuth } from "@food/utils/auth"
 
@@ -92,7 +92,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {/* Scrollable menu content */}
         <nav className="flex-1 overflow-y-auto px-2.5 py-4 space-y-2.5 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-700">
-          {adminSidebarMenu.map((item, idx) => {
+          {franchiseAdminSidebarMenu.map((item, idx) => {
             if (item.type === "link") {
               const isActive = location.pathname === item.path
               return (

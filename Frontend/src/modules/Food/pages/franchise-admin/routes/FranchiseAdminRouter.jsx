@@ -28,6 +28,9 @@ const NewAdvertisement = lazy(() => import("@food/pages/franchise-admin/advertis
 const AdRequests = lazy(() => import("@food/pages/franchise-admin/advertisement/AdRequests"));
 const AdsList = lazy(() => import("@food/pages/franchise-admin/advertisement/AdsList"));
 const Stores = lazy(() => import("@food/pages/franchise-admin/storeManagement/Stores"));
+const StoreApprovals = lazy(() => import("@food/pages/franchise-admin/storeManagement/StoreApprovals"));
+const StorePerformance = lazy(() => import("@food/pages/franchise-admin/storeManagement/StorePerformance"));
+const OperatingHours = lazy(() => import("@food/pages/franchise-admin/storeManagement/OperatingHours"));
 
 // Help & Support
 const Chattings = lazy(() => import("@food/pages/franchise-admin/Chattings"));
@@ -153,6 +156,9 @@ export default function FranchiseAdminRouter() {
           {/* Default Admin Redirect */}
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="stores" element={<Stores />} />
+          <Route path="store-approvals" element={<StoreApprovals />} />
+          <Route path="store-performance" element={<StorePerformance />} />
+          <Route path="operating-hours" element={<OperatingHours />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -232,7 +238,6 @@ export default function FranchiseAdminRouter() {
             <Route path="disbursement-report/deliverymen" element={<DisbursementReportDeliverymen />} />
             <Route path="order-report/regular" element={<RegularOrderReport />} />
             <Route path="order-report/campaign" element={<CampaignOrderReport />} />
-            <Route path="restaurant-report" element={<RestaurantReport />} />
             <Route path="customer-report/feedback-experience" element={<FeedbackExperienceReport />} />
             <Route path="tax-report" element={<TaxReport />} />
             <Route path="restaurant-vat-report" element={<RestaurantVATReport />} />
