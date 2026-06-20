@@ -10,6 +10,7 @@ const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const NewRefundRequests = lazy(() => import("@food/pages/franchise-admin/refunds/NewRefundRequests"));
 const OrdersPage = lazy(() => import("@food/pages/franchise-admin/orders/OrdersPage"));
+const LiveOrders = lazy(() => import("@food/pages/franchise-admin/orders/LiveOrders"));
 const OrderDetectDelivery = lazy(() => import("@food/pages/franchise-admin/OrderDetectDelivery"));
 const Category = lazy(() => import("@food/pages/franchise-admin/categories/Category"));
 const FeeSettings = lazy(() => import("@food/pages/franchise-admin/fee-settings/FeeSettings"));
@@ -154,6 +155,7 @@ export default function FranchiseAdminRouter() {
           <Route path="store-approvals" element={<StoreApprovals />} />
           <Route path="store-performance" element={<StorePerformance />} />
           <Route path="operating-hours" element={<OperatingHours />} />
+          <Route path="live-orders" element={<LiveOrders />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -163,7 +165,7 @@ export default function FranchiseAdminRouter() {
             <Route path="settings" element={<AdminSettings />} />
             
             {/* ORDER MANAGEMENT */}
-            <Route path="orders/all" element={<OrdersPage statusKey="all" />} />
+            <Route path="orders/all" element={<Navigate to="/franchise-admin/live-orders" replace />} />
             <Route path="orders/scheduled" element={<OrdersPage statusKey="scheduled" />} />
             <Route path="orders/pending" element={<OrdersPage statusKey="pending" />} />
             <Route path="orders/accepted" element={<OrdersPage statusKey="accepted" />} />

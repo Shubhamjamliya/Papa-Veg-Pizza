@@ -68,9 +68,9 @@ export default function Navbar({ onToggleSidebar }) {
   const [broadcastForm, setBroadcastForm] = useState({ title: "", message: "", targetStore: "All Stores", priority: "medium" })
 
   const searchCollection = [
-    { id: "ORD-98421", name: "Rajesh Kumar - Cheese Burst Pizza", type: "orders", status: "preparing", route: "/franchise-admin/dashboard/orders/all?q=ORD-98421" },
-    { id: "ORD-98425", name: "Aarav Mehta - Veg Supreme Meal", type: "orders", status: "delivered", route: "/franchise-admin/dashboard/orders/all?q=ORD-98425" },
-    { id: "ORD-98426", name: "Sunita Gupta - Capsicum Feast", type: "orders", status: "accepted", route: "/franchise-admin/dashboard/orders/all?q=ORD-98426" },
+    { id: "ORD-98421", name: "Rajesh Kumar - Cheese Burst Pizza", type: "orders", status: "preparing", route: "/franchise-admin/live-orders?q=ORD-98421" },
+    { id: "ORD-98425", name: "Aarav Mehta - Veg Supreme Meal", type: "orders", status: "delivered", route: "/franchise-admin/live-orders?q=ORD-98425" },
+    { id: "ORD-98426", name: "Sunita Gupta - Capsicum Feast", type: "orders", status: "accepted", route: "/franchise-admin/live-orders?q=ORD-98426" },
     { id: "CUST-001", name: "Rajesh Kumar", type: "customers", status: "Active", route: "/franchise-admin/dashboard/customers" },
     { id: "CUST-002", name: "Priya Patel", type: "customers", status: "Active", route: "/franchise-admin/dashboard/customers" },
     { id: "STORE-01", name: "Indore Central", type: "stores", status: "Online", route: "/franchise-admin/stores" },
@@ -172,7 +172,7 @@ export default function Navbar({ onToggleSidebar }) {
           description: randomEvent.message,
           action: {
             label: "View Orders",
-            onClick: () => navigate("/franchise-admin/dashboard/orders/all")
+            onClick: () => navigate("/franchise-admin/live-orders")
           }
         })
       } else {
@@ -723,7 +723,7 @@ export default function Navbar({ onToggleSidebar }) {
                   {/* Dynamic Notification and Simulated Socket updates */}
                   {newOrdersCount > 0 && (
                     <div 
-                      onClick={() => { setNewOrdersCount(0); navigate("/franchise-admin/dashboard/orders/all"); setShowNotifications(false); }}
+                      onClick={() => { setNewOrdersCount(0); navigate("/franchise-admin/live-orders"); setShowNotifications(false); }}
                       className="p-2 bg-blue-500/5 hover:bg-blue-500/10 border border-blue-500/10 rounded-xl flex items-center justify-between cursor-pointer animate-pulse text-[11px]"
                     >
                       <span className="font-bold text-blue-600 dark:text-blue-400">Incoming Orders Active: {newOrdersCount}</span>
