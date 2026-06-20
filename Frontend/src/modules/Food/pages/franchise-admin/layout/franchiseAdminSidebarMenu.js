@@ -19,7 +19,7 @@ export const franchiseAdminSidebarMenu = [
     type: "section",
     label: "STAFF MANAGEMENT",
     items: [
-      { type: "link", label: "Store Managers", path: "/franchise-admin/dashboard/store-managers", icon: "UserCog" },
+      { type: "link", label: "Store Managers", path: "/franchise-admin/store-managers", icon: "UserCog" },
       { type: "link", label: "Kitchen Staff", path: "/franchise-admin/dashboard/employees", icon: "Users" },
       { type: "link", label: "Delivery Partners", path: "/franchise-admin/dashboard/delivery-partners", icon: "Truck" },
     ],
