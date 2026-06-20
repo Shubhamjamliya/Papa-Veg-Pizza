@@ -974,3 +974,853 @@ export const getKitchenDashboardStats = (staffList) => {
     attendancePercentage
   };
 };
+
+export const initialDeliveryPartners = [
+  {
+    id: "rider-1",
+    name: "Rahul Verma",
+    email: "rahul.verma@papaveg.com",
+    phone: "9826022211",
+    employeeCode: "PVR-201",
+    joinedDate: "2024-03-10",
+    status: "Online",
+    availability: "Available",
+    experience: "1.5 years",
+    storeId: "store-1",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-09-AB-1234",
+    licenseNumber: "DL-092024001234",
+    profileImage: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.8,
+    ordersToday: 12,
+    personalDetails: {
+      address: "45, Vijay Nagar, Indore, MP",
+      emergencyContact: "Suman Verma (Mother) - 9826022210",
+      salary: 18000,
+      salaryType: "Commission",
+      commissionRate: 15,
+      aadhaarNumber: "1234 5678 9012",
+      panNumber: "ABCDE1234F",
+      bankDetails: {
+        bankName: "State Bank of India",
+        accountNo: "10002345678",
+        ifscCode: "SBIN0003043"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-2",
+    name: "Sandeep Singh",
+    email: "sandeep.singh@papaveg.com",
+    phone: "9926011122",
+    employeeCode: "PVR-202",
+    joinedDate: "2023-11-15",
+    status: "Busy",
+    availability: "Available",
+    experience: "2.1 years",
+    storeId: "store-2",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-04-CD-5678",
+    licenseNumber: "DL-042023005678",
+    profileImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.6,
+    ordersToday: 9,
+    personalDetails: {
+      address: "102, MP Nagar, Bhopal, MP",
+      emergencyContact: "G. Singh (Father) - 9926011120",
+      salary: 19000,
+      salaryType: "Salary",
+      commissionRate: 10,
+      aadhaarNumber: "2345 6789 0123",
+      panNumber: "BCDEF2345G",
+      bankDetails: {
+        bankName: "HDFC Bank",
+        accountNo: "20003456789",
+        ifscCode: "HDFC0000102"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Pending",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-3",
+    name: "Deepak Joshi",
+    email: "deepak.joshi@papaveg.com",
+    phone: "9111222444",
+    employeeCode: "PVR-203",
+    joinedDate: "2025-01-20",
+    status: "Offline",
+    availability: "Unavailable",
+    experience: "0.5 years",
+    storeId: "store-3",
+    vehicleType: "Cycle",
+    vehicleNumber: "N/A - Bicycle",
+    licenseNumber: "N/A",
+    profileImage: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.2,
+    ordersToday: 0,
+    personalDetails: {
+      address: "12, Mahakal Marg, Ujjain, MP",
+      emergencyContact: "Ramesh Joshi (Father) - 9111222440",
+      salary: 14000,
+      salaryType: "Salary",
+      commissionRate: 5,
+      aadhaarNumber: "3456 7890 1234",
+      panNumber: "CDEFG3456H",
+      bankDetails: {
+        bankName: "Bank of Baroda",
+        accountNo: "30004567890",
+        ifscCode: "BARB0UJJAXX"
+      }
+    },
+    documents: {
+      drivingLicense: "N/A",
+      vehicleRC: "N/A",
+      insurance: "N/A",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-4",
+    name: "Amit Yadav",
+    email: "amit.yadav@papaveg.com",
+    phone: "9893055566",
+    employeeCode: "PVR-204",
+    joinedDate: "2022-08-01",
+    status: "Online",
+    availability: "Available",
+    experience: "3.2 years",
+    storeId: "store-4",
+    vehicleType: "Car",
+    vehicleNumber: "MP-07-EF-9012",
+    licenseNumber: "DL-072022009012",
+    profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.9,
+    ordersToday: 15,
+    personalDetails: {
+      address: "Plot 88, DD Nagar, Gwalior, MP",
+      emergencyContact: "Sunita Yadav (Wife) - 9893055560",
+      salary: 22000,
+      salaryType: "Commission",
+      commissionRate: 18,
+      aadhaarNumber: "4567 8901 2345",
+      panNumber: "DEFGH4567I",
+      bankDetails: {
+        bankName: "ICICI Bank",
+        accountNo: "40005678901",
+        ifscCode: "ICIC0000021"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-5",
+    name: "Rohit Patel",
+    email: "rohit.patel@papaveg.com",
+    phone: "9755011100",
+    employeeCode: "PVR-205",
+    joinedDate: "2024-05-10",
+    status: "Suspended",
+    availability: "Unavailable",
+    experience: "2.0 years",
+    storeId: "store-5",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-20-GH-3456",
+    licenseNumber: "DL-202024003456",
+    profileImage: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 3.8,
+    ordersToday: 0,
+    personalDetails: {
+      address: "15, Napier Town, Jabalpur, MP",
+      emergencyContact: "T. Patel (Brother) - 9755011109",
+      salary: 17500,
+      salaryType: "Salary",
+      commissionRate: 10,
+      aadhaarNumber: "5678 9012 3456",
+      panNumber: "EFGHI5678J",
+      bankDetails: {
+        bankName: "Axis Bank",
+        accountNo: "50006789012",
+        ifscCode: "UTIB0000125"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Rejected",
+      insurance: "Expired",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Pending"
+    }
+  },
+  {
+    id: "rider-6",
+    name: "Sunita Raj",
+    email: "sunita.raj@papaveg.com",
+    phone: "9926077788",
+    employeeCode: "PVR-206",
+    joinedDate: "2023-05-20",
+    status: "Online",
+    availability: "Available",
+    experience: "2.8 years",
+    storeId: "store-1",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-09-JK-7890",
+    licenseNumber: "DL-092023007890",
+    profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.7,
+    ordersToday: 11,
+    personalDetails: {
+      address: "88, Palasia Square, Indore, MP",
+      emergencyContact: "Amit Raj (Husband) - 9926077780",
+      salary: 19500,
+      salaryType: "Commission",
+      commissionRate: 14,
+      aadhaarNumber: "6789 0123 4567",
+      panNumber: "FGHIJ6789K",
+      bankDetails: {
+        bankName: "Punjab National Bank",
+        accountNo: "60007890123",
+        ifscCode: "PUNB0024400"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-7",
+    name: "Pooja Sharma",
+    email: "pooja.sharma@papaveg.com",
+    phone: "9826088899",
+    employeeCode: "PVR-207",
+    joinedDate: "2024-10-01",
+    status: "Busy",
+    availability: "Available",
+    experience: "1.0 years",
+    storeId: "store-2",
+    vehicleType: "Cycle",
+    vehicleNumber: "N/A - Bicycle",
+    licenseNumber: "N/A",
+    profileImage: "https://images.unsplash.com/photo-1558203728-00f45181dd84?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.5,
+    ordersToday: 8,
+    personalDetails: {
+      address: "56, Arera Colony, Bhopal, MP",
+      emergencyContact: "M. Sharma (Father) - 9826088890",
+      salary: 13000,
+      salaryType: "Salary",
+      commissionRate: 8,
+      aadhaarNumber: "7890 1234 5678",
+      panNumber: "GHIJK7890L",
+      bankDetails: {
+        bankName: "State Bank of India",
+        accountNo: "70008901234",
+        ifscCode: "SBIN0005012"
+      }
+    },
+    documents: {
+      drivingLicense: "N/A",
+      vehicleRC: "N/A",
+      insurance: "N/A",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-8",
+    name: "Vikas Mishra",
+    email: "vikas.mishra@papaveg.com",
+    phone: "9111333777",
+    employeeCode: "PVR-208",
+    joinedDate: "2023-01-10",
+    status: "Online",
+    availability: "Available",
+    experience: "3.5 years",
+    storeId: "store-3",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-13-LM-4567",
+    licenseNumber: "DL-132023004567",
+    profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.8,
+    ordersToday: 13,
+    personalDetails: {
+      address: "24, Nanakheda, Ujjain, MP",
+      emergencyContact: "Usha Mishra (Wife) - 9111333770",
+      salary: 21000,
+      salaryType: "Commission",
+      commissionRate: 16,
+      aadhaarNumber: "8901 2345 6789",
+      panNumber: "HIJKL8901M",
+      bankDetails: {
+        bankName: "HDFC Bank",
+        accountNo: "80009012345",
+        ifscCode: "HDFC0000045"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-9",
+    name: "Manish Gupta",
+    email: "manish.gupta@papaveg.com",
+    phone: "9893044433",
+    employeeCode: "PVR-209",
+    joinedDate: "2024-02-15",
+    status: "Offline",
+    availability: "Unavailable",
+    experience: "1.2 years",
+    storeId: "store-4",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-07-NP-2345",
+    licenseNumber: "DL-072024002345",
+    profileImage: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.4,
+    ordersToday: 0,
+    personalDetails: {
+      address: "G-10, DD Nagar, Gwalior, MP",
+      emergencyContact: "S. Gupta (Mother) - 9893044430",
+      salary: 17000,
+      salaryType: "Salary",
+      commissionRate: 10,
+      aadhaarNumber: "9012 3456 7890",
+      panNumber: "IJKLM9012N",
+      bankDetails: {
+        bankName: "ICICI Bank",
+        accountNo: "90000123456",
+        ifscCode: "ICIC0000045"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Pending",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-10",
+    name: "Sanjay Rawat",
+    email: "sanjay.rawat@papaveg.com",
+    phone: "9755033322",
+    employeeCode: "PVR-210",
+    joinedDate: "2022-11-20",
+    status: "Online",
+    availability: "Available",
+    experience: "3.8 years",
+    storeId: "store-5",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-20-PQ-8901",
+    licenseNumber: "DL-202022008901",
+    profileImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.9,
+    ordersToday: 16,
+    personalDetails: {
+      address: "105, Napier Town, Jabalpur, MP",
+      emergencyContact: "A. Rawat (Brother) - 9755033320",
+      salary: 23000,
+      salaryType: "Commission",
+      commissionRate: 17,
+      aadhaarNumber: "0123 4567 8901",
+      panNumber: "JKLMN0123O",
+      bankDetails: {
+        bankName: "Axis Bank",
+        accountNo: "10001234567",
+        ifscCode: "UTIB0000125"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-11",
+    name: "Rajesh Sen",
+    email: "rajesh.sen@papaveg.com",
+    phone: "9826044433",
+    employeeCode: "PVR-211",
+    joinedDate: "2023-08-15",
+    status: "Busy",
+    availability: "Available",
+    experience: "2.5 years",
+    storeId: "store-1",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-09-RS-4567",
+    licenseNumber: "DL-092023004567",
+    profileImage: "https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.5,
+    ordersToday: 10,
+    personalDetails: {
+      address: "A-24, Sukhliya, Indore, MP",
+      emergencyContact: "Jyoti Sen (Wife) - 9826044430",
+      salary: 19000,
+      salaryType: "Commission",
+      commissionRate: 15,
+      aadhaarNumber: "1234 0987 5678",
+      panNumber: "KLMNO1234P",
+      bankDetails: {
+        bankName: "Union Bank of India",
+        accountNo: "11002345678",
+        ifscCode: "UBIN0530433"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-12",
+    name: "Manoj Sharma",
+    email: "manoj.sharma@papaveg.com",
+    phone: "9926055566",
+    employeeCode: "PVR-212",
+    joinedDate: "2024-04-10",
+    status: "Online",
+    availability: "Available",
+    experience: "1.8 years",
+    storeId: "store-2",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-04-TV-8901",
+    licenseNumber: "DL-042024008901",
+    profileImage: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.7,
+    ordersToday: 12,
+    personalDetails: {
+      address: "Arera Colony, Bhopal, MP",
+      emergencyContact: "K. Sharma (Father) - 9926055560",
+      salary: 18500,
+      salaryType: "Salary",
+      commissionRate: 12,
+      aadhaarNumber: "2345 0987 6789",
+      panNumber: "LMNOP2345Q",
+      bankDetails: {
+        bankName: "HDFC Bank",
+        accountNo: "12003456789",
+        ifscCode: "HDFC0000102"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-13",
+    name: "Vijay Dube",
+    email: "vijay.dube@papaveg.com",
+    phone: "9111444888",
+    employeeCode: "PVR-213",
+    joinedDate: "2022-05-10",
+    status: "Online",
+    availability: "Available",
+    experience: "4.0 years",
+    storeId: "store-3",
+    vehicleType: "Car",
+    vehicleNumber: "MP-13-WX-5678",
+    licenseNumber: "DL-132022005678",
+    profileImage: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.8,
+    ordersToday: 14,
+    personalDetails: {
+      address: "10, Tower Chowk, Ujjain, MP",
+      emergencyContact: "S. Dube (Mother) - 9111444880",
+      salary: 24000,
+      salaryType: "Commission",
+      commissionRate: 18,
+      aadhaarNumber: "3456 0987 7890",
+      panNumber: "MNOPQ3456R",
+      bankDetails: {
+        bankName: "Bank of India",
+        accountNo: "13004567890",
+        ifscCode: "BKID0003301"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-14",
+    name: "Sunil Prasad",
+    email: "sunil.prasad@papaveg.com",
+    phone: "9893088877",
+    employeeCode: "PVR-214",
+    joinedDate: "2024-09-01",
+    status: "Offline",
+    availability: "Unavailable",
+    experience: "1.1 years",
+    storeId: "store-4",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-07-YZ-1234",
+    licenseNumber: "DL-072024001234",
+    profileImage: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.3,
+    ordersToday: 0,
+    personalDetails: {
+      address: "DD Nagar, Gwalior, MP",
+      emergencyContact: "J. Prasad (Father) - 9893088870",
+      salary: 16500,
+      salaryType: "Salary",
+      commissionRate: 10,
+      aadhaarNumber: "4567 0987 8901",
+      panNumber: "NOPQR4567S",
+      bankDetails: {
+        bankName: "ICICI Bank",
+        accountNo: "14005678901",
+        ifscCode: "ICIC0000021"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Pending",
+      insurance: "Expired",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  },
+  {
+    id: "rider-15",
+    name: "Ajay Nair",
+    email: "ajay.nair@papaveg.com",
+    phone: "9755088899",
+    employeeCode: "PVR-215",
+    joinedDate: "2023-10-15",
+    status: "Online",
+    availability: "Available",
+    experience: "2.6 years",
+    storeId: "store-5",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-20-AB-9012",
+    licenseNumber: "DL-202023009012",
+    profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&fm=webp",
+    rating: 4.7,
+    ordersToday: 13,
+    personalDetails: {
+      address: "Napier Town, Jabalpur, MP",
+      emergencyContact: "G. Nair (Father) - 9755088890",
+      salary: 19000,
+      salaryType: "Commission",
+      commissionRate: 14,
+      aadhaarNumber: "5678 0987 9012",
+      panNumber: "OPQRS5678T",
+      bankDetails: {
+        bankName: "HDFC Bank",
+        accountNo: "15006789012",
+        ifscCode: "HDFC0000125"
+      }
+    },
+    documents: {
+      drivingLicense: "Verified",
+      vehicleRC: "Verified",
+      insurance: "Verified",
+      aadhaar: "Verified",
+      panCard: "Verified",
+      bankProof: "Verified"
+    }
+  }
+];
+
+export const getDeliveryPartnerPerformance = (riderId) => {
+  const seed = parseInt(riderId.split("-")[1] || 1);
+  const totalD = 180 + seed * 25;
+  const avgTime = 22 + (seed % 6);
+  const distance = 400 + seed * 50;
+  const rating = (4.0 + (seed % 9) * 0.1).toFixed(1);
+  const cancelRate = seed % 4;
+  const earnings = totalD * 40;
+
+  const dailyTrend = [
+    { day: "Mon", deliveries: Math.floor(totalD / 30) },
+    { day: "Tue", deliveries: Math.floor(totalD / 28) },
+    { day: "Wed", deliveries: Math.floor(totalD / 32) },
+    { day: "Thu", deliveries: Math.floor(totalD / 29) },
+    { day: "Fri", deliveries: Math.floor(totalD / 25) },
+    { day: "Sat", deliveries: Math.floor(totalD / 22) },
+    { day: "Sun", deliveries: Math.floor(totalD / 20) }
+  ];
+
+  const weeklyTrend = [
+    { label: "W1", deliveries: Math.floor(totalD / 4) },
+    { label: "W2", deliveries: Math.floor(totalD / 3.8) },
+    { label: "W3", deliveries: Math.floor(totalD / 4.2) },
+    { label: "W4", deliveries: Math.floor(totalD / 3.5) }
+  ];
+
+  const monthlyTrend = [
+    { label: "Jan", deliveries: Math.floor(totalD * 0.8) },
+    { label: "Feb", deliveries: Math.floor(totalD * 0.9) },
+    { label: "Mar", deliveries: Math.floor(totalD * 1.05) },
+    { label: "Apr", deliveries: totalD }
+  ];
+
+  const ratingTrend = [
+    { label: "W1", rating: parseFloat(rating) - 0.2 },
+    { label: "W2", rating: parseFloat(rating) + 0.1 },
+    { label: "W3", rating: parseFloat(rating) - 0.1 },
+    { label: "W4", rating: parseFloat(rating) }
+  ];
+
+  return {
+    totalDeliveries: totalD,
+    avgDeliveryTime: avgTime,
+    distanceCovered: distance,
+    avgRating: parseFloat(rating),
+    cancellationRate: cancelRate,
+    earnings,
+    trends: {
+      daily: dailyTrend,
+      weekly: weeklyTrend,
+      monthly: monthlyTrend,
+      rating: ratingTrend
+    }
+  };
+};
+
+export const getDeliveryPartnerAttendance = (riderId) => {
+  const seed = parseInt(riderId.split("-")[1] || 1);
+  const totalDays = 30;
+  const lateCount = seed % 3;
+  const leavesTaken = seed % 2;
+  const absentCount = seed % 4 === 0 ? 1 : 0;
+  const presentCount = totalDays - lateCount - leavesTaken - absentCount;
+  const attendanceRate = ((presentCount + lateCount) / totalDays * 100).toFixed(1);
+  const workingHours = (presentCount + lateCount) * 8;
+  const overtimeHours = (seed % 3) * 6;
+
+  const calendarLogs = [];
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dateStr = d.toISOString().split("T")[0];
+    
+    let status = "Present";
+    let checkIn = "10:00 AM";
+    let checkOut = "06:00 PM";
+    
+    if (i % 8 === 0 && lateCount > 0 && calendarLogs.filter(l => l.status === "Late").length < lateCount) {
+      status = "Late";
+      checkIn = "10:45 AM";
+    } else if (i % 11 === 0 && leavesTaken > 0 && calendarLogs.filter(l => l.status === "Leave").length < leavesTaken) {
+      status = "Leave";
+      checkIn = "-";
+      checkOut = "-";
+    } else if (i === 14 && absentCount > 0) {
+      status = "Absent";
+      checkIn = "-";
+      checkOut = "-";
+    }
+
+    calendarLogs.push({
+      date: dateStr,
+      status,
+      checkIn,
+      checkOut,
+      workingHours: status === "Present" || status === "Late" ? 8 : 0
+    });
+  }
+
+  return {
+    attendanceRate: parseFloat(attendanceRate),
+    workingDays: presentCount + lateCount,
+    lateCount,
+    leavesTaken,
+    absentCount,
+    hoursWorked: workingHours,
+    overtimeHours,
+    calendarLogs
+  };
+};
+
+export const getDeliveryPartnerWallet = (riderId) => {
+  const seed = parseInt(riderId.split("-")[1] || 1);
+  const balance = 1200 + seed * 200;
+  const todayEarnings = 450 + seed * 50;
+  const weeklyEarnings = todayEarnings * 6;
+  const monthlyEarnings = weeklyEarnings * 4;
+  const bonuses = seed % 2 === 0 ? 1000 : 500;
+  const penalties = seed % 3 === 0 ? 200 : 0;
+  const withdrawals = seed * 1200;
+
+  const transactions = [
+    { id: `TX-${seed}01`, date: "Today, 04:30 PM", type: "Order Payout", amount: 45, refId: "ORD-9801", status: "Credited" },
+    { id: `TX-${seed}02`, date: "Today, 02:10 PM", type: "Order Payout", amount: 60, refId: "ORD-9755", status: "Credited" },
+    { id: `TX-${seed}03`, date: "Yesterday, 06:15 PM", type: "Weekly Bonus", amount: bonuses, refId: "BON-WK24", status: "Credited" },
+    { id: `TX-${seed}04`, date: "2026-06-16", type: "Rider Withdrawal", amount: 1500, refId: "WD-11409", status: "Processed" },
+    { id: `TX-${seed}05`, date: "2026-06-15", type: "Late Delivery Penalty", amount: penalties || 50, refId: "ORD-9411", status: "Debited" }
+  ];
+
+  return {
+    balance,
+    todayEarnings,
+    weeklyEarnings,
+    monthlyEarnings,
+    bonuses,
+    penalties,
+    withdrawals,
+    history: transactions
+  };
+};
+
+export const getDeliveryPartnerLiveTracking = (riderId) => {
+  const seed = parseInt(riderId.split("-")[1] || 1);
+  const battery = 88 - (seed * 3) % 20;
+  const network = battery > 75 ? "Excellent" : "Good";
+  const speed = 25 + (seed % 3) * 5;
+  const batteryStatus = battery > 20 ? "Normal" : "Low";
+
+  const locations = [
+    { lat: 22.7196, lng: 75.8577, desc: "Indore Central Store" },
+    { lat: 22.7253, lng: 75.8654, desc: "Palasia Junction" },
+    { lat: 22.7301, lng: 75.8798, desc: "Saket Square" },
+    { lat: 22.7412, lng: 75.8955, desc: "Vijay Nagar Crossing" },
+    { lat: 22.7523, lng: 75.9088, desc: "LIG Square Delivery Point" }
+  ];
+
+  const currentIdx = seed % locations.length;
+  const currentPos = locations[currentIdx];
+  const destPos = locations[(currentIdx + 1) % locations.length];
+
+  return {
+    lat: currentPos.lat,
+    lng: currentPos.lng,
+    eta: `${10 + (seed % 4) * 3} mins`,
+    speed: `${speed} km/h`,
+    battery,
+    networkStatus: network,
+    batteryStatus,
+    distanceRemaining: `${(1.2 + (seed % 3) * 0.8).toFixed(1)} km`,
+    lastUpdated: "Just now",
+    currentOrder: {
+      orderNumber: `ORD-980${seed}`,
+      customerName: ["Aman Gupta", "Rahul Dev", "Rohan Mehta", "Gaurav Sen", "Priya Jain"][seed % 5],
+      destination: destPos.desc,
+      estTime: `${15 + (seed % 3) * 5} mins`
+    },
+    routePath: locations
+  };
+};
+
+export const getDeliveryPartnerSalary = (riderId, baseSalary) => {
+  const seed = parseInt(riderId.split("-")[1] || 1);
+  const commission = 3500 + seed * 300;
+  const bonus = seed % 2 === 0 ? 1500 : 500;
+  const deductions = seed % 3 === 0 ? 500 : 0;
+  const netSalary = baseSalary + commission + bonus - deductions;
+
+  const months = ["May 2026", "April 2026", "March 2026", "February 2026", "January 2026"];
+  const salaryHistory = months.map((m, idx) => {
+    const monthSeed = idx + seed;
+    const mComm = 3000 + monthSeed * 250;
+    const mBonus = monthSeed % 2 === 0 ? 1000 : 400;
+    const mDeductions = monthSeed % 3 === 0 ? 300 : 0;
+    return {
+      month: m,
+      baseSalary,
+      commission: mComm,
+      bonus: mBonus,
+      deduction: mDeductions,
+      net: baseSalary + mComm + mBonus - mDeductions,
+      status: "Paid"
+    };
+  });
+
+  return {
+    monthlySalary: baseSalary,
+    commission,
+    bonus,
+    deductions,
+    netSalary,
+    history: salaryHistory
+  };
+};
+
+export const getDeliveryPartnerAuditLogs = (riderId) => {
+  return [
+    { id: 1, action: "Profile Updated", details: "Updated emergency contact and residential address details", date: "Today, 11:30 AM", type: "profile" },
+    { id: 2, action: "Document Uploaded", details: "Uploaded renewed Vehicle Insurance policy copy", date: "Yesterday, 04:15 PM", type: "document" },
+    { id: 3, action: "Wallet Updated", details: "Credited Weekly Performance Bonus of ₹500", date: "2026-06-16, 06:00 PM", type: "wallet" },
+    { id: 4, action: "Status Changed", details: "Switched status to Online (Available)", date: "2026-06-15, 09:00 AM", type: "status" },
+    { id: 5, action: "Login Activity", details: "Logged into Rider Mobile App (v2.4.1, Android 13)", date: "2026-06-15, 08:58 AM", type: "system" }
+  ];
+};
+
+export const getDeliveryPartnerDashboardStats = (riderList) => {
+  const total = riderList.length;
+  const online = riderList.filter(r => r.status === "Online").length;
+  const busy = riderList.filter(r => r.status === "Busy").length;
+  const delivered = 145 + riderList.length * 4;
+  const avgTime = 24.5;
+  const avgRating = 4.7;
+  const todayEarnings = 8400 + riderList.length * 150;
+  const cancelled = 3;
+
+  return {
+    totalRiders: total,
+    onlineRiders: online,
+    busyRiders: busy,
+    deliveredToday: delivered,
+    avgDeliveryTime: avgTime,
+    avgRating,
+    todayEarnings,
+    cancelledDeliveries: cancelled
+  };
+};
