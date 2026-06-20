@@ -33,6 +33,7 @@ const StorePerformance = lazy(() => import("@food/pages/franchise-admin/storeMan
 const OperatingHours = lazy(() => import("@food/pages/franchise-admin/storeManagement/OperatingHours"));
 const StoreManagers = lazy(() => import("@food/pages/franchise-admin/staffManagement/StoreManagers"));
 const KitchenStaff = lazy(() => import("@food/pages/franchise-admin/staffManagement/KitchenStaff"));
+const DeliveryPartners = lazy(() => import("@food/pages/franchise-admin/staffManagement/DeliveryPartners"));
 
 // Help & Support
 const Chattings = lazy(() => import("@food/pages/franchise-admin/Chattings"));
@@ -53,14 +54,6 @@ const DeliveryWithdrawal = lazy(() => import("@food/pages/franchise-admin/Delive
 const DeliveryBoyWallet = lazy(() => import("@food/pages/franchise-admin/DeliveryBoyWallet"));
 const DeliveryEmergencyHelp = lazy(() => import("@food/pages/franchise-admin/DeliveryEmergencyHelp"));
 const DeliverySupportTickets = lazy(() => import("@food/pages/franchise-admin/DeliverySupportTickets"));
-const JoinRequest = lazy(() => import("@food/pages/franchise-admin/delivery-partners/JoinRequest"));
-const AddDeliveryman = lazy(() => import("@food/pages/franchise-admin/delivery-partners/AddDeliveryman"));
-const DeliverymanList = lazy(() => import("@food/pages/franchise-admin/delivery-partners/DeliverymanList"));
-const DeliverymanReviews = lazy(() => import("@food/pages/franchise-admin/delivery-partners/DeliverymanReviews"));
-const DeliverymanBonus = lazy(() => import("@food/pages/franchise-admin/delivery-partners/DeliverymanBonus"));
-const EarningAddon = lazy(() => import("@food/pages/franchise-admin/delivery-partners/EarningAddon"));
-const EarningAddonHistory = lazy(() => import("@food/pages/franchise-admin/delivery-partners/EarningAddonHistory"));
-const DeliveryEarnings = lazy(() => import("@food/pages/franchise-admin/delivery-partners/DeliveryEarnings"));
 // Disbursement Management
 // Report Management
 const TransactionReport = lazy(() => import("@food/pages/franchise-admin/reports/TransactionReport"));
@@ -76,10 +69,7 @@ const RestaurantVATReport = lazy(() => import("@food/pages/franchise-admin/repor
 // Transaction Management
 const RestaurantWithdraws = lazy(() => import("@food/pages/franchise-admin/transactions/RestaurantWithdraws"));
 const WithdrawMethod = lazy(() => import("@food/pages/franchise-admin/transactions/WithdrawMethod"));
-// Employee Management
-const EmployeeRole = lazy(() => import("@food/pages/franchise-admin/employees/EmployeeRole"));
-const AddEmployee = lazy(() => import("@food/pages/franchise-admin/employees/AddEmployee"));
-const EmployeeList = lazy(() => import("@food/pages/franchise-admin/employees/EmployeeList"));
+
 // Business Settings
 const BusinessSetup = lazy(() => import("@food/pages/franchise-admin/settings/BusinessSetup"));
 const EmailTemplate = lazy(() => import("@food/pages/franchise-admin/settings/EmailTemplate"));
@@ -160,6 +150,7 @@ export default function FranchiseAdminRouter() {
           <Route path="stores" element={<Stores />} />
           <Route path="store-managers" element={<StoreManagers />} />
           <Route path="employees" element={<KitchenStaff />} />
+          <Route path="delivery-partners" element={<DeliveryPartners />} />
           <Route path="store-approvals" element={<StoreApprovals />} />
           <Route path="store-performance" element={<StorePerformance />} />
           <Route path="operating-hours" element={<OperatingHours />} />
@@ -226,14 +217,7 @@ export default function FranchiseAdminRouter() {
             <Route path="delivery-boy-wallet" element={<DeliveryBoyWallet />} />
             <Route path="delivery-emergency-help" element={<DeliveryEmergencyHelp />} />
             <Route path="delivery-support-tickets" element={<DeliverySupportTickets />} />
-            <Route path="delivery-partners" element={<DeliverymanList />} />
-            <Route path="delivery-partners/add" element={<AddDeliveryman />} />
-            <Route path="delivery-partners/join-request" element={<JoinRequest />} />
-            <Route path="delivery-partners/reviews" element={<DeliverymanReviews />} />
-            <Route path="delivery-partners/bonus" element={<DeliverymanBonus />} />
-            <Route path="delivery-partners/earning-addon" element={<EarningAddon />} />
-            <Route path="delivery-partners/earning-addon-history" element={<EarningAddonHistory />} />
-            <Route path="delivery-partners/earnings" element={<DeliveryEarnings />} />
+
 
             {/* REPORTS & SETTINGS */}
             <Route path="transaction-report" element={<TransactionReport />} />
@@ -249,9 +233,7 @@ export default function FranchiseAdminRouter() {
             <Route path="restaurant-withdraws" element={<RestaurantWithdraws />} />
             <Route path="withdraw-method" element={<WithdrawMethod />} />
             
-            <Route path="employee-role" element={<EmployeeRole />} />
-            <Route path="employees" element={<EmployeeList />} />
-            <Route path="employees/add" element={<AddEmployee />} />
+
 
             {/* SYSTEM & BUSINESS SETTINGS */}
             <Route path="business-setup" element={<BusinessSetup />} />
