@@ -295,32 +295,32 @@ export default function Stores() {
   }
 
   return (
-    <div className="px-6 pb-6 pt-0 max-w-7xl mx-auto space-y-6 text-slate-900 dark:text-slate-100">
+    <div className="px-4 pb-4 pt-0 max-w-7xl mx-auto space-y-4 text-slate-900 dark:text-slate-100">
 
       {/* HEADER SECTION */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Stores</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Manage all stores under this franchise.</p>
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Stores</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Manage all stores under this franchise.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => setIsAddOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 text-white bg-primary hover:bg-primary/90 rounded-xl text-sm font-semibold shadow-md shadow-primary/10 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.5 text-white bg-primary hover:bg-primary/95 rounded-lg text-xs font-semibold shadow-md shadow-primary/10 transition-all cursor-pointer"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             Add Store
           </button>
           <button
             onClick={handleExport}
-            className="flex items-center gap-1.5 px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:bg-slate-50 rounded-xl text-sm font-semibold transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:bg-slate-55 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-3.5 h-3.5" />
             Export Stores
           </button>
           <button
             onClick={() => { fetchStores(); fetchKPIs(); }}
-            className="p-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer"
+            className="p-1.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:bg-slate-55 rounded-lg transition-colors cursor-pointer"
             title="Refresh Grid"
           >
             <RefreshCw className="w-4 h-4 text-slate-500" />
@@ -329,32 +329,32 @@ export default function Stores() {
       </div>
 
       {/* KPI DASHBOARD SECTION */}
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
         {[
           { label: "Total Stores", val: kpis?.totalStores, sub: "12 Stores", icon: Building2, color: "text-primary bg-primary/5" },
           { label: "Active Stores", val: kpis?.activeStoresCount, sub: "10 Active", icon: Users, color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20" },
           { label: "Open Now", val: kpis?.openNowCount, sub: "8 Stores", icon: Clock, color: "text-blue-600 bg-blue-50 dark:bg-blue-950/20" },
           { label: "Closed Stores", val: kpis?.closedStoresCount, sub: "2 Stores", icon: Trash2, color: "text-red-600 bg-red-50 dark:bg-red-950/20" },
           { label: "Avg Store Rating", val: kpis ? `${kpis.averageRating}★` : null, sub: "4.7★ Overall", icon: Star, color: "text-yellow-600 bg-yellow-50 dark:bg-yellow-950/20" },
-          { label: "Orders Today", val: kpis?.ordersToday, sub: "1,246 Orders", icon: TrendingUp, color: "text-purple-600 bg-purple-50 dark:bg-purple-950/20" }
+          { label: "Orders Today", val: kpis?.ordersToday, sub: "1,246 Orders", icon: TrendingUp, color: "text-purple-650 bg-purple-50 dark:bg-purple-950/20" }
         ].map((card, i) => (
-          <div key={i} className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-2xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[100px]">
+          <div key={i} className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-xl p-3 shadow-xs relative overflow-hidden flex flex-col justify-between min-h-[85px]">
             {loadingKpis ? (
-              <div className="space-y-2 animate-pulse">
+              <div className="space-y-1.5 animate-pulse">
                 <div className="h-3 w-16 bg-slate-200 dark:bg-slate-800 rounded" />
-                <div className="h-6 w-20 bg-slate-300 dark:bg-slate-700 rounded" />
+                <div className="h-5 w-20 bg-slate-300 dark:bg-slate-700 rounded" />
               </div>
             ) : (
               <>
                 <div>
-                  <span className="block text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">
+                  <span className="block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-0.5">
                     {card.label}
                   </span>
-                  <span className="text-xl font-extrabold text-slate-900 dark:text-white">
+                  <span className="text-base font-black text-slate-900 dark:text-white">
                     {card.val ?? 0}
                   </span>
                 </div>
-                <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-50 dark:border-slate-850 text-[10px] font-semibold text-slate-400">
+                <div className="flex items-center justify-between mt-1 pt-1 border-t border-slate-50 dark:border-slate-850 text-[9px] font-semibold text-slate-400">
                   <span>{card.sub}</span>
                   <div className={`p-1 rounded-md ${card.color}`}>
                     <card.icon className="w-3.5 h-3.5" />
@@ -367,27 +367,27 @@ export default function Stores() {
       </div>
 
       {/* FILTER BAR SECTION */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl p-4 shadow-sm space-y-4">
-        <div className="flex flex-wrap items-center gap-3">
+      <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-xl p-3 shadow-xs space-y-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           
           {/* Search Store Bar */}
-          <div className="relative flex-1 min-w-[240px]">
-            <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
+          <div className="relative flex-1 min-w-[180px]">
+            <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-400" />
             <input
               type="text"
               placeholder="Search store name, code, city..."
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              className="w-full pl-8 pr-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-primary transition-all"
             />
           </div>
 
           {/* Status Dropdown */}
-          <div className="w-[125px]">
+          <div className="w-[115px]">
             <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
+              className="w-full px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
             >
               <option value="All">Status: All</option>
               <option value="Active">Active</option>
@@ -397,11 +397,11 @@ export default function Stores() {
           </div>
 
           {/* Store Type Dropdown */}
-          <div className="w-[140px]">
+          <div className="w-[120px]">
             <select
               value={typeFilter}
               onChange={(e) => { setTypeFilter(e.target.value); setPage(1); }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
+              className="w-full px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
             >
               <option value="All">Type: All</option>
               <option value="Regular">Regular</option>
@@ -411,11 +411,11 @@ export default function Stores() {
           </div>
 
           {/* Open Status Dropdown */}
-          <div className="w-[125px]">
+          <div className="w-[115px]">
             <select
               value={openFilter}
               onChange={(e) => { setOpenFilter(e.target.value); setPage(1); }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
+              className="w-full px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
             >
               <option value="">Open Status</option>
               <option value="true">Open</option>
@@ -424,11 +424,11 @@ export default function Stores() {
           </div>
 
           {/* Manager Dropdown */}
-          <div className="w-[150px]">
+          <div className="w-[130px]">
             <select
               value={managerFilter}
               onChange={(e) => { setManagerFilter(e.target.value); setPage(1); }}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
+              className="w-full px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:outline-none"
             >
               <option value="All">Manager: All</option>
               {managers.map((m) => (
@@ -443,21 +443,20 @@ export default function Stores() {
               type="date"
               value={startDate}
               onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
-              className="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 text-[10px] font-semibold"
+              className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 text-[10px] font-semibold focus:outline-none text-slate-500"
             />
             <span className="text-slate-400 text-xs">-</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
-              className="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 text-[10px] font-semibold"
+              className="px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 text-[10px] font-semibold focus:outline-none text-slate-500"
             />
           </div>
 
-          {/* Reset Action */}
           <button
             onClick={handleResetFilters}
-            className="px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-55 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
+            className="px-2.5 py-1.5 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-55 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
           >
             Reset Filters
           </button>
@@ -467,12 +466,12 @@ export default function Stores() {
 
       {/* ERROR BANNER */}
       {error && !loading && (
-        <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30 rounded-2xl flex items-center gap-3">
+        <div className="p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30 rounded-xl flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-red-650 shrink-0" />
-          <div className="flex-1 text-sm text-red-700 dark:text-red-400 font-semibold">{error}</div>
+          <div className="flex-1 text-xs text-red-700 dark:text-red-400 font-semibold">{error}</div>
           <button
             onClick={fetchStores}
-            className="px-3.5 py-1.5 bg-red-650 hover:bg-red-750 text-white rounded-lg text-xs font-bold transition-colors"
+            className="px-3 py-1 bg-red-655 hover:bg-red-750 text-white rounded-lg text-xs font-bold transition-colors"
           >
             Retry Fetch
           </button>
@@ -480,7 +479,7 @@ export default function Stores() {
       )}
 
       {/* TABLE SECTION */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-xl overflow-hidden shadow-xs">
         
         {loading ? (
           /* SKELETON TABLE ROWS */
@@ -517,62 +516,62 @@ export default function Stores() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-950/50 border-b border-slate-100 dark:border-slate-850 text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-wider">
-                  <th className="px-4 py-3 cursor-pointer select-none" onClick={() => handleSort("storeCode")}>
+                <tr className="bg-slate-50 dark:bg-slate-950/50 border-b border-slate-100 dark:border-slate-850 text-[9px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-wider">
+                  <th className="px-2.5 py-2 cursor-pointer select-none" onClick={() => handleSort("storeCode")}>
                     <div className="flex items-center gap-1">
                       Store ID
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
-                  <th className="px-4 py-3 cursor-pointer select-none" onClick={() => handleSort("storeName")}>
+                  <th className="px-2.5 py-2 cursor-pointer select-none" onClick={() => handleSort("storeName")}>
                     <div className="flex items-center gap-1">
                       Store Name
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
-                  <th className="px-4 py-3">Manager</th>
-                  <th className="px-4 py-3 cursor-pointer select-none" onClick={() => handleSort("city")}>
+                  <th className="px-2.5 py-2">Manager</th>
+                  <th className="px-2.5 py-2 cursor-pointer select-none" onClick={() => handleSort("city")}>
                     <div className="flex items-center gap-1">
                       City
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
-                  <th className="px-4 py-3">Type</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Open / Closed</th>
-                  <th className="px-4 py-3 cursor-pointer select-none" onClick={() => handleSort("averageRating")}>
+                  <th className="px-2.5 py-2">Type</th>
+                  <th className="px-2.5 py-2">Status</th>
+                  <th className="px-2.5 py-2">Open / Closed</th>
+                  <th className="px-2.5 py-2 cursor-pointer select-none" onClick={() => handleSort("averageRating")}>
                     <div className="flex items-center gap-1">
                       Rating
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
-                  <th className="px-4 py-3 cursor-pointer select-none" onClick={() => handleSort("totalOrders")}>
+                  <th className="px-2.5 py-2 cursor-pointer select-none" onClick={() => handleSort("totalOrders")}>
                     <div className="flex items-center gap-1">
                       Orders Today
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
-                  <th className="px-4 py-3 cursor-pointer select-none" onClick={() => handleSort("currentCapacity")}>
+                  <th className="px-2.5 py-2 cursor-pointer select-none" onClick={() => handleSort("currentCapacity")}>
                     <div className="flex items-center gap-1">
                       Capacity
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
-                  <th className="px-4 py-3">Last Updated</th>
-                  <th className="px-4 py-3 text-right">Actions</th>
+                  <th className="px-2.5 py-2">Last Updated</th>
+                  <th className="px-2.5 py-2 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-850 text-xs text-slate-700 dark:text-slate-350">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-850 text-[11px] text-slate-700 dark:text-slate-350">
                 {stores.map((store) => (
                   <tr key={store._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-900/20 group">
-                    <td className="px-4 py-3.5 font-semibold text-slate-900 dark:text-white">{store.storeCode}</td>
-                    <td className="px-4 py-3.5 font-bold text-primary">{store.storeName}</td>
-                    <td className="px-4 py-3.5 font-medium text-slate-655 dark:text-slate-300">
+                    <td className="px-2.5 py-2 font-semibold text-slate-900 dark:text-white">{store.storeCode}</td>
+                    <td className="px-2.5 py-2 font-bold text-primary">{store.storeName}</td>
+                    <td className="px-2.5 py-2 font-medium text-slate-655 dark:text-slate-300">
                       {managers.find((m) => m.id === store.managerId)?.name || "Assign Manager"}
                     </td>
-                    <td className="px-4 py-3.5 font-semibold">{store.address?.city || "N/A"}</td>
-                    <td className="px-4 py-3.5 text-slate-500">{store.storeType}</td>
-                    <td className="px-4 py-3.5">
+                    <td className="px-2.5 py-2 font-semibold">{store.address?.city || "N/A"}</td>
+                    <td className="px-2.5 py-2 text-slate-500">{store.storeType}</td>
+                    <td className="px-2.5 py-2">
                       <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
                         store.status === "Active"
                           ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-650"
@@ -583,7 +582,7 @@ export default function Stores() {
                         {store.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5">
+                    <td className="px-2.5 py-2">
                       <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
                         store.isOpen
                           ? "bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400"
@@ -592,16 +591,16 @@ export default function Stores() {
                         {store.isOpen ? "Open" : "Closed"}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5">
+                    <td className="px-2.5 py-2">
                       <div className="flex items-center gap-0.5 font-bold text-slate-800 dark:text-slate-200">
                         <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                         <span>{store.averageRating || "5.0"}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">
+                    <td className="px-2.5 py-2 font-bold text-slate-900 dark:text-white">
                       {store.totalOrders ? store.totalOrders.toLocaleString("en-IN") : 0}
                     </td>
-                    <td className="px-4 py-3.5">
+                    <td className="px-2.5 py-2">
                       {/* Compact Capacity Progress Bar */}
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden shrink-0">
@@ -619,13 +618,13 @@ export default function Stores() {
                         <span className="font-bold text-[10px] text-slate-500">{store.currentCapacity || 0}%</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3.5 text-slate-400">
+                    <td className="px-2.5 py-2 text-slate-400">
                       {getRelativeTime(store.updatedAt || store.createdAt)}
                     </td>
-                    <td className="px-4 py-3.5 text-right relative">
+                    <td className="px-2.5 py-2 text-right relative">
                       <button
                         onClick={() => setActiveMenuId(activeMenuId === store._id ? null : store._id)}
-                        className="p-1 rounded-lg text-slate-400 hover:text-slate-655 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors"
+                        className="p-1 rounded-md text-slate-400 hover:text-slate-655 hover:bg-slate-55 dark:hover:bg-slate-900 transition-colors"
                       >
                         <MoreVertical className="w-4 h-4" />
                       </button>
@@ -710,7 +709,7 @@ export default function Stores() {
 
         {/* PAGINATION FOOTER */}
         {!loading && stores.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 dark:border-slate-850 bg-slate-50/50 dark:bg-slate-950/20 text-xs text-slate-500 font-semibold select-none">
+          <div className="flex items-center justify-between px-3 py-2 border-t border-slate-100 dark:border-slate-850 bg-slate-50/50 dark:bg-slate-950/20 text-xs text-slate-500 font-semibold select-none">
             <div className="flex items-center gap-4">
               <span>Showing {Math.min(totalCount, (page - 1) * limit + 1)} to {Math.min(totalCount, page * limit)} of {totalCount} stores</span>
               
@@ -733,7 +732,7 @@ export default function Stores() {
               <button
                 onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={page === 1}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-850 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-55 dark:hover:bg-slate-855 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft className="w-4.5 h-4.5" />
               </button>
@@ -741,7 +740,7 @@ export default function Stores() {
               <button
                 onClick={() => setPage((prev) => Math.min(prev + 1, Math.ceil(totalCount / limit)))}
                 disabled={page >= Math.ceil(totalCount / limit)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-855 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-55 dark:hover:bg-slate-855 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronRight className="w-4.5 h-4.5" />
               </button>

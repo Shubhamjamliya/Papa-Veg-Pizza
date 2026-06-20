@@ -1,4 +1,4 @@
-export const adminSidebarMenu = [
+export const franchiseAdminSidebarMenu = [
   {
     type: "link",
     label: "Dashboard",
@@ -10,9 +10,9 @@ export const adminSidebarMenu = [
     label: "STORE MANAGEMENT",
     items: [
       { type: "link", label: "Stores", path: "/franchise-admin/stores", icon: "Store" },
-      { type: "link", label: "Store Approvals", path: "/franchise-admin/dashboard/restaurants/joining-request", icon: "FileCheck" },
-      { type: "link", label: "Store Performance", path: "/franchise-admin/dashboard/restaurant-report", icon: "TrendingUp" },
-      { type: "link", label: "Operating Hours", path: "/franchise-admin/dashboard/settings", icon: "Clock" },
+      { type: "link", label: "Store Approvals", path: "/franchise-admin/store-approvals", icon: "FileCheck" },
+      { type: "link", label: "Store Performance", path: "/franchise-admin/store-performance", icon: "TrendingUp" },
+      { type: "link", label: "Operating Hours", path: "/franchise-admin/operating-hours", icon: "Clock" },
     ],
   },
   {
