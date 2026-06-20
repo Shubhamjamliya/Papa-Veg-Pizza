@@ -317,7 +317,7 @@ export default function StoreManagers() {
   }
 
   return (
-    <div className="px-4 pb-4 pt-0 max-w-7xl mx-auto space-y-4 text-zinc-900 dark:text-zinc-100">
+    <div className="px-4 pb-4 pt-4 max-w-7xl mx-auto space-y-4 text-zinc-900 dark:text-zinc-100">
       
       {/* PAGE HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">

@@ -28,7 +28,6 @@ export default function DeliveryPartners() {
   const [filteredRiders, setFilteredRiders] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [errorState, setErrorState] = useState(null)
   
   // Debounced search and filters
   const [searchVal, setSearchVal] = useState("")
@@ -449,22 +448,10 @@ export default function DeliveryPartners() {
     setSelectedRider(null)
   }
 
-  // Network Error / Retry Simulator
-  const triggerNetworkError = () => {
-    setErrorState({
-      message: "API Request Failed: GET /franchise/delivery-partners timed out (504 Gateway Timeout). Please check internet connectivity or DB server status.",
-      onRetry: () => {
-        setLoading(true)
-        setErrorState(null)
-        setTimeout(() => {
-          processData()
-        }, 800)
-      }
-    })
-  }
+
 
   return (
-    <div className="px-4 pb-4 pt-0 max-w-7xl mx-auto space-y-4 text-zinc-900 dark:text-zinc-100">
+    <div className="px-4 pb-4 pt-4 max-w-7xl mx-auto space-y-4 text-zinc-900 dark:text-zinc-100">
       
       {/* PAGE HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -477,14 +464,14 @@ export default function DeliveryPartners() {
             Manage riders, deliveries, real-time tracking, compliance documents, payouts, and performance metrics.
           </p>
         </div>
-        <div className="flex items-center gap-1.5 flex-wrap">
+        <div className="flex items-center gap-1.5 flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-none py-1">
           
           {/* Socket.IO status toggle */}
           <button
             onClick={() => setSocketRunning(!socketRunning)}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer ${
+            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[10px] font-bold border transition-colors cursor-pointer shrink-0 ${
               socketRunning 
-                ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 border-emerald-200"
+                ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-650 border-emerald-200"
                 : "bg-zinc-50 dark:bg-zinc-950 text-zinc-500 border-zinc-200 dark:border-zinc-800"
             }`}
             title={socketRunning ? "Click to Pause Socket Simulator" : "Click to Resume Socket Simulator"}
@@ -500,17 +487,11 @@ export default function DeliveryPartners() {
             )}
           </button>
 
-          <button
-            onClick={triggerNetworkError}
-            className="flex items-center gap-1 px-2.5 py-1.5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-550 rounded-lg text-[10px] font-bold hover:bg-zinc-50 dark:hover:bg-zinc-950 cursor-pointer"
-            title="Simulate API connection timeout"
-          >
-            Simulate Timeout
-          </button>
+
 
           <button
             onClick={() => { setSelectedRider(null); setIsAddEditOpen(true); }}
-            className="flex items-center gap-1 px-3 py-2 text-white bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-xl text-xs font-bold shadow-md shadow-[var(--primary)]/10 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-3 py-2 text-white bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-xl text-xs font-bold shadow-md shadow-[var(--primary)]/10 transition-all cursor-pointer shrink-0"
           >
             <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
             Add Delivery Partner
@@ -518,7 +499,7 @@ export default function DeliveryPartners() {
 
           <button
             onClick={handleImportCSV}
-            className="flex items-center gap-1 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0"
           >
             <Upload className="w-3.5 h-3.5" />
             Import CSV
@@ -526,7 +507,7 @@ export default function DeliveryPartners() {
 
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0"
           >
             <Download className="w-3.5 h-3.5" />
             Export CSV
@@ -534,7 +515,7 @@ export default function DeliveryPartners() {
 
           <button
             onClick={processData}
-            className="p-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl transition-colors cursor-pointer"
+            className="p-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl transition-colors cursor-pointer shrink-0"
             title="Refresh Grid"
           >
             <RefreshCw className="w-4 h-4 text-zinc-500" />
@@ -542,25 +523,7 @@ export default function DeliveryPartners() {
         </div>
       </div>
 
-      {/* ERROR STATE VIEW */}
-      {errorState ? (
-        <div className="p-6 border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/20 rounded-2xl flex flex-col items-center justify-center text-center gap-3">
-          <AlertCircle className="w-10 h-10 text-red-600" />
-          <div>
-            <h3 className="text-sm font-extrabold uppercase text-red-850 dark:text-red-400">Connection Error Detected</h3>
-            <p className="text-xs text-red-700 dark:text-red-450 mt-1 max-w-lg leading-relaxed font-semibold">
-              {errorState.message}
-            </p>
-          </div>
-          <button
-            onClick={errorState.onRetry}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-red-650/10 cursor-pointer"
-          >
-            Retry Connection
-          </button>
-        </div>
-      ) : (
-        <>
+      <>
           {/* KPI CARDS SECTION */}
           <div className="grid grid-cols-2 lg:grid-cols-8 gap-2.5">
             {[
@@ -1099,10 +1062,8 @@ export default function DeliveryPartners() {
                 </div>
               </div>
             )}
-
           </div>
         </>
-      )}
 
       {/* DETAILED DRAWERS AND MODALS */}
 

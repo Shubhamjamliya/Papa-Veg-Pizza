@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import {
   X, User, TrendingUp, Calendar, DollarSign, Activity,
   Clock, PlusCircle, MinusCircle, AlertCircle, CalendarDays,
-  CheckCircle2, MapPin, Phone, Award, Zap, Shield, Truck, Navigation, FileCheck, Eye, Download, Battery, Wifi
+  CheckCircle2, MapPin, Phone, Award, Zap, Shield, Truck, Navigation, FileCheck, Eye, Download, Battery, Wifi, Star
 } from "lucide-react"
 import {
   ResponsiveContainer,
@@ -88,7 +88,7 @@ export default function ViewDeliveryPartnerDrawer({ isOpen, onClose, rider, defa
       />
 
       {/* Inset Drawer Page Container */}
-      <div className="fixed z-50 flex flex-col bg-zinc-50 dark:bg-zinc-950 shadow-2xl transition-all duration-300 animate-slide-in-right right-0 top-[64px] bottom-0 w-full h-[calc(100vh-64px)] rounded-none border-l border-zinc-200 dark:border-zinc-800 lg:top-[80px] lg:bottom-4 lg:right-4 lg:w-[calc(100vw-312px)] lg:max-w-[1400px] lg:h-[calc(100vh-96px)] lg:rounded-2xl lg:border lg:border-zinc-200 dark:lg:border-zinc-800">
+      <div className="fixed z-50 flex flex-col bg-zinc-50 dark:bg-zinc-950 shadow-2xl transition-all duration-300 animate-slide-in-right right-0 top-[64px] bottom-0 w-full h-[calc(100vh-64px)] rounded-none border-l border-zinc-200 dark:border-zinc-800 lg:top-[80px] lg:bottom-6 lg:right-6 lg:w-[calc(100vw-312px)] lg:max-w-[1400px] lg:h-[calc(100vh-104px)] lg:rounded-2xl lg:border lg:border-zinc-200 dark:lg:border-zinc-800">
         
         {/* Drawer Header */}
         <div className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900 border-b border-zinc-150 dark:border-zinc-800 shrink-0 lg:rounded-t-2xl">
@@ -135,7 +135,7 @@ export default function ViewDeliveryPartnerDrawer({ isOpen, onClose, rider, defa
         </div>
 
         {/* Navigation Tabs bar */}
-        <div className="flex bg-white dark:bg-zinc-900 border-b border-zinc-150 dark:border-zinc-800 px-4 gap-1 shrink-0 overflow-x-auto">
+        <div className="flex bg-white dark:bg-zinc-900 border-b border-zinc-150 dark:border-zinc-800 px-4 gap-1 shrink-0 overflow-x-auto scrollbar-none">
           {[
             { id: "profile", label: "Profile", icon: User },
             { id: "performance", label: "Performance Metrics", icon: TrendingUp },

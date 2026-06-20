@@ -295,7 +295,7 @@ export default function Stores() {
   }
 
   return (
-    <div className="px-4 pb-4 pt-0 max-w-7xl mx-auto space-y-4 text-slate-900 dark:text-slate-100">
+    <div className="px-4 pb-4 pt-4 max-w-7xl mx-auto space-y-4 text-slate-900 dark:text-slate-100">
 
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
