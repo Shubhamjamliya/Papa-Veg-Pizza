@@ -2,11 +2,81 @@
 // Standard Indian names, prices, categories, and WebP format image sources.
 
 export const mockCategories = [
-  { id: "cat-pizzas-classic", name: "Classic Pizzas" },
-  { id: "cat-pizzas-gourmet", name: "Gourmet Pizzas" },
-  { id: "cat-sides", name: "Sides & Appetizers" },
-  { id: "cat-desserts", name: "Desserts" },
-  { id: "cat-drinks", name: "Beverages" }
+  {
+    _id: "cat-pizzas-classic",
+    id: "cat-pizzas-classic",
+    franchiseId: "FRAN-001",
+    name: "Classic Pizzas",
+    slug: "classic-pizzas",
+    description: "Traditional Italian pizzas with hand-stretched bases and fresh herbs.",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80&fm=webp",
+    icon: "Pizza",
+    parentCategory: null,
+    displayOrder: 1,
+    isFeatured: true,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "cat-pizzas-gourmet",
+    id: "cat-pizzas-gourmet",
+    franchiseId: "FRAN-001",
+    name: "Gourmet Pizzas",
+    slug: "gourmet-pizzas",
+    description: "Premium handcrafted pizzas topped with exotic toppings and sauces.",
+    image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=400&q=80&fm=webp",
+    icon: "Flame",
+    parentCategory: "cat-pizzas-classic",
+    displayOrder: 2,
+    isFeatured: true,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "cat-sides",
+    id: "cat-sides",
+    franchiseId: "FRAN-001",
+    name: "Sides & Appetizers",
+    slug: "sides-appetizers",
+    description: "Baked garlic breadsticks, delicious dips, and savory sides.",
+    image: "https://images.unsplash.com/photo-1573145959986-a142c6e68ea8?auto=format&fit=crop&w=400&q=80&fm=webp",
+    icon: "Layers",
+    parentCategory: null,
+    displayOrder: 3,
+    isFeatured: false,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "cat-desserts",
+    id: "cat-desserts",
+    franchiseId: "FRAN-001",
+    name: "Desserts",
+    slug: "desserts",
+    description: "Decadent chocolate cakes, sweet treats, and lava delicacies.",
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80&fm=webp",
+    icon: "Cookie",
+    parentCategory: null,
+    displayOrder: 4,
+    isFeatured: true,
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "cat-drinks",
+    id: "cat-drinks",
+    franchiseId: "FRAN-001",
+    name: "Beverages",
+    slug: "beverages",
+    description: "Chilled mocktails, soft drinks, and refreshing milkshakes.",
+    image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=400&q=80&fm=webp",
+    icon: "GlassWater",
+    parentCategory: null,
+    displayOrder: 5,
+    isFeatured: false,
+    status: "INACTIVE",
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+  }
 ];
 
 export const mockTaxCategories = [
