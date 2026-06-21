@@ -75,8 +75,8 @@ export default function Navbar({ onToggleSidebar }) {
     { id: "CUST-002", name: "Priya Patel", type: "customers", status: "Active", route: "/franchise-admin/dashboard/customers" },
     { id: "STORE-01", name: "Indore Central", type: "stores", status: "Online", route: "/franchise-admin/stores" },
     { id: "STORE-02", name: "Bhopal Zone", type: "stores", status: "Online", route: "/franchise-admin/stores" },
-    { id: "PROD-101", name: "Double Cheese Margherita", type: "products", status: "Available", route: "/franchise-admin/dashboard/foods" },
-    { id: "PROD-102", name: "Paneer Tikka Pizza", type: "products", status: "Available", route: "/franchise-admin/dashboard/foods" },
+    { id: "PROD-101", name: "Double Cheese Margherita", type: "products", status: "Available", route: "/franchise-admin/products" },
+    { id: "PROD-102", name: "Paneer Tikka Pizza", type: "products", status: "Available", route: "/franchise-admin/products" },
     { id: "RIDER-909", name: "Kabir Sengupta", type: "delivery partners", status: "On Duty", route: "/franchise-admin/dashboard/delivery-partners" }
   ]
 
