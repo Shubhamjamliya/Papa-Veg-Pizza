@@ -1,4 +1,5 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
+import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -991,6 +992,38 @@ export function handleMockRequest(config) {
         page,
         limit
       });
+    }
+  }
+
+  // 15b. Store Pricing Management Endpoints
+  if (url.includes("/store-pricing")) {
+    if (url.includes("/bulk-action")) {
+      return successRes(storePricingService.applyBulkAction(data.pricingIds, data.action, data.payload || {}));
+    }
+    const idMatch = url.match(/\/store-pricing\/([^/?]+)/);
+    if (idMatch && idMatch[1] !== "bulk-action") {
+      const id = idMatch[1];
+      if (method === "put" || method === "patch") {
+        return successRes(storePricingService.updateStorePricing(id, data));
+      }
+      return successRes(storePricingService.getStorePricingById(id));
+    }
+    return successRes(storePricingService.getStorePricing(config.params || {}));
+  }
+
+  if (url.includes("/bulk-price-update") && method === "post") {
+    return successRes(storePricingService.bulkPriceUpdate(data));
+  }
+
+  if (url.includes("/copy-pricing") && method === "post") {
+    return successRes(storePricingService.copyPricing(data));
+  }
+
+  if (url.includes("/price-history/")) {
+    const productIdMatch = url.match(/\/price-history\/([^/?]+)/);
+    if (productIdMatch) {
+      const productId = productIdMatch[1];
+      return successRes(storePricingService.getPriceHistory(productId, config.params || {}));
     }
   }
 
