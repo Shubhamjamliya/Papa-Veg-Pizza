@@ -12,6 +12,7 @@ const NewRefundRequests = lazy(() => import("@food/pages/franchise-admin/refunds
 const OrdersPage = lazy(() => import("@food/pages/franchise-admin/orders/OrdersPage"));
 const LiveOrders = lazy(() => import("@food/pages/franchise-admin/orders/LiveOrders"));
 const CompletedOrders = lazy(() => import("@food/pages/franchise-admin/orders/CompletedOrders"));
+const CancelledOrder = lazy(() => import("@food/pages/franchise-admin/orders/CancelledOrder"));
 const OrderDetectDelivery = lazy(() => import("@food/pages/franchise-admin/OrderDetectDelivery"));
 const Category = lazy(() => import("@food/pages/franchise-admin/categories/Category"));
 const FeeSettings = lazy(() => import("@food/pages/franchise-admin/fee-settings/FeeSettings"));
@@ -158,6 +159,7 @@ export default function FranchiseAdminRouter() {
           <Route path="operating-hours" element={<OperatingHours />} />
           <Route path="live-orders" element={<LiveOrders />} />
           <Route path="completed-orders" element={<CompletedOrders />} />
+          <Route path="cancelled-orders" element={<CancelledOrder />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -174,7 +176,7 @@ export default function FranchiseAdminRouter() {
             <Route path="orders/processing" element={<OrdersPage statusKey="processing" />} />
             <Route path="orders/food-on-the-way" element={<OrdersPage statusKey="food-on-the-way" />} />
             <Route path="orders/delivered" element={<Navigate to="/franchise-admin/completed-orders" replace />} />
-            <Route path="orders/canceled" element={<OrdersPage statusKey="canceled" />} />
+            <Route path="orders/canceled" element={<Navigate to="/franchise-admin/cancelled-orders" replace />} />
             <Route path="orders/restaurant-cancelled" element={<OrdersPage statusKey="restaurant-cancelled" />} />
             <Route path="orders/payment-failed" element={<OrdersPage statusKey="payment-failed" />} />
             <Route path="orders/refunded" element={<OrdersPage statusKey="refunded" />} />
