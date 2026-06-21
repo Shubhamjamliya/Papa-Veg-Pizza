@@ -10,6 +10,7 @@ const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const NewRefundRequests = lazy(() => import("@food/pages/franchise-admin/refunds/NewRefundRequests"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
+const OrderIssues = lazy(() => import("@food/pages/franchise-admin/orders/OrderIssues"));
 const OrdersPage = lazy(() => import("@food/pages/franchise-admin/orders/OrdersPage"));
 const LiveOrders = lazy(() => import("@food/pages/franchise-admin/orders/LiveOrders"));
 const CompletedOrders = lazy(() => import("@food/pages/franchise-admin/orders/CompletedOrders"));
@@ -162,6 +163,7 @@ export default function FranchiseAdminRouter() {
           <Route path="completed-orders" element={<CompletedOrders />} />
           <Route path="cancelled-orders" element={<CancelledOrder />} />
           <Route path="refund-requests" element={<RefundRequests />} />
+          <Route path="order-issues" element={<OrderIssues />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -209,7 +211,7 @@ export default function FranchiseAdminRouter() {
             
             <Route path="chattings" element={<Chattings />} />
             <Route path="contact-messages" element={<ContactMessages />} />
-            <Route path="safety-emergency-reports" element={<SafetyEmergencyReports />} />
+            <Route path="safety-emergency-reports" element={<Navigate to="/franchise-admin/order-issues" replace />} />
             
             <Route path="customers" element={<Customers />} />
             <Route path="support-tickets" element={<SupportTickets />} />

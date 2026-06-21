@@ -15,7 +15,15 @@ import {
   mockRefundTrend,
   mockRefundRequestsStatusDistribution,
   mockRefundReasonsDistribution,
-  mockStoreRefundChart
+  mockStoreRefundChart,
+  mockIssueStaff,
+  mockOrderIssues,
+  mockIssueAnalytics as initialIssueAnalytics,
+  mockIssueTrend,
+  mockIssueCategoriesDistribution,
+  mockIssuePriorityDistribution,
+  mockStoreIssuesChart,
+  mockResolutionTypesChart
 } from "./mockOrders";
 import { toast } from "sonner";
 
@@ -23,6 +31,8 @@ import { toast } from "sonner";
 let dbOrders = [...initialOrders];
 let dbRefundRequests = [...mockRefundRequests];
 let dbRefundTransactions = [...mockRefundTransactions];
+let dbOrderIssues = [...mockOrderIssues];
+let dbIssueStaff = [...mockIssueStaff];
 
 // Simple Pub/Sub for Query Invalidation
 const listeners = new Set();
@@ -1439,4 +1449,576 @@ export function useReopenInvestigation() {
   };
 
   return { mutate, mutateAsync, isLoading };
+}
+
+// ==========================================
+// ORDER ISSUES QUERY HOOKS
+// ==========================================
+
+export function useOrderIssues(filters = {}) {
+  const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchIssues = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      let filtered = [...dbOrderIssues];
+
+      // Status filter
+      if (filters.status && filters.status !== "all") {
+        filtered = filtered.filter((i) => i.status.toLowerCase() === filters.status.toLowerCase());
+      }
+
+      // Priority filter
+      if (filters.priority && filters.priority !== "all") {
+        filtered = filtered.filter((i) => i.priority.toLowerCase() === filters.priority.toLowerCase());
+      }
+
+      // Category filter
+      if (filters.category && filters.category !== "all") {
+        filtered = filtered.filter((i) => i.category.toLowerCase() === filters.category.toLowerCase());
+      }
+
+      // Store filter
+      if (filters.storeId && filters.storeId !== "all") {
+        filtered = filtered.filter((i) => i.storeId === filters.storeId);
+      }
+
+      // Assigned staff filter
+      if (filters.staffId && filters.staffId !== "all") {
+        if (filters.staffId === "unassigned") {
+          filtered = filtered.filter((i) => !i.assignedTo);
+        } else {
+          filtered = filtered.filter((i) => i.assignedTo?.id === filters.staffId);
+        }
+      }
+
+      // Date range filter presets
+      if (filters.datePreset && filters.datePreset !== "all") {
+        const now = new Date();
+        filtered = filtered.filter((i) => {
+          const reqDate = new Date(i.createdAt);
+          const diffTime = Math.abs(now - reqDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (filters.datePreset === "today") return diffDays <= 1;
+          if (filters.datePreset === "week") return diffDays <= 7;
+          if (filters.datePreset === "month") return diffDays <= 30;
+          return true;
+        });
+      }
+
+      // Search Query
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(
+          (i) =>
+            i.issueNumber.toLowerCase().includes(query) ||
+            i.orderNumber.toLowerCase().includes(query) ||
+            i.customer?.name.toLowerCase().includes(query) ||
+            i.category.toLowerCase().includes(query)
+        );
+      }
+
+      // Sort: descending by createdAt
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      setTotalCount(filtered.length);
+
+      // Pagination
+      const page = filters.page || 1;
+      const limit = filters.limit || 10;
+      const startIndex = (page - 1) * limit;
+      const paginated = filtered.slice(startIndex, startIndex + limit);
+
+      setData(paginated);
+      setIsLoading(false);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [
+    filters.status,
+    filters.priority,
+    filters.category,
+    filters.storeId,
+    filters.staffId,
+    filters.datePreset,
+    filters.searchQuery,
+    filters.page,
+    filters.limit,
+  ]);
+
+  useEffect(() => {
+    fetchIssues();
+    return subscribe(fetchIssues);
+  }, [fetchIssues]);
+
+  return {
+    data,
+    totalCount,
+    isLoading,
+    refetch: fetchIssues,
+  };
+}
+
+export function useOrderIssue(id) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchIssue = useCallback(() => {
+    if (!id) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const issue = dbOrderIssues.find((i) => i.issueNumber === id);
+      if (issue) {
+        setData(issue);
+        setError(null);
+      } else {
+        setError(new Error("Issue ticket not found"));
+      }
+      setIsLoading(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [id]);
+
+  useEffect(() => {
+    fetchIssue();
+    return subscribe(fetchIssue);
+  }, [fetchIssue]);
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch: fetchIssue,
+  };
+}
+
+export function useIssueStaff() {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setData(dbIssueStaff);
+      setIsLoading(false);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return { data, isLoading };
+}
+
+export function useIssueAnalytics() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchAnalytics = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const open = dbOrderIssues.filter((i) => i.status === "Open").length;
+      const high = dbOrderIssues.filter((i) => i.priority === "High" || i.priority === "Critical").length;
+      
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const resolvedToday = dbOrderIssues.filter(
+        (i) => i.status === "Resolved" && i.resolvedAt && new Date(i.resolvedAt) >= todayStart
+      ).length;
+
+      const compPaid = dbOrderIssues
+        .filter((i) => i.resolution && i.resolution.compensationAmount)
+        .reduce((sum, i) => sum + i.resolution.compensationAmount, 0);
+
+      setData({
+        openIssuesCount: open,
+        highPriorityCount: high,
+        resolvedTodayCount: resolvedToday || initialIssueAnalytics.resolvedTodayCount,
+        avgResolutionTime: initialIssueAnalytics.avgResolutionTime,
+        customerSatisfaction: initialIssueAnalytics.customerSatisfaction,
+        issuesToday: dbOrderIssues.length,
+        compensationPaid: compPaid || initialIssueAnalytics.compensationPaid,
+        topCategory: initialIssueAnalytics.topCategory,
+        highestComplaintStore: initialIssueAnalytics.highestComplaintStore,
+      });
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    fetchAnalytics();
+    return subscribe(fetchAnalytics);
+  }, [fetchAnalytics]);
+
+  return { data, isLoading };
+}
+
+export function useIssueChartData() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchChartData = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      // Build dynamic priority distribution counts
+      const low = dbOrderIssues.filter((i) => i.priority === "Low").length;
+      const medium = dbOrderIssues.filter((i) => i.priority === "Medium").length;
+      const high = dbOrderIssues.filter((i) => i.priority === "High").length;
+      const critical = dbOrderIssues.filter((i) => i.priority === "Critical").length;
+
+      const dynamicPriorityDist = [
+        { name: "Low", value: low, fill: "#10b981" },
+        { name: "Medium", value: medium, fill: "#3b82f6" },
+        { name: "High", value: high, fill: "#f97316" },
+        { name: "Critical", value: critical, fill: "#ef4444" },
+      ];
+
+      // Build dynamic category distribution counts
+      const cats = {
+        "Wrong Item": 0,
+        "Missing Item": 0,
+        "Late Delivery": 0,
+        "Cold Pizza": 0,
+        "Damaged Package": 0,
+        "Rider Misbehavior": 0,
+        "Payment Problem": 0,
+      };
+      dbOrderIssues.forEach((i) => {
+        if (cats[i.category] !== undefined) {
+          cats[i.category]++;
+        }
+      });
+      const dynamicCategoryDist = Object.keys(cats).map((key, idx) => {
+        const colors = ["#ef4444", "#f97316", "#3b82f6", "#eab308", "#a855f7", "#6366f1", "#6b7280"];
+        return { name: key, value: cats[key], fill: colors[idx % colors.length] };
+      });
+
+      // Build dynamic resolution types counts
+      const res = {
+        "Refund": 0,
+        "Replacement": 0,
+        "Coupon": 0,
+        "Apology": 0,
+        "No Action": 0,
+      };
+      dbOrderIssues.forEach((i) => {
+        if (i.resolution) {
+          const type = i.resolution.resolutionType;
+          if (type === "Coupon Compensation") {
+            res["Coupon"]++;
+          } else if (res[type] !== undefined) {
+            res[type]++;
+          }
+        }
+      });
+      const dynamicResolutionDist = Object.keys(res).map((key) => ({
+        name: key,
+        count: res[key],
+      }));
+
+      setData({
+        issueTrend: mockIssueTrend,
+        issueCategoriesDistribution: dynamicCategoryDist,
+        issuePriorityDistribution: dynamicPriorityDist,
+        storeIssuesChart: mockStoreIssuesChart,
+        resolutionTypesChart: dynamicResolutionDist,
+      });
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    fetchChartData();
+    return subscribe(fetchChartData);
+  }, [fetchChartData]);
+
+  return { data, isLoading };
+}
+
+// ==========================================
+// ORDER ISSUES MUTATIONS
+// ==========================================
+
+export function useAssignIssue() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ issueId, assignedToId, department, remarks, priorityOverride, notifyStaff }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = dbOrderIssues.findIndex((i) => i.issueNumber === issueId);
+        const staff = dbIssueStaff.find((s) => s.id === assignedToId);
+
+        if (index === -1) {
+          setIsLoading(false);
+          reject(new Error("Issue ticket not found"));
+          return;
+        }
+
+        if (!staff) {
+          setIsLoading(false);
+          reject(new Error("Staff member not found"));
+          return;
+        }
+
+        const oldIssue = dbOrderIssues[index];
+        const prevPriority = oldIssue.priority;
+        const newPriority = priorityOverride || prevPriority;
+        const newTimeline = [
+          ...oldIssue.timeline,
+          {
+            status: "Assigned",
+            updatedBy: "Franchise Admin",
+            timestamp: new Date().toISOString(),
+            remarks: remarks || `Assigned to ${staff.name} (${department} Dept). Priority set to ${newPriority}.`,
+          },
+        ];
+
+        dbOrderIssues[index] = {
+          ...oldIssue,
+          status: "Assigned",
+          priority: newPriority,
+          assignedTo: {
+            id: staff.id,
+            name: staff.name,
+            department: department,
+            avatar: staff.avatar,
+          },
+          internalNotes: [
+            ...(oldIssue.internalNotes || []),
+            {
+              addedBy: "Franchise Admin",
+              department: "Operations",
+              note: `Staff assignment updated. Specialist: ${staff.name}. Dept: ${department}. Remarks: ${remarks || "None"}`,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+          timeline: newTimeline,
+        };
+
+        setIsLoading(false);
+        notifyListeners();
+        toast.success("Issue assigned successfully.");
+        resolve({ success: true, issue: dbOrderIssues[index] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+export function useResolveIssue() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ issueId, resolutionType, compensationAmount, couponCode, remarks, notifyCustomer }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = dbOrderIssues.findIndex((i) => i.issueNumber === issueId);
+        if (index === -1) {
+          setIsLoading(false);
+          reject(new Error("Issue ticket not found"));
+          return;
+        }
+
+        const oldIssue = dbOrderIssues[index];
+        const resolveTime = new Date().toISOString();
+        const newTimeline = [
+          ...oldIssue.timeline,
+          {
+            status: "Resolved",
+            updatedBy: oldIssue.assignedTo?.name || "Support Team",
+            timestamp: resolveTime,
+            remarks: remarks || `Resolved via ${resolutionType}. Compensation: ₹${compensationAmount || 0}.`,
+          },
+        ];
+
+        dbOrderIssues[index] = {
+          ...oldIssue,
+          status: "Resolved",
+          resolvedAt: resolveTime,
+          resolution: {
+            resolutionType,
+            compensationAmount: Number(compensationAmount) || 0,
+            couponCode: couponCode || "",
+            remarks,
+          },
+          internalNotes: [
+            ...(oldIssue.internalNotes || []),
+            {
+              addedBy: oldIssue.assignedTo?.name || "Support Specialist",
+              department: oldIssue.assignedTo?.department || "Support",
+              note: `Issue resolved. Resolution action: ${resolutionType}. Compensation Payout: ₹${compensationAmount || 0}. Remarks: ${remarks || "None"}`,
+              createdAt: resolveTime,
+            },
+          ],
+          timeline: newTimeline,
+        };
+
+        setIsLoading(false);
+        notifyListeners();
+        toast.success("Issue resolved successfully.");
+        resolve({ success: true, issue: dbOrderIssues[index] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+export function useCloseIssue() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ issueId, closureRemarks, resolutionVerified, customerConfirmed }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = dbOrderIssues.findIndex((i) => i.issueNumber === issueId);
+        if (index === -1) {
+          setIsLoading(false);
+          reject(new Error("Issue ticket not found"));
+          return;
+        }
+
+        const oldIssue = dbOrderIssues[index];
+        const newTimeline = [
+          ...oldIssue.timeline,
+          {
+            status: "Closed",
+            updatedBy: "Franchise Admin",
+            timestamp: new Date().toISOString(),
+            remarks: closureRemarks || "Verified and Closed ticket.",
+          },
+        ];
+
+        dbOrderIssues[index] = {
+          ...oldIssue,
+          status: "Closed",
+          internalNotes: [
+            ...(oldIssue.internalNotes || []),
+            {
+              addedBy: "Franchise Admin",
+              department: "Operations",
+              note: `Ticket Closed. Resolution Verified: ${resolutionVerified ? "YES" : "NO"}. Customer Confirmed: ${customerConfirmed ? "YES" : "NO"}. Remarks: ${closureRemarks || "None"}`,
+              createdAt: new Date().toISOString(),
+            },
+          ],
+          timeline: newTimeline,
+        };
+
+        setIsLoading(false);
+        notifyListeners();
+        toast.success("Ticket closed successfully.");
+        resolve({ success: true, issue: dbOrderIssues[index] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+// WebSocket Simulator for post-order issue logs
+export function simulateNewOrderIssue() {
+  const newId = `ISS-10${Math.floor(7 + Math.random() * 90)}`;
+  const orderNum = `PVP-98${Math.floor(400 + Math.random() * 99)}`;
+  const randomNames = ["Sachin Tendulkar", "MS Dhoni", "Virat Kohli", "Sourav Ganguly", "Kapil Dev"];
+  const selectedName = randomNames[Math.floor(Math.random() * randomNames.length)];
+  const categories = ["Wrong Item", "Missing Item", "Late Delivery", "Cold Pizza", "Damaged Package", "Rider Misbehavior", "Payment Problem"];
+  const selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+  const priorities = ["Low", "Medium", "High", "Critical"];
+  const selectedPriority = priorities[Math.floor(Math.random() * priorities.length)];
+  const store = mockStores[Math.floor(Math.random() * mockStores.length)];
+
+  const newIssue = {
+    _id: newId,
+    issueNumber: newId,
+    orderId: `ORD-${orderNum.split("-")[1]}`,
+    orderNumber: orderNum,
+    customerId: `CUST-${Math.floor(200 + Math.random() * 800)}`,
+    storeId: store.storeId,
+    franchiseId: "FRAN-001",
+    category: selectedCategory,
+    priority: selectedPriority,
+    description: `Reported issue of ${selectedCategory.toLowerCase()}. Need immediate assistance to review what happened.`,
+    attachments: Math.random() > 0.6 ? ["https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80"] : [],
+    assignedTo: null,
+    status: "Open",
+    resolution: null,
+    createdAt: new Date().toISOString(),
+    resolvedAt: null,
+    customer: {
+      name: selectedName,
+      phone: `+91 ${Math.floor(60000 + Math.random() * 40000)} ${Math.floor(10000 + Math.random() * 90000)}`,
+      email: `${selectedName.toLowerCase().replace(" ", ".")}@gmail.com`,
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
+      address: "Sector 18, Noida, Uttar Pradesh - 201301",
+      memberSince: "10 Oct 2023",
+      totalOrders: Math.floor(4 + Math.random() * 20),
+      lifetimeValue: Math.floor(2000 + Math.random() * 10000),
+    },
+    store: { storeId: store.storeId, name: store.storeName.split(" - ")[1] || store.storeName },
+    order: {
+      orderNumber: orderNum,
+      storeName: store.storeName.split(" - ")[1] || store.storeName,
+      placedAt: new Date(Date.now() - 30 * 60000).toISOString(),
+      items: "Veg Combo Margherita Pizza Large x1",
+      paymentMethod: "UPI",
+      deliveryPartner: "Amit Patel (RD-102)",
+      deliveredAt: new Date(Date.now() - 5 * 60000).toISOString(),
+      totalAmount: 649.00,
+    },
+    internalNotes: [
+      { addedBy: "System", department: "Operations", note: `Ticket created dynamically for ${selectedCategory}.`, createdAt: new Date().toISOString() }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: selectedName, timestamp: new Date().toISOString(), remarks: `Logged complaint for ${selectedCategory.toLowerCase()}.` }
+    ]
+  };
+
+  dbOrderIssues = [newIssue, ...dbOrderIssues];
+  notifyListeners();
+  toast.error(`WebSocket: New Order Issue ${newId} logged!`, {
+    description: `${selectedName} reported [${selectedCategory}] on order ${orderNum}`,
+  });
+  return newIssue;
 }
