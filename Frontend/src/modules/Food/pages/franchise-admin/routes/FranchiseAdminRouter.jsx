@@ -21,6 +21,7 @@ const FeeSettings = lazy(() => import("@food/pages/franchise-admin/fee-settings/
 const ReferralSettings = lazy(() => import("@food/pages/franchise-admin/referral-settings/ReferralSettings"));
 // Food Management
 const FoodsList = lazy(() => import("@food/pages/franchise-admin/foods/FoodsList"));
+const Products = lazy(() => import("@food/pages/franchise-admin/products/Products"));
 const AddonsList = lazy(() => import("@food/pages/franchise-admin/addons/AddonsList"));
 // Promotions Management
 const BasicCampaign = lazy(() => import("@food/pages/franchise-admin/campaigns/BasicCampaign"));
@@ -164,6 +165,7 @@ export default function FranchiseAdminRouter() {
           <Route path="cancelled-orders" element={<CancelledOrder />} />
           <Route path="refund-requests" element={<RefundRequests />} />
           <Route path="order-issues" element={<OrderIssues />} />
+          <Route path="products" element={<Products />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -194,8 +196,8 @@ export default function FranchiseAdminRouter() {
             <Route path="categories" element={<Category />} />
             <Route path="fee-settings" element={<FeeSettings />} />
             <Route path="referral-settings" element={<ReferralSettings />} />
-            <Route path="foods" element={<FoodsList />} />
-            <Route path="food/list" element={<FoodsList />} />
+            <Route path="foods" element={<Navigate to="/franchise-admin/products" replace />} />
+            <Route path="food/list" element={<Navigate to="/franchise-admin/products" replace />} />
             <Route path="addons" element={<AddonsList />} />
 
             {/* PROMOTIONS, CUSTOMERS, DELIVERYMEN, etc. */}
