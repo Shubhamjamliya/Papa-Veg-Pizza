@@ -9,6 +9,7 @@ const PointOfSale = lazy(() => import("@food/pages/franchise-admin/PointOfSale")
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const NewRefundRequests = lazy(() => import("@food/pages/franchise-admin/refunds/NewRefundRequests"));
+const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
 const OrdersPage = lazy(() => import("@food/pages/franchise-admin/orders/OrdersPage"));
 const LiveOrders = lazy(() => import("@food/pages/franchise-admin/orders/LiveOrders"));
 const CompletedOrders = lazy(() => import("@food/pages/franchise-admin/orders/CompletedOrders"));
@@ -160,6 +161,7 @@ export default function FranchiseAdminRouter() {
           <Route path="live-orders" element={<LiveOrders />} />
           <Route path="completed-orders" element={<CompletedOrders />} />
           <Route path="cancelled-orders" element={<CancelledOrder />} />
+          <Route path="refund-requests" element={<RefundRequests />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -182,7 +184,7 @@ export default function FranchiseAdminRouter() {
             <Route path="orders/refunded" element={<OrdersPage statusKey="refunded" />} />
             <Route path="orders/offline-payments" element={<OrdersPage statusKey="offline-payments" />} />
             <Route path="order-detect-delivery" element={<OrderDetectDelivery />} />
-            <Route path="order-refunds/new" element={<NewRefundRequests />} />
+            <Route path="order-refunds/new" element={<Navigate to="/franchise-admin/refund-requests" replace />} />
 
 
 
