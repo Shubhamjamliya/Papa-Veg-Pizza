@@ -291,3 +291,133 @@ export const initialProductImages = [
   { _id: "img-201", productId: "prod-102", imageUrl: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=400&q=80&fm=webp", type: "THUMBNAIL", displayOrder: 1 },
   { _id: "img-301", productId: "prod-103", imageUrl: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=80&fm=webp", type: "THUMBNAIL", displayOrder: 1 }
 ];
+
+// Mock Inventory Items for Add-on Mapping
+export const mockInventoryItems = [
+  { _id: "inv-mozzarella", name: "Premium Mozzarella Cheese", currentStock: 45.5, unit: "kg", costPrice: 320, lowStockWarning: 10 },
+  { _id: "inv-paneer", name: "Fresh Malai Paneer Cubes", currentStock: 12.0, unit: "kg", costPrice: 280, lowStockWarning: 5 },
+  { _id: "inv-jalapenos", name: "Sliced Pickled Jalapenos", currentStock: 8.2, unit: "kg", costPrice: 150, lowStockWarning: 3 },
+  { _id: "inv-olives", name: "Black Olive Slices", currentStock: 14.8, unit: "kg", costPrice: 190, lowStockWarning: 4 },
+  { _id: "inv-corn", name: "Golden Sweet Corn Kernels", currentStock: 0.8, unit: "kg", costPrice: 90, lowStockWarning: 5 },
+  { _id: "inv-cheeseburst", name: "Cheese Burst Liquid Blend", currentStock: 0.0, unit: "kg", costPrice: 340, lowStockWarning: 8 },
+  { _id: "inv-schezwan", name: "Fiery Schezwan Drizzle Sauce", currentStock: 25.0, unit: "liters", costPrice: 110, lowStockWarning: 5 }
+];
+
+// Initial Mock Add-ons
+export const mockAddons = [
+  {
+    _id: "add-1",
+    franchiseId: "FRAN-001",
+    name: "Extra Mozzarella Cheese",
+    type: "CHEESE",
+    image: "https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "Premium melted mozzarella cheese topping for stringy goodness.",
+    price: 75,
+    inventoryItemId: "inv-mozzarella",
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "add-2",
+    franchiseId: "FRAN-001",
+    name: "Fresh Paneer Cubes",
+    type: "TOPPING",
+    image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "Succulent cottage cheese cubes spiced with tandoori powder.",
+    price: 60,
+    inventoryItemId: "inv-paneer",
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "add-3",
+    franchiseId: "FRAN-001",
+    name: "Spicy Jalapeno Slices",
+    type: "TOPPING",
+    image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "Hot sliced Mexican jalapenos to kick up the heat.",
+    price: 45,
+    inventoryItemId: "inv-jalapenos",
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "add-4",
+    franchiseId: "FRAN-001",
+    name: "Sliced Black Olives",
+    type: "TOPPING",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "Fine quality sliced Spanish black olives.",
+    price: 45,
+    inventoryItemId: "inv-olives",
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "add-5",
+    franchiseId: "FRAN-001",
+    name: "Golden Sweet Corn",
+    type: "TOPPING",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "Juicy, steamed golden corn kernels.",
+    price: 40,
+    inventoryItemId: "inv-corn",
+    status: "ACTIVE",
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "add-6",
+    franchiseId: "FRAN-001",
+    name: "Cheese Burst Liquid Crust",
+    type: "CHEESE",
+    image: "https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "Creamy liquid cheese filled inside the pizza crust.",
+    price: 95,
+    inventoryItemId: "inv-cheeseburst",
+    status: "OUT_OF_STOCK",
+    createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "add-7",
+    franchiseId: "FRAN-001",
+    name: "Schezwan Sauce Drizzle",
+    type: "SAUCE",
+    image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=80&fm=webp",
+    description: "A spicy, zesty drizzle of special garlic schezwan sauce.",
+    price: 30,
+    inventoryItemId: "inv-schezwan",
+    status: "INACTIVE",
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+  }
+];
+
+// Initial Mock Add-on Groups
+export const mockAddonGroups = [
+  {
+    _id: "grp-1",
+    franchiseId: "FRAN-001",
+    name: "Cheese & Crust Customizations",
+    selectionType: "SINGLE",
+    minSelection: 0,
+    maxSelection: 1,
+    isRequired: false,
+    addonIds: ["add-1", "add-6"]
+  },
+  {
+    _id: "grp-2",
+    franchiseId: "FRAN-001",
+    name: "Gourmet Veggie Toppings",
+    selectionType: "MULTIPLE",
+    minSelection: 0,
+    maxSelection: 4,
+    isRequired: false,
+    addonIds: ["add-2", "add-3", "add-4", "add-5"]
+  }
+];
+
+// Product assignments mappings: productId -> [addonIds]
+export const mockProductAddonAssignments = [
+  { _id: "asgn-1", productId: "prod-101", addonIds: ["add-1", "add-3", "add-4", "add-6"], createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() },
+  { _id: "asgn-2", productId: "prod-102", addonIds: ["add-1", "add-2", "add-5"], createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString() },
+  { _id: "asgn-3", productId: "prod-103", addonIds: ["add-1", "add-3"], createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() }
+];
