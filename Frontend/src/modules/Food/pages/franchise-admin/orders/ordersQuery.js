@@ -1,5 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
-import { mockOrders as initialOrders, mockStores, mockDeliveryPartners, mockReorderAnalytics } from "./mockOrders";
+import { 
+  mockOrders as initialOrders, 
+  mockStores, 
+  mockDeliveryPartners, 
+  mockReorderAnalytics,
+  mockCancelledAnalytics,
+  mockCancellationTrend,
+  mockCancellationReasons,
+  mockStoreCancellations,
+  mockRefundStatusDistribution
+} from "./mockOrders";
 import { toast } from "sonner";
 
 // In-memory database state
@@ -551,4 +561,324 @@ export function useReorderAnalytics(orderId) {
   }, [orderId]);
 
   return { data, isLoading };
+}
+
+// Hook for Cancelled Orders list query
+export function useCancelledOrders(filters = {}) {
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchOrders = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      let filtered = dbOrders.filter((o) => o.orderStatus === "Cancelled");
+
+      // Filter by Store
+      if (filters.storeId && filters.storeId !== "all") {
+        filtered = filtered.filter((o) => o.store.storeId === filters.storeId);
+      }
+      
+      // Filter by Cancellation Type (role/cancellation.role or cancellation type)
+      if (filters.cancellationType && filters.cancellationType !== "all") {
+        const type = filters.cancellationType;
+        if (type === "Cancelled By Customer") {
+          filtered = filtered.filter((o) => o.cancellation?.role === "CUSTOMER" && o.cancellation?.reason !== "Payment Failure");
+        } else if (type === "Cancelled By Store") {
+          filtered = filtered.filter((o) => o.cancellation?.role === "STORE");
+        } else if (type === "Cancelled By System") {
+          filtered = filtered.filter((o) => o.cancellation?.role === "SYSTEM" && o.cancellation?.reason !== "Payment Failure");
+        } else if (type === "Payment Failure") {
+          filtered = filtered.filter((o) => o.cancellation?.reason === "Payment Failure");
+        }
+      }
+
+      // Filter by Refund Status
+      if (filters.refundStatus && filters.refundStatus !== "all") {
+        filtered = filtered.filter((o) => o.cancellation?.refundStatus === filters.refundStatus);
+      }
+
+      // Filter by search query
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(
+          (o) =>
+            o.orderNumber.toLowerCase().includes(query) ||
+            o.customer.name.toLowerCase().includes(query) ||
+            o.customer.phone.includes(query)
+        );
+      }
+
+      setData(filtered);
+      setIsLoading(false);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [
+    filters.storeId,
+    filters.cancellationType,
+    filters.refundStatus,
+    filters.searchQuery,
+  ]);
+
+  useEffect(() => {
+    fetchOrders();
+    return subscribe(fetchOrders);
+  }, [fetchOrders]);
+
+  return {
+    data,
+    isLoading,
+    refetch: fetchOrders,
+  };
+}
+
+// Hook for fetching a single cancelled order details
+export function useCancelledOrderDetails(orderId) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchOrder = useCallback(() => {
+    if (!orderId) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const order = dbOrders.find((o) => o.id === orderId && o.orderStatus === "Cancelled");
+      if (order) {
+        setData(order);
+        setError(null);
+      } else {
+        setError(new Error("Cancelled order not found"));
+        setData(null);
+      }
+      setIsLoading(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [orderId]);
+
+  useEffect(() => {
+    fetchOrder();
+    return subscribe(fetchOrder);
+  }, [fetchOrder]);
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch: fetchOrder,
+  };
+}
+
+// Hook for fetching refund data summary
+export function useRefundData() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const cancelled = dbOrders.filter((o) => o.orderStatus === "Cancelled");
+      const pendingRefunds = cancelled.filter((o) => o.cancellation?.refundStatus === "Pending");
+      const initiatedRefunds = cancelled.filter((o) => o.cancellation?.refundStatus === "Initiated");
+      const completedRefunds = cancelled.filter((o) => o.cancellation?.refundStatus === "Completed");
+      const totalRefundAmount = completedRefunds.reduce((sum, o) => sum + (o.cancellation?.refundAmount || 0), 0);
+
+      setData({
+        pendingCount: pendingRefunds.length,
+        initiatedCount: initiatedRefunds.length,
+        completedCount: completedRefunds.length,
+        totalAmount: totalRefundAmount,
+        refundsList: cancelled.map(o => ({
+          orderId: o.id,
+          orderNumber: o.orderNumber,
+          amount: o.cancellation?.refundAmount || 0,
+          status: o.cancellation?.refundStatus || "None",
+          method: o.refund?.refundMethod || "UPI"
+        }))
+      });
+      setIsLoading(false);
+    }, 205);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return { data, isLoading };
+}
+
+// Hook for cancellation analytics and chart data
+export function useCancellationAnalytics() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Aggregate dynamically from dbOrders
+      const cancelled = dbOrders.filter((o) => o.orderStatus === "Cancelled");
+      const customerCancellations = cancelled.filter((o) => o.cancellation?.role === "CUSTOMER" && o.cancellation?.reason !== "Payment Failure");
+      const storeCancellations = cancelled.filter((o) => o.cancellation?.role === "STORE");
+      const refundPending = cancelled.filter((o) => o.cancellation?.refundStatus === "Pending");
+      
+      const totalCount = dbOrders.length;
+      const cancelledCount = cancelled.length;
+      const cancellationRate = totalCount > 0 ? ((cancelledCount / totalCount) * 100).toFixed(1) : "0.0";
+
+      // Sum of refunds processed
+      const refundAmountThisMonth = cancelled
+        .filter(o => o.cancellation?.refundStatus === "Completed")
+        .reduce((sum, o) => sum + (o.cancellation?.refundAmount || 0), 0);
+
+      // Total revenue lost
+      const cancelledRevenue = cancelled.reduce((sum, o) => sum + o.pricing.total, 0);
+
+      setData({
+        kpis: {
+          cancelledToday: cancelled.filter(o => {
+            const orderDate = new Date(o.placedAt);
+            const diffTime = Math.abs(new Date() - orderDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 1;
+          }).length,
+          customerCancellations: customerCancellations.length,
+          storeCancellations: storeCancellations.length,
+          refundPending: refundPending.length,
+          cancellationPercentage: `${cancellationRate}%`,
+          mostCommonReason: mockCancelledAnalytics.mostCommonReason,
+          refundAmountThisMonth,
+          cancelledRevenue,
+          averageRefundTime: mockCancelledAnalytics.averageRefundTime,
+          highestCancellationStore: mockCancelledAnalytics.highestCancellationStore,
+          highestCancellationStorePercentage: mockCancelledAnalytics.highestCancellationStorePercentage
+        },
+        cancellationTrend: mockCancellationTrend,
+        cancellationReasons: mockCancellationReasons,
+        storeCancellations: mockStoreCancellations,
+        refundStatusDistribution: mockRefundStatusDistribution
+      });
+      setIsLoading(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return { data, isLoading };
+}
+
+// Mutation: Initiate Refund
+export function useInitiateRefund() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ orderId, refundAmount, refundMethod, reason, remarks }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const orderIndex = dbOrders.findIndex((o) => o.id === orderId);
+        if (orderIndex === -1) {
+          setIsLoading(false);
+          reject(new Error("Order not found"));
+          return;
+        }
+
+        const oldOrder = dbOrders[orderIndex];
+        
+        // Update refund status to Initiated
+        dbOrders[orderIndex] = {
+          ...oldOrder,
+          cancellation: {
+            ...oldOrder.cancellation,
+            refundStatus: "Initiated",
+            remarks: remarks || oldOrder.cancellation?.remarks
+          },
+          refund: {
+            refundRequired: true,
+            refundAmount: Number(refundAmount),
+            refundMethod,
+            refundStatus: "Initiated",
+            transactionReference: `REF-${refundMethod.toUpperCase()}${Math.floor(100000 + Math.random() * 900000)}`,
+            initiatedAt: new Date().toISOString(),
+            completedAt: ""
+          },
+          investigation: {
+            ...oldOrder.investigation,
+            auditLogs: [
+              ...(oldOrder.investigation?.auditLogs || []),
+              { action: `Refund Initiated via ${refundMethod}`, staff: "Franchise Admin", timestamp: new Date().toISOString() }
+            ]
+          }
+        };
+
+        setIsLoading(false);
+        notifyListeners(); // Invalidate
+        resolve({ success: true, order: dbOrders[orderIndex] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+// Mutation: Reopen Investigation
+export function useReopenInvestigation() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ orderId, reason, priority, assignedStaff, description, attachments }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const orderIndex = dbOrders.findIndex((o) => o.id === orderId);
+        if (orderIndex === -1) {
+          setIsLoading(false);
+          reject(new Error("Order not found"));
+          return;
+        }
+
+        const oldOrder = dbOrders[orderIndex];
+
+        dbOrders[orderIndex] = {
+          ...oldOrder,
+          investigation: {
+            caseStatus: "Under Review",
+            assignedStaff: assignedStaff || "Unassigned",
+            reason,
+            priority,
+            description,
+            attachments: attachments || [],
+            notes: `Reopened for investigation. Reason: ${reason}`,
+            auditLogs: [
+              ...(oldOrder.investigation?.auditLogs || []),
+              { action: `Investigation Reopened. Priority: ${priority}`, staff: "Franchise Admin", timestamp: new Date().toISOString() }
+            ]
+          }
+        };
+
+        setIsLoading(false);
+        notifyListeners(); // Invalidate
+        resolve({ success: true, order: dbOrders[orderIndex] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
 }

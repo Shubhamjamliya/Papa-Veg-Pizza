@@ -653,6 +653,442 @@ export const mockOrders = [
     timeline: [
       { status: "Placed", updatedBy: "Customer", timestamp: daysAgo(15) }
     ]
+  },
+  // CANCELLED ORDERS
+  {
+    id: "ORD-C001",
+    orderNumber: "PVP-C001",
+    customer: {
+      name: "Rohan Gupta",
+      phone: "+91 98765 43210",
+      email: "rohan.g@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
+      address: "Block C-2, Rajouri Garden, New Delhi - 110027",
+      coords: { lat: 28.6415, lng: 77.1218 }
+    },
+    store: { storeId: "ST-001", name: "Connaught Place, Delhi" },
+    orderType: "Delivery",
+    placedAt: minutesAgo(45),
+    createdAt: minutesAgo(45),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 450, tax: 22.50, deliveryFee: 40, discount: 0, total: 512.50 },
+    paymentMethod: "UPI",
+    paymentStatus: "Paid",
+    transactionId: "TXN-UPI985012391",
+    items: [
+      { productName: "Double Cheese Margherita Pizza", variant: "Medium", quantity: 1, price: 399 },
+      { productName: "Pepsi Can", variant: "330ml", quantity: 1, price: 51 }
+    ],
+    cancellation: {
+      cancelledBy: "Rohan Gupta",
+      role: "CUSTOMER",
+      reason: "Customer Request",
+      remarks: "Ordered by mistake, wanted thin crust instead.",
+      refundRequired: true,
+      refundAmount: 512.50,
+      refundStatus: "Pending",
+      createdAt: minutesAgo(30)
+    },
+    refund: {
+      refundRequired: true,
+      refundAmount: 512.50,
+      refundMethod: "UPI",
+      refundStatus: "Pending",
+      transactionReference: "",
+      initiatedAt: "",
+      completedAt: ""
+    },
+    investigation: {
+      caseStatus: "Open",
+      assignedStaff: "Amit Patel",
+      reason: "Disputed customer request cancellation.",
+      priority: "Medium",
+      description: "Customer claims they cancelled within 60 seconds, but store claims preparation already started.",
+      attachments: [],
+      notes: "Reviewing store logs to check when preparation was marked.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: minutesAgo(30) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: minutesAgo(45) },
+      { status: "Confirmed", updatedBy: "System", timestamp: minutesAgo(43) },
+      { status: "Preparing", updatedBy: "Store Admin", timestamp: minutesAgo(40) },
+      { status: "Cancellation Initiated", updatedBy: "Customer", timestamp: minutesAgo(30) },
+      { status: "Cancelled", updatedBy: "System", timestamp: minutesAgo(30) }
+    ]
+  },
+  {
+    id: "ORD-C002",
+    orderNumber: "PVP-C002",
+    customer: {
+      name: "Pooja Sharma",
+      phone: "+91 99887 76655",
+      email: "pooja.sharma@yahoo.com",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80",
+      address: "Flat 12B, Prestige Heights, Indiranagar, Bengaluru - 560038",
+      coords: { lat: 12.9716, lng: 77.5946 }
+    },
+    store: { storeId: "ST-002", name: "Indiranagar, Bengaluru" },
+    orderType: "Delivery",
+    placedAt: daysAgo(0),
+    createdAt: daysAgo(0),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 699, tax: 35.00, deliveryFee: 30, discount: 50, total: 714.00 },
+    paymentMethod: "Card",
+    paymentStatus: "Paid",
+    transactionId: "TXN-CRD98502819",
+    items: [
+      { productName: "Veg Supreme Burst Pizza", variant: "Large", quantity: 1, price: 699 }
+    ],
+    cancellation: {
+      cancelledBy: "Store Manager Ramesh",
+      role: "STORE",
+      reason: "Out Of Stock",
+      remarks: "Fresh dough ran out due to sudden heavy ordering evening rush.",
+      refundRequired: true,
+      refundAmount: 714.00,
+      refundStatus: "Completed",
+      createdAt: minutesAgo(120)
+    },
+    refund: {
+      refundRequired: true,
+      refundAmount: 714.00,
+      refundMethod: "Card",
+      refundStatus: "Completed",
+      transactionReference: "REF-CRD98502819X",
+      initiatedAt: minutesAgo(110),
+      completedAt: minutesAgo(90)
+    },
+    investigation: {
+      caseStatus: "Closed",
+      assignedStaff: "Suresh Raina",
+      reason: "Out of stock inventory validation.",
+      priority: "Low",
+      description: "Store ran out of dough. Inventory stock was adjusted manually.",
+      attachments: [],
+      notes: "Verified restock logs. Refund successfully completed.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: minutesAgo(120) },
+        { action: "Refund Processed", staff: "Store Manager Ramesh", timestamp: minutesAgo(110) },
+        { action: "Case Closed", staff: "Suresh Raina", timestamp: minutesAgo(90) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: minutesAgo(130) },
+      { status: "Confirmed", updatedBy: "System", timestamp: minutesAgo(128) },
+      { status: "Cancellation Initiated", updatedBy: "Store Manager Ramesh", timestamp: minutesAgo(120) },
+      { status: "Cancelled", updatedBy: "System", timestamp: minutesAgo(120) }
+    ]
+  },
+  {
+    id: "ORD-C003",
+    orderNumber: "PVP-C003",
+    customer: {
+      name: "Abhishek Singh",
+      phone: "+91 88776 65544",
+      email: "abhishek.s@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      address: "Sector 3, Salt Lake City, Kolkata - 700091",
+      coords: { lat: 22.5726, lng: 88.4074 }
+    },
+    store: { storeId: "ST-003", name: "Salt Lake, Kolkata" },
+    orderType: "Delivery",
+    placedAt: daysAgo(1),
+    createdAt: daysAgo(1),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 350, tax: 17.50, deliveryFee: 40, discount: 0, total: 407.50 },
+    paymentMethod: "Wallet",
+    paymentStatus: "Paid",
+    transactionId: "TXN-WLT98503102",
+    items: [
+      { productName: "Cheesy Garlic Bread", variant: "Regular", quantity: 2, price: 150 }
+    ],
+    cancellation: {
+      cancelledBy: "Chef Dev",
+      role: "STORE",
+      reason: "Kitchen Issue",
+      remarks: "Kitchen oven malfunction. Emergency maintenance called.",
+      refundRequired: true,
+      refundAmount: 407.50,
+      refundStatus: "Initiated",
+      createdAt: daysAgo(1)
+    },
+    refund: {
+      refundRequired: true,
+      refundAmount: 407.50,
+      refundMethod: "Wallet",
+      refundStatus: "Initiated",
+      transactionReference: "REF-WLT98503102A",
+      initiatedAt: daysAgo(1),
+      completedAt: ""
+    },
+    investigation: {
+      caseStatus: "Under Review",
+      assignedStaff: "Amit Patel",
+      reason: "Kitchen equipment downtime incident.",
+      priority: "High",
+      description: "Oven temperature regulator failed. Store was offline for 3 hours.",
+      attachments: [],
+      notes: "Awaiting maintenance engineer clearance report.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: daysAgo(1) },
+        { action: "Refund Initiated", staff: "Chef Dev", timestamp: daysAgo(1) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: daysAgo(1) },
+      { status: "Confirmed", updatedBy: "System", timestamp: daysAgo(1) },
+      { status: "Preparing", updatedBy: "Chef Dev", timestamp: daysAgo(1) },
+      { status: "Cancellation Initiated", updatedBy: "Chef Dev", timestamp: daysAgo(1) },
+      { status: "Cancelled", updatedBy: "System", timestamp: daysAgo(1) }
+    ]
+  },
+  {
+    id: "ORD-C004",
+    orderNumber: "PVP-C004",
+    customer: {
+      name: "Neha Dhupia",
+      phone: "+91 97766 55443",
+      email: "neha.d@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80",
+      address: "Bungalow 7, Juhu Scheme, Mumbai - 400049",
+      coords: { lat: 19.1026, lng: 72.8242 }
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    orderType: "Delivery",
+    placedAt: daysAgo(2),
+    createdAt: daysAgo(2),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 550, tax: 27.50, deliveryFee: 40, discount: 0, total: 617.50 },
+    paymentMethod: "UPI",
+    paymentStatus: "Paid",
+    transactionId: "TXN-UPI98504281",
+    items: [
+      { productName: "Double Cheese Margherita Pizza", variant: "Medium", quantity: 1, price: 399 },
+      { productName: "Cheesy Garlic Bread", variant: "Regular", quantity: 1, price: 150 }
+    ],
+    cancellation: {
+      cancelledBy: "Payment Gateway",
+      role: "SYSTEM",
+      reason: "Payment Failure",
+      remarks: "Gateway Timeout. Bank deducted funds but status callback was delayed beyond checkout limit.",
+      refundRequired: true,
+      refundAmount: 617.50,
+      refundStatus: "Pending",
+      createdAt: daysAgo(2)
+    },
+    refund: {
+      refundRequired: true,
+      refundAmount: 617.50,
+      refundMethod: "UPI",
+      refundStatus: "Pending",
+      transactionReference: "",
+      initiatedAt: "",
+      completedAt: ""
+    },
+    investigation: {
+      caseStatus: "Open",
+      assignedStaff: "Karan Johar",
+      reason: "Double charge dispute.",
+      priority: "Medium",
+      description: "Customer charged twice. One succeeded on gateway but cancelled by client side scheduler timeout.",
+      attachments: [],
+      notes: "Verifying settlement reports from Razorpay dashboard.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: daysAgo(2) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: daysAgo(2) },
+      { status: "Cancellation Initiated", updatedBy: "System", timestamp: daysAgo(2) },
+      { status: "Cancelled", updatedBy: "System", timestamp: daysAgo(2) }
+    ]
+  },
+  {
+    id: "ORD-C005",
+    orderNumber: "PVP-C005",
+    customer: {
+      name: "Sanjay Dutt",
+      phone: "+91 96655 44332",
+      email: "sanjay.d@yahoo.com",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      address: "Imperial heights, Pali Hill, Mumbai - 400050",
+      coords: { lat: 19.0664, lng: 72.8259 }
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    orderType: "Delivery",
+    placedAt: daysAgo(3),
+    createdAt: daysAgo(3),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 399, tax: 20.00, deliveryFee: 40, discount: 0, total: 459.00 },
+    paymentMethod: "UPI",
+    paymentStatus: "Failed",
+    transactionId: "TXN-UPIFailed882",
+    items: [
+      { productName: "Tandoori Paneer Pizza", variant: "Medium", quantity: 1, price: 399 }
+    ],
+    cancellation: {
+      cancelledBy: "System Scheduler",
+      role: "SYSTEM",
+      reason: "Payment Failure",
+      remarks: "User abandoned payment sheet or UPI PIN validation failed.",
+      refundRequired: false,
+      refundAmount: 0,
+      refundStatus: "Rejected",
+      createdAt: daysAgo(3)
+    },
+    refund: {
+      refundRequired: false,
+      refundAmount: 0,
+      refundMethod: "UPI",
+      refundStatus: "Rejected",
+      transactionReference: "",
+      initiatedAt: "",
+      completedAt: ""
+    },
+    investigation: {
+      caseStatus: "Closed",
+      assignedStaff: "System",
+      reason: "Auto-close on payment failure.",
+      priority: "Low",
+      description: "Abandoned checkout sheet. No money was captured.",
+      attachments: [],
+      notes: "Confirmed with Razorpay logs: transaction marked as failed by customer bank.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: daysAgo(3) },
+        { action: "Case Closed", staff: "System", timestamp: daysAgo(3) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: daysAgo(3) },
+      { status: "Cancelled", updatedBy: "System", timestamp: daysAgo(3) }
+    ]
+  },
+  {
+    id: "ORD-C006",
+    orderNumber: "PVP-C006",
+    customer: {
+      name: "Deepika Padukone",
+      phone: "+91 95544 33221",
+      email: "deepika.p@outlook.com",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80",
+      address: "Beaubell, Prabhadevi, Mumbai - 400025",
+      coords: { lat: 19.0178, lng: 72.8254 }
+    },
+    store: { storeId: "ST-001", name: "Connaught Place, Delhi" },
+    orderType: "Delivery",
+    placedAt: daysAgo(4),
+    createdAt: daysAgo(4),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 899, tax: 45.00, deliveryFee: 40, discount: 100, total: 884.00 },
+    paymentMethod: "UPI",
+    paymentStatus: "Paid",
+    transactionId: "TXN-UPI98506192",
+    items: [
+      { productName: "Veg Supreme Burst Pizza", variant: "Large", quantity: 1, price: 699 },
+      { productName: "Stuffed Garlic Bread", variant: "Regular", quantity: 1, price: 200 }
+    ],
+    cancellation: {
+      cancelledBy: "Deepika Padukone",
+      role: "CUSTOMER",
+      reason: "Customer Request",
+      remarks: "Guests cancelled, no longer need such a large pizza.",
+      refundRequired: true,
+      refundAmount: 884.00,
+      refundStatus: "Pending",
+      createdAt: daysAgo(4)
+    },
+    refund: {
+      refundRequired: true,
+      refundAmount: 884.00,
+      refundMethod: "UPI",
+      refundStatus: "Pending",
+      transactionReference: "",
+      initiatedAt: "",
+      completedAt: ""
+    },
+    investigation: {
+      caseStatus: "Open",
+      assignedStaff: "Amit Patel",
+      reason: "High amount customer refund claim.",
+      priority: "High",
+      description: "High ticket size refund. Customer claims cancellation happened within grace window.",
+      attachments: [],
+      notes: "Checking if order preparation was already in transit or packing phase.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: daysAgo(4) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: daysAgo(4) },
+      { status: "Confirmed", updatedBy: "System", timestamp: daysAgo(4) },
+      { status: "Preparing", updatedBy: "Chef vinod", timestamp: daysAgo(4) },
+      { status: "Cancellation Initiated", updatedBy: "Customer", timestamp: daysAgo(4) },
+      { status: "Cancelled", updatedBy: "System", timestamp: daysAgo(4) }
+    ]
+  },
+  {
+    id: "ORD-C007",
+    orderNumber: "PVP-C007",
+    customer: {
+      name: "Amit Patel",
+      phone: "+91 94433 22110",
+      email: "amit.patel@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      address: "Plot 42, Sector 12, Dwarka, Delhi - 110078",
+      coords: { lat: 28.5921, lng: 77.0465 }
+    },
+    store: { storeId: "ST-004", name: "Gachibowli, Hyderabad" },
+    orderType: "Delivery",
+    placedAt: daysAgo(5),
+    createdAt: daysAgo(5),
+    orderStatus: "Cancelled",
+    pricing: { subtotal: 399, tax: 20.00, deliveryFee: 40, discount: 50, total: 409.00 },
+    paymentMethod: "UPI",
+    paymentStatus: "Paid",
+    transactionId: "TXN-UPI98507819",
+    items: [
+      { productName: "Tandoori Paneer Pizza", variant: "Medium", quantity: 1, price: 399 }
+    ],
+    cancellation: {
+      cancelledBy: "Store Manager Sunil",
+      role: "STORE",
+      reason: "Out Of Stock",
+      remarks: "Paneer stock finished, customer refused toppings substitution.",
+      refundRequired: true,
+      refundAmount: 409.00,
+      refundStatus: "Completed",
+      createdAt: daysAgo(5)
+    },
+    refund: {
+      refundRequired: true,
+      refundAmount: 409.00,
+      refundMethod: "UPI",
+      refundStatus: "Completed",
+      transactionReference: "REF-UPI98507819C",
+      initiatedAt: daysAgo(5),
+      completedAt: daysAgo(5)
+    },
+    investigation: {
+      caseStatus: "Closed",
+      assignedStaff: "Suresh Raina",
+      reason: "Store cancellation verification.",
+      priority: "Low",
+      description: "Store initiated refund directly due to stock outage.",
+      attachments: [],
+      notes: "Checked logs. Auto-refunded and successfully credited.",
+      auditLogs: [
+        { action: "Case Opened", staff: "System", timestamp: daysAgo(5) },
+        { action: "Case Closed", staff: "System", timestamp: daysAgo(5) }
+      ]
+    },
+    timeline: [
+      { status: "Placed", updatedBy: "Customer", timestamp: daysAgo(5) },
+      { status: "Confirmed", updatedBy: "System", timestamp: daysAgo(5) },
+      { status: "Cancellation Initiated", updatedBy: "Store Manager Sunil", timestamp: daysAgo(5) },
+      { status: "Cancelled", updatedBy: "System", timestamp: daysAgo(5) }
+    ]
   }
 ];
 
@@ -732,3 +1168,52 @@ export const mockReorderAnalytics = {
     ]
   }
 };
+
+// CANCELLED ORDERS ANALYTICS AND CHARTS MOCK DATA
+export const mockCancelledAnalytics = {
+  cancelledTodayCount: 3,
+  customerCancellationsCount: 3,
+  storeCancellationsCount: 3,
+  refundPendingCount: 3,
+  totalOrdersCount: 148,
+  cancelledOrdersCount: 7,
+  mostCommonReason: "Customer Request",
+  refundAmountThisMonth: 1837.00,
+  cancelledRevenue: 4154.50,
+  averageRefundTime: "45 mins",
+  highestCancellationStore: "Bandra West, Mumbai",
+  highestCancellationStorePercentage: "4.8%"
+};
+
+export const mockCancellationTrend = [
+  { date: "15 Jun", cancelledOrders: 1 },
+  { date: "16 Jun", cancelledOrders: 0 },
+  { date: "17 Jun", cancelledOrders: 2 },
+  { date: "18 Jun", cancelledOrders: 1 },
+  { date: "19 Jun", cancelledOrders: 3 },
+  { date: "20 Jun", cancelledOrders: 1 },
+  { date: "21 Jun", cancelledOrders: 2 }
+];
+
+export const mockCancellationReasons = [
+  { name: "Customer Request", value: 3, fill: "#f97316" }, // Orange
+  { name: "Out Of Stock", value: 2, fill: "#ef4444" }, // Red
+  { name: "Kitchen Issue", value: 1, fill: "#8b5cf6" }, // Purple
+  { name: "Payment Failure", value: 1, fill: "#3b82f6" }, // Blue
+  { name: "System Failure", value: 0, fill: "#6b7280" } // Gray
+];
+
+export const mockStoreCancellations = [
+  { name: "Bandra West", percentage: 4.8 },
+  { name: "Connaught Place", percentage: 3.5 },
+  { name: "Gachibowli", percentage: 2.1 },
+  { name: "Indiranagar", percentage: 1.8 },
+  { name: "Salt Lake", percentage: 1.2 }
+];
+
+export const mockRefundStatusDistribution = [
+  { name: "Pending", value: 3, fill: "#3b82f6" }, // Blue
+  { name: "Initiated", value: 1, fill: "#eab308" }, // Amber
+  { name: "Completed", value: 3, fill: "#10b981" }, // Emerald
+  { name: "Rejected", value: 0, fill: "#ef4444" } // Red
+];
