@@ -66,6 +66,7 @@ export const mockDeliveryPartners = [
 const minutesAgo = (mins) => new Date(Date.now() - mins * 60 * 1000).toISOString();
 const minutesHence = (mins) => new Date(Date.now() + mins * 60 * 1000).toISOString();
 const daysAgo = (days) => new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+const hoursAgo = (hours) => new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
 
 export const mockOrders = [
   // Active Orders (Live Dashboard)
@@ -1531,3 +1532,388 @@ export const mockStoreRefundChart = [
   { name: "Gachibowli", percentage: 2.4 },
   { name: "Connaught Place", percentage: 1.5 }
 ];
+
+// ==========================================
+// ORDER ISSUES MOCK DATA
+// ==========================================
+
+export const mockIssueStaff = [
+  { id: "STF-201", name: "Rohan Malhotra", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80", department: "Support" },
+  { id: "STF-202", name: "Isha Sharma", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80", department: "Operations" },
+  { id: "STF-203", name: "Amit Verma", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80", department: "Kitchen" },
+  { id: "STF-204", name: "Karan Singh", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80", department: "Delivery" },
+  { id: "STF-205", name: "Pooja Patel", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80", department: "Finance" }
+];
+
+export const mockOrderIssues = [
+  {
+    _id: "ISS-101",
+    issueNumber: "ISS-101",
+    orderId: "ORD-98401",
+    orderNumber: "PVP-98401",
+    customerId: "CUST-101",
+    storeId: "ST-003",
+    franchiseId: "FRAN-001",
+    category: "Cold Pizza",
+    priority: "Medium",
+    description: "The pizza delivered was freezing cold. The cheese had hardened completely and crust was like cardboard. Very disappointed.",
+    attachments: [
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80"
+    ],
+    assignedTo: null,
+    status: "Open",
+    resolution: null,
+    createdAt: minutesAgo(45),
+    resolvedAt: null,
+    customer: {
+      name: "Amit Sen",
+      phone: "+91 98402 12903",
+      email: "amit.sen@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
+      address: "24, Park Street, Kolkata - 700016",
+      memberSince: "12 Aug 2023",
+      totalOrders: 18,
+      lifetimeValue: 8420
+    },
+    store: { storeId: "ST-003", name: "Salt Lake, Kolkata" },
+    order: {
+      orderNumber: "PVP-98401",
+      storeName: "Salt Lake, Kolkata",
+      placedAt: minutesAgo(90),
+      items: "Double Cheese Margherita Pizza x1, Cheesy Garlic Bread x1",
+      paymentMethod: "UPI",
+      deliveryPartner: "Rahul Sharma (RD-101)",
+      deliveredAt: minutesAgo(48),
+      totalAmount: 523.95
+    },
+    internalNotes: [
+      { addedBy: "System", department: "Operations", note: "Ticket auto-created from customer support chat portal.", createdAt: minutesAgo(45) }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: "Amit Sen", timestamp: minutesAgo(45), remarks: "Pizza delivered cold." }
+    ]
+  },
+  {
+    _id: "ISS-102",
+    issueNumber: "ISS-102",
+    orderId: "ORD-98402",
+    orderNumber: "PVP-98402",
+    customerId: "CUST-102",
+    storeId: "ST-002",
+    franchiseId: "FRAN-001",
+    category: "Wrong Item",
+    priority: "High",
+    description: "Received a chicken topping pizza instead of pure veg Farmhouse Delight. I am pure vegetarian, this is a serious policy error!",
+    attachments: [],
+    assignedTo: {
+      id: "STF-201",
+      name: "Rohan Malhotra",
+      department: "Support",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80"
+    },
+    status: "Assigned",
+    resolution: null,
+    createdAt: hoursAgo(2),
+    resolvedAt: null,
+    customer: {
+      name: "Meera Nair",
+      phone: "+91 70029 88390",
+      email: "meera.nair@yahoo.com",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
+      address: "House 35, Block B, Indiranagar, Bengaluru - 560038",
+      memberSince: "05 Jan 2024",
+      totalOrders: 32,
+      lifetimeValue: 18920
+    },
+    store: { storeId: "ST-002", name: "Indiranagar, Bengaluru" },
+    order: {
+      orderNumber: "PVP-98402",
+      storeName: "Indiranagar, Bengaluru",
+      placedAt: hoursAgo(3),
+      items: "Farmhouse Delight Pizza Large x1",
+      paymentMethod: "Card",
+      deliveryPartner: "Amit Patel (RD-102)",
+      deliveredAt: hoursAgo(2.2),
+      totalAmount: 822.50
+    },
+    internalNotes: [
+      { addedBy: "System", department: "Operations", note: "Ticket created from customer mobile application.", createdAt: hoursAgo(2) },
+      { addedBy: "Rohan Malhotra", department: "Support", note: "Contacted kitchen team to verify if ticket order tags were swapped. Customer is agitated.", createdAt: hoursAgo(1.5) }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: "Meera Nair", timestamp: hoursAgo(2), remarks: "Non-veg toppings delivered on veg order." },
+      { status: "Assigned", updatedBy: "System Router", timestamp: hoursAgo(1.8), remarks: "Assigned to Support Specialist Rohan Malhotra." }
+    ]
+  },
+  {
+    _id: "ISS-103",
+    issueNumber: "ISS-103",
+    orderId: "ORD-98403",
+    orderNumber: "PVP-98403",
+    customerId: "CUST-103",
+    storeId: "ST-005",
+    franchiseId: "FRAN-001",
+    category: "Late Delivery",
+    priority: "High",
+    description: "The order took almost 2 hours to deliver. The restaurant is only 3 km away. Rider got lost and phone was unreachable.",
+    attachments: [],
+    assignedTo: {
+      id: "STF-202",
+      name: "Isha Sharma",
+      department: "Operations",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80"
+    },
+    status: "Resolved",
+    resolution: {
+      resolutionType: "Refund",
+      compensationAmount: 468.95,
+      couponCode: "",
+      remarks: "Approved full refund. Rider GPS logs verified delay was 1h20m beyond SLA."
+    },
+    createdAt: daysAgo(1),
+    resolvedAt: minutesAgo(120),
+    customer: {
+      name: "Karan Johar",
+      phone: "+91 98840 12289",
+      email: "karan.j@dharmaprod.in",
+      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80",
+      address: "Bungalow 4, Juhu Scheme, Mumbai - 400049",
+      memberSince: "19 Nov 2023",
+      totalOrders: 10,
+      lifetimeValue: 4680
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    order: {
+      orderNumber: "PVP-98403",
+      storeName: "Bandra West, Mumbai",
+      placedAt: daysAgo(1),
+      items: "Veg Supreme Burst Pizza x1, Pepsi Black Can x1",
+      paymentMethod: "UPI",
+      deliveryPartner: "Karan Singh (RD-103)",
+      deliveredAt: daysAgo(1),
+      totalAmount: 468.95
+    },
+    internalNotes: [
+      { addedBy: "Isha Sharma", department: "Operations", note: "Rider reported heavy traffic but route trace indicates long detour. Discussing rider SLA fine.", createdAt: daysAgo(1) }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: "Karan Johar", timestamp: daysAgo(1), remarks: "Delivery delayed by 1 hour 45 minutes." },
+      { status: "Assigned", updatedBy: "System", timestamp: daysAgo(1), remarks: "Assigned to Isha Sharma (Operations)." },
+      { status: "Investigating", updatedBy: "Isha Sharma", timestamp: daysAgo(1), remarks: "Checking rider GPS and store dispatch logs." },
+      { status: "Resolved", updatedBy: "Isha Sharma", timestamp: minutesAgo(120), remarks: "Full refund processed via Razorpay gateway." }
+    ]
+  },
+  {
+    _id: "ISS-104",
+    issueNumber: "ISS-104",
+    orderId: "ORD-98404",
+    orderNumber: "PVP-98404",
+    customerId: "CUST-104",
+    storeId: "ST-005",
+    franchiseId: "FRAN-001",
+    category: "Damaged Package",
+    priority: "Low",
+    description: "The pizza box was completely crushed on one side, and toppings were stuck to the top lid.",
+    attachments: [
+      "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=400&q=80"
+    ],
+    assignedTo: {
+      id: "STF-203",
+      name: "Amit Verma",
+      department: "Kitchen",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
+    },
+    status: "Closed",
+    resolution: {
+      resolutionType: "Coupon Compensation",
+      compensationAmount: 150.00,
+      couponCode: "COMP150",
+      remarks: "Issued coupon COMP150 to compensate for packaging damage."
+    },
+    createdAt: daysAgo(3),
+    resolvedAt: daysAgo(2),
+    customer: {
+      name: "Neha Dhupia",
+      phone: "+91 88390 12849",
+      email: "neha.d@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80",
+      address: "E-102, Bandra Stand, Mumbai - 400050",
+      memberSince: "20 May 2024",
+      totalOrders: 15,
+      lifetimeValue: 12450
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    order: {
+      orderNumber: "PVP-98404",
+      storeName: "Bandra West, Mumbai",
+      placedAt: daysAgo(3),
+      items: "Tandoori Paneer Pizza Medium x1",
+      paymentMethod: "Card",
+      deliveryPartner: "Suresh Raina (RD-104)",
+      deliveredAt: daysAgo(3),
+      totalAmount: 1102.90
+    },
+    internalNotes: [
+      { addedBy: "Amit Verma", department: "Kitchen", note: "Checked box sizes, standard boxes were used. Rider likely stacked heavy bags on top.", createdAt: daysAgo(3) }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: "Neha Dhupia", timestamp: daysAgo(3), remarks: "Pizza box crushed during transit." },
+      { status: "Assigned", updatedBy: "System", timestamp: daysAgo(3), remarks: "Assigned to Amit Verma (Kitchen)." },
+      { status: "Resolved", updatedBy: "Amit Verma", timestamp: daysAgo(2), remarks: "Sent apologetic discount coupon of ₹150." },
+      { status: "Closed", updatedBy: "Amit Verma", timestamp: daysAgo(2), remarks: "Customer confirmed satisfaction with compensation. Ticket Closed." }
+    ]
+  },
+  {
+    _id: "ISS-105",
+    issueNumber: "ISS-105",
+    orderId: "ORD-98405",
+    orderNumber: "PVP-98405",
+    customerId: "CUST-105",
+    storeId: "ST-005",
+    franchiseId: "FRAN-001",
+    category: "Missing Item",
+    priority: "Critical",
+    description: "Ordered 2 garlic breads but received only 1. Checked bill, charged for 2. Need immediate correction.",
+    attachments: [],
+    assignedTo: {
+      id: "STF-205",
+      name: "Pooja Patel",
+      department: "Finance",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80"
+    },
+    status: "Investigating",
+    resolution: null,
+    createdAt: minutesAgo(120),
+    resolvedAt: null,
+    customer: {
+      name: "Sanjay Dutt",
+      phone: "+91 99911 22334",
+      email: "sanjay.dutt@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      address: "Imperial heights, Pali Hill, Mumbai - 400050",
+      memberSince: "14 Feb 2024",
+      totalOrders: 25,
+      lifetimeValue: 14850
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    order: {
+      orderNumber: "PVP-98405",
+      storeName: "Bandra West, Mumbai",
+      placedAt: minutesAgo(180),
+      items: "Veg Combo Package x1, Double Cheese Garlic Bread x2",
+      paymentMethod: "COD",
+      deliveryPartner: "Vikram Malhotra (RD-105)",
+      deliveredAt: minutesAgo(130),
+      totalAmount: 407.50
+    },
+    internalNotes: [
+      { addedBy: "Pooja Patel", department: "Finance", note: "Checking kitchen camera logs to verify if packing agent missed the second garlic bread box.", createdAt: minutesAgo(110) }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: "Sanjay Dutt", timestamp: minutesAgo(120), remarks: "Missing 1 unit Garlic Bread." },
+      { status: "Assigned", updatedBy: "System", timestamp: minutesAgo(115), remarks: "Assigned to Pooja Patel (Finance) for claims audit." },
+      { status: "Investigating", updatedBy: "Pooja Patel", timestamp: minutesAgo(110), remarks: "Initiated kitchen packaging video audits." }
+    ]
+  },
+  {
+    _id: "ISS-106",
+    issueNumber: "ISS-106",
+    orderId: "ORD-98406",
+    orderNumber: "PVP-98406",
+    customerId: "CUST-106",
+    storeId: "ST-004",
+    franchiseId: "FRAN-001",
+    category: "Rider Misbehavior",
+    priority: "Critical",
+    description: "Rider was extremely rude. He argued about the location and threw the pizza box on my porch, damaging the contents. Unacceptable!",
+    attachments: [],
+    assignedTo: null,
+    status: "Open",
+    resolution: null,
+    createdAt: minutesAgo(15),
+    resolvedAt: null,
+    customer: {
+      name: "Anil Kapoor",
+      phone: "+91 98201 98201",
+      email: "anil.k@kapoor.com",
+      avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=100&q=80",
+      address: "JVPD Scheme, Ville Parle, Mumbai - 400049",
+      memberSince: "29 Dec 2023",
+      totalOrders: 40,
+      lifetimeValue: 34500
+    },
+    store: { storeId: "ST-004", name: "Gachibowli, Hyderabad" },
+    order: {
+      orderNumber: "PVP-98406",
+      storeName: "Gachibowli, Hyderabad",
+      placedAt: minutesAgo(60),
+      items: "Tandoori Paneer Pizza Thin Crust x1",
+      paymentMethod: "Card",
+      deliveryPartner: "Rahul Sharma (RD-101)",
+      deliveredAt: minutesAgo(18),
+      totalAmount: 1040.40
+    },
+    internalNotes: [
+      { addedBy: "System", department: "Operations", note: "Ticket flagged critical due to safety/misbehavior tags.", createdAt: minutesAgo(15) }
+    ],
+    timeline: [
+      { status: "Issue Created", updatedBy: "Anil Kapoor", timestamp: minutesAgo(15), remarks: "Rider misbehaved and threw the delivery box." }
+    ]
+  }
+];
+
+export const mockIssueAnalytics = {
+  openIssuesCount: 3,
+  highPriorityCount: 2,
+  resolvedTodayCount: 1,
+  avgResolutionTime: "4.5 Hours",
+  customerSatisfaction: "4.7★",
+  issuesToday: 4,
+  compensationPaid: 618.95,
+  topCategory: "Wrong Item",
+  highestComplaintStore: "Bandra West, Mumbai"
+};
+
+export const mockIssueTrend = [
+  { date: "15 Jun", issuesCount: 2 },
+  { date: "16 Jun", issuesCount: 4 },
+  { date: "17 Jun", issuesCount: 1 },
+  { date: "18 Jun", issuesCount: 3 },
+  { date: "19 Jun", issuesCount: 5 },
+  { date: "20 Jun", issuesCount: 2 },
+  { date: "21 Jun", issuesCount: 4 }
+];
+
+export const mockIssueCategoriesDistribution = [
+  { name: "Wrong Item", value: 1, fill: "#ef4444" },
+  { name: "Missing Item", value: 1, fill: "#f97316" },
+  { name: "Late Delivery", value: 1, fill: "#3b82f6" },
+  { name: "Cold Pizza", value: 1, fill: "#eab308" },
+  { name: "Damaged Package", value: 1, fill: "#a855f7" },
+  { name: "Rider Misbehavior", value: 1, fill: "#6366f1" },
+  { name: "Payment Problem", value: 0, fill: "#6b7280" }
+];
+
+export const mockIssuePriorityDistribution = [
+  { name: "Low", value: 1, fill: "#10b981" },
+  { name: "Medium", value: 1, fill: "#3b82f6" },
+  { name: "High", value: 2, fill: "#f97316" },
+  { name: "Critical", value: 2, fill: "#ef4444" }
+];
+
+export const mockStoreIssuesChart = [
+  { name: "Bandra West", count: 3 },
+  { name: "Indiranagar", count: 1 },
+  { name: "Salt Lake", count: 1 },
+  { name: "Gachibowli", count: 1 },
+  { name: "Connaught Place", count: 0 }
+];
+
+export const mockResolutionTypesChart = [
+  { name: "Refund", count: 1 },
+  { name: "Replacement", count: 0 },
+  { name: "Coupon", count: 1 },
+  { name: "Apology", count: 0 },
+  { name: "No Action", count: 0 }
+];
+
