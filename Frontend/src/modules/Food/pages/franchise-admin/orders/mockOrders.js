@@ -1217,3 +1217,317 @@ export const mockRefundStatusDistribution = [
   { name: "Completed", value: 3, fill: "#10b981" }, // Emerald
   { name: "Rejected", value: 0, fill: "#ef4444" } // Red
 ];
+
+// REFUND REQUESTS DATA
+export const mockRefundRequests = [
+  {
+    _id: "REF-REQ-001",
+    requestId: "REF-REQ-001",
+    orderId: "ORD-98401",
+    orderNumber: "PVP-98401",
+    customerId: "CUST-101",
+    franchiseId: "FRAN-001",
+    customer: {
+      name: "Amit Sen",
+      phone: "+91 98402 12903",
+      email: "amit.sen@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
+      address: "24, Park Street, Kolkata - 700016",
+      memberSince: "12 Aug 2023",
+      totalOrders: 18,
+      lifetimeValue: 8420
+    },
+    store: { storeId: "ST-003", name: "Salt Lake, Kolkata" },
+    refundAmount: 523.95,
+    reason: "Food Quality",
+    description: "The double cheese topping was completely burnt and crust was hard as rock.",
+    attachments: [
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80"
+    ],
+    refundStatus: "Pending",
+    requestedAt: minutesAgo(90),
+    approvedBy: null,
+    processedAt: null,
+    paymentTransactionId: "TXN-UPI984012290",
+    timeline: [
+      { status: "Request Submitted", updatedBy: "Amit Sen", timestamp: minutesAgo(90), remarks: "Burned cheese topping, hard crust." }
+    ],
+    paymentInfo: {
+      originalTransactionId: "TXN-UPI984012290",
+      gateway: "Razorpay",
+      gatewayStatus: "Success",
+      refundTransactionId: "",
+      processedAmount: 0,
+      processedBy: "",
+      processingDate: ""
+    }
+  },
+  {
+    _id: "REF-REQ-002",
+    requestId: "REF-REQ-002",
+    orderId: "ORD-98402",
+    orderNumber: "PVP-98402",
+    customerId: "CUST-102",
+    franchiseId: "FRAN-001",
+    customer: {
+      name: "Meera Nair",
+      phone: "+91 70029 88390",
+      email: "meera.nair@yahoo.com",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
+      address: "House 35, Block B, Indiranagar, Bengaluru - 560038",
+      memberSince: "05 Jan 2024",
+      totalOrders: 32,
+      lifetimeValue: 18920
+    },
+    store: { storeId: "ST-002", name: "Indiranagar, Bengaluru" },
+    refundAmount: 822.50,
+    reason: "Wrong Order",
+    description: "Received a meat topping pizza instead of pure veg Farmhouse Delight. I am pure vegetarian.",
+    attachments: [
+      "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=400&q=80"
+    ],
+    refundStatus: "Approved",
+    requestedAt: daysAgo(1),
+    approvedBy: "Franchise Admin",
+    processedAt: null,
+    paymentTransactionId: "TXN-CRD84023910",
+    timeline: [
+      { status: "Request Submitted", updatedBy: "Meera Nair", timestamp: daysAgo(1), remarks: "Non-veg toppings delivered on veg order." },
+      { status: "Under Review", updatedBy: "Store Manager Ramesh", timestamp: minutesAgo(18 * 60), remarks: "Verifying kitchen prep order sheet." },
+      { status: "Approved", updatedBy: "Franchise Admin", timestamp: minutesAgo(4 * 60), remarks: "Confirmed toppings error. Approved full amount payout." }
+    ],
+    paymentInfo: {
+      originalTransactionId: "TXN-CRD84023910",
+      gateway: "Stripe",
+      gatewayStatus: "Success",
+      refundTransactionId: "",
+      processedAmount: 0,
+      processedBy: "",
+      processingDate: ""
+    }
+  },
+  {
+    _id: "REF-REQ-003",
+    requestId: "REF-REQ-003",
+    orderId: "ORD-98403",
+    orderNumber: "PVP-98403",
+    customerId: "CUST-103",
+    franchiseId: "FRAN-001",
+    customer: {
+      name: "Karan Johar",
+      phone: "+91 98840 12289",
+      email: "karan.j@dharmaprod.in",
+      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=100&q=80",
+      address: "Bungalow 4, Juhu Scheme, Mumbai - 400049",
+      memberSince: "19 Nov 2023",
+      totalOrders: 10,
+      lifetimeValue: 4680
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    refundAmount: 468.95,
+    reason: "Late Delivery",
+    description: "Delivery took 1 hour 45 minutes, pizza was freezing cold. Customer care chat promised cancellation refund.",
+    attachments: [],
+    refundStatus: "Processed",
+    requestedAt: daysAgo(3),
+    approvedBy: "Franchise Admin",
+    processedAt: daysAgo(2),
+    paymentTransactionId: "TXN-UPI98403391",
+    timeline: [
+      { status: "Request Submitted", updatedBy: "Karan Johar", timestamp: daysAgo(3), remarks: "Delivered 1h45m late, cold pizza." },
+      { status: "Approved", updatedBy: "Franchise Admin", timestamp: daysAgo(2), remarks: "Late delivery confirmed via rider GPS logs." },
+      { status: "Processed", updatedBy: "HQ Finance Team", timestamp: daysAgo(2), remarks: "Refund processed via Razorpay API." }
+    ],
+    paymentInfo: {
+      originalTransactionId: "TXN-UPI98403391",
+      gateway: "Razorpay",
+      gatewayStatus: "Success",
+      refundTransactionId: "REF-UPI98403391X",
+      processedAmount: 468.95,
+      processedBy: "HQ Finance Team",
+      processingDate: daysAgo(2)
+    }
+  },
+  {
+    _id: "REF-REQ-004",
+    requestId: "REF-REQ-004",
+    orderId: "ORD-98404",
+    orderNumber: "PVP-98404",
+    customerId: "CUST-104",
+    franchiseId: "FRAN-001",
+    customer: {
+      name: "Neha Dhupia",
+      phone: "+91 88390 12849",
+      email: "neha.d@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80",
+      address: "E-102, Bandra Stand, Mumbai - 400050",
+      memberSince: "20 May 2024",
+      totalOrders: 15,
+      lifetimeValue: 12450
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    refundAmount: 1102.90,
+    reason: "Damaged Packaging",
+    description: "The pizza box was completely crushed on one side, and toppings were stuck to the top lid. Messy.",
+    attachments: [
+      "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=400&q=80"
+    ],
+    refundStatus: "Rejected",
+    requestedAt: daysAgo(5),
+    approvedBy: null,
+    processedAt: null,
+    paymentTransactionId: "TXN-CRD98404192",
+    timeline: [
+      { status: "Request Submitted", updatedBy: "Neha Dhupia", timestamp: daysAgo(5), remarks: "Pizza box crushed during transit." },
+      { status: "Under Review", updatedBy: "Store Manager Sunil", timestamp: daysAgo(4), remarks: "Checking rider delivery logs." },
+      { status: "Rejected", updatedBy: "Franchise Admin", timestamp: daysAgo(4), remarks: "Rider picture proof shows standard intact packaging delivered. Rejected as invalid claim." }
+    ],
+    paymentInfo: {
+      originalTransactionId: "TXN-CRD98404192",
+      gateway: "Stripe",
+      gatewayStatus: "Success",
+      refundTransactionId: "",
+      processedAmount: 0,
+      processedBy: "",
+      processingDate: ""
+    }
+  },
+  {
+    _id: "REF-REQ-005",
+    requestId: "REF-REQ-005",
+    orderId: "ORD-98405",
+    orderNumber: "PVP-98405",
+    customerId: "CUST-105",
+    franchiseId: "FRAN-001",
+    customer: {
+      name: "Sanjay Dutt",
+      phone: "+91 99911 22334",
+      email: "sanjay.dutt@gmail.com",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80",
+      address: "Imperial heights, Pali Hill, Mumbai - 400050",
+      memberSince: "14 Feb 2024",
+      totalOrders: 25,
+      lifetimeValue: 14850
+    },
+    store: { storeId: "ST-005", name: "Bandra West, Mumbai" },
+    refundAmount: 407.50,
+    reason: "Missing Items",
+    description: "Ordered 2 garlic breads but received only 1. Checked bill, charged for 2.",
+    attachments: [],
+    refundStatus: "Pending",
+    requestedAt: minutesAgo(120),
+    approvedBy: null,
+    processedAt: null,
+    paymentTransactionId: "TXN-COD98405A",
+    timeline: [
+      { status: "Request Submitted", updatedBy: "Sanjay Dutt", timestamp: minutesAgo(120), remarks: "Only 1 garlic bread delivered instead of 2." }
+    ],
+    paymentInfo: {
+      originalTransactionId: "TXN-COD98405A",
+      gateway: "Cashfree",
+      gatewayStatus: "Success",
+      refundTransactionId: "",
+      processedAmount: 0,
+      processedBy: "",
+      processingDate: ""
+    }
+  },
+  {
+    _id: "REF-REQ-006",
+    requestId: "REF-REQ-006",
+    orderId: "ORD-98406",
+    orderNumber: "PVP-98406",
+    customerId: "CUST-106",
+    franchiseId: "FRAN-001",
+    customer: {
+      name: "Anil Kapoor",
+      phone: "+91 98201 98201",
+      email: "anil.k@kapoor.com",
+      avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=100&q=80",
+      address: "JVPD Scheme, Ville Parle, Mumbai - 400049",
+      memberSince: "29 Dec 2023",
+      totalOrders: 40,
+      lifetimeValue: 34500
+    },
+    store: { storeId: "ST-004", name: "Gachibowli, Hyderabad" },
+    refundAmount: 1040.40,
+    reason: "Wrong Order",
+    description: "Entire order was completely mismatched. Got some other family meal block instead of my thin crust paneer tikka.",
+    attachments: [
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80"
+    ],
+    refundStatus: "Pending",
+    requestedAt: minutesAgo(10),
+    approvedBy: null,
+    processedAt: null,
+    paymentTransactionId: "TXN-CRD98406180",
+    timeline: [
+      { status: "Request Submitted", updatedBy: "Anil Kapoor", timestamp: minutesAgo(10), remarks: "Completely wrong family pack delivered." }
+    ],
+    paymentInfo: {
+      originalTransactionId: "TXN-CRD98406180",
+      gateway: "PhonePe",
+      gatewayStatus: "Success",
+      refundTransactionId: "",
+      processedAmount: 0,
+      processedBy: "",
+      processingDate: ""
+    }
+  }
+];
+
+export const mockRefundTransactions = [
+  {
+    _id: "TXN-REF-101",
+    refundRequestId: "REF-REQ-003",
+    gateway: "Razorpay",
+    refundTransactionId: "REF-UPI98403391X",
+    processedAmount: 468.95,
+    processedBy: "HQ Finance Team",
+    gatewayReference: "GTR-8820492810",
+    status: "Success",
+    processedAt: daysAgo(2)
+  }
+];
+
+export const mockRefundAnalytics = {
+  refundAmountToday: 0.00,
+  refundAmountThisMonth: 468.95,
+  highestRefundStore: "Indiranagar, Bengaluru",
+  averageRefundValue: 620.50,
+  refundSuccessRate: "88.5%"
+};
+
+export const mockRefundTrend = [
+  { date: "15 Jun", refundAmount: 0 },
+  { date: "16 Jun", refundAmount: 150 },
+  { date: "17 Jun", refundAmount: 399 },
+  { date: "18 Jun", refundAmount: 0 },
+  { date: "19 Jun", refundAmount: 468.95 },
+  { date: "20 Jun", refundAmount: 200 },
+  { date: "21 Jun", refundAmount: 0 }
+];
+
+export const mockRefundRequestsStatusDistribution = [
+  { name: "Pending", value: 3, fill: "#f97316" }, // Orange
+  { name: "Approved", value: 1, fill: "#3b82f6" }, // Blue
+  { name: "Rejected", value: 1, fill: "#ef4444" }, // Red
+  { name: "Processed", value: 1, fill: "#10b981" } // Green
+];
+
+export const mockRefundReasonsDistribution = [
+  { name: "Food Quality", value: 1, fill: "#f97316" },
+  { name: "Wrong Order", value: 2, fill: "#3b82f6" },
+  { name: "Late Delivery", value: 1, fill: "#eab308" },
+  { name: "Damaged Packaging", value: 1, fill: "#a855f7" },
+  { name: "Missing Items", value: 1, fill: "#ef4444" },
+  { name: "Other", value: 0, fill: "#6b7280" }
+];
+
+export const mockStoreRefundChart = [
+  { name: "Indiranagar", percentage: 5.2 },
+  { name: "Bandra West", percentage: 4.1 },
+  { name: "Salt Lake", percentage: 3.5 },
+  { name: "Gachibowli", percentage: 2.4 },
+  { name: "Connaught Place", percentage: 1.5 }
+];

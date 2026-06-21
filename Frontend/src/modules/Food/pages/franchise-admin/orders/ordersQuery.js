@@ -8,12 +8,21 @@ import {
   mockCancellationTrend,
   mockCancellationReasons,
   mockStoreCancellations,
-  mockRefundStatusDistribution
+  mockRefundStatusDistribution,
+  mockRefundRequests,
+  mockRefundTransactions,
+  mockRefundAnalytics as initialRefundAnalytics,
+  mockRefundTrend,
+  mockRefundRequestsStatusDistribution,
+  mockRefundReasonsDistribution,
+  mockStoreRefundChart
 } from "./mockOrders";
 import { toast } from "sonner";
 
 // In-memory database state
 let dbOrders = [...initialOrders];
+let dbRefundRequests = [...mockRefundRequests];
+let dbRefundTransactions = [...mockRefundTransactions];
 
 // Simple Pub/Sub for Query Invalidation
 const listeners = new Set();
@@ -827,6 +836,555 @@ export function useInitiateRefund() {
   };
 
   return { mutate, mutateAsync, isLoading };
+}
+
+// ==========================================
+// REFUND REQUESTS QUERY HOOKS
+// ==========================================
+
+// Hook for fetching refund requests with filters & pagination
+export function useRefundRequests(filters = {}) {
+  const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchRefundRequests = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      let filtered = [...dbRefundRequests];
+
+      // Filter by Status
+      if (filters.status && filters.status !== "all") {
+        filtered = filtered.filter((r) => r.refundStatus.toLowerCase() === filters.status.toLowerCase());
+      }
+
+      // Filter by Store
+      if (filters.storeId && filters.storeId !== "all") {
+        filtered = filtered.filter((r) => r.store.storeId === filters.storeId);
+      }
+
+      // Filter by Amount Range
+      if (filters.minAmount) {
+        filtered = filtered.filter((r) => r.refundAmount >= Number(filters.minAmount));
+      }
+      if (filters.maxAmount) {
+        filtered = filtered.filter((r) => r.refundAmount <= Number(filters.maxAmount));
+      }
+
+      // Filter by Search Query (ID or Order Number)
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(
+          (r) =>
+            r.requestId.toLowerCase().includes(query) ||
+            r.orderNumber.toLowerCase().includes(query) ||
+            r.customer.name.toLowerCase().includes(query) ||
+            r.customer.phone.includes(query)
+        );
+      }
+
+      // Filter by Date presets
+      if (filters.datePreset && filters.datePreset !== "all") {
+        const now = new Date();
+        filtered = filtered.filter((r) => {
+          const reqDate = new Date(r.requestedAt);
+          const diffTime = Math.abs(now - reqDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (filters.datePreset === "today") return diffDays <= 1;
+          if (filters.datePreset === "yesterday") return diffDays > 1 && diffDays <= 2;
+          if (filters.datePreset === "week") return diffDays <= 7;
+          if (filters.datePreset === "month") return diffDays <= 30;
+          return true;
+        });
+      }
+
+      // Sorting: default to requestedAt descending
+      filtered.sort((a, b) => new Date(b.requestedAt) - new Date(a.requestedAt));
+
+      setTotalCount(filtered.length);
+
+      // Pagination
+      const page = filters.page || 1;
+      const limit = filters.limit || 10;
+      const startIndex = (page - 1) * limit;
+      const paginated = filtered.slice(startIndex, startIndex + limit);
+
+      setData(paginated);
+      setIsLoading(false);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [
+    filters.status,
+    filters.storeId,
+    filters.minAmount,
+    filters.maxAmount,
+    filters.searchQuery,
+    filters.datePreset,
+    filters.page,
+    filters.limit,
+  ]);
+
+  useEffect(() => {
+    fetchRefundRequests();
+    return subscribe(fetchRefundRequests);
+  }, [fetchRefundRequests]);
+
+  return {
+    data,
+    totalCount,
+    isLoading,
+    refetch: fetchRefundRequests,
+  };
+}
+
+// Hook for fetching a single refund request
+export function useRefundRequest(id) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchRefundRequest = useCallback(() => {
+    if (!id) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const request = dbRefundRequests.find((r) => r.requestId === id);
+      if (request) {
+        setData(request);
+        setError(null);
+      } else {
+        setError(new Error("Refund request not found"));
+      }
+      setIsLoading(false);
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [id]);
+
+  useEffect(() => {
+    fetchRefundRequest();
+    return subscribe(fetchRefundRequest);
+  }, [fetchRefundRequest]);
+
+  return {
+    data,
+    isLoading,
+    error,
+    refetch: fetchRefundRequest,
+  };
+}
+
+// Hook for fetching refund analytics totals
+export function useRefundAnalytics() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchAnalytics = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      const pending = dbRefundRequests.filter((r) => r.refundStatus === "Pending").length;
+      const approved = dbRefundRequests.filter((r) => r.refundStatus === "Approved").length;
+      const processed = dbRefundRequests.filter((r) => r.refundStatus === "Processed").length;
+
+      // Sum of refundAmount
+      const refundAmountVal = dbRefundRequests
+        .filter((r) => r.refundStatus !== "Rejected")
+        .reduce((sum, r) => sum + r.refundAmount, 0);
+
+      // Average Resolution Time (difference between processedAt and requestedAt)
+      const processedRequests = dbRefundRequests.filter(
+        (r) => r.refundStatus === "Processed" && r.processedAt && r.requestedAt
+      );
+      let avgResolutionDays = 3.2; // default fallback if no processed items yet
+      if (processedRequests.length > 0) {
+        const totalMs = processedRequests.reduce((sum, r) => {
+          const start = new Date(r.requestedAt);
+          const end = new Date(r.processedAt);
+          return sum + (end - start);
+        }, 0);
+        const avgMs = totalMs / processedRequests.length;
+        const avgDays = avgMs / (1000 * 60 * 60 * 24);
+        avgResolutionDays = Number(avgDays.toFixed(1));
+      }
+
+      // Add other properties
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const refundToday = dbRefundRequests
+        .filter((r) => r.refundStatus === "Processed" && new Date(r.processedAt) >= todayStart)
+        .reduce((sum, r) => sum + r.refundAmount, 0);
+
+      setData({
+        pendingCount: pending,
+        approvedCount: approved,
+        processedCount: processed,
+        totalRefundAmount: refundAmountVal,
+        avgResolutionTime: `${avgResolutionDays} Days`,
+        refundAmountToday: refundToday || 0,
+        refundAmountThisMonth: initialRefundAnalytics.refundAmountThisMonth,
+        highestRefundStore: initialRefundAnalytics.highestRefundStore,
+        averageRefundValue: initialRefundAnalytics.averageRefundValue,
+        refundSuccessRate: initialRefundAnalytics.refundSuccessRate,
+      });
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    fetchAnalytics();
+    return subscribe(fetchAnalytics);
+  }, [fetchAnalytics]);
+
+  return { data, isLoading };
+}
+
+// Hook for fetching chart-specific datasets
+export function useRefundChartData() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchChartData = useCallback(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      // Build dynamic status distribution counts
+      const pending = dbRefundRequests.filter((r) => r.refundStatus === "Pending").length;
+      const approved = dbRefundRequests.filter((r) => r.refundStatus === "Approved").length;
+      const rejected = dbRefundRequests.filter((r) => r.refundStatus === "Rejected").length;
+      const processed = dbRefundRequests.filter((r) => r.refundStatus === "Processed").length;
+
+      const dynamicStatusDist = [
+        { name: "Pending", value: pending, fill: "#f97316" },
+        { name: "Approved", value: approved, fill: "#3b82f6" },
+        { name: "Rejected", value: rejected, fill: "#ef4444" },
+        { name: "Processed", value: processed, fill: "#10b981" },
+      ];
+
+      // Build dynamic reasons counts
+      const reasonCounts = {
+        "Food Quality": 0,
+        "Wrong Order": 0,
+        "Late Delivery": 0,
+        "Damaged Packaging": 0,
+        "Missing Items": 0,
+        "Other": 0,
+      };
+
+      dbRefundRequests.forEach((r) => {
+        if (reasonCounts[r.reason] !== undefined) {
+          reasonCounts[r.reason]++;
+        } else {
+          reasonCounts["Other"]++;
+        }
+      });
+
+      const dynamicReasonsDist = Object.keys(reasonCounts).map((key, index) => {
+        const colors = ["#f97316", "#3b82f6", "#eab308", "#a855f7", "#ef4444", "#6b7280"];
+        return {
+          name: key,
+          value: reasonCounts[key],
+          fill: colors[index % colors.length],
+        };
+      });
+
+      setData({
+        refundTrend: mockRefundTrend,
+        refundStatusDistribution: dynamicStatusDist,
+        refundReasonsDistribution: dynamicReasonsDist,
+        storeRefundChart: mockStoreRefundChart,
+      });
+      setIsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    fetchChartData();
+    return subscribe(fetchChartData);
+  }, [fetchChartData]);
+
+  return { data, isLoading };
+}
+
+// ==========================================
+// REFUND MUTATIONS
+// ==========================================
+
+// Mutation: Approve Refund Request
+export function useApproveRefund() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ requestId, approvedAmount, remarks, notifyCustomer }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = dbRefundRequests.findIndex((r) => r.requestId === requestId);
+        if (index === -1) {
+          setIsLoading(false);
+          reject(new Error("Refund request not found"));
+          return;
+        }
+
+        const oldRequest = dbRefundRequests[index];
+        const newTimeline = [
+          ...oldRequest.timeline,
+          {
+            status: "Approved",
+            updatedBy: "Franchise Admin",
+            timestamp: new Date().toISOString(),
+            remarks: remarks || `Approved refund of ₹${approvedAmount}.`,
+          },
+        ];
+
+        dbRefundRequests[index] = {
+          ...oldRequest,
+          refundStatus: "Approved",
+          approvedBy: "Franchise Admin",
+          refundAmount: Number(approvedAmount), // update with approved amount if changed
+          timeline: newTimeline,
+          paymentInfo: {
+            ...oldRequest.paymentInfo,
+            processedAmount: Number(approvedAmount),
+          },
+        };
+
+        setIsLoading(false);
+        notifyListeners();
+        toast.success("Refund approved successfully.");
+        resolve({ success: true, request: dbRefundRequests[index] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+// Mutation: Reject Refund Request
+export function useRejectRefund() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({ requestId, rejectionReason, remarks, notifyCustomer }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = dbRefundRequests.findIndex((r) => r.requestId === requestId);
+        if (index === -1) {
+          setIsLoading(false);
+          reject(new Error("Refund request not found"));
+          return;
+        }
+
+        const oldRequest = dbRefundRequests[index];
+        const newTimeline = [
+          ...oldRequest.timeline,
+          {
+            status: "Rejected",
+            updatedBy: "Franchise Admin",
+            timestamp: new Date().toISOString(),
+            remarks: remarks || `Rejected. Reason: ${rejectionReason}`,
+          },
+        ];
+
+        dbRefundRequests[index] = {
+          ...oldRequest,
+          refundStatus: "Rejected",
+          timeline: newTimeline,
+          remarks: `Rejected: ${rejectionReason}. Remarks: ${remarks || ""}`,
+        };
+
+        setIsLoading(false);
+        notifyListeners();
+        toast.error("Refund request rejected.");
+        resolve({ success: true, request: dbRefundRequests[index] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+// Mutation: Process Refund Request
+export function useProcessRefund() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const mutateAsync = async ({
+    requestId,
+    gateway,
+    refundTransactionId,
+    processedAmount,
+    processedBy,
+    gatewayReference,
+    remarks,
+    notifyCustomer,
+  }) => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const index = dbRefundRequests.findIndex((r) => r.requestId === requestId);
+        if (index === -1) {
+          setIsLoading(false);
+          reject(new Error("Refund request not found"));
+          return;
+        }
+
+        const oldRequest = dbRefundRequests[index];
+        const processedAt = new Date().toISOString();
+        const txnId = refundTransactionId || `REF-${gateway.toUpperCase()}${Math.floor(100000 + Math.random() * 900000)}`;
+
+        const newTimeline = [
+          ...oldRequest.timeline,
+          {
+            status: "Processed",
+            updatedBy: processedBy || "HQ Finance Team",
+            timestamp: processedAt,
+            remarks: remarks || `Refund processed successfully via ${gateway}.`,
+          },
+        ];
+
+        dbRefundRequests[index] = {
+          ...oldRequest,
+          refundStatus: "Processed",
+          processedAt: processedAt,
+          timeline: newTimeline,
+          paymentInfo: {
+            ...oldRequest.paymentInfo,
+            gateway: gateway,
+            refundTransactionId: txnId,
+            processedAmount: Number(processedAmount),
+            processedBy: processedBy || "HQ Finance Team",
+            processingDate: processedAt,
+          },
+        };
+
+        // Create transaction log
+        const newTransaction = {
+          _id: `TXN-REF-${Math.floor(100 + Math.random() * 900)}`,
+          refundRequestId: requestId,
+          gateway,
+          refundTransactionId: txnId,
+          processedAmount: Number(processedAmount),
+          processedBy: processedBy || "HQ Finance Team",
+          gatewayReference: gatewayReference || `GTR-${Math.floor(10000000 + Math.random() * 90000000)}`,
+          status: "Success",
+          processedAt: processedAt,
+        };
+
+        dbRefundTransactions = [newTransaction, ...dbRefundTransactions];
+
+        setIsLoading(false);
+        notifyListeners();
+        toast.success("Refund processed successfully.");
+        resolve({ success: true, request: dbRefundRequests[index] });
+      }, 500);
+    });
+  };
+
+  const mutate = (variables, options = {}) => {
+    mutateAsync(variables)
+      .then((data) => {
+        if (options.onSuccess) options.onSuccess(data);
+      })
+      .catch((err) => {
+        if (options.onError) options.onError(err);
+      });
+  };
+
+  return { mutate, mutateAsync, isLoading };
+}
+
+// WebSocket simulator for refund requests
+export function simulateNewRefundRequest() {
+  const newId = `REF-REQ-0${Math.floor(10 + Math.random() * 90)}`;
+  const orderNum = `PVP-98${Math.floor(400 + Math.random() * 99)}`;
+  const randomNames = ["Virat Kohli", "Jasprit Bumrah", "Rohit Sharma", "Shubman Gill", "Hardik Pandya"];
+  const selectedName = randomNames[Math.floor(Math.random() * randomNames.length)];
+  const store = mockStores[Math.floor(Math.random() * mockStores.length)];
+  const amount = Number((100 + Math.random() * 900).toFixed(2));
+  const reasons = ["Food Quality", "Wrong Order", "Late Delivery", "Damaged Packaging", "Missing Items"];
+  const selectedReason = reasons[Math.floor(Math.random() * reasons.length)];
+
+  const newRefund = {
+    _id: newId,
+    requestId: newId,
+    orderId: `ORD-${orderNum.split("-")[1]}`,
+    orderNumber: orderNum,
+    customerId: `CUST-${Math.floor(200 + Math.random() * 800)}`,
+    franchiseId: "FRAN-001",
+    customer: {
+      name: selectedName,
+      phone: `+91 ${Math.floor(60000 + Math.random() * 40000)} ${Math.floor(10000 + Math.random() * 90000)}`,
+      email: `${selectedName.toLowerCase().replace(" ", ".")}@gmail.com`,
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
+      address: "Sector 62, Noida, Uttar Pradesh - 201301",
+      memberSince: "15 Jan 2024",
+      totalOrders: Math.floor(2 + Math.random() * 30),
+      lifetimeValue: Math.floor(1000 + Math.random() * 15000),
+    },
+    store: {
+      storeId: store.storeId,
+      name: store.storeName.split(" - ")[1] || store.storeName,
+    },
+    refundAmount: amount,
+    reason: selectedReason,
+    description: `Received a request because of ${selectedReason.toLowerCase()}. Please review and process this immediately.`,
+    attachments: Math.random() > 0.5 ? ["https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80"] : [],
+    refundStatus: "Pending",
+    requestedAt: new Date().toISOString(),
+    approvedBy: null,
+    processedAt: null,
+    paymentTransactionId: `TXN-UPI${Math.floor(100000 + Math.random() * 900000)}`,
+    timeline: [
+      {
+        status: "Request Submitted",
+        updatedBy: selectedName,
+        timestamp: new Date().toISOString(),
+        remarks: `Requested refund for ${selectedReason.toLowerCase()}.`,
+      },
+    ],
+    paymentInfo: {
+      originalTransactionId: `TXN-UPI${Math.floor(100000 + Math.random() * 900000)}`,
+      gateway: Math.random() > 0.5 ? "Razorpay" : "PhonePe",
+      gatewayStatus: "Success",
+      refundTransactionId: "",
+      processedAmount: 0,
+      processedBy: "",
+      processingDate: "",
+    },
+  };
+
+  dbRefundRequests = [newRefund, ...dbRefundRequests];
+  notifyListeners();
+  toast.info(`WebSocket: New Refund Request ${newId} received!`, {
+    description: `${selectedName} requested ₹${amount} for ${selectedReason}`,
+  });
+  return newRefund;
 }
 
 // Mutation: Reopen Investigation
