@@ -497,7 +497,7 @@ export default function Expenses() {
               {loading ? (
                 <Skeleton active paragraph={{ rows: 5 }} />
               ) : expenseTrendChartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                   <LineChart data={expenseTrendChartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                     <XAxis dataKey="formattedDate" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
                     <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />
@@ -532,8 +532,8 @@ export default function Expenses() {
               <Skeleton active paragraph={{ rows: 5 }} />
             ) : categoryDistributionChartData.length > 0 ? (
               <div className="grid grid-cols-5 gap-3 items-center">
-                <div className="col-span-2 h-[200px] w-full relative flex items-center justify-center">
-                  <ResponsiveContainer width="100%" height="100%">
+                <div className="col-span-2 h-[200px] w-full relative">
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                     <PieChart>
                       <Pie
                         data={categoryDistributionChartData}

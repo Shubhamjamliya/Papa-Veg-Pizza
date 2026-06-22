@@ -6,7 +6,7 @@ import {
 } from "recharts";
 import {
   DollarSign, ShoppingBag, ArrowUpRight, TrendingUp,
-  AlertTriangle, Truck, Award, Percent, Download
+  AlertTriangle, Truck, Award, Percent, Download, X
 } from "lucide-react";
 
 export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordDetails, loading, onExport }) {
@@ -141,7 +141,7 @@ export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordD
         <div className="space-y-6 py-2">
           {/* Bar Chart */}
           <div className="h-[220px] bg-slate-50 dark:bg-zinc-950 p-3 border rounded-xl shadow-inner">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <BarChart data={recordDetails.topProducts.slice(0, 5)} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <XAxis dataKey="name" fontSize={9} tickLine={false} axisLine={false} />
                 <YAxis fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />
@@ -174,8 +174,8 @@ export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordD
           {/* Pie Chart Column */}
           <div className="lg:col-span-1 flex flex-col justify-center items-center bg-slate-50 dark:bg-zinc-950 border p-4 rounded-xl shadow-inner">
             <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Revenue Share</h4>
-            <div className="h-[200px] w-full relative flex items-center justify-center">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-[200px] w-full relative">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 <PieChart>
                   <Pie
                     data={recordDetails.storeContribution}
@@ -241,8 +241,8 @@ export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordD
           {/* Doughnut Chart Column */}
           <div className="lg:col-span-1 flex flex-col justify-center items-center bg-slate-50 dark:bg-zinc-950 border p-4 rounded-xl shadow-inner">
             <h4 className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Payment Channels</h4>
-            <div className="h-[200px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-[200px] w-full relative">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 <PieChart>
                   <Pie
                     data={recordDetails.paymentBreakdown}
@@ -294,7 +294,7 @@ export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordD
   return (
     <Modal
       title={
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3.5 pr-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3.5 pr-10">
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-extrabold text-sm uppercase text-zinc-800 dark:text-white tracking-wider">
@@ -306,7 +306,7 @@ export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordD
           </div>
           <button
             onClick={() => onExport("PDF", {})}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--primary)] text-white hover:opacity-95 rounded-lg shadow-sm font-bold uppercase transition-all cursor-pointer text-[10px]"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--primary)] text-white hover:opacity-95 rounded-lg shadow-sm font-bold uppercase transition-all cursor-pointer text-[10px] mr-2"
           >
             <Download size={13} />
             <span>Export Day Summary</span>
@@ -315,6 +315,7 @@ export default function RevenueDetailsModal({ isOpen, onClose, recordId, recordD
       }
       open={isOpen}
       onCancel={onClose}
+      closeIcon={<X size={16} />}
       width={1200}
       footer={[
         <button

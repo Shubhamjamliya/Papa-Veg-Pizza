@@ -15,7 +15,8 @@ import {
   DollarSign,
   AlertTriangle,
   ArrowRight,
-  TrendingDown
+  TrendingDown,
+  X
 } from "lucide-react";
 
 export default function ProfitAnalysisModal({ isOpen, onClose, storeDetails }) {
@@ -88,6 +89,7 @@ export default function ProfitAnalysisModal({ isOpen, onClose, storeDetails }) {
       }
       open={isOpen}
       onCancel={onClose}
+      closeIcon={<X size={16} />}
       width={900}
       footer={[
         <button
@@ -228,7 +230,7 @@ export default function ProfitAnalysisModal({ isOpen, onClose, storeDetails }) {
           </div>
 
           <div className="h-[210px] w-full mt-1">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <LineChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                 <XAxis dataKey="month" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
                 <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />

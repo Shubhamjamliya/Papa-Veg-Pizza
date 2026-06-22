@@ -118,21 +118,13 @@
 
 /* Superadmin Theme Class */
 .superadmin-theme {
-  --primary: #a43c12;
   --primary-foreground: #ffffff;
-  --primary-hover: #a43c12cc;
-  --secondary: #ff7f50;
   --secondary-foreground: #ffffff;
-  --secondary-hover: #ff7f50cc;
 }
 
 .dark .superadmin-theme {
-  --primary: #a43c12;
   --primary-foreground: #ffffff;
-  --primary-hover: #a43c12cc;
-  --secondary: #ff7f50;
   --secondary-foreground: #ffffff;
-  --secondary-hover: #ff7f50cc;
 }
 
 @layer base {

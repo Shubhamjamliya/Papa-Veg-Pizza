@@ -84,6 +84,8 @@ export default function SuperAdminDashboard() {
   useEffect(() => {
     document.documentElement.style.setProperty("--primary", primaryColor)
     document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`)
+    document.documentElement.style.setProperty("--secondary", secondaryColor)
+    document.documentElement.style.setProperty("--secondary-hover", `${secondaryColor}cc`)
     localStorage.setItem("sa_primary", primaryColor)
     localStorage.setItem("sa_secondary", secondaryColor)
   }, [primaryColor, secondaryColor])

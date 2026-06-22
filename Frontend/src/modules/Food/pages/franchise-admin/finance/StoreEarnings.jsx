@@ -607,7 +607,7 @@ export default function StoreEarnings() {
                 </div>
 
                 <div className="h-[230px] w-full mt-1">
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                     <BarChart data={storeComparisonChartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                       <XAxis dataKey="name" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
                       <YAxis yAxisId="left" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />
@@ -638,7 +638,7 @@ export default function StoreEarnings() {
                 </div>
 
                 <div className="h-[230px] w-full mt-1">
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                     <LineChart data={revenueProfitTrendChartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                       <XAxis dataKey="formattedDate" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
                       <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />

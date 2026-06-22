@@ -3,23 +3,24 @@ import { Modal, Radio, DatePicker, Select, Checkbox, Progress } from "antd";
 import { Download, X } from "lucide-react";
 import { toast } from "sonner";
 import dayjs from "dayjs";
-import { mockStores } from "../mockData";
+import { mockDeliveryPartners } from "../mockData";
 
 const { RangePicker } = DatePicker;
 
-export default function StoreExportModal({ isOpen, onClose, onExport }) {
+export default function RiderExportModal({ isOpen, onClose, onExport }) {
   const [exporting, setExporting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [format, setFormat] = useState("Excel");
-  const [store, setStore] = useState("All");
+  const [rider, setRider] = useState("All");
+  const [status, setStatus] = useState("All");
   const [dateRange, setDateRange] = useState([dayjs().subtract(30, "day"), dayjs()]);
-  const [includeProducts, setIncludeProducts] = useState(true);
-  const [includeExpenses, setIncludeExpenses] = useState(true);
-  const [includeRefunds, setIncludeRefunds] = useState(true);
+  const [includeAttendance, setIncludeAttendance] = useState(true);
+  const [includeEarnings, setIncludeEarnings] = useState(true);
+  const [includeHistory, setIncludeHistory] = useState(true);
 
   const handleExportSubmit = async () => {
     setExporting(true);
-    setProgress(15);
+    setProgress(10);
 
     const interval = setInterval(() => {
       setProgress(prev => {
@@ -27,20 +28,21 @@ export default function StoreExportModal({ isOpen, onClose, onExport }) {
           clearInterval(interval);
           return 90;
         }
-        return prev + 15;
+        return prev + 20;
       });
     }, 250);
 
     try {
       const filters = {
-        storeId: store,
+        riderId: rider,
+        status,
         dateRange: dateRange ? {
           start: dateRange[0].format("YYYY-MM-DD"),
           end: dateRange[1].format("YYYY-MM-DD")
         } : null,
-        includeProducts,
-        includeExpenses,
-        includeRefunds
+        includeAttendance,
+        includeEarnings,
+        includeHistory
       };
 
       await onExport(format, filters);
@@ -50,14 +52,14 @@ export default function StoreExportModal({ isOpen, onClose, onExport }) {
         clearInterval(interval);
         setExporting(false);
         setProgress(0);
-        toast.success("Store earnings report exported successfully.");
+        toast.success("Rider payouts ledger exported successfully.");
         onClose();
       }, 400);
     } catch (err) {
       clearInterval(interval);
       setExporting(false);
       setProgress(0);
-      toast.error("Unable to export report.");
+      toast.error("Unable to export ledger report.");
     }
   };
 
@@ -66,7 +68,7 @@ export default function StoreExportModal({ isOpen, onClose, onExport }) {
       title={
         <div className="flex items-center gap-2 border-b pb-2 text-zinc-800 dark:text-zinc-100 font-extrabold text-sm uppercase">
           <Download size={16} className="text-[var(--primary)]" />
-          <span>Export Store Earnings</span>
+          <span>Export Rider Payouts</span>
         </div>
       }
       open={isOpen}
@@ -86,7 +88,7 @@ export default function StoreExportModal({ isOpen, onClose, onExport }) {
           key="submit"
           onClick={handleExportSubmit}
           disabled={exporting}
-          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[var(--primary)] text-white hover:opacity-90 rounded-lg shadow-sm font-bold transition-all disabled:opacity-50 cursor-pointer text-xs ml-2"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-[var(--primary)] text-white hover:opacity-90 rounded-lg shadow-sm font-bold transition-all disabled:opacity-50 cursor-pointer text-xs ml-2 border-0"
         >
           {exporting ? (
             <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -126,41 +128,54 @@ export default function StoreExportModal({ isOpen, onClose, onExport }) {
               />
             </div>
 
-            {/* Store Filter */}
-            <div className="flex flex-col gap-1.5">
-              <span className="font-bold text-zinc-500 uppercase text-[10px]">Store Filter</span>
-              <Select value={store} onChange={val => setStore(val)} className="w-full font-semibold">
-                <Select.Option value="All">All Franchise Stores</Select.Option>
-                {mockStores.map(s => (
-                  <Select.Option key={s.id} value={s.id}>{s.name}</Select.Option>
-                ))}
-              </Select>
+            <div className="grid grid-cols-2 gap-4">
+              {/* Rider Filter */}
+              <div className="flex flex-col gap-1.5">
+                <span className="font-bold text-zinc-500 uppercase text-[10px]">Rider Filter</span>
+                <Select value={rider} onChange={val => setRider(val)} className="w-full font-semibold">
+                  <Select.Option value="All">All Active Riders</Select.Option>
+                  {mockDeliveryPartners.map(r => (
+                    <Select.Option key={r.id} value={r.id}>{r.name}</Select.Option>
+                  ))}
+                </Select>
+              </div>
+
+              {/* Payment Status Filter */}
+              <div className="flex flex-col gap-1.5">
+                <span className="font-bold text-zinc-500 uppercase text-[10px]">Payment Status</span>
+                <Select value={status} onChange={val => setStatus(val)} className="w-full font-semibold">
+                  <Select.Option value="All">All Statuses</Select.Option>
+                  <Select.Option value="Paid">Paid</Select.Option>
+                  <Select.Option value="Pending">Pending</Select.Option>
+                  <Select.Option value="Failed">Failed</Select.Option>
+                </Select>
+              </div>
             </div>
 
             {/* Inclusions */}
             <div className="flex flex-col gap-1.5 pt-2">
-              <span className="font-bold text-zinc-500 uppercase text-[10px] mb-1">Additional Reports Inclusion</span>
+              <span className="font-bold text-zinc-500 uppercase text-[10px] mb-1">Additional Attachments</span>
               <div className="grid grid-cols-3 gap-2">
                 <Checkbox
-                  checked={includeProducts}
-                  onChange={e => setIncludeProducts(e.target.checked)}
+                  checked={includeAttendance}
+                  onChange={e => setIncludeAttendance(e.target.checked)}
                   className="font-semibold text-zinc-650"
                 >
-                  Product Performance
+                  Include Attendance
                 </Checkbox>
                 <Checkbox
-                  checked={includeExpenses}
-                  onChange={e => setIncludeExpenses(e.target.checked)}
+                  checked={includeEarnings}
+                  onChange={e => setIncludeEarnings(e.target.checked)}
                   className="font-semibold text-zinc-650"
                 >
-                  Expense Breakdown
+                  Earnings Breakdown
                 </Checkbox>
                 <Checkbox
-                  checked={includeRefunds}
-                  onChange={e => setIncludeRefunds(e.target.checked)}
+                  checked={includeHistory}
+                  onChange={e => setIncludeHistory(e.target.checked)}
                   className="font-semibold text-zinc-650"
                 >
-                  Refund Analysis
+                  Payment History
                 </Checkbox>
               </div>
             </div>
@@ -168,7 +183,7 @@ export default function StoreExportModal({ isOpen, onClose, onExport }) {
         ) : (
           <div className="py-6 text-center space-y-4">
             <p className="font-bold text-sm text-zinc-800 dark:text-zinc-150 animate-pulse">
-              Compiling store records & building your {format} report...
+              Compiling rider records & formatting {format} document...
             </p>
             <div className="max-w-xs mx-auto">
               <Progress
