@@ -73,7 +73,7 @@ export const franchiseAdminSidebarMenu = [
       { type: "link", label: "Expenses", path: "/franchise-admin/expenses", icon: "TrendingDown" },
       { type: "link", label: "Store Earnings", path: "/franchise-admin/store-earnings", icon: "Landmark" },
       { type: "link", label: "Rider Payouts", path: "/franchise-admin/rider-payouts", icon: "CreditCard" },
-      { type: "link", label: "Reports", path: "/franchise-admin/dashboard/transaction-report", icon: "FileText" },
+      { type: "link", label: "Reports", path: "/franchise-admin/reports", icon: "FileText" },
     ],
   },
   {

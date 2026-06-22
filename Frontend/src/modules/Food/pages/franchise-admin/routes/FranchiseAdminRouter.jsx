@@ -11,6 +11,7 @@ const FranchiseRevenue = lazy(() => import("@food/pages/franchise-admin/finance/
 const Expenses = lazy(() => import("@food/pages/franchise-admin/finance/Expenses"));
 const StoreEarnings = lazy(() => import("@food/pages/franchise-admin/finance/StoreEarnings"));
 const RiderPayouts = lazy(() => import("@food/pages/franchise-admin/finance/RiderPayouts"));
+const Reports = lazy(() => import("@food/pages/franchise-admin/finance/Reports"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
@@ -144,6 +145,7 @@ export default function FranchiseAdminRouter() {
           <Route path="expenses" element={<Expenses />} />
           <Route path="store-earnings" element={<StoreEarnings />} />
           <Route path="rider-payouts" element={<RiderPayouts />} />
+          <Route path="reports" element={<Reports />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -213,7 +215,7 @@ export default function FranchiseAdminRouter() {
             <Route path="delivery-support-tickets" element={<DeliverySupportTickets />} />
 
             {/* REPORTS & SETTINGS */}
-            <Route path="transaction-report" element={<PlaceholderPage title="Transaction Report" />} />
+            <Route path="transaction-report" element={<Navigate to="/franchise-admin/reports" replace />} />
             <Route path="expense-report" element={<Navigate to="/franchise-admin/expenses" replace />} />
             <Route path="disbursement-report/restaurants" element={<Navigate to="/franchise-admin/store-earnings" replace />} />
             <Route path="disbursement-report/deliverymen" element={<PlaceholderPage title="Deliverymen Disbursement" />} />

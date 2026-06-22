@@ -660,7 +660,7 @@ export default function Navbar({ onToggleSidebar }) {
                   <span>Broadcast Alert</span>
                 </button>
                 <button
-                  onClick={() => { navigate("/franchise-admin/dashboard/transaction-report"); setShowActionsDropdown(false); }}
+                  onClick={() => { navigate("/franchise-admin/reports"); setShowActionsDropdown(false); }}
                   className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-left text-zinc-650 dark:text-zinc-300 border-t border-zinc-100 dark:border-zinc-800 mt-1 pt-1"
                 >
                   <BarChart3 size={13} className="text-zinc-450" />
