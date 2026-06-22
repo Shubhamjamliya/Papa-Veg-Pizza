@@ -180,7 +180,12 @@ export default function Reports() {
         const items = [
           {
             key: "view",
-            label: "View Details",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Eye size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>View Details</span>
+              </span>
+            ),
             onClick: () => {
               setSelectedReport(record);
               setShowDetailsModal(true);
@@ -188,12 +193,22 @@ export default function Reports() {
           },
           ...(record.status === "Completed" ? [{
             key: "download",
-            label: "Download File",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Download size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Download File</span>
+              </span>
+            ),
             onClick: () => downloadReport(record._id)
           }] : []),
           ...(record.status === "Failed" ? [{
             key: "retry",
-            label: "Retry Generation",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <RefreshCw size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Retry Generation</span>
+              </span>
+            ),
             onClick: () => retryReport(record._id)
           }] : [])
         ];

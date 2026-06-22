@@ -176,7 +176,12 @@ export default function Expenses() {
         const items = [
           {
             key: "view",
-            label: "View Details",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Eye size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>View Details</span>
+              </span>
+            ),
             onClick: () => {
               setSelectedExpense(record);
               setShowDetailsModal(true);
@@ -184,7 +189,12 @@ export default function Expenses() {
           },
           {
             key: "edit",
-            label: "Edit Expense",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Edit size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Edit Expense</span>
+              </span>
+            ),
             onClick: () => {
               setSelectedExpense(record);
               setShowEditModal(true);
@@ -192,7 +202,12 @@ export default function Expenses() {
           },
           ...(record.status === "Pending" ? [{
             key: "approve",
-            label: "Approve / Reject",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <CheckSquare size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Approve / Reject</span>
+              </span>
+            ),
             onClick: () => {
               setSelectedExpense(record);
               setShowApproveModal(true);

@@ -186,7 +186,12 @@ export default function StoreEarnings() {
         const items = [
           {
             key: "view",
-            label: "View Earnings",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Eye size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>View Earnings</span>
+              </span>
+            ),
             onClick: () => {
               fetchStoreDetails(record.storeId);
               setShowDetailsModal(true);
@@ -194,7 +199,12 @@ export default function StoreEarnings() {
           },
           {
             key: "analysis",
-            label: "Profit Analysis",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <BarChart2 size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Profit Analysis</span>
+              </span>
+            ),
             onClick: () => {
               fetchStoreDetails(record.storeId);
               setShowProfitModal(true);
@@ -202,7 +212,12 @@ export default function StoreEarnings() {
           },
           {
             key: "export",
-            label: "Export Report",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Download size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Export Report</span>
+              </span>
+            ),
             onClick: () => {
               exportStoreEarningsReport("PDF", { storeId: record.storeId });
             }
