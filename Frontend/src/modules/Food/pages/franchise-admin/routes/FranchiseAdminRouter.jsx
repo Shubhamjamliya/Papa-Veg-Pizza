@@ -8,7 +8,6 @@ const AdminHome = lazy(() => import("@food/pages/franchise-admin/dashboard/Franc
 const PointOfSale = lazy(() => import("@food/pages/franchise-admin/PointOfSale"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
-const NewRefundRequests = lazy(() => import("@food/pages/franchise-admin/refunds/NewRefundRequests"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
 const OrderIssues = lazy(() => import("@food/pages/franchise-admin/orders/OrderIssues"));
 const OrdersPage = lazy(() => import("@food/pages/franchise-admin/orders/OrdersPage"));
@@ -17,22 +16,18 @@ const CompletedOrders = lazy(() => import("@food/pages/franchise-admin/orders/Co
 const CancelledOrder = lazy(() => import("@food/pages/franchise-admin/orders/CancelledOrder"));
 const OrderDetectDelivery = lazy(() => import("@food/pages/franchise-admin/OrderDetectDelivery"));
 const Categories = lazy(() => import("@food/pages/franchise-admin/products/Categories"));
-const FeeSettings = lazy(() => import("@food/pages/franchise-admin/fee-settings/FeeSettings"));
-const ReferralSettings = lazy(() => import("@food/pages/franchise-admin/referral-settings/ReferralSettings"));
+
 // Food Management
 const Products = lazy(() => import("@food/pages/franchise-admin/products/Products"));
 const Addons = lazy(() => import("@food/pages/franchise-admin/products/Addons"));
 const StorePricing = lazy(() => import("@food/pages/franchise-admin/products/StorePricing"));
+
 // Promotions Management
-const BasicCampaign = lazy(() => import("@food/pages/franchise-admin/campaigns/BasicCampaign"));
-const FoodCampaign = lazy(() => import("@food/pages/franchise-admin/campaigns/FoodCampaign"));
 const Coupons = lazy(() => import("@food/pages/franchise-admin/Coupons"));
 const Cashback = lazy(() => import("@food/pages/franchise-admin/Cashback"));
 const Banners = lazy(() => import("@food/pages/franchise-admin/Banners"));
 const PromotionalBanner = lazy(() => import("@food/pages/franchise-admin/PromotionalBanner"));
-const NewAdvertisement = lazy(() => import("@food/pages/franchise-admin/advertisement/NewAdvertisement"));
-const AdRequests = lazy(() => import("@food/pages/franchise-admin/advertisement/AdRequests"));
-const AdsList = lazy(() => import("@food/pages/franchise-admin/advertisement/AdsList"));
+
 const Stores = lazy(() => import("@food/pages/franchise-admin/storeManagement/Stores"));
 const StoreApprovals = lazy(() => import("@food/pages/franchise-admin/storeManagement/StoreApprovals"));
 const StorePerformance = lazy(() => import("@food/pages/franchise-admin/storeManagement/StorePerformance"));
@@ -49,13 +44,13 @@ const PurchaseRequests = lazy(() => import("@food/pages/franchise-admin/inventor
 const Chattings = lazy(() => import("@food/pages/franchise-admin/Chattings"));
 const ContactMessages = lazy(() => import("@food/pages/franchise-admin/ContactMessages"));
 const SafetyEmergencyReports = lazy(() => import("@food/pages/franchise-admin/SafetyEmergencyReports"));
+
 // Customer Management
 const Customers = lazy(() => import("@food/pages/franchise-admin/Customers"));
+const CustomersList = lazy(() => import("@food/pages/franchise-admin/customers/CustomersList"));
 const SupportTickets = lazy(() => import("@food/pages/franchise-admin/SupportTickets"));
-const AddFund = lazy(() => import("@food/pages/franchise-admin/wallet/AddFund"));
-const Bonus = lazy(() => import("@food/pages/franchise-admin/wallet/Bonus"));
-const LoyaltyPointReport = lazy(() => import("@food/pages/franchise-admin/loyalty-point/Report"));
 const SubscribedMailList = lazy(() => import("@food/pages/franchise-admin/SubscribedMailList"));
+
 // Deliveryman Management
 const DeliveryBoyCommission = lazy(() => import("@food/pages/franchise-admin/DeliveryBoyCommission"));
 const DeliveryCashLimit = lazy(() => import("@food/pages/franchise-admin/DeliveryCashLimit"));
@@ -64,58 +59,13 @@ const DeliveryWithdrawal = lazy(() => import("@food/pages/franchise-admin/Delive
 const DeliveryBoyWallet = lazy(() => import("@food/pages/franchise-admin/DeliveryBoyWallet"));
 const DeliveryEmergencyHelp = lazy(() => import("@food/pages/franchise-admin/DeliveryEmergencyHelp"));
 const DeliverySupportTickets = lazy(() => import("@food/pages/franchise-admin/DeliverySupportTickets"));
-// Disbursement Management
-// Report Management
-const TransactionReport = lazy(() => import("@food/pages/franchise-admin/reports/TransactionReport"));
-const ExpenseReport = lazy(() => import("@food/pages/franchise-admin/reports/ExpenseReport"));
-const DisbursementReportRestaurants = lazy(() => import("@food/pages/franchise-admin/reports/DisbursementReportRestaurants"));
-const DisbursementReportDeliverymen = lazy(() => import("@food/pages/franchise-admin/reports/DisbursementReportDeliverymen"));
-const RegularOrderReport = lazy(() => import("@food/pages/franchise-admin/reports/RegularOrderReport"));
-const CampaignOrderReport = lazy(() => import("@food/pages/franchise-admin/reports/CampaignOrderReport"));
-const RestaurantReport = lazy(() => import("@food/pages/franchise-admin/reports/RestaurantReport"));
-const FeedbackExperienceReport = lazy(() => import("@food/pages/franchise-admin/reports/FeedbackExperienceReport"));
-const TaxReport = lazy(() => import("@food/pages/franchise-admin/reports/TaxReport"));
-const RestaurantVATReport = lazy(() => import("@food/pages/franchise-admin/reports/RestaurantVATReport"));
-// Transaction Management
-const RestaurantWithdraws = lazy(() => import("@food/pages/franchise-admin/transactions/RestaurantWithdraws"));
-const WithdrawMethod = lazy(() => import("@food/pages/franchise-admin/transactions/WithdrawMethod"));
 
-// Business Settings
-const BusinessSetup = lazy(() => import("@food/pages/franchise-admin/settings/BusinessSetup"));
-const EmailTemplate = lazy(() => import("@food/pages/franchise-admin/settings/EmailTemplate"));
-const ThemeSettings = lazy(() => import("@food/pages/franchise-admin/settings/ThemeSettings"));
-const Gallery = lazy(() => import("@food/pages/franchise-admin/settings/Gallery"));
-const LoginSetup = lazy(() => import("@food/pages/franchise-admin/settings/LoginSetup"));
-const TermsAndCondition = lazy(() => import("@food/pages/franchise-admin/settings/LegalTerms"));
-const PrivacyPolicy = lazy(() => import("@food/pages/franchise-admin/settings/LegalPrivacy"));
-const AboutUs = lazy(() => import("@food/pages/franchise-admin/settings/AboutUs"));
-const RefundPolicy = lazy(() => import("@food/pages/franchise-admin/settings/RefundPolicy"));
-const ShippingPolicy = lazy(() => import("@food/pages/franchise-admin/settings/ShippingPolicy"));
-const CancellationPolicy = lazy(() => import("@food/pages/franchise-admin/settings/CancellationPolicy"));
-const ReactRegistration = lazy(() => import("@food/pages/franchise-admin/settings/ReactRegistration"));
-// System Settings
-const ThirdParty = lazy(() => import("@food/pages/franchise-admin/system/ThirdParty"));
-const FirebaseNotification = lazy(() => import("@food/pages/franchise-admin/system/FirebaseNotification"));
-const OfflinePaymentSetup = lazy(() => import("@food/pages/franchise-admin/system/OfflinePaymentSetup"));
-const JoinUsPageSetup = lazy(() => import("@food/pages/franchise-admin/system/JoinUsPageSetup"));
-const AnalyticsScript = lazy(() => import("@food/pages/franchise-admin/system/AnalyticsScript"));
-const AISetup = lazy(() => import("@food/pages/franchise-admin/system/AISetup"));
-const AppWebSettings = lazy(() => import("@food/pages/franchise-admin/system/AppWebSettings"));
-const NotificationChannels = lazy(() => import("@food/pages/franchise-admin/system/NotificationChannels"));
-const NotificationBroadcast = lazy(() => import("@food/pages/franchise-admin/system/NotificationBroadcast"));
-const AdminNotifications = lazy(() => import("@food/pages/franchise-admin/system/AdminNotifications"));
-const LandingPageSettings = lazy(() => import("@food/pages/franchise-admin/system/LandingPageSettings"));
-const PageMetaData = lazy(() => import("@food/pages/franchise-admin/system/PageMetaData"));
-const ReactSite = lazy(() => import("@food/pages/franchise-admin/system/ReactSite"));
-const CleanDatabase = lazy(() => import("@food/pages/franchise-admin/system/CleanDatabase"));
-const AddonActivation = lazy(() => import("@food/pages/franchise-admin/system/AddonActivation"));
-const LandingPageManagement = lazy(() => import("@food/pages/franchise-admin/system/LandingPageManagement"));
-const DiningManagement = lazy(() => import("@food/pages/franchise-admin/system/DiningManagement"));
-const DiningList = lazy(() => import("@food/pages/franchise-admin/system/DiningList"));
-const DiningRequests = lazy(() => import("@food/pages/franchise-admin/system/DiningRequests"));
 const AdminLogin = lazy(() => import("@food/pages/franchise-admin/auth/AdminLogin"));
 const AdminSignup = lazy(() => import("@food/pages/franchise-admin/auth/AdminSignup"));
 const AdminForgotPassword = lazy(() => import("@food/pages/franchise-admin/auth/AdminForgotPassword"));
+
+// Placeholder Page for deleted modules
+const PlaceholderPage = lazy(() => import("@food/pages/franchise-admin/PlaceholderPage"));
 
 export default function FranchiseAdminRouter() {
   const location = useLocation();
@@ -158,6 +108,7 @@ export default function FranchiseAdminRouter() {
           {/* Default Admin Redirect */}
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="stores" element={<Stores />} />
+          <Route path="customers-list" element={<CustomersList />} />
           <Route path="store-managers" element={<StoreManagers />} />
           <Route path="employees" element={<KitchenStaff />} />
           <Route path="delivery-partners" element={<DeliveryPartners />} />
@@ -202,39 +153,38 @@ export default function FranchiseAdminRouter() {
             <Route path="order-refunds/new" element={<Navigate to="/franchise-admin/refund-requests" replace />} />
 
 
-
             {/* FOOD & CATEGORY MANAGEMENT */}
             <Route path="inventory/ingredients" element={<Navigate to="/franchise-admin/ingredients" replace />} />
             <Route path="inventory/alerts" element={<Navigate to="/franchise-admin/low-stock-alerts" replace />} />
             <Route path="inventory/purchase-requests" element={<Navigate to="/franchise-admin/purchase-requests" replace />} />
             <Route path="categories" element={<Navigate to="/franchise-admin/categories" replace />} />
-            <Route path="fee-settings" element={<FeeSettings />} />
-            <Route path="referral-settings" element={<ReferralSettings />} />
+            <Route path="fee-settings" element={<PlaceholderPage title="Fee Settings" />} />
+            <Route path="referral-settings" element={<PlaceholderPage title="Referral Settings" />} />
             <Route path="foods" element={<Navigate to="/franchise-admin/products" replace />} />
             <Route path="food/list" element={<Navigate to="/franchise-admin/products" replace />} />
             <Route path="addons" element={<Navigate to="/franchise-admin/addons" replace />} />
             <Route path="global-pricing" element={<Navigate to="/franchise-admin/store-pricing" replace />} />
 
             {/* PROMOTIONS, CUSTOMERS, DELIVERYMEN, etc. */}
-            <Route path="campaigns/basic" element={<BasicCampaign />} />
-            <Route path="campaigns/food" element={<FoodCampaign />} />
+            <Route path="campaigns/basic" element={<PlaceholderPage title="Basic Campaign" />} />
+            <Route path="campaigns/food" element={<PlaceholderPage title="Food Campaign" />} />
             <Route path="coupons" element={<Coupons />} />
             <Route path="cashback" element={<Cashback />} />
             <Route path="banners" element={<Banners />} />
             <Route path="promotional-banner" element={<PromotionalBanner />} />
-            <Route path="advertisement" element={<AdsList />} />
-            <Route path="advertisement/new" element={<NewAdvertisement />} />
-            <Route path="advertisement/requests" element={<AdRequests />} />
+            <Route path="advertisement" element={<PlaceholderPage title="Advertisements List" />} />
+            <Route path="advertisement/new" element={<PlaceholderPage title="New Advertisement" />} />
+            <Route path="advertisement/requests" element={<PlaceholderPage title="Ad Requests" />} />
             
             <Route path="chattings" element={<Chattings />} />
             <Route path="contact-messages" element={<ContactMessages />} />
             <Route path="safety-emergency-reports" element={<Navigate to="/franchise-admin/order-issues" replace />} />
             
-            <Route path="customers" element={<Customers />} />
+            <Route path="customers" element={<Navigate to="/franchise-admin/customers-list" replace />} />
             <Route path="support-tickets" element={<SupportTickets />} />
-            <Route path="wallet/add-fund" element={<AddFund />} />
-            <Route path="wallet/bonus" element={<Bonus />} />
-            <Route path="loyalty-point/report" element={<LoyaltyPointReport />} />
+            <Route path="wallet/add-fund" element={<PlaceholderPage title="Wallet Add Fund" />} />
+            <Route path="wallet/bonus" element={<PlaceholderPage title="Wallet Bonus" />} />
+            <Route path="loyalty-point/report" element={<PlaceholderPage title="Loyalty Points Report" />} />
             <Route path="subscribed-mail-list" element={<SubscribedMailList />} />
 
             <Route path="delivery-boy-commission" element={<DeliveryBoyCommission />} />
@@ -245,58 +195,60 @@ export default function FranchiseAdminRouter() {
             <Route path="delivery-emergency-help" element={<DeliveryEmergencyHelp />} />
             <Route path="delivery-support-tickets" element={<DeliverySupportTickets />} />
 
-
             {/* REPORTS & SETTINGS */}
-            <Route path="transaction-report" element={<TransactionReport />} />
-            <Route path="expense-report" element={<ExpenseReport />} />
-            <Route path="disbursement-report/restaurants" element={<DisbursementReportRestaurants />} />
-            <Route path="disbursement-report/deliverymen" element={<DisbursementReportDeliverymen />} />
-            <Route path="order-report/regular" element={<RegularOrderReport />} />
-            <Route path="order-report/campaign" element={<CampaignOrderReport />} />
-            <Route path="customer-report/feedback-experience" element={<FeedbackExperienceReport />} />
-            <Route path="tax-report" element={<TaxReport />} />
-            <Route path="restaurant-vat-report" element={<RestaurantVATReport />} />
+            <Route path="transaction-report" element={<PlaceholderPage title="Transaction Report" />} />
+            <Route path="expense-report" element={<PlaceholderPage title="Expense Report" />} />
+            <Route path="disbursement-report/restaurants" element={<PlaceholderPage title="Restaurants Disbursement" />} />
+            <Route path="disbursement-report/deliverymen" element={<PlaceholderPage title="Deliverymen Disbursement" />} />
+            <Route path="order-report/regular" element={<PlaceholderPage title="Regular Order Report" />} />
+            <Route path="order-report/campaign" element={<PlaceholderPage title="Campaign Order Report" />} />
+            <Route path="customer-report/feedback-experience" element={<PlaceholderPage title="Customer Feedback Report" />} />
+            <Route path="tax-report" element={<PlaceholderPage title="Tax Report" />} />
+            <Route path="restaurant-vat-report" element={<PlaceholderPage title="Restaurant VAT Report" />} />
             
-            <Route path="restaurant-withdraws" element={<RestaurantWithdraws />} />
-            <Route path="withdraw-method" element={<WithdrawMethod />} />
-            
+            {/* Extra Report paths from sidebar */}
+            <Route path="sales-report" element={<PlaceholderPage title="Sales Report" />} />
+            <Route path="staff-report" element={<PlaceholderPage title="Staff Report" />} />
+            <Route path="inventory-report" element={<PlaceholderPage title="Inventory Report" />} />
 
+            <Route path="restaurant-withdraws" element={<PlaceholderPage title="Restaurant Withdrawals" />} />
+            <Route path="withdraw-method" element={<PlaceholderPage title="Withdrawal Methods" />} />
 
             {/* SYSTEM & BUSINESS SETTINGS */}
-            <Route path="business-setup" element={<BusinessSetup />} />
-            <Route path="email-template" element={<EmailTemplate />} />
-            <Route path="theme-settings" element={<ThemeSettings />} />
-            <Route path="gallery" element={<Gallery />} />
-            <Route path="login-setup" element={<LoginSetup />} />
-            <Route path="business-settings/fcm-index" element={<FirebaseNotification />} />
-            <Route path="pages-social-media/terms" element={<TermsAndCondition />} />
-            <Route path="pages-social-media/privacy" element={<PrivacyPolicy />} />
-            <Route path="pages-social-media/about" element={<AboutUs />} />
-            <Route path="pages-social-media/refund" element={<RefundPolicy />} />
-            <Route path="pages-social-media/shipping" element={<ShippingPolicy />} />
-            <Route path="pages-social-media/cancellation" element={<CancellationPolicy />} />
-            <Route path="pages-social-media/react-registration" element={<ReactRegistration />} />
+            <Route path="business-setup" element={<PlaceholderPage title="Business Setup" />} />
+            <Route path="email-template" element={<PlaceholderPage title="Email Template" />} />
+            <Route path="theme-settings" element={<PlaceholderPage title="Theme Settings" />} />
+            <Route path="gallery" element={<PlaceholderPage title="Gallery" />} />
+            <Route path="login-setup" element={<PlaceholderPage title="Login Setup" />} />
+            <Route path="business-settings/fcm-index" element={<PlaceholderPage title="Firebase Notifications" />} />
+            <Route path="pages-social-media/terms" element={<PlaceholderPage title="Terms & Conditions" />} />
+            <Route path="pages-social-media/privacy" element={<PlaceholderPage title="Privacy Policy" />} />
+            <Route path="pages-social-media/about" element={<PlaceholderPage title="About Us" />} />
+            <Route path="pages-social-media/refund" element={<PlaceholderPage title="Refund Policy" />} />
+            <Route path="pages-social-media/shipping" element={<PlaceholderPage title="Shipping Policy" />} />
+            <Route path="pages-social-media/cancellation" element={<PlaceholderPage title="Cancellation Policy" />} />
+            <Route path="pages-social-media/react-registration" element={<PlaceholderPage title="React Registration" />} />
             
-            <Route path="3rd-party-configurations/party" element={<ThirdParty />} />
-            <Route path="3rd-party-configurations/firebase" element={<FirebaseNotification />} />
-            <Route path="3rd-party-configurations/offline-payment" element={<OfflinePaymentSetup />} />
-            <Route path="3rd-party-configurations/join-us" element={<JoinUsPageSetup />} />
-            <Route path="3rd-party-configurations/analytics" element={<AnalyticsScript />} />
-            <Route path="3rd-party-configurations/ai" element={<AISetup />} />
-            <Route path="app-web-settings" element={<AppWebSettings />} />
-            <Route path="notifications" element={<AdminNotifications />} />
-            <Route path="broadcast-notification" element={<NotificationBroadcast />} />
-            <Route path="notification-channels" element={<NotificationChannels />} />
-            <Route path="landing-page-settings/admin" element={<LandingPageSettings type="admin" />} />
-            <Route path="landing-page-settings/react" element={<LandingPageSettings type="react" />} />
-            <Route path="page-meta-data" element={<PageMetaData />} />
-            <Route path="react-site" element={<ReactSite />} />
-            <Route path="clean-database" element={<CleanDatabase />} />
-            <Route path="addon-activation" element={<AddonActivation />} />
-            <Route path="hero-banner-management" element={<LandingPageManagement />} />
-            <Route path="dining-management" element={<DiningManagement />} />
-            <Route path="dining-list" element={<DiningList />} />
-            <Route path="dining-requests" element={<DiningRequests />} />
+            <Route path="3rd-party-configurations/party" element={<PlaceholderPage title="Third Party Setup" />} />
+            <Route path="3rd-party-configurations/firebase" element={<PlaceholderPage title="Firebase Settings" />} />
+            <Route path="3rd-party-configurations/offline-payment" element={<PlaceholderPage title="Offline Payment Settings" />} />
+            <Route path="3rd-party-configurations/join-us" element={<PlaceholderPage title="Join Us Page Setup" />} />
+            <Route path="3rd-party-configurations/analytics" element={<PlaceholderPage title="Analytics Script Setup" />} />
+            <Route path="3rd-party-configurations/ai" element={<PlaceholderPage title="AI Assistant Setup" />} />
+            <Route path="app-web-settings" element={<PlaceholderPage title="App & Web Settings" />} />
+            <Route path="notifications" element={<PlaceholderPage title="Notifications Setup" />} />
+            <Route path="broadcast-notification" element={<PlaceholderPage title="Broadcast Notifications" />} />
+            <Route path="notification-channels" element={<PlaceholderPage title="Notification Channels" />} />
+            <Route path="landing-page-settings/admin" element={<PlaceholderPage title="Admin Landing Page Setup" />} />
+            <Route path="landing-page-settings/react" element={<PlaceholderPage title="React Landing Page Setup" />} />
+            <Route path="page-meta-data" element={<PlaceholderPage title="Page Metadata Settings" />} />
+            <Route path="react-site" element={<PlaceholderPage title="React Site Settings" />} />
+            <Route path="clean-database" element={<PlaceholderPage title="Clean Database" />} />
+            <Route path="addon-activation" element={<PlaceholderPage title="Addon Activation" />} />
+            <Route path="hero-banner-management" element={<PlaceholderPage title="Hero Banner Settings" />} />
+            <Route path="dining-management" element={<PlaceholderPage title="Dining Management" />} />
+            <Route path="dining-list" element={<PlaceholderPage title="Dining Table List" />} />
+            <Route path="dining-requests" element={<PlaceholderPage title="Dining Booking Requests" />} />
           </Route>
 
           {/* TAXI ADMIN - Placeholder for future implementation */}
