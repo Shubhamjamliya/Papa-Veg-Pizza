@@ -16,7 +16,7 @@ export default function ScheduleDetailsDrawer({ visible, schedule, onClose, onEd
       placement="right"
       onClose={onClose}
       open={visible}
-      width={400}
+      size={400}
       extra={
         <Button 
           type="primary" 

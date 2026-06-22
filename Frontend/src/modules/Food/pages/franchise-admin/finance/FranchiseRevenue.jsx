@@ -168,9 +168,36 @@ export default function FranchiseRevenue() {
       align: "center",
       render: (_, record) => {
         const items = [
-          { key: "csv", label: "Download CSV", onClick: () => handleExportRow(record, "CSV") },
-          { key: "excel", label: "Download Excel", onClick: () => handleExportRow(record, "Excel") },
-          { key: "pdf", label: "Download PDF", onClick: () => handleExportRow(record, "PDF") }
+          {
+            key: "csv",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Download size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Download CSV</span>
+              </span>
+            ),
+            onClick: () => handleExportRow(record, "CSV")
+          },
+          {
+            key: "excel",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Download size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Download Excel</span>
+              </span>
+            ),
+            onClick: () => handleExportRow(record, "Excel")
+          },
+          {
+            key: "pdf",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Download size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Download PDF</span>
+              </span>
+            ),
+            onClick: () => handleExportRow(record, "PDF")
+          }
         ];
 
         return (

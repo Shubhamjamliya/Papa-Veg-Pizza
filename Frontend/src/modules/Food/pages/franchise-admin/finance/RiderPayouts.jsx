@@ -201,7 +201,12 @@ export default function RiderPayouts() {
         const items = [
           {
             key: "view",
-            label: "View Details",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Eye size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>View Details</span>
+              </span>
+            ),
             onClick: () => {
               fetchPayoutDetails(record._id);
               setShowDetailsModal(true);
@@ -209,7 +214,12 @@ export default function RiderPayouts() {
           },
           ...(record.paymentStatus !== "Paid" ? [{
             key: "pay",
-            label: "Mark Paid",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <CheckCircle size={13} className="text-emerald-500" />
+                <span>Mark Paid</span>
+              </span>
+            ),
             onClick: () => {
               fetchPayoutDetails(record._id);
               setShowMarkPaidModal(true);
@@ -217,7 +227,12 @@ export default function RiderPayouts() {
           }] : []),
           {
             key: "export",
-            label: "Export PDF",
+            label: (
+              <span className="flex items-center gap-2 text-xs font-semibold text-zinc-700 dark:text-zinc-200 py-1">
+                <Download size={13} className="text-zinc-400 dark:text-zinc-500" />
+                <span>Export PDF</span>
+              </span>
+            ),
             onClick: () => {
               exportRiderPayoutsReport("PDF", { id: record._id });
             }

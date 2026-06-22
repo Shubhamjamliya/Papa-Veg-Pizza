@@ -646,7 +646,7 @@ export default function Navbar({ onToggleSidebar }) {
                   <span>Add Store</span>
                 </button>
                 <button
-                  onClick={() => { navigate("/franchise-admin/dashboard/coupons"); setShowActionsDropdown(false); }}
+                  onClick={() => { navigate("/franchise-admin/coupons"); setShowActionsDropdown(false); }}
                   className="w-full flex items-center gap-2 px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-left text-zinc-650 dark:text-zinc-300"
                 >
                   <Megaphone size={13} className="text-zinc-450" />
