@@ -48,8 +48,10 @@ const SafetyEmergencyReports = lazy(() => import("@food/pages/franchise-admin/Sa
 // Customer Management
 const Customers = lazy(() => import("@food/pages/franchise-admin/Customers"));
 const CustomersList = lazy(() => import("@food/pages/franchise-admin/customers/CustomersList"));
+const CustomerComplaints = lazy(() => import("@food/pages/franchise-admin/customers/CustomerComplaints"));
 const SupportTickets = lazy(() => import("@food/pages/franchise-admin/SupportTickets"));
 const SubscribedMailList = lazy(() => import("@food/pages/franchise-admin/SubscribedMailList"));
+
 
 // Deliveryman Management
 const DeliveryBoyCommission = lazy(() => import("@food/pages/franchise-admin/DeliveryBoyCommission"));
@@ -109,6 +111,7 @@ export default function FranchiseAdminRouter() {
           <Route path="/" element={<Navigate to="dashboard" replace />} />
           <Route path="stores" element={<Stores />} />
           <Route path="customers-list" element={<CustomersList />} />
+          <Route path="customer-complaints" element={<CustomerComplaints />} />
           <Route path="store-managers" element={<StoreManagers />} />
           <Route path="employees" element={<KitchenStaff />} />
           <Route path="delivery-partners" element={<DeliveryPartners />} />
@@ -181,7 +184,7 @@ export default function FranchiseAdminRouter() {
             <Route path="safety-emergency-reports" element={<Navigate to="/franchise-admin/order-issues" replace />} />
             
             <Route path="customers" element={<Navigate to="/franchise-admin/customers-list" replace />} />
-            <Route path="support-tickets" element={<SupportTickets />} />
+            <Route path="support-tickets" element={<Navigate to="/franchise-admin/customer-complaints" replace />} />
             <Route path="wallet/add-fund" element={<PlaceholderPage title="Wallet Add Fund" />} />
             <Route path="wallet/bonus" element={<PlaceholderPage title="Wallet Bonus" />} />
             <Route path="loyalty-point/report" element={<PlaceholderPage title="Loyalty Points Report" />} />
