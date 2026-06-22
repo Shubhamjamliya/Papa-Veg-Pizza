@@ -905,4 +905,151 @@ export const mockReviewLogs = [
   { _id: "rlog-08", reviewId: "rev-105", action: "Review Hidden", oldValue: "Published", newValue: "Hidden", performedBy: "Admin Shubham", createdAt: "2026-06-10T14:30:00.000Z" }
 ];
 
+export const mockLoyaltyMembers = [
+  {
+    _id: "lm-01",
+    customerId: "cust-01",
+    membershipNumber: "PVP-LOY-82910",
+    tier: "Platinum",
+    totalPoints: 4850,
+    availablePoints: 2450,
+    redeemedPoints: 2400,
+    totalSpent: 48500,
+    joinedDate: "2024-05-15T10:00:00.000Z",
+    expiryDate: "2027-05-15T10:00:00.000Z",
+    status: "Active",
+    lastActivityDate: "2026-06-22T08:30:00.000Z"
+  },
+  {
+    _id: "lm-02",
+    customerId: "cust-02",
+    membershipNumber: "PVP-LOY-92015",
+    tier: "Gold",
+    totalPoints: 3200,
+    availablePoints: 1200,
+    redeemedPoints: 2000,
+    totalSpent: 32000,
+    joinedDate: "2024-06-20T14:30:00.000Z",
+    expiryDate: "2027-06-20T14:30:00.000Z",
+    status: "Active",
+    lastActivityDate: "2026-06-21T18:15:00.000Z"
+  },
+  {
+    _id: "lm-03",
+    customerId: "cust-03",
+    membershipNumber: "PVP-LOY-10394",
+    tier: "Bronze",
+    totalPoints: 150,
+    availablePoints: 150,
+    redeemedPoints: 0,
+    totalSpent: 1500,
+    joinedDate: "2026-06-10T09:15:00.000Z",
+    expiryDate: "2027-06-10T09:15:00.000Z",
+    status: "Active",
+    lastActivityDate: "2026-06-22T11:45:00.000Z"
+  },
+  {
+    _id: "lm-04",
+    customerId: "cust-04",
+    membershipNumber: "PVP-LOY-29384",
+    tier: "Silver",
+    totalPoints: 1250,
+    availablePoints: 750,
+    redeemedPoints: 500,
+    totalSpent: 12500,
+    joinedDate: "2025-01-25T11:00:00.000Z",
+    expiryDate: "2027-01-25T11:00:00.000Z",
+    status: "Active",
+    lastActivityDate: "2026-06-20T20:00:00.000Z"
+  },
+  {
+    _id: "lm-05",
+    customerId: "cust-05",
+    membershipNumber: "PVP-LOY-59281",
+    tier: "Gold",
+    totalPoints: 2800,
+    availablePoints: 1800,
+    redeemedPoints: 1000,
+    totalSpent: 28000,
+    joinedDate: "2024-11-10T16:45:00.000Z",
+    expiryDate: "2025-11-10T16:45:00.000Z",
+    status: "Expired",
+    lastActivityDate: "2025-11-05T12:00:00.000Z"
+  },
+  {
+    _id: "lm-06",
+    customerId: "cust-06",
+    membershipNumber: "PVP-LOY-48193",
+    tier: "Silver",
+    totalPoints: 950,
+    availablePoints: 450,
+    redeemedPoints: 500,
+    totalSpent: 9500,
+    joinedDate: "2024-03-05T10:30:00.000Z",
+    expiryDate: "2027-03-05T10:30:00.000Z",
+    status: "Suspended",
+    lastActivityDate: "2026-06-22T13:10:00.000Z"
+  },
+  {
+    _id: "lm-07",
+    customerId: "cust-07",
+    membershipNumber: "PVP-LOY-73928",
+    tier: "Platinum",
+    totalPoints: 5200,
+    availablePoints: 3700,
+    redeemedPoints: 1500,
+    totalSpent: 52000,
+    joinedDate: "2025-03-15T08:00:00.000Z",
+    expiryDate: "2027-03-15T08:00:00.000Z",
+    status: "Active",
+    lastActivityDate: "2026-06-18T15:30:00.000Z"
+  },
+  {
+    _id: "lm-08",
+    customerId: "cust-08",
+    membershipNumber: "PVP-LOY-29103",
+    tier: "Bronze",
+    totalPoints: 400,
+    availablePoints: 400,
+    redeemedPoints: 0,
+    totalSpent: 4000,
+    joinedDate: "2025-05-20T12:00:00.000Z",
+    expiryDate: "2027-05-20T12:00:00.000Z",
+    status: "Inactive",
+    lastActivityDate: "2026-03-10T14:20:00.000Z"
+  }
+];
+
+export const mockLoyaltyTransactionsExpanded = [
+  { _id: "lt-01", memberId: "lm-01", orderId: "PV-98401", transactionType: "Earn", points: 250, remarks: "Points earned for order PV-98401", createdAt: "2026-06-22T08:30:00.000Z" },
+  { _id: "lt-02", memberId: "lm-01", orderId: "PV-98350", transactionType: "Redeem", points: -500, remarks: "Points redeemed for discount coupon PVP-DISC500", createdAt: "2026-06-15T12:00:00.000Z" },
+  { _id: "lt-03", memberId: "lm-01", orderId: "N/A", transactionType: "Adjust", points: 100, remarks: "Manual loyalty points bonus by Admin Shubham", createdAt: "2026-06-10T15:00:00.000Z" },
+  { _id: "lt-04", memberId: "lm-02", orderId: "PV-98405", transactionType: "Earn", points: 300, remarks: "Points earned for order PV-98405", createdAt: "2026-06-21T18:15:00.000Z" },
+  { _id: "lt-05", memberId: "lm-02", orderId: "PV-98299", transactionType: "Redeem", points: -1000, remarks: "Points redeemed for Free Veg Pizza Coupon", createdAt: "2026-05-20T19:30:00.000Z" },
+  { _id: "lt-06", memberId: "lm-03", orderId: "PV-98399", transactionType: "Earn", points: 150, remarks: "Points earned on joining and order PV-98399", createdAt: "2026-06-22T11:45:00.000Z" },
+  { _id: "lt-07", memberId: "lm-04", orderId: "PV-98395", transactionType: "Earn", points: 120, remarks: "Points earned for order PV-98395", createdAt: "2026-06-20T20:00:00.000Z" },
+  { _id: "lt-08", memberId: "lm-05", orderId: "N/A", transactionType: "Expire", points: -500, remarks: "Expired unused points on membership expiry", createdAt: "2025-11-10T16:45:00.000Z" }
+];
+
+export const mockTierHistory = [
+  { _id: "th-01", memberId: "lm-01", oldTier: "Gold", newTier: "Platinum", changedAt: "2025-12-15T11:00:00.000Z", changedBy: "System", reason: "Crossed ₹40,000 threshold spend" },
+  { _id: "th-02", memberId: "lm-02", oldTier: "Silver", newTier: "Gold", changedAt: "2025-10-10T14:00:00.000Z", changedBy: "System", reason: "Crossed ₹25,000 threshold spend" },
+  { _id: "th-03", memberId: "lm-04", oldTier: "Bronze", newTier: "Silver", changedAt: "2025-06-01T09:00:00.000Z", changedBy: "System", reason: "Crossed ₹10,000 threshold spend" }
+];
+
+export const mockRewardRedemptions = [
+  { _id: "rr-01", memberId: "lm-01", couponCode: "PV-DISC500", rewardName: "₹500 Discount Coupon", pointsUsed: 500, redeemedAt: "2026-06-15T12:00:00.000Z", status: "Used" },
+  { _id: "rr-02", memberId: "lm-02", couponCode: "PV-FREEPIZZA", rewardName: "Free Veg Supreme Pizza", pointsUsed: 1000, redeemedAt: "2026-05-20T19:30:00.000Z", status: "Used" },
+  { _id: "rr-03", memberId: "lm-04", couponCode: "PV-GARLICB", rewardName: "Free Garlic Bread", pointsUsed: 500, redeemedAt: "2026-04-12T13:45:00.000Z", status: "Active" }
+];
+
+export const mockLoyaltyLogs = [
+  { _id: "llog-01", memberId: "lm-01", action: "Membership Created", performedBy: "System", createdAt: "2024-05-15T10:00:00.000Z" },
+  { _id: "llog-02", memberId: "lm-01", action: "Tier Upgraded", performedBy: "System", createdAt: "2025-12-15T11:00:00.000Z" },
+  { _id: "llog-03", memberId: "lm-01", action: "Points Earned", performedBy: "System", createdAt: "2026-06-22T08:30:00.000Z" },
+  { _id: "llog-04", memberId: "lm-01", action: "Points Adjusted", performedBy: "Admin Shubham", createdAt: "2026-06-10T15:00:00.000Z" },
+  { _id: "llog-05", memberId: "lm-06", action: "Suspended", performedBy: "Admin Shubham", createdAt: "2026-06-22T13:10:00.000Z" }
+];
+
+
 

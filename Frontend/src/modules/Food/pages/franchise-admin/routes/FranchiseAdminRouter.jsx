@@ -50,6 +50,7 @@ const Customers = lazy(() => import("@food/pages/franchise-admin/Customers"));
 const CustomersList = lazy(() => import("@food/pages/franchise-admin/customers/CustomersList"));
 const CustomerComplaints = lazy(() => import("@food/pages/franchise-admin/customers/CustomerComplaints"));
 const ReviewsRatings = lazy(() => import("@food/pages/franchise-admin/customers/ReviewsRatings"));
+const LoyaltyMembers = lazy(() => import("@food/pages/franchise-admin/customers/LoyaltyMembers"));
 const SupportTickets = lazy(() => import("@food/pages/franchise-admin/SupportTickets"));
 const SubscribedMailList = lazy(() => import("@food/pages/franchise-admin/SubscribedMailList"));
 
@@ -114,6 +115,7 @@ export default function FranchiseAdminRouter() {
           <Route path="customers-list" element={<CustomersList />} />
           <Route path="customer-complaints" element={<CustomerComplaints />} />
           <Route path="reviews-ratings" element={<ReviewsRatings />} />
+          <Route path="loyalty-members" element={<LoyaltyMembers />} />
           <Route path="store-managers" element={<StoreManagers />} />
           <Route path="employees" element={<KitchenStaff />} />
           <Route path="delivery-partners" element={<DeliveryPartners />} />
@@ -190,7 +192,7 @@ export default function FranchiseAdminRouter() {
             <Route path="restaurants/reviews" element={<Navigate to="/franchise-admin/reviews-ratings" replace />} />
             <Route path="wallet/add-fund" element={<PlaceholderPage title="Wallet Add Fund" />} />
             <Route path="wallet/bonus" element={<PlaceholderPage title="Wallet Bonus" />} />
-            <Route path="loyalty-point/report" element={<PlaceholderPage title="Loyalty Points Report" />} />
+            <Route path="loyalty-point/report" element={<Navigate to="/franchise-admin/loyalty-members" replace />} />
             <Route path="subscribed-mail-list" element={<SubscribedMailList />} />
 
             <Route path="delivery-boy-commission" element={<DeliveryBoyCommission />} />
