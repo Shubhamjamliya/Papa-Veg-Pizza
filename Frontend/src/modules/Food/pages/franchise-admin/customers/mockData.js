@@ -788,3 +788,121 @@ export const mockCustomerComplaintsExpanded = [
   }
 ];
 
+export const mockReviewsExpanded = [
+  {
+    _id: "rev-101",
+    customerId: "cust-01",
+    orderId: "PV-98421",
+    storeId: "store-01",
+    rating: 5,
+    reviewText: "Amazing Paneer Tikka pizza! Delivered hot, cheesy, and absolutely delicious. My go-to order!",
+    images: ["https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop"],
+    tags: ["Tasty", "Fast Delivery", "Recommended"],
+    status: "Published",
+    adminReply: {
+      message: "Thank you Rajesh! We are delighted to hear you loved our Paneer Tikka pizza. Looking forward to serving you again!",
+      date: "2026-06-22T10:00:00.000Z",
+      createdBy: "Admin Shubham"
+    },
+    createdAt: "2026-06-22T09:00:00.000Z"
+  },
+  {
+    _id: "rev-102",
+    customerId: "cust-02",
+    orderId: "PV-98425",
+    storeId: "store-02",
+    rating: 4,
+    reviewText: "Double Cheese Margherita was great, but the delivery took around 45 mins. The cheesy dip was super yummy though.",
+    images: [],
+    tags: ["Good Food", "Slow Delivery"],
+    status: "Published",
+    adminReply: null,
+    createdAt: "2026-06-21T18:00:00.000Z"
+  },
+  {
+    _id: "rev-103",
+    customerId: "cust-03",
+    orderId: "PV-98430",
+    storeId: "store-01",
+    rating: 1,
+    reviewText: "Extremely disappointed this time. The cheese burst pizza was completely burnt and cold. The crust felt like cardboard.",
+    images: ["https://images.unsplash.com/photo-1571066811602-716837d681de?w=500&auto=format&fit=crop"],
+    tags: ["Burnt Pizza", "Cold Delivery", "Bad Quality"],
+    status: "Published",
+    adminReply: null,
+    createdAt: "2026-06-22T12:00:00.000Z"
+  },
+  {
+    _id: "rev-104",
+    customerId: "cust-04",
+    orderId: "PV-98422",
+    storeId: "store-03",
+    rating: 2,
+    reviewText: "They forgot to send my Pepsi 750ml bottles. Tried calling the store but no response. Pizza was mediocre.",
+    images: [],
+    tags: ["Missing Items", "No Response"],
+    status: "Published",
+    adminReply: {
+      message: "Hello Sneha, we sincerely apologize for this error. We have initiated a refund for the missing beverage and credited 50 loyalty points to your profile.",
+      date: "2026-06-22T09:30:00.000Z",
+      createdBy: "Admin Shubham"
+    },
+    createdAt: "2026-06-22T08:15:00.000Z"
+  },
+  {
+    _id: "rev-105",
+    customerId: "cust-05",
+    orderId: "PV-98421",
+    storeId: "store-02",
+    rating: 5,
+    reviewText: "Exquisite taste! The cheese was stretchy and the crust was soft. The Choco Lava Cake was a sweet dream.",
+    images: ["https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=500&auto=format&fit=crop"],
+    tags: ["Tasty", "Great Dessert"],
+    status: "Hidden",
+    adminReply: null,
+    createdAt: "2026-06-10T13:00:00.000Z"
+  },
+  {
+    _id: "rev-106",
+    customerId: "cust-06",
+    orderId: "PV-98425",
+    storeId: "store-04",
+    rating: 5,
+    reviewText: "Best Veg Supreme Pizza ever! Toppings were fresh and loaded. Will definitely order again soon.",
+    images: [],
+    tags: ["Loaded Toppings", "Super fresh"],
+    status: "Published",
+    adminReply: {
+      message: "Thank you Pooja! Glad you enjoyed the fresh toppings. We hope to serve you again soon!",
+      date: "2026-06-22T14:00:00.000Z",
+      createdBy: "Admin Shubham"
+    },
+    createdAt: "2026-06-22T13:00:00.000Z"
+  },
+  {
+    _id: "rev-107",
+    customerId: "cust-07",
+    orderId: "PV-98422",
+    storeId: "store-01",
+    rating: 3,
+    reviewText: "Average pizza. Normal base was dry. Paneer topping was scarce. Garlic bread was good though.",
+    images: [],
+    tags: ["Dry Base", "Few Toppings"],
+    status: "Published",
+    adminReply: null,
+    createdAt: "2026-06-18T16:00:00.000Z"
+  }
+];
+
+export const mockReviewLogs = [
+  { _id: "rlog-01", reviewId: "rev-101", action: "Review Created", oldValue: "", newValue: "Published", performedBy: "System", createdAt: "2026-06-22T09:00:00.000Z" },
+  { _id: "rlog-02", reviewId: "rev-101", action: "Reply Added", oldValue: "", newValue: "Replied", performedBy: "Admin Shubham", createdAt: "2026-06-22T10:00:00.000Z" },
+  { _id: "rlog-03", reviewId: "rev-102", action: "Review Created", oldValue: "", newValue: "Published", performedBy: "System", createdAt: "2026-06-21T18:00:00.000Z" },
+  { _id: "rlog-04", reviewId: "rev-103", action: "Review Created", oldValue: "", newValue: "Published", performedBy: "System", createdAt: "2026-06-22T12:00:00.000Z" },
+  { _id: "rlog-05", reviewId: "rev-104", action: "Review Created", oldValue: "", newValue: "Published", performedBy: "System", createdAt: "2026-06-22T08:15:00.000Z" },
+  { _id: "rlog-06", reviewId: "rev-104", action: "Reply Added", oldValue: "", newValue: "Replied", performedBy: "Admin Shubham", createdAt: "2026-06-22T09:30:00.000Z" },
+  { _id: "rlog-07", reviewId: "rev-105", action: "Review Created", oldValue: "", newValue: "Published", performedBy: "System", createdAt: "2026-06-10T13:00:00.000Z" },
+  { _id: "rlog-08", reviewId: "rev-105", action: "Review Hidden", oldValue: "Published", newValue: "Hidden", performedBy: "Admin Shubham", createdAt: "2026-06-10T14:30:00.000Z" }
+];
+
+
