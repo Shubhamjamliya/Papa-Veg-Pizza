@@ -93,6 +93,10 @@ export default function FranchiseAdminRouter() {
     // Apply primary & secondary colors
     const primaryColor = localStorage.getItem("sa_primary") || "#a43c12";
     const secondaryColor = localStorage.getItem("sa_secondary") || "#ff7f50";
+    document.documentElement.style.setProperty("--sa-primary", primaryColor);
+    document.documentElement.style.setProperty("--sa-primary-hover", `${primaryColor}cc`);
+    document.documentElement.style.setProperty("--sa-secondary", secondaryColor);
+    document.documentElement.style.setProperty("--sa-secondary-hover", `${secondaryColor}cc`);
     document.documentElement.style.setProperty("--primary", primaryColor);
     document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`);
     document.documentElement.style.setProperty("--secondary", secondaryColor);

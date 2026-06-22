@@ -361,7 +361,7 @@ export default function Reports() {
   }
 
   return (
-    <ConfigProvider theme={{ token: { fontFamily: "'Poppins', system-ui, sans-serif", colorPrimary: "#a43c12" } }}>
+    <ConfigProvider theme={{ token: { fontFamily: "'Poppins', system-ui, sans-serif", colorPrimary: localStorage.getItem("sa_primary") || "#a43c12" } }}>
       <div className="p-3 md:p-5 max-w-7xl mx-auto space-y-4 text-xs bg-slate-50 dark:bg-zinc-950 min-h-screen text-zinc-700 dark:text-zinc-300 font-['Poppins']">
         <style>{`
           .ant-select, .ant-select-item, .ant-picker, .ant-picker-input > input, .ant-table, .ant-table-cell, .ant-tabs, .ant-tabs-tab-btn, .ant-modal, .ant-modal-title, .ant-drawer, .ant-pagination, .ant-pagination-item, .ant-tag, .ant-empty {
