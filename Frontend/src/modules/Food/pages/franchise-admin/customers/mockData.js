@@ -676,3 +676,115 @@ export const mockActivityLogs = [
     createdAt: "2026-06-10T12:00:00.000Z"
   }
 ];
+
+export const mockEmployees = [
+  { id: "emp-01", fullName: "Rohit Sharma", email: "rohit@papavegpizza.com", role: "Support Agent" },
+  { id: "emp-02", fullName: "Karan Dev", email: "karan@papavegpizza.com", role: "Kitchen Manager" },
+  { id: "emp-03", fullName: "Vikram Singh", email: "vikram@papavegpizza.com", role: "Delivery Supervisor" },
+  { id: "emp-04", fullName: "Amit Mishra", email: "amit@papavegpizza.com", role: "Support Specialist" }
+];
+
+export const mockComplaintNotes = [
+  { _id: "note-c01", complaintId: "comp-01", note: "Customer verified delay via phone call tracker.", createdBy: "Admin Shubham", createdAt: "2026-06-10T12:45:00.000Z" },
+  { _id: "note-c02", complaintId: "comp-02", note: "Kitchen staff advised to cross-check paneer toppings before dispatch.", createdBy: "Admin Shubham", createdAt: "2026-06-22T09:45:00.000Z" },
+  { _id: "note-c03", complaintId: "comp-03", note: "User claims money debited but order didn't generate.", createdBy: "Admin Shubham", createdAt: "2026-06-21T10:15:00.000Z" }
+];
+
+export const mockComplaintLogs = [
+  { _id: "log-01", complaintId: "comp-01", action: "Complaint Created", oldValue: "", newValue: "Open", performedBy: "System", timestamp: "2026-06-10T12:15:00.000Z" },
+  { _id: "log-02", complaintId: "comp-01", action: "Assigned To Staff", oldValue: "", newValue: "Rohan Dev (Rider)", performedBy: "Admin Shubham", timestamp: "2026-06-10T12:30:00.000Z" },
+  { _id: "log-03", complaintId: "comp-01", action: "Resolved", oldValue: "In Progress", newValue: "Resolved", performedBy: "Amit Mishra", timestamp: "2026-06-10T14:00:00.000Z" },
+  { _id: "log-04", complaintId: "comp-02", action: "Complaint Created", oldValue: "", newValue: "Open", performedBy: "System", timestamp: "2026-06-22T09:30:00.000Z" },
+  { _id: "log-05", complaintId: "comp-03", action: "Complaint Created", oldValue: "", newValue: "Open", performedBy: "System", timestamp: "2026-06-21T10:00:00.000Z" },
+  { _id: "log-06", complaintId: "comp-03", action: "Escalated", oldValue: "Open", newValue: "Escalated", performedBy: "Admin Shubham", timestamp: "2026-06-21T11:00:00.000Z" }
+];
+
+// Expanded complaints collection
+export const mockCustomerComplaintsExpanded = [
+  {
+    _id: "comp-01",
+    ticketNumber: "TKT-04821",
+    customerId: "cust-01",
+    orderId: "ord-1001",
+    storeId: "store-01",
+    category: "Delivery",
+    priority: "Medium",
+    description: "Rider took 55 minutes to deliver. The pizza was completely cold when arrived.",
+    attachments: [],
+    status: "Resolved",
+    assignedTo: "Amit Mishra",
+    resolution: "Apologized to customer. Refunded delivery fee and credited 100 loyalty points.",
+    createdAt: "2026-06-10T12:15:00.000Z",
+    resolvedAt: "2026-06-10T14:00:00.000Z",
+    handlingTimeHours: 1.75
+  },
+  {
+    _id: "comp-02",
+    ticketNumber: "TKT-04902",
+    customerId: "cust-01",
+    orderId: "ord-1001",
+    storeId: "store-01",
+    category: "Food Quality",
+    priority: "High",
+    description: "Ordered Double Cheese Margherita but got normal Margherita. I paid extra for double cheese.",
+    attachments: [],
+    status: "Open",
+    assignedTo: "",
+    resolution: "",
+    createdAt: "2026-06-22T09:30:00.000Z",
+    resolvedAt: "",
+    handlingTimeHours: null
+  },
+  {
+    _id: "comp-03",
+    ticketNumber: "TKT-04903",
+    customerId: "cust-02",
+    orderId: "ord-1003",
+    storeId: "store-02",
+    category: "Payment",
+    priority: "Critical",
+    description: "UPI transaction of ₹590 got debited from my bank but app showed payment failed.",
+    attachments: [],
+    status: "Escalated",
+    assignedTo: "Amit Mishra",
+    resolution: "",
+    createdAt: "2026-06-21T10:00:00.000Z",
+    resolvedAt: "",
+    handlingTimeHours: null
+  },
+  {
+    _id: "comp-04",
+    ticketNumber: "TKT-04904",
+    customerId: "cust-04",
+    orderId: "ord-1002",
+    storeId: "store-03",
+    category: "Missing Item",
+    priority: "Low",
+    description: "They forgot to send the Pepsi 750ml bottles. I only got the pizza.",
+    attachments: [],
+    status: "In Progress",
+    assignedTo: "Rohit Sharma",
+    resolution: "",
+    createdAt: "2026-06-22T08:00:00.000Z",
+    resolvedAt: "",
+    handlingTimeHours: null
+  },
+  {
+    _id: "comp-05",
+    ticketNumber: "TKT-04905",
+    customerId: "cust-06",
+    orderId: "ord-1004",
+    storeId: "store-04",
+    category: "App Issue",
+    priority: "Low",
+    description: "The GPS locator keeps failing on checkout screen, and I have to type address every time.",
+    attachments: [],
+    status: "Closed",
+    assignedTo: "Amit Mishra",
+    resolution: "Closed ticket since user confirmed app update fixed the GPS locator issue.",
+    createdAt: "2026-06-19T14:00:00.000Z",
+    resolvedAt: "2026-06-20T11:00:00.000Z",
+    handlingTimeHours: 21
+  }
+];
+
