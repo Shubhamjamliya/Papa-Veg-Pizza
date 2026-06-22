@@ -535,3 +535,147 @@ export const mockLowStockAlerts = [
   }
 ];
 
+export const mockPurchaseRequests = [
+  {
+    _id: "pr-1",
+    requestNumber: "PR-2026-0001",
+    storeId: "store-1",
+    requestedBy: "mgr-1", // Subham Jamliya
+    status: "Pending",
+    priority: "Urgent",
+    totalAmount: 33300,
+    remarks: "Urgent cheese and paneer replenishment needed before weekend peak hours.",
+    approvedBy: null,
+    approvedAt: null,
+    createdAt: "2026-06-22T08:00:00Z"
+  },
+  {
+    _id: "pr-2",
+    requestNumber: "PR-2026-0002",
+    storeId: "store-2",
+    requestedBy: "mgr-2", // Rashid Khan
+    status: "Approved",
+    priority: "High",
+    totalAmount: 17205,
+    remarks: "Bhopal zone dough and cheese restock.",
+    approvedBy: "Franchise Admin",
+    approvedAt: "2026-06-21T14:30:00Z",
+    createdAt: "2026-06-21T10:15:00Z"
+  },
+  {
+    _id: "pr-3",
+    requestNumber: "PR-2026-0003",
+    storeId: "store-1",
+    requestedBy: "mgr-1",
+    status: "Received",
+    priority: "Medium",
+    totalAmount: 4200,
+    remarks: "Tomato marinara sauce batch replenishment.",
+    approvedBy: "Franchise Admin",
+    approvedAt: "2026-06-20T11:00:00Z",
+    createdAt: "2026-06-20T08:45:00Z"
+  },
+  {
+    _id: "pr-4",
+    requestNumber: "PR-2026-0004",
+    storeId: "store-3",
+    requestedBy: "mgr-3", // Aarav Sharma
+    status: "Rejected",
+    priority: "Low",
+    totalAmount: 1500,
+    remarks: "Duplicate request for boxes.",
+    approvedBy: "Franchise Admin",
+    approvedAt: "2026-06-20T15:00:00Z",
+    createdAt: "2026-06-20T13:30:00Z"
+  },
+  {
+    _id: "pr-5",
+    requestNumber: "PR-2026-0005",
+    storeId: "store-2",
+    requestedBy: "mgr-2",
+    status: "Draft",
+    priority: "Low",
+    totalAmount: 3960,
+    remarks: "Drafting requirements for next week packaging.",
+    approvedBy: null,
+    approvedAt: null,
+    createdAt: "2026-06-22T11:30:00Z"
+  }
+];
+
+export const mockPurchaseRequestItems = [
+  // pr-1 items
+  {
+    _id: "pri-1",
+    requestId: "pr-1",
+    ingredientId: "ing-2", // Premium Mozzarella Cheese
+    requestedQty: 48,
+    approvedQty: 0,
+    unitPrice: 480,
+    totalPrice: 23040
+  },
+  {
+    _id: "pri-2",
+    requestId: "pr-1",
+    ingredientId: "ing-6", // Fresh Paneer Cubes
+    requestedQty: 27,
+    approvedQty: 0,
+    unitPrice: 380,
+    totalPrice: 10260
+  },
+  
+  // pr-2 items
+  {
+    _id: "pri-3",
+    requestId: "pr-2",
+    ingredientId: "ing-2",
+    requestedQty: 26,
+    approvedQty: 26,
+    unitPrice: 480,
+    totalPrice: 12480
+  },
+  {
+    _id: "pri-4",
+    requestId: "pr-2",
+    ingredientId: "ing-1", // Hand-Tossed Pizza Dough
+    requestedQty: 105,
+    approvedQty: 105,
+    unitPrice: 45,
+    totalPrice: 4725
+  },
+
+  // pr-3 items
+  {
+    _id: "pri-5",
+    requestId: "pr-3",
+    ingredientId: "ing-3", // Rich Tomato Marinara Sauce
+    requestedQty: 35,
+    approvedQty: 35,
+    unitPrice: 120,
+    totalPrice: 4200
+  },
+
+  // pr-4 items
+  {
+    _id: "pri-6",
+    requestId: "pr-4",
+    ingredientId: "ing-8", // 10-Inch Corrugated Pizza Box
+    requestedQty: 125,
+    approvedQty: 0,
+    unitPrice: 12,
+    totalPrice: 1500
+  },
+
+  // pr-5 items
+  {
+    _id: "pri-7",
+    requestId: "pr-5",
+    ingredientId: "ing-8",
+    requestedQty: 330,
+    approvedQty: 0,
+    unitPrice: 12,
+    totalPrice: 3960
+  }
+];
+
+
