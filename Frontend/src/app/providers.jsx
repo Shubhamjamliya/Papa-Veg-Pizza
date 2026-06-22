@@ -44,7 +44,7 @@ export function AppProviders({ children }) {
               <RestaurantNotificationProvider>
                 <DeliveryNotificationProvider>
                   {children}
-                  <Toaster position="top-center" richColors offset="80px" />
+                  <Toaster position="top-center" richColors offset="80px" expand={true} />
                 </DeliveryNotificationProvider>
               </RestaurantNotificationProvider>
             </UserNotificationProvider>

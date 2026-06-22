@@ -426,3 +426,112 @@ export const mockInventoryTransactions = [
   { _id: "txn-13", storeId: "store-2", ingredientId: "ing-5", type: "Consumption", quantity: -0.8, previousStock: 6.8, newStock: 6.0, reason: "Order Preparation", referenceId: "ORD-90380", createdBy: "Bhopal Chef", createdAt: "2026-06-19T16:00:00Z" },
   { _id: "txn-14", storeId: "store-3", ingredientId: "ing-5", type: "Adjustment", quantity: -2, previousStock: 16, newStock: 14, reason: "Manual Correction", referenceId: "ADJ-0082", createdBy: "Ujjain Store Manager", createdAt: "2026-06-18T10:30:00Z" }
 ];
+
+export const mockLowStockAlerts = [
+  {
+    _id: "alt-1",
+    storeId: "store-1",
+    ingredientId: "ing-2",
+    currentStock: 12,
+    reorderLevel: 15,
+    severity: "CRITICAL",
+    status: "OPEN",
+    assignedTo: "mgr-1",
+    notes: "Requires immediate reorder from Durga Dairy Farms.",
+    createdAt: "2026-06-22T08:30:00Z",
+    resolvedAt: null,
+    createdBy: "System",
+    updatedBy: "System"
+  },
+  {
+    _id: "alt-2",
+    storeId: "store-3",
+    ingredientId: "ing-2",
+    currentStock: 5,
+    reorderLevel: 10,
+    severity: "CRITICAL",
+    status: "OPEN",
+    assignedTo: "mgr-3",
+    notes: "Critical shortage of cheese for the weekend peak hours.",
+    createdAt: "2026-06-22T09:15:00Z",
+    resolvedAt: null,
+    createdBy: "System",
+    updatedBy: "System"
+  },
+  {
+    _id: "alt-3",
+    storeId: "store-1",
+    ingredientId: "ing-6",
+    currentStock: 8,
+    reorderLevel: 10,
+    severity: "LOW",
+    status: "OPEN",
+    assignedTo: "mgr-1",
+    notes: "Paneer consumption is high. Reorder standard quantity.",
+    createdAt: "2026-06-22T10:00:00Z",
+    resolvedAt: null,
+    createdBy: "System",
+    updatedBy: "System"
+  },
+  {
+    _id: "alt-4",
+    storeId: "store-3",
+    ingredientId: "ing-6",
+    currentStock: 4,
+    reorderLevel: 8,
+    severity: "CRITICAL",
+    status: "OPEN",
+    assignedTo: "mgr-3",
+    notes: "Awaiting local dairy supply adjustment.",
+    createdAt: "2026-06-22T10:45:00Z",
+    resolvedAt: null,
+    createdBy: "System",
+    updatedBy: "System"
+  },
+  {
+    _id: "alt-5",
+    storeId: "store-2",
+    ingredientId: "ing-8",
+    currentStock: 120,
+    reorderLevel: 120,
+    severity: "LOW",
+    status: "OPEN",
+    assignedTo: "mgr-2",
+    notes: "Reorder scheduled for boxes.",
+    createdAt: "2026-06-22T11:00:00Z",
+    resolvedAt: null,
+    createdBy: "System",
+    updatedBy: "System"
+  },
+  {
+    _id: "alt-6",
+    storeId: "store-2",
+    ingredientId: "ing-2",
+    currentStock: 24,
+    reorderLevel: 12,
+    severity: "CRITICAL",
+    status: "RESOLVED",
+    assignedTo: "mgr-2",
+    notes: "Stock replenished via purchase order PO-2026-9110.",
+    createdAt: "2026-06-21T09:00:00Z",
+    resolvedAt: "2026-06-21T15:30:00Z",
+    createdBy: "System",
+    updatedBy: "mgr-2"
+  },
+  {
+    _id: "alt-7",
+    storeId: "store-1",
+    ingredientId: "ing-4",
+    currentStock: 28,
+    reorderLevel: 12,
+    severity: "LOW",
+    status: "RESOLVED",
+    assignedTo: "mgr-1",
+    notes: "Manual adjustment completed after receiving local bags.",
+    createdAt: "2026-06-21T10:00:00Z",
+    resolvedAt: "2026-06-21T14:20:00Z",
+    createdBy: "System",
+    updatedBy: "mgr-1"
+  }
+];
+
