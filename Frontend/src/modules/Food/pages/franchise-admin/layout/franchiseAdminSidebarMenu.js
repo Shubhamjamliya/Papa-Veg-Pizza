@@ -61,7 +61,7 @@ export const franchiseAdminSidebarMenu = [
     items: [
       { type: "link", label: "Customer List", path: "/franchise-admin/customers-list", icon: "Users" },
       { type: "link", label: "Customer Complaints", path: "/franchise-admin/customer-complaints", icon: "ShieldAlert" },
-      { type: "link", label: "Reviews & Ratings", path: "/franchise-admin/dashboard/restaurants/reviews", icon: "Star" },
+      { type: "link", label: "Reviews & Ratings", path: "/franchise-admin/reviews-ratings", icon: "Star" },
       { type: "link", label: "Loyalty Members", path: "/franchise-admin/dashboard/loyalty-point/report", icon: "Trophy" },
     ],
   },

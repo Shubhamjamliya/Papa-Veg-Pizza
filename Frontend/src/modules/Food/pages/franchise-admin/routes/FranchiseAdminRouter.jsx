@@ -49,6 +49,7 @@ const SafetyEmergencyReports = lazy(() => import("@food/pages/franchise-admin/Sa
 const Customers = lazy(() => import("@food/pages/franchise-admin/Customers"));
 const CustomersList = lazy(() => import("@food/pages/franchise-admin/customers/CustomersList"));
 const CustomerComplaints = lazy(() => import("@food/pages/franchise-admin/customers/CustomerComplaints"));
+const ReviewsRatings = lazy(() => import("@food/pages/franchise-admin/customers/ReviewsRatings"));
 const SupportTickets = lazy(() => import("@food/pages/franchise-admin/SupportTickets"));
 const SubscribedMailList = lazy(() => import("@food/pages/franchise-admin/SubscribedMailList"));
 
@@ -112,6 +113,7 @@ export default function FranchiseAdminRouter() {
           <Route path="stores" element={<Stores />} />
           <Route path="customers-list" element={<CustomersList />} />
           <Route path="customer-complaints" element={<CustomerComplaints />} />
+          <Route path="reviews-ratings" element={<ReviewsRatings />} />
           <Route path="store-managers" element={<StoreManagers />} />
           <Route path="employees" element={<KitchenStaff />} />
           <Route path="delivery-partners" element={<DeliveryPartners />} />
@@ -185,6 +187,7 @@ export default function FranchiseAdminRouter() {
             
             <Route path="customers" element={<Navigate to="/franchise-admin/customers-list" replace />} />
             <Route path="support-tickets" element={<Navigate to="/franchise-admin/customer-complaints" replace />} />
+            <Route path="restaurants/reviews" element={<Navigate to="/franchise-admin/reviews-ratings" replace />} />
             <Route path="wallet/add-fund" element={<PlaceholderPage title="Wallet Add Fund" />} />
             <Route path="wallet/bonus" element={<PlaceholderPage title="Wallet Bonus" />} />
             <Route path="loyalty-point/report" element={<PlaceholderPage title="Loyalty Points Report" />} />
