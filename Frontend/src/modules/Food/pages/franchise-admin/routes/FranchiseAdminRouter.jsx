@@ -40,6 +40,7 @@ const OperatingHours = lazy(() => import("@food/pages/franchise-admin/storeManag
 const StoreManagers = lazy(() => import("@food/pages/franchise-admin/staffManagement/StoreManagers"));
 const KitchenStaff = lazy(() => import("@food/pages/franchise-admin/staffManagement/KitchenStaff"));
 const DeliveryPartners = lazy(() => import("@food/pages/franchise-admin/staffManagement/DeliveryPartners"));
+const Ingredients = lazy(() => import("@food/pages/franchise-admin/inventory/Ingredients"));
 
 // Help & Support
 const Chattings = lazy(() => import("@food/pages/franchise-admin/Chattings"));
@@ -169,6 +170,7 @@ export default function FranchiseAdminRouter() {
           <Route path="categories" element={<Categories />} />
           <Route path="addons" element={<Addons />} />
           <Route path="store-pricing" element={<StorePricing />} />
+          <Route path="ingredients" element={<Ingredients />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -196,6 +198,7 @@ export default function FranchiseAdminRouter() {
 
 
             {/* FOOD & CATEGORY MANAGEMENT */}
+            <Route path="inventory/ingredients" element={<Navigate to="/franchise-admin/ingredients" replace />} />
             <Route path="categories" element={<Navigate to="/franchise-admin/categories" replace />} />
             <Route path="fee-settings" element={<FeeSettings />} />
             <Route path="referral-settings" element={<ReferralSettings />} />
