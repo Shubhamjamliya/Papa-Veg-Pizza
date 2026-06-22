@@ -6,6 +6,7 @@ import Loader from "@food/components/Loader";
 
 const AdminHome = lazy(() => import("@food/pages/franchise-admin/dashboard/FranchiseAdminDashboard"));
 const PointOfSale = lazy(() => import("@food/pages/franchise-admin/PointOfSale"));
+const FranchiseRevenue = lazy(() => import("@food/pages/franchise-admin/finance/FranchiseRevenue"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
@@ -135,6 +136,7 @@ export default function FranchiseAdminRouter() {
           <Route path="stock-levels" element={<StockLevels />} />
           <Route path="low-stock-alerts" element={<LowStockAlerts />} />
           <Route path="purchase-requests" element={<PurchaseRequests />} />
+          <Route path="franchise-revenue" element={<FranchiseRevenue />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">

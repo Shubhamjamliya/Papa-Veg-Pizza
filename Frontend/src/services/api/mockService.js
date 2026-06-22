@@ -165,6 +165,84 @@ export function handleMockRequest(config) {
     return successMsg("Logged out successfully");
   }
 
+  // Restaurant Current & Profile Mocks
+  if (url.includes("/food/restaurant/current") || url.includes("/restaurant/current")) {
+    const currentRest = db.restaurants[0] || {
+      id: "rest-1",
+      name: "Papa Veg Pizza - Central Outlet",
+      email: "central@papaveg.com",
+      phone: "9876543210"
+    };
+
+    const populated = {
+      id: currentRest.id,
+      _id: currentRest.id,
+      restaurantId: currentRest.restaurantId || "REST0001",
+      name: currentRest.name,
+      email: currentRest.email,
+      phone: currentRest.phone,
+      status: currentRest.status || "approved",
+      isActive: currentRest.isActive !== false,
+      isAcceptingOrders: currentRest.isAcceptingOrders !== false,
+      rating: currentRest.rating || 4.8,
+      totalRatings: currentRest.totalRatings || 142,
+      cuisines: currentRest.cuisines || ["Italian", "Fast Food"],
+      location: currentRest.location || {
+        addressLine1: "Sector 15, Central Market",
+        addressLine2: "",
+        area: "Noida",
+        city: "Delhi NCR",
+        landmark: "Near Metro Station"
+      },
+      profileImage: currentRest.profileImage || {
+        url: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=200&fit=crop",
+        publicId: "profile-1"
+      },
+      coverImages: currentRest.coverImages || [
+        { url: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=400&fit=crop", publicId: "cover-1" }
+      ],
+      menuImages: currentRest.menuImages || [
+        { url: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=400&fit=crop", publicId: "cover-1" }
+      ]
+    };
+
+    return successRes({ restaurant: populated });
+  }
+
+  if (url.includes("/food/restaurant/profile") && method === "patch") {
+    if (db.restaurants && db.restaurants.length > 0) {
+      db.restaurants[0] = { ...db.restaurants[0], ...data };
+      saveDB();
+    }
+    return successMsg("Profile updated successfully", { restaurant: db.restaurants[0] });
+  }
+
+  if (url.includes("/food/restaurant/availability") && method === "patch") {
+    if (db.restaurants && db.restaurants.length > 0) {
+      db.restaurants[0].isAcceptingOrders = data?.isAcceptingOrders;
+      saveDB();
+    }
+    return successMsg("Availability updated successfully", { restaurant: db.restaurants[0] });
+  }
+
+  if (url.includes("/food/restaurant/profile/profile-image") && method === "post") {
+    return successRes({
+      profileImage: {
+        url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+        publicId: "profile-uploaded"
+      }
+    });
+  }
+
+  if (url.includes("/food/restaurant/profile/menu-image") && method === "post") {
+    return successRes({
+      menuImage: {
+        url: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143",
+        publicId: "menu-uploaded"
+      }
+    });
+  }
+
   // 2. Sidebar Badges
   if (url.includes("/food/admin/sidebar-badges")) {
     const pendingRests = db.restaurants.filter(r => r.status === "pending").length;
