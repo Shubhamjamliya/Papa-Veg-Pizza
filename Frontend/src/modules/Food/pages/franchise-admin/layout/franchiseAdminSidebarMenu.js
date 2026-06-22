@@ -49,7 +49,7 @@ export const franchiseAdminSidebarMenu = [
     type: "section",
     label: "INVENTORY",
     items: [
-      { type: "link", label: "Ingredients", path: "/franchise-admin/dashboard/inventory/ingredients", icon: "ShoppingBag" },
+      { type: "link", label: "Ingredients", path: "/franchise-admin/ingredients", icon: "ShoppingBag" },
       { type: "link", label: "Stock Levels", path: "/franchise-admin/dashboard/inventory/stock", icon: "Layers" },
       { type: "link", label: "Low Stock Alerts", path: "/franchise-admin/dashboard/inventory/alerts", icon: "AlertCircle" },
       { type: "link", label: "Purchase Requests", path: "/franchise-admin/dashboard/inventory/purchase-requests", icon: "ClipboardList" },
