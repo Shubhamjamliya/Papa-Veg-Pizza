@@ -82,6 +82,10 @@ export default function SuperAdminDashboard() {
 
   // Apply colors dynamically to document style custom properties
   useEffect(() => {
+    document.documentElement.style.setProperty("--sa-primary", primaryColor)
+    document.documentElement.style.setProperty("--sa-primary-hover", `${primaryColor}cc`)
+    document.documentElement.style.setProperty("--sa-secondary", secondaryColor)
+    document.documentElement.style.setProperty("--sa-secondary-hover", `${secondaryColor}cc`)
     document.documentElement.style.setProperty("--primary", primaryColor)
     document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`)
     document.documentElement.style.setProperty("--secondary", secondaryColor)
