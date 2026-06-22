@@ -18,7 +18,7 @@ export default function QuickActions({ onAddStore, onAddManager, onAddAlert }) {
     { label: "Create Coupon", icon: Ticket, action: () => navigate("/franchise-admin/dashboard/coupons"), color: "text-amber-500 bg-amber-50 dark:bg-amber-950/20" },
     { label: "Add Store", icon: Store, action: () => setActiveModal("store"), color: "text-blue-500 bg-blue-50 dark:bg-blue-950/20" },
     { label: "Add Manager", icon: UserPlus, action: () => setActiveModal("manager"), color: "text-purple-500 bg-purple-50 dark:bg-purple-950/20" },
-    { label: "View Reports", icon: FileText, action: () => navigate("/franchise-admin/dashboard/transaction-report"), color: "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/20" },
+    { label: "View Reports", icon: FileText, action: () => navigate("/franchise-admin/reports"), color: "text-emerald-500 bg-emerald-50 dark:bg-emerald-950/20" },
     { label: "Broadcast Alert", icon: Bell, action: () => setActiveModal("alert"), color: "text-rose-500 bg-rose-50 dark:bg-rose-950/20" }
   ]
 
