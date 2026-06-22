@@ -33,7 +33,7 @@ export default function SubscribedMailList() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
           <div className="flex items-center gap-3 mb-6">
             <Mail className="w-5 h-5 text-blue-600" />
-            <h1 className="text-2xl font-bold text-slate-900">Subscribed Mail List</h1>
+            <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Subscribed Mail List</h1>
           </div>
 
           {/* Filter Section */}

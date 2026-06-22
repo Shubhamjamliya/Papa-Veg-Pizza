@@ -107,9 +107,9 @@ export default function LoyaltyMembers() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl shadow-xs shrink-0">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-lg md:text-xl font-extrabold tracking-tight text-zinc-900 dark:text-white uppercase">
+            <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
               Loyalty Members Desk
-            </h2>
+            </h1>
             <span className="bg-amber-500/10 text-amber-600 dark:text-amber-500 text-[8px] font-bold px-1.5 py-0.2 rounded-full border border-amber-500/20">
               Live DB
             </span>

@@ -272,7 +272,7 @@ export default function CancelledOrder() {
       {/* Page Header */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-zinc-950 p-4 border border-zinc-150 dark:border-zinc-850 rounded-2xl shadow-xs">
         <div>
-          <h1 className="text-xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             Cancelled Orders
             <span className="text-[10px] bg-rose-50 text-rose-700 dark:bg-rose-950/30 dark:text-rose-450 px-2 py-0.5 rounded-full font-bold border border-rose-100 dark:border-rose-900/30">
               Ops Control

@@ -218,7 +218,7 @@ export default function OrderIssues() {
       {/* Page Header */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl lg:text-2xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <AlertCircle className="text-[var(--primary)] shrink-0" size={24} />
             <span>Order Issues</span>
           </h1>

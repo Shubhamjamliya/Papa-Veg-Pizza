@@ -187,7 +187,7 @@ export default function SafetyEmergencyReports() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-6 w-6 text-red-600" />
-            <h1 className="text-2xl font-bold text-slate-900">Safety Emergency Reports</h1>
+            <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Safety Emergency Reports</h1>
             <span className="px-3 py-1 rounded-full text-sm font-semibold bg-slate-100 text-slate-700">
               {reports.length}
             </span>
