@@ -456,7 +456,7 @@ export default function DeliveryPartners() {
       {/* PAGE HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <h1 className="text-xl font-black tracking-tight text-zinc-900 dark:text-white uppercase flex items-center gap-2">
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
             <Truck className="w-5 h-5 text-[var(--primary)]" />
             Delivery Partners
           </h1>

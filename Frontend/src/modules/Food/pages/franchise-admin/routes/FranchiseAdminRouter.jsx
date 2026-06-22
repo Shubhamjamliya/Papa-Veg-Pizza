@@ -4,9 +4,11 @@ import ProtectedRoute from "@food/components/admin/ProtectedRoute";
 import FranchiseAdminLayout from "../layout/FranchiseAdminLayout";
 import Loader from "@food/components/Loader";
 
+// Lazy Loaded Pages
 const AdminHome = lazy(() => import("@food/pages/franchise-admin/dashboard/FranchiseAdminDashboard"));
 const PointOfSale = lazy(() => import("@food/pages/franchise-admin/PointOfSale"));
 const FranchiseRevenue = lazy(() => import("@food/pages/franchise-admin/finance/FranchiseRevenue"));
+const Expenses = lazy(() => import("@food/pages/franchise-admin/finance/Expenses"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
@@ -137,6 +139,7 @@ export default function FranchiseAdminRouter() {
           <Route path="low-stock-alerts" element={<LowStockAlerts />} />
           <Route path="purchase-requests" element={<PurchaseRequests />} />
           <Route path="franchise-revenue" element={<FranchiseRevenue />} />
+          <Route path="expenses" element={<Expenses />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -207,7 +210,7 @@ export default function FranchiseAdminRouter() {
 
             {/* REPORTS & SETTINGS */}
             <Route path="transaction-report" element={<PlaceholderPage title="Transaction Report" />} />
-            <Route path="expense-report" element={<PlaceholderPage title="Expense Report" />} />
+            <Route path="expense-report" element={<Navigate to="/franchise-admin/expenses" replace />} />
             <Route path="disbursement-report/restaurants" element={<PlaceholderPage title="Restaurants Disbursement" />} />
             <Route path="disbursement-report/deliverymen" element={<PlaceholderPage title="Deliverymen Disbursement" />} />
             <Route path="order-report/regular" element={<PlaceholderPage title="Regular Order Report" />} />

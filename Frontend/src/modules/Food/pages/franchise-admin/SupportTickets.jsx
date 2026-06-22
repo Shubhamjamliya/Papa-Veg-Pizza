@@ -72,7 +72,7 @@ export default function SupportTickets() {
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-lg font-semibold text-slate-900">Support Tickets</h1>
+              <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Support Tickets</h1>
               <p className="text-sm text-slate-500 mt-1">Review and respond to user and restaurant support tickets.</p>
             </div>
             <div className="flex gap-2">

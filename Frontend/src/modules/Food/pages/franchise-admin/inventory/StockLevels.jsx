@@ -243,7 +243,7 @@ export default function StockLevels() {
       {/* 1. Page Header Section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl lg:text-2xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-2 mt-1">
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2 mt-1">
             <Layers className="text-[var(--primary)] shrink-0" size={24} />
             <span>Stock Levels</span>
           </h1>

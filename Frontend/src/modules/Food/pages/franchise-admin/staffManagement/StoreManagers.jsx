@@ -322,7 +322,7 @@ export default function StoreManagers() {
       {/* PAGE HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
-          <h1 className="text-xl font-black tracking-tight text-zinc-900 dark:text-white uppercase">Store Managers</h1>
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Store Managers</h1>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Manage store managers, assignments, credentials, attendance, and metrics logs.</p>
         </div>
         <div className="flex items-center gap-1.5">

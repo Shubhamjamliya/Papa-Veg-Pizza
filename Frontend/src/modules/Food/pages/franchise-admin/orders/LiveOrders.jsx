@@ -235,9 +235,9 @@ export default function LiveOrders() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-zinc-900 p-4 rounded-xl border border-zinc-150 dark:border-zinc-800 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
+            <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
               Live Orders
-            </h2>
+            </h1>
             <span className="animate-pulse bg-[var(--primary)]/10 text-[var(--primary)] text-[9px] font-black px-2 py-0.5 rounded-full border border-[var(--primary)]/20 uppercase">
               Realtime active
             </span>

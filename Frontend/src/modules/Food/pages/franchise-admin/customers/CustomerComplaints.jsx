@@ -189,9 +189,9 @@ export default function CustomerComplaints() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl shadow-xs shrink-0">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-lg md:text-xl font-extrabold tracking-tight text-zinc-900 dark:text-white uppercase">
-              Customer Complaints desk
-            </h2>
+            <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+              Customer Complaints Desk
+            </h1>
             <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[8px] font-bold px-1.5 py-0.2 rounded-full border border-emerald-500/20">
               Live DB
             </span>

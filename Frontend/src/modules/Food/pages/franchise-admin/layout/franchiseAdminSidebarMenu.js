@@ -70,7 +70,7 @@ export const franchiseAdminSidebarMenu = [
     label: "FINANCE",
     items: [
       { type: "link", label: "Franchise Revenue", path: "/franchise-admin/franchise-revenue", icon: "DollarSign" },
-      { type: "link", label: "Expenses", path: "/franchise-admin/dashboard/expense-report", icon: "TrendingDown" },
+      { type: "link", label: "Expenses", path: "/franchise-admin/expenses", icon: "TrendingDown" },
       { type: "link", label: "Store Earnings", path: "/franchise-admin/dashboard/disbursement-report/restaurants", icon: "Landmark" },
       { type: "link", label: "Rider Payouts", path: "/franchise-admin/dashboard/delivery-withdrawal", icon: "CreditCard" },
       { type: "link", label: "Reports", path: "/franchise-admin/dashboard/transaction-report", icon: "FileText" },
