@@ -10,6 +10,7 @@ const PointOfSale = lazy(() => import("@food/pages/franchise-admin/PointOfSale")
 const FranchiseRevenue = lazy(() => import("@food/pages/franchise-admin/finance/FranchiseRevenue"));
 const Expenses = lazy(() => import("@food/pages/franchise-admin/finance/Expenses"));
 const StoreEarnings = lazy(() => import("@food/pages/franchise-admin/finance/StoreEarnings"));
+const RiderPayouts = lazy(() => import("@food/pages/franchise-admin/finance/RiderPayouts"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
@@ -142,6 +143,7 @@ export default function FranchiseAdminRouter() {
           <Route path="franchise-revenue" element={<FranchiseRevenue />} />
           <Route path="expenses" element={<Expenses />} />
           <Route path="store-earnings" element={<StoreEarnings />} />
+          <Route path="rider-payouts" element={<RiderPayouts />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -205,7 +207,7 @@ export default function FranchiseAdminRouter() {
             <Route path="delivery-boy-commission" element={<DeliveryBoyCommission />} />
             <Route path="delivery-cash-limit" element={<DeliveryCashLimit />} />
             <Route path="cash-limit-settlement" element={<CashLimitSettlement />} />
-            <Route path="delivery-withdrawal" element={<DeliveryWithdrawal />} />
+            <Route path="delivery-withdrawal" element={<Navigate to="/franchise-admin/rider-payouts" replace />} />
             <Route path="delivery-boy-wallet" element={<DeliveryBoyWallet />} />
             <Route path="delivery-emergency-help" element={<DeliveryEmergencyHelp />} />
             <Route path="delivery-support-tickets" element={<DeliverySupportTickets />} />

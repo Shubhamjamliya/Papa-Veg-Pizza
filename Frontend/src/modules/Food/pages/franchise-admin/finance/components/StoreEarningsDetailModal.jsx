@@ -22,7 +22,8 @@ import {
   BarChart2 as BarIcon,
   RotateCcw,
   Clock,
-  Activity
+  Activity,
+  X
 } from "lucide-react";
 
 export default function StoreEarningsDetailModal({
@@ -175,9 +176,9 @@ export default function StoreEarningsDetailModal({
               </div>
             </div>
           </div>
-          <div className="md:col-span-3 h-[250px] w-full flex flex-col items-center justify-center p-4 border rounded-xl">
-            <span className="font-bold text-zinc-400 uppercase text-[9px] mb-2">Revenue Split Doughnut</span>
-            <ResponsiveContainer width="100%" height="85%">
+          <div className="md:col-span-3 h-[250px] w-full p-4 border rounded-xl relative">
+            <span className="font-bold text-zinc-400 uppercase text-[9px] mb-2 block text-center">Revenue Split Doughnut</span>
+            <ResponsiveContainer width="100%" height="85%" minWidth={0} minHeight={0}>
               <PieChart>
                 <Pie
                   data={revenueChartData}
@@ -223,9 +224,9 @@ export default function StoreEarningsDetailModal({
               bordered
             />
           </div>
-          <div className="md:col-span-2 h-[250px] w-full flex flex-col items-center justify-center p-4 border rounded-xl">
-            <span className="font-bold text-zinc-400 uppercase text-[9px] mb-2">Expense Categories Pie</span>
-            <ResponsiveContainer width="100%" height="80%">
+          <div className="md:col-span-2 h-[250px] w-full p-4 border rounded-xl relative">
+            <span className="font-bold text-zinc-400 uppercase text-[9px] mb-2 block text-center">Expense Categories Pie</span>
+            <ResponsiveContainer width="100%" height="80%" minWidth={0} minHeight={0}>
               <PieChart>
                 <Pie
                   data={expensesBreakdown}
@@ -261,8 +262,8 @@ export default function StoreEarningsDetailModal({
               </h4>
               <span className="text-[8px] text-zinc-400 uppercase font-bold">Store distribution share</span>
             </div>
-            <div className="h-[180px] w-full mt-1">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-[180px] w-full mt-1 relative">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 <BarChart data={productPerformance.slice(0, 5)} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                   <XAxis dataKey="product" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
                   <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />
@@ -381,9 +382,9 @@ export default function StoreEarningsDetailModal({
             </div>
           </div>
 
-          <div className="md:col-span-3 h-[250px] w-full flex flex-col items-center justify-center p-4 border rounded-xl">
-            <span className="font-bold text-zinc-400 uppercase text-[9px] mb-2">Order Type Distribution (Delivery vs Dine-in)</span>
-            <ResponsiveContainer width="100%" height="80%">
+          <div className="md:col-span-3 h-[250px] w-full p-4 border rounded-xl relative">
+            <span className="font-bold text-zinc-400 uppercase text-[9px] mb-2 block text-center">Order Type Distribution (Delivery vs Dine-in)</span>
+            <ResponsiveContainer width="100%" height="80%" minWidth={0} minHeight={0}>
               <PieChart>
                 <Pie
                   data={orderTypeData}
@@ -411,18 +412,17 @@ export default function StoreEarningsDetailModal({
   return (
     <Modal
       title={
-        <div className="flex items-center justify-between border-b pb-2 text-zinc-800 dark:text-zinc-100 font-extrabold text-sm uppercase">
-          <div className="flex items-center gap-2">
-            <Activity size={16} className="text-[var(--primary)] animate-pulse" />
-            <span>Store Earnings Detail — {storeName} ({city})</span>
-          </div>
-          <Tag color={netProfit >= 0 ? "success" : "error"} className="text-[9px] uppercase font-bold mr-6">
+        <div className="flex items-center gap-2 border-b pb-2 text-zinc-800 dark:text-zinc-100 font-extrabold text-sm uppercase">
+          <Activity size={16} className="text-[var(--primary)] animate-pulse" />
+          <span>Store Earnings Detail — {storeName} ({city})</span>
+          <Tag color={netProfit >= 0 ? "success" : "error"} className="text-[9px] uppercase font-bold ml-2">
             {netProfit >= 0 ? "PROFIT MAKING" : "LOSS MAKING"}
           </Tag>
         </div>
       }
       open={isOpen}
       onCancel={onClose}
+      closeIcon={<X size={16} />}
       width={1300}
       footer={[
         <button
