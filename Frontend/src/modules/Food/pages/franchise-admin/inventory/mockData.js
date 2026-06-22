@@ -354,3 +354,75 @@ export const mockStockTransactions = {
     { date: "2026-06-21T18:00:00Z", store: "Indore Central", type: "Consumption", reference: "ORD-90428", quantity: -25, openingStock: 300, closingStock: 275, performedBy: "Rahul Dev (Kitchen)" }
   ]
 };
+
+export const mockInventoryStocks = [
+  // ing-1 (Hand-Tossed Pizza Dough)
+  { _id: "stk-store-1-ing-1", storeId: "store-1", ingredientId: "ing-1", currentStock: 120, reservedStock: 10, availableStock: 110, idealStock: 200, reorderLevel: 50, unit: "Piece", lastUpdated: "2026-06-21T18:30:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-1", storeId: "store-2", ingredientId: "ing-1", currentStock: 45, reservedStock: 0, availableStock: 45, idealStock: 150, reorderLevel: 40, unit: "Piece", lastUpdated: "2026-06-15T10:15:00Z", updatedBy: "Bhopal Store Manager" },
+  { _id: "stk-store-3-ing-1", storeId: "store-3", ingredientId: "ing-1", currentStock: 80, reservedStock: 5, availableStock: 75, idealStock: 120, reorderLevel: 30, unit: "Piece", lastUpdated: "2026-06-20T14:30:00Z", updatedBy: "Ujjain Store Manager" },
+
+  // ing-2 (Premium Mozzarella Cheese)
+  { _id: "stk-store-1-ing-2", storeId: "store-1", ingredientId: "ing-2", currentStock: 12, reservedStock: 2, availableStock: 10, idealStock: 60, reorderLevel: 15, unit: "Kg", lastUpdated: "2026-06-21T19:00:00Z", updatedBy: "Isha Sharma" },
+  { _id: "stk-store-2-ing-2", storeId: "store-2", ingredientId: "ing-2", currentStock: 24, reservedStock: 4, availableStock: 20, idealStock: 50, reorderLevel: 12, unit: "Kg", lastUpdated: "2026-06-15T11:30:00Z", updatedBy: "Indore Central Store Manager" },
+  { _id: "stk-store-3-ing-2", storeId: "store-3", ingredientId: "ing-2", currentStock: 5, reservedStock: 1, availableStock: 4, idealStock: 40, reorderLevel: 10, unit: "Kg", lastUpdated: "2026-06-14T15:20:00Z", updatedBy: "Ujjain Chef" },
+
+  // ing-3 (Rich Tomato Marinara Sauce)
+  { _id: "stk-store-1-ing-3", storeId: "store-1", ingredientId: "ing-3", currentStock: 45, reservedStock: 5, availableStock: 40, idealStock: 80, reorderLevel: 20, unit: "Litre", lastUpdated: "2026-06-21T12:00:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-3", storeId: "store-2", ingredientId: "ing-3", currentStock: 18, reservedStock: 2, availableStock: 16, idealStock: 60, reorderLevel: 15, unit: "Litre", lastUpdated: "2026-06-20T10:00:00Z", updatedBy: "Bhopal Store Manager" },
+  { _id: "stk-store-3-ing-3", storeId: "store-3", ingredientId: "ing-3", currentStock: 32, reservedStock: 0, availableStock: 32, idealStock: 50, reorderLevel: 12, unit: "Litre", lastUpdated: "2026-06-18T16:20:00Z", updatedBy: "System" },
+
+  // ing-4 (Fresh Diced Red Onion)
+  { _id: "stk-store-1-ing-4", storeId: "store-1", ingredientId: "ing-4", currentStock: 28, reservedStock: 3, availableStock: 25, idealStock: 40, reorderLevel: 12, unit: "Kg", lastUpdated: "2026-06-21T14:20:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-4", storeId: "store-2", ingredientId: "ing-4", currentStock: 9, reservedStock: 0, availableStock: 9, idealStock: 30, reorderLevel: 10, unit: "Kg", lastUpdated: "2026-06-20T10:00:00Z", updatedBy: "Bhopal Store Manager" },
+  { _id: "stk-store-3-ing-4", storeId: "store-3", ingredientId: "ing-4", currentStock: 15, reservedStock: 0, availableStock: 15, idealStock: 25, reorderLevel: 8, unit: "Kg", lastUpdated: "2026-06-19T11:15:00Z", updatedBy: "Ujjain Store Manager" },
+
+  // ing-5 (Golden Sweet Corn Kernels)
+  { _id: "stk-store-1-ing-5", storeId: "store-1", ingredientId: "ing-5", currentStock: 22, reservedStock: 2, availableStock: 20, idealStock: 30, reorderLevel: 8, unit: "Kg", lastUpdated: "2026-06-21T15:30:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-5", storeId: "store-2", ingredientId: "ing-5", currentStock: 6, reservedStock: 0, availableStock: 6, idealStock: 25, reorderLevel: 8, unit: "Kg", lastUpdated: "2026-06-19T16:00:00Z", updatedBy: "Bhopal Chef" },
+  { _id: "stk-store-3-ing-5", storeId: "store-3", ingredientId: "ing-5", currentStock: 14, reservedStock: 1, availableStock: 13, idealStock: 20, reorderLevel: 6, unit: "Kg", lastUpdated: "2026-06-18T10:30:00Z", updatedBy: "Ujjain Store Manager" },
+
+  // ing-6 (Fresh Paneer Cubes)
+  { _id: "stk-store-1-ing-6", storeId: "store-1", ingredientId: "ing-6", currentStock: 8, reservedStock: 1, availableStock: 7, idealStock: 35, reorderLevel: 10, unit: "Kg", lastUpdated: "2026-06-21T16:10:00Z", updatedBy: "Isha Sharma" },
+  { _id: "stk-store-2-ing-6", storeId: "store-2", ingredientId: "ing-6", currentStock: 18, reservedStock: 2, availableStock: 16, idealStock: 30, reorderLevel: 10, unit: "Kg", lastUpdated: "2026-06-20T11:15:00Z", updatedBy: "Bhopal Store Manager" },
+  { _id: "stk-store-3-ing-6", storeId: "store-3", ingredientId: "ing-6", currentStock: 4, reservedStock: 0, availableStock: 4, idealStock: 20, reorderLevel: 8, unit: "Kg", lastUpdated: "2026-06-19T09:00:00Z", updatedBy: "Ujjain Chef" },
+
+  // ing-7 (Oregano Spice Sachets)
+  { _id: "stk-store-1-ing-7", storeId: "store-1", ingredientId: "ing-7", currentStock: 420, reservedStock: 0, availableStock: 420, idealStock: 500, reorderLevel: 100, unit: "Pack", lastUpdated: "2026-06-21T17:00:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-7", storeId: "store-2", ingredientId: "ing-7", currentStock: 380, reservedStock: 0, availableStock: 380, idealStock: 400, reorderLevel: 80, unit: "Pack", lastUpdated: "2026-06-20T14:30:00Z", updatedBy: "Bhopal Store Manager" },
+  { _id: "stk-store-3-ing-7", storeId: "store-3", ingredientId: "ing-7", currentStock: 90, reservedStock: 0, availableStock: 90, idealStock: 300, reorderLevel: 60, unit: "Pack", lastUpdated: "2026-06-15T12:00:00Z", updatedBy: "System" },
+
+  // ing-8 (10-Inch Corrugated Pizza Box)
+  { _id: "stk-store-1-ing-8", storeId: "store-1", ingredientId: "ing-8", currentStock: 510, reservedStock: 10, availableStock: 500, idealStock: 600, reorderLevel: 150, unit: "Piece", lastUpdated: "2026-06-21T17:45:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-8", storeId: "store-2", ingredientId: "ing-8", currentStock: 120, reservedStock: 0, availableStock: 120, idealStock: 450, reorderLevel: 120, unit: "Piece", lastUpdated: "2026-06-20T11:00:00Z", updatedBy: "Indore Central Store Manager" },
+  { _id: "stk-store-3-ing-8", storeId: "store-3", ingredientId: "ing-8", currentStock: 320, reservedStock: 0, availableStock: 320, idealStock: 400, reorderLevel: 100, unit: "Piece", lastUpdated: "2026-06-10T10:00:00Z", updatedBy: "System" },
+
+  // ing-9 (Chili Flakes Sachets)
+  { _id: "stk-store-1-ing-9", storeId: "store-1", ingredientId: "ing-9", currentStock: 275, reservedStock: 0, availableStock: 275, idealStock: 500, reorderLevel: 100, unit: "Pack", lastUpdated: "2026-06-21T18:00:00Z", updatedBy: "Rahul Dev" },
+  { _id: "stk-store-2-ing-9", storeId: "store-2", ingredientId: "ing-9", currentStock: 0, reservedStock: 0, availableStock: 0, idealStock: 400, reorderLevel: 80, unit: "Pack", lastUpdated: "2026-06-22T08:00:00Z", updatedBy: "System" }
+];
+
+export const mockInventoryTransactions = [
+  // ing-1
+  { _id: "txn-1", storeId: "store-1", ingredientId: "ing-1", type: "Consumption", quantity: -1, previousStock: 121, newStock: 120, reason: "Order Preparation", referenceId: "ORD-90422", createdBy: "Rahul Dev", createdAt: "2026-06-21T18:30:00Z" },
+  { _id: "txn-2", storeId: "store-1", ingredientId: "ing-1", type: "Purchase", quantity: 300, previousStock: 20, newStock: 320, reason: "New Stock Arrival", referenceId: "PO-2026-9042", createdBy: "Indore Central Store Manager", createdAt: "2026-06-18T11:00:00Z" },
+  { _id: "txn-3", storeId: "store-2", ingredientId: "ing-1", type: "Adjustment", quantity: -5, previousStock: 50, newStock: 45, reason: "Manual Correction", referenceId: "ADJ-0091", createdBy: "Bhopal Store Manager", createdAt: "2026-06-15T10:15:00Z" },
+
+  // ing-2
+  { _id: "txn-4", storeId: "store-1", ingredientId: "ing-2", type: "Consumption", quantity: -0.2, previousStock: 12.2, newStock: 12.0, reason: "Order Preparation", referenceId: "ORD-90431", createdBy: "Isha Sharma", createdAt: "2026-06-21T19:00:00Z" },
+  { _id: "txn-5", storeId: "store-1", ingredientId: "ing-2", type: "Purchase", quantity: 50, previousStock: 15, newStock: 65, reason: "New Stock Arrival", referenceId: "PO-2026-9110", createdBy: "Indore Central Store Manager", createdAt: "2026-06-15T11:30:00Z" },
+  { _id: "txn-6", storeId: "store-3", ingredientId: "ing-2", type: "Waste", quantity: -2, previousStock: 7, newStock: 5, reason: "Damage", referenceId: "WST-0032", createdBy: "Ujjain Chef", createdAt: "2026-06-14T15:20:00Z" },
+
+  // ing-3
+  { _id: "txn-7", storeId: "store-1", ingredientId: "ing-3", type: "Consumption", quantity: -0.5, previousStock: 45.5, newStock: 45.0, reason: "Order Preparation", referenceId: "ORD-90390", createdBy: "Rahul Dev", createdAt: "2026-06-21T12:00:00Z" },
+
+  // ing-4
+  { _id: "txn-8", storeId: "store-1", ingredientId: "ing-4", type: "Consumption", quantity: -2, previousStock: 30, newStock: 28, reason: "Order Preparation", referenceId: "ORD-90420", createdBy: "Rahul Dev", createdAt: "2026-06-21T14:20:00Z" },
+  { _id: "txn-9", storeId: "store-2", ingredientId: "ing-4", type: "Purchase", quantity: 40, previousStock: 10, newStock: 50, reason: "New Stock Arrival", referenceId: "PO-2026-9080", createdBy: "Bhopal Store Manager", createdAt: "2026-06-20T10:00:00Z" },
+  { _id: "txn-10", storeId: "store-3", ingredientId: "ing-4", type: "Adjustment", quantity: -1, previousStock: 16, newStock: 15, reason: "Manual Correction", referenceId: "ADJ-0081", createdBy: "Ujjain Store Manager", createdAt: "2026-06-19T11:15:00Z" },
+
+  // ing-5
+  { _id: "txn-11", storeId: "store-1", ingredientId: "ing-5", type: "Consumption", quantity: -1.5, previousStock: 23.5, newStock: 22.0, reason: "Order Preparation", referenceId: "ORD-90421", createdBy: "Rahul Dev", createdAt: "2026-06-21T15:30:00Z" },
+  { _id: "txn-12", storeId: "store-1", ingredientId: "ing-5", type: "Purchase", quantity: 50, previousStock: 5, newStock: 55, reason: "New Stock Arrival", referenceId: "PO-2026-9081", createdBy: "Indore Central Store Manager", createdAt: "2026-06-20T09:45:00Z" },
+  { _id: "txn-13", storeId: "store-2", ingredientId: "ing-5", type: "Consumption", quantity: -0.8, previousStock: 6.8, newStock: 6.0, reason: "Order Preparation", referenceId: "ORD-90380", createdBy: "Bhopal Chef", createdAt: "2026-06-19T16:00:00Z" },
+  { _id: "txn-14", storeId: "store-3", ingredientId: "ing-5", type: "Adjustment", quantity: -2, previousStock: 16, newStock: 14, reason: "Manual Correction", referenceId: "ADJ-0082", createdBy: "Ujjain Store Manager", createdAt: "2026-06-18T10:30:00Z" }
+];

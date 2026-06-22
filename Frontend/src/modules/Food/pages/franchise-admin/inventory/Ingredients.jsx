@@ -214,14 +214,10 @@ export default function Ingredients() {
 
   return (
     <div className="p-6 space-y-6 bg-zinc-50/40 dark:bg-zinc-950 min-h-screen text-xs font-semibold text-zinc-700 dark:text-zinc-350">
-      
+
       {/* 1. Page Header Section */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          {/* Breadcrumb */}
-          <div className="text-[10px] text-zinc-400 font-bold tracking-wider uppercase">
-            Inventory &gt; Ingredients
-          </div>
           <h1 className="text-xl lg:text-2xl font-black tracking-tight text-zinc-900 dark:text-white flex items-center gap-2 mt-1">
             <Package className="text-[var(--primary)] shrink-0" size={24} />
             <span>Ingredients</span>
@@ -257,7 +253,7 @@ export default function Ingredients() {
 
       {/* 2. Bento Summary Cards */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        
+
         {/* Card 1: Total Ingredients */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 p-4 rounded-xl flex items-center justify-between hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-sm">
           <div className="space-y-0.5 min-w-0">
@@ -307,7 +303,7 @@ export default function Ingredients() {
       {/* 3. Dynamic Filter Section Bar */}
       <section className="bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-800 p-4 rounded-xl shadow-sm space-y-3 sticky top-16 z-20">
         <div className="flex flex-wrap items-center gap-3">
-          
+
           {/* Search Input (Debounced) */}
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-2.5 text-zinc-400" size={13} />
@@ -423,9 +419,8 @@ export default function Ingredients() {
                 {ingredientsList.map((item) => (
                   <tr
                     key={item._id}
-                    className={`hover:bg-zinc-50/40 dark:hover:bg-zinc-900/10 font-semibold transition-all ${
-                      item.belowReorderCount > 0 ? "bg-red-500/2 dark:bg-red-950/2" : ""
-                    }`}
+                    className={`hover:bg-zinc-50/40 dark:hover:bg-zinc-900/10 font-semibold transition-all ${item.belowReorderCount > 0 ? "bg-red-500/2 dark:bg-red-950/2" : ""
+                      }`}
                   >
                     {/* Image */}
                     <td className="p-3 pl-4">
@@ -476,11 +471,10 @@ export default function Ingredients() {
 
                     {/* Status */}
                     <td className="p-3 text-center">
-                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase inline-block ${
-                        item.status === "ACTIVE"
+                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase inline-block ${item.status === "ACTIVE"
                           ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30"
                           : "bg-zinc-150 text-zinc-500 dark:bg-zinc-800"
-                      }`}>
+                        }`}>
                         {item.status}
                       </span>
                     </td>
@@ -523,9 +517,8 @@ export default function Ingredients() {
                             <div className="border-t border-zinc-100 dark:border-zinc-900 my-1" />
                             <button
                               onClick={() => handleAction("toggle_status", item)}
-                              className={`w-full px-3 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 cursor-pointer ${
-                                item.status === "ACTIVE" ? "text-red-650" : "text-emerald-650"
-                              }`}
+                              className={`w-full px-3 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 cursor-pointer ${item.status === "ACTIVE" ? "text-red-650" : "text-emerald-650"
+                                }`}
                             >
                               <Trash2 size={12} className="opacity-70" />
                               <span>{item.status === "ACTIVE" ? "Disable" : "Enable"}</span>

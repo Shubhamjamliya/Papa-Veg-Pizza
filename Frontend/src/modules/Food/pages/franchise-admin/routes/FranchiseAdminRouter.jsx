@@ -41,6 +41,7 @@ const StoreManagers = lazy(() => import("@food/pages/franchise-admin/staffManage
 const KitchenStaff = lazy(() => import("@food/pages/franchise-admin/staffManagement/KitchenStaff"));
 const DeliveryPartners = lazy(() => import("@food/pages/franchise-admin/staffManagement/DeliveryPartners"));
 const Ingredients = lazy(() => import("@food/pages/franchise-admin/inventory/Ingredients"));
+const StockLevels = lazy(() => import("@food/pages/franchise-admin/inventory/StockLevels"));
 
 // Help & Support
 const Chattings = lazy(() => import("@food/pages/franchise-admin/Chattings"));
@@ -171,6 +172,7 @@ export default function FranchiseAdminRouter() {
           <Route path="addons" element={<Addons />} />
           <Route path="store-pricing" element={<StorePricing />} />
           <Route path="ingredients" element={<Ingredients />} />
+          <Route path="stock-levels" element={<StockLevels />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
