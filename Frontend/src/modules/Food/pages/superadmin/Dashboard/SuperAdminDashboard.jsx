@@ -231,7 +231,7 @@ export default function SuperAdminDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
+    <div className="superadmin-theme min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
 
       {/* Shared Navbar Layout */}
       <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />

@@ -406,3 +406,17 @@ export const mockExpenses = [
     createdBy: "Rashi Kumar"
   }
 ];
+
+// Mapped store_earnings mock collection from franchise revenue records
+export const mockStoreEarnings = mockFranchiseRevenue.map(rec => ({
+  _id: rec._id.replace("rev-", "earn-"),
+  storeId: rec.franchiseId,
+  franchiseId: rec.franchiseId,
+  date: rec.date,
+  totalOrders: rec.totalOrders,
+  grossSales: rec.grossRevenue,
+  discounts: rec.discountAmount,
+  refunds: rec.refundAmount,
+  expenses: rec.totalExpenses,
+  netProfit: rec.totalProfit
+}));
