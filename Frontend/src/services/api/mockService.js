@@ -37,7 +37,6 @@ import {
   initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
 
-
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
   try {
