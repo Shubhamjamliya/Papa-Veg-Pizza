@@ -387,3 +387,96 @@ export const mockBanners = [
     createdAt: "2026-05-18T12:00:00Z"
   }
 ];
+
+export const mockNotifications = [
+  {
+    _id: "notif-1",
+    franchiseId: "fran-central-1",
+    title: "Paneer Tikka Midweek Madness",
+    message: "Craving Paneer Tikka? Order now and get flat 30% off on all Medium Paneer Tikka pizzas! Valid only for today.",
+    notificationType: ["push", "sms", "email"],
+    targetAudience: "loyalty",
+    stores: ["store-indore-1", "store-indore-2", "store-bhopal-1"],
+    scheduleTime: "2026-06-17T11:00:00Z",
+    status: "sent",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2026-06-17T09:30:00Z"
+  },
+  {
+    _id: "notif-2",
+    franchiseId: "fran-central-1",
+    title: "Rainy Day BOGO Special!",
+    message: "Heavy rains outside? Stay dry & feast inside! Buy 1 Pizza, Get 1 Pizza absolutely FREE. Use coupon BOGORAIN.",
+    notificationType: ["push"],
+    targetAudience: "all",
+    stores: [], // Global
+    scheduleTime: "2026-06-22T12:30:00Z",
+    status: "sent",
+    createdBy: "Rajesh Kumar",
+    createdAt: "2026-06-22T12:00:00Z"
+  },
+  {
+    _id: "notif-3",
+    franchiseId: "fran-central-1",
+    title: "Weekend Cheese Feast",
+    message: "Get free Garlic Bread + Dip on your first order this Saturday & Sunday. T&C apply.",
+    notificationType: ["push", "sms"],
+    targetAudience: "new",
+    stores: ["store-bhopal-1", "store-ujjain-1"],
+    scheduleTime: "2026-06-27T10:00:00Z",
+    status: "scheduled",
+    createdBy: "Amit Sharma",
+    createdAt: "2026-06-23T08:15:00Z"
+  },
+  {
+    _id: "notif-4",
+    franchiseId: "fran-central-1",
+    title: "Diwali Early Bird Discount",
+    message: "Pre-book your Diwali Pizza Platters today and save 20%. Tap to browse combos.",
+    notificationType: ["push", "email"],
+    targetAudience: "inactive",
+    stores: [],
+    scheduleTime: "2026-11-04T18:00:00Z",
+    status: "draft",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2026-06-23T10:30:00Z"
+  },
+  {
+    _id: "notif-5",
+    franchiseId: "fran-central-1",
+    title: "Cancelled Monsoon Treats",
+    message: "Special offers for Indore users. Cancelled due to logistics clash.",
+    notificationType: ["sms"],
+    targetAudience: "all",
+    stores: ["store-indore-1"],
+    scheduleTime: "2026-06-15T15:00:00Z",
+    status: "cancelled",
+    createdBy: "Rajesh Kumar",
+    createdAt: "2026-06-14T16:00:00Z"
+  }
+];
+
+export const mockNotificationLogs = [
+  // Logs for notif-1 (Sent)
+  { _id: "log-1-1", notificationId: "notif-1", customerId: "cust-1", customerName: "Rohan Malhotra", channel: "push", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-17T11:02:00Z", storeId: "store-indore-1" },
+  { _id: "log-1-2", notificationId: "notif-1", customerId: "cust-2", customerName: "Aarav Sharma", channel: "sms", sentStatus: "delivered", opened: true, clicked: false, deliveredAt: "2026-06-17T11:03:00Z", storeId: "store-indore-1" },
+  { _id: "log-1-3", notificationId: "notif-1", customerId: "cust-3", customerName: "Pooja Patel", channel: "email", sentStatus: "delivered", opened: false, clicked: false, deliveredAt: "2026-06-17T11:05:00Z", storeId: "store-indore-2" },
+  { _id: "log-1-4", notificationId: "notif-1", customerId: "cust-4", customerName: "Amit Verma", channel: "push", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-17T11:01:00Z", storeId: "store-indore-2" },
+  { _id: "log-1-5", notificationId: "notif-1", customerId: "cust-5", customerName: "Rashi Kumar", channel: "sms", sentStatus: "failed", opened: false, clicked: false, deliveredAt: null, storeId: "store-bhopal-1" },
+  { _id: "log-1-6", notificationId: "notif-1", customerId: "cust-6", customerName: "Siddharth Jain", channel: "push", sentStatus: "delivered", opened: true, clicked: false, deliveredAt: "2026-06-17T11:01:30Z", storeId: "store-bhopal-1" },
+  { _id: "log-1-7", notificationId: "notif-1", customerId: "cust-7", customerName: "Neha Gupta", channel: "email", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-17T11:04:00Z", storeId: "store-indore-1" },
+  { _id: "log-1-8", notificationId: "notif-1", customerId: "cust-8", customerName: "Vikram Singh", channel: "sms", sentStatus: "delivered", opened: false, clicked: false, deliveredAt: "2026-06-17T11:02:15Z", storeId: "store-indore-2" },
+  { _id: "log-1-9", notificationId: "notif-1", customerId: "cust-9", customerName: "Preeti Mishra", channel: "push", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-17T11:02:30Z", storeId: "store-bhopal-1" },
+  { _id: "log-1-10", notificationId: "notif-1", customerId: "cust-10", customerName: "Deepak Rawat", channel: "email", sentStatus: "failed", opened: false, clicked: false, deliveredAt: null, storeId: "store-indore-1" },
+
+  // Logs for notif-2 (Sent)
+  { _id: "log-2-1", notificationId: "notif-2", customerId: "cust-1", customerName: "Rohan Malhotra", channel: "push", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-22T12:31:00Z", storeId: "store-indore-1" },
+  { _id: "log-2-2", notificationId: "notif-2", customerId: "cust-3", customerName: "Pooja Patel", channel: "push", sentStatus: "delivered", opened: true, clicked: false, deliveredAt: "2026-06-22T12:32:00Z", storeId: "store-indore-2" },
+  { _id: "log-2-3", notificationId: "notif-2", customerId: "cust-4", customerName: "Amit Verma", channel: "push", sentStatus: "delivered", opened: false, clicked: false, deliveredAt: "2026-06-22T12:30:30Z", storeId: "store-bhopal-1" },
+  { _id: "log-2-4", notificationId: "notif-2", customerId: "cust-5", customerName: "Rashi Kumar", channel: "push", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-22T12:33:00Z", storeId: "store-bhopal-2" },
+  { _id: "log-2-5", notificationId: "notif-2", customerId: "cust-7", customerName: "Neha Gupta", channel: "push", sentStatus: "failed", opened: false, clicked: false, deliveredAt: null, storeId: "store-ujjain-1" },
+  { _id: "log-2-6", notificationId: "notif-2", customerId: "cust-9", customerName: "Preeti Mishra", channel: "push", sentStatus: "delivered", opened: true, clicked: true, deliveredAt: "2026-06-22T12:31:15Z", storeId: "store-dewas-1" },
+  { _id: "log-2-7", notificationId: "notif-2", customerId: "cust-11", customerName: "Rajesh Sharma", channel: "push", sentStatus: "delivered", opened: true, clicked: false, deliveredAt: "2026-06-22T12:34:00Z", storeId: "store-jabalpur-1" },
+  { _id: "log-2-8", notificationId: "notif-2", customerId: "cust-12", customerName: "Sanjay Joshi", channel: "push", sentStatus: "delivered", opened: false, clicked: false, deliveredAt: "2026-06-22T12:32:45Z", storeId: "store-indore-1" }
+];
+

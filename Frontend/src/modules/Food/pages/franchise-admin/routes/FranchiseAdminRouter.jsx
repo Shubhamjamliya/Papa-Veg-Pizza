@@ -35,6 +35,7 @@ const Cashback = lazy(() => import("@food/pages/franchise-admin/Cashback"));
 const Banners = lazy(() => import("@food/pages/franchise-admin/Banners"));
 const PromotionalBanner = lazy(() => import("@food/pages/franchise-admin/PromotionalBanner"));
 const PromotionalBanners = lazy(() => import("@food/pages/franchise-admin/marketing/PromotionalBanners"));
+const NotificationsPage = lazy(() => import("@food/pages/franchise-admin/marketing/Notifications"));
 
 const Stores = lazy(() => import("@food/pages/franchise-admin/storeManagement/Stores"));
 const StoreApprovals = lazy(() => import("@food/pages/franchise-admin/storeManagement/StoreApprovals"));
@@ -155,6 +156,7 @@ export default function FranchiseAdminRouter() {
           <Route path="coupons" element={<Coupons />} />
           <Route path="campaigns" element={<Campaigns />} />
           <Route path="banners" element={<PromotionalBanners />} />
+          <Route path="notifications" element={<NotificationsPage />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -264,7 +266,7 @@ export default function FranchiseAdminRouter() {
             <Route path="3rd-party-configurations/analytics" element={<PlaceholderPage title="Analytics Script Setup" />} />
             <Route path="3rd-party-configurations/ai" element={<PlaceholderPage title="AI Assistant Setup" />} />
             <Route path="app-web-settings" element={<PlaceholderPage title="App & Web Settings" />} />
-            <Route path="notifications" element={<PlaceholderPage title="Notifications Setup" />} />
+            <Route path="notifications" element={<Navigate to="/franchise-admin/notifications" replace />} />
             <Route path="broadcast-notification" element={<PlaceholderPage title="Broadcast Notifications" />} />
             <Route path="notification-channels" element={<PlaceholderPage title="Notification Channels" />} />
             <Route path="landing-page-settings/admin" element={<PlaceholderPage title="Admin Landing Page Setup" />} />

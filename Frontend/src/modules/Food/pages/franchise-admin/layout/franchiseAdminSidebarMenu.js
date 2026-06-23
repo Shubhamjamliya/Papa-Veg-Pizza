@@ -83,7 +83,7 @@ export const franchiseAdminSidebarMenu = [
       { type: "link", label: "Local Coupons", path: "/franchise-admin/coupons", icon: "Ticket" },
       { type: "link", label: "Campaigns", path: "/franchise-admin/campaigns", icon: "Megaphone" },
       { type: "link", label: "Promotional Banners", path: "/franchise-admin/banners", icon: "Image" },
-      { type: "link", label: "Notifications", path: "/franchise-admin/dashboard/notifications", icon: "Bell" },
+      { type: "link", label: "Notifications", path: "/franchise-admin/notifications", icon: "Bell" },
     ],
   },
   {
