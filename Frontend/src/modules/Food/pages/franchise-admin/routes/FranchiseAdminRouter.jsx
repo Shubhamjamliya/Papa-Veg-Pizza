@@ -29,6 +29,7 @@ const Products = lazy(() => import("@food/pages/franchise-admin/products/Product
 const Addons = lazy(() => import("@food/pages/franchise-admin/products/Addons"));
 const StorePricing = lazy(() => import("@food/pages/franchise-admin/products/StorePricing"));
 
+
 // Promotions Management
 const Coupons = lazy(() => import("@food/pages/franchise-admin/marketing/LocalCoupons"));
 const Campaigns = lazy(() => import("@food/pages/franchise-admin/marketing/Campaigns"));
