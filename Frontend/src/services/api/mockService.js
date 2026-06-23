@@ -1,6 +1,16 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
+import {
+  mockStoresList,
+  mockProductsPerformance,
+  mockStorePerformanceList,
+  mockRevenueTrends,
+  mockPaymentDistributionData,
+  initialGeneratedReports,
+  mockDashboardSummary
+} from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
+
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -72,7 +82,8 @@ let db = {
   products: getStorageItem("products", mockProducts),
   coupons: getStorageItem("coupons", mockCoupons),
   notifications: getStorageItem("notifications", mockNotifications),
-  notificationLogs: getStorageItem("notificationLogs", mockNotificationLogs)
+  notificationLogs: getStorageItem("notificationLogs", mockNotificationLogs),
+  generated_reports: getStorageItem("generated_reports", initialGeneratedReports)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -131,6 +142,133 @@ export function handleMockRequest(config) {
   const successRes = (payload) => ({ success: true, status: 200, data: { success: true, data: payload } });
   const successMsg = (msg, payload = null) => ({ success: true, status: 200, data: { success: true, message: msg, data: payload } });
   const errorRes = (msg, status = 400) => ({ success: false, status, data: { success: false, message: msg } });
+
+  // --- SALES REPORT ENDPOINTS ---
+  if (url.includes("/reports/sales/dashboard") || url.includes("/reports/sales/summary")) {
+    const storeId = config.params?.storeId;
+    if (storeId && storeId !== "all") {
+      return successRes({
+        ...mockDashboardSummary,
+        totalRevenue: Math.floor(mockDashboardSummary.totalRevenue / 3),
+        totalOrders: Math.floor(mockDashboardSummary.totalOrders / 3),
+        netRevenue: Math.floor(mockDashboardSummary.netRevenue / 3),
+        growthPercentage: 5.4,
+      });
+    }
+    return successRes(mockDashboardSummary);
+  }
+
+  if (url.includes("/reports/sales/revenue-trend")) {
+    const mode = config.params?.mode || "daily";
+    return successRes(mockRevenueTrends[mode] || mockRevenueTrends.daily);
+  }
+
+  if (url.includes("/reports/sales/store-performance")) {
+    return successRes(mockStorePerformanceList);
+  }
+
+  if (url.includes("/reports/sales/payment-distribution")) {
+    return successRes(mockPaymentDistributionData);
+  }
+
+  if (url.includes("/reports/sales/top-products")) {
+    return successRes(mockProductsPerformance);
+  }
+
+  if (url.includes("/reports/sales/generate") && method === "post") {
+    const newRep = {
+      id: `REP-2026-${Math.floor(100 + Math.random() * 900)}`,
+      reportType: data?.reportType || "Custom",
+      startDate: data?.startDate || "2026-06-23",
+      endDate: data?.endDate || "2026-06-23",
+      revenue: Math.floor(500000 + Math.random() * 2000000),
+      orders: Math.floor(1500 + Math.random() * 5000),
+      refundAmount: data?.includeRefunds ? Math.floor(10000 + Math.random() * 50000) : 0,
+      status: "Completed",
+      generatedBy: "Rashi Kumar (Admin)",
+      createdAt: new Date().toISOString(),
+      fileUrl: "#"
+    };
+    db.generated_reports.unshift(newRep);
+    saveDB();
+    return successRes({
+      reportId: newRep.id,
+      fileUrl: newRep.fileUrl,
+      status: newRep.status
+    });
+  }
+
+  const reportsMatch = url.match(/\/generated-reports\/([^/]+)/);
+  if (reportsMatch) {
+    const id = reportsMatch[1];
+    if (method === "delete") {
+      db.generated_reports = db.generated_reports.filter(r => r.id !== id);
+      saveDB();
+      return successMsg("Report deleted successfully");
+    }
+    if (method === "get") {
+      const report = db.generated_reports.find(r => r.id === id);
+      if (report) {
+        return successRes({
+          report,
+          summary: {
+            revenue: report.revenue,
+            orders: report.orders,
+            refunds: report.refundAmount,
+            taxes: Math.floor(report.revenue * 0.05),
+            netRevenue: report.revenue - report.refundAmount - Math.floor(report.revenue * 0.05),
+            growthPercentage: 8.5
+          },
+          trend: mockRevenueTrends.daily,
+          paymentSplit: mockPaymentDistributionData,
+          storePerformance: mockStorePerformanceList,
+          topProducts: mockProductsPerformance
+        });
+      }
+      return errorRes("Report not found", 404);
+    }
+  }
+
+  if (url.includes("/generated-reports") && method === "get") {
+    const search = config.params?.search || "";
+    let filtered = [...db.generated_reports];
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(r => 
+        r.id.toLowerCase().includes(q) || 
+        r.reportType.toLowerCase().includes(q) || 
+        r.generatedBy.toLowerCase().includes(q)
+      );
+    }
+    const sortBy = config.params?.sortBy || "createdAt";
+    const sortOrder = config.params?.sortOrder || "desc";
+    filtered.sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? valA - valB : valB - valA;
+    });
+
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const totalCount = filtered.length;
+    const start = (page - 1) * limit;
+    const paginated = filtered.slice(start, start + limit);
+    return successRes({
+      reports: paginated,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit)
+    });
+  }
+
+  if (url.includes("/stores/dropdown")) {
+    return successRes(mockStoresList);
+  }
+
 
   // 1. Authentication & Profile
   if (url.includes("/food/auth/admin/login") || url.includes("/auth/admin/login")) {
