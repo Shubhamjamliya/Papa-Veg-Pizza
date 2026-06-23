@@ -16,7 +16,16 @@ import {
   mockStorePerformanceOrders,
   mockDetailedOrderReportsList,
   mockSingleOrderDetail,
-  initialGeneratedOrderReports
+  initialGeneratedOrderReports,
+  mockStaffDashboardSummary,
+  mockStaffRoleDistribution,
+  mockStaffAttendanceTrend,
+  mockDeliveryPerformance,
+  mockKitchenPerformance,
+  mockManagerPerformance,
+  mockStaffDetailedList,
+  mockStaffShifts,
+  initialGeneratedStaffReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
 
 
@@ -92,7 +101,8 @@ let db = {
   notifications: getStorageItem("notifications", mockNotifications),
   notificationLogs: getStorageItem("notificationLogs", mockNotificationLogs),
   generated_reports: getStorageItem("generated_reports", initialGeneratedReports),
-  generated_order_reports: getStorageItem("generated_order_reports", initialGeneratedOrderReports)
+  generated_order_reports: getStorageItem("generated_order_reports", initialGeneratedOrderReports),
+  generated_staff_reports: getStorageItem("generated_staff_reports", initialGeneratedStaffReports)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -2605,6 +2615,193 @@ export function handleMockRequest(config) {
         limit
       }
     });
+  }
+
+  // --- STAFF REPORT ENDPOINTS ---
+  if (url.includes("/reports/staff/summary") || url.includes("/reports/staff/dashboard")) {
+    return successRes(mockStaffDashboardSummary);
+  }
+
+  if (url.includes("/reports/staff/role-distribution")) {
+    return successRes(mockStaffRoleDistribution);
+  }
+
+  if (url.includes("/reports/staff/attendance-trend")) {
+    return successRes(mockStaffAttendanceTrend);
+  }
+
+  if (url.includes("/reports/staff/delivery-performance")) {
+    return successRes(mockDeliveryPerformance);
+  }
+
+  if (url.includes("/reports/staff/kitchen-performance")) {
+    return successRes(mockKitchenPerformance);
+  }
+
+  if (url.includes("/reports/staff/manager-performance")) {
+    return successRes(mockManagerPerformance);
+  }
+
+  if (url.includes("/reports/staff/list")) {
+    const search = config.params?.search || "";
+    const role = config.params?.role || "All Roles";
+    const status = config.params?.status || "All";
+    const storeId = config.params?.storeId || "all";
+
+    let filtered = [...mockStaffDetailedList];
+
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        s.role.toLowerCase().includes(q) ||
+        s.store.toLowerCase().includes(q)
+      );
+    }
+
+    if (role && role !== "All Roles" && role !== "All") {
+      filtered = filtered.filter(s => s.role === role);
+    }
+
+    if (status && status !== "All") {
+      filtered = filtered.filter(s => s.status === status);
+    }
+
+    if (storeId && storeId !== "all") {
+      const storeName = db.stores.find(st => st._id === storeId)?.name || storeId;
+      filtered = filtered.filter(s => s.store.toLowerCase().includes(storeId.toLowerCase()) || s.store.includes(storeName));
+    }
+
+    const sortBy = config.params?.sortBy || "joiningDate";
+    const sortOrder = config.params?.sortOrder || "desc";
+    filtered.sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? valA - valB : valB - valA;
+    });
+
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const totalCount = filtered.length;
+    const start = (page - 1) * limit;
+    const paginated = filtered.slice(start, start + limit);
+
+    return successRes({
+      staff: paginated,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit)
+    });
+  }
+
+  // Get Shifts History
+  const staffShiftsMatch = url.match(/\/staff\/([^/]+)\/shifts$/);
+  if (staffShiftsMatch && method === "get") {
+    const id = staffShiftsMatch[1];
+    const shifts = mockStaffShifts[id] || [
+      { date: "2026-06-22", startTime: "09:00", endTime: "17:00", breakTime: 45, hoursWorked: 7.25, status: "Completed" },
+      { date: "2026-06-21", startTime: "09:00", endTime: "17:00", breakTime: 45, hoursWorked: 7.25, status: "Completed" }
+    ];
+    return successRes({ shifts });
+  }
+
+  // Get Single Staff Details
+  const singleStaffMatch = url.match(/\/staff\/([^/]+)$/);
+  if (singleStaffMatch && method === "get" && !url.includes("/reports/")) {
+    const id = singleStaffMatch[1];
+    const staffBase = mockStaffDetailedList.find(s => s.id === id) || mockStaffDetailedList[0];
+    
+    const staffDetail = {
+      ...staffBase,
+      phone: "+91 99887 76655",
+      email: `${staffBase.name.toLowerCase().replace(" ", ".")}@papaveg.com`,
+      emergencyContact: "+91 98765 43210",
+      attendanceSummary: {
+        presentDays: 24,
+        absentDays: 2,
+        lateEntries: 3,
+        halfDays: 1,
+        attendancePercentage: staffBase.attendancePercentage,
+        workingHours: 185.5
+      },
+      performanceMetrics: {
+        completedOrders: staffBase.role === "Kitchen Staff" ? 320 : 0,
+        completedDeliveries: staffBase.role === "Delivery Partner" ? 540 : 0,
+        customerRatings: staffBase.role === "Store Manager" ? 4.7 : (staffBase.role === "Delivery Partner" ? 4.8 : 4.6),
+        revenueContribution: staffBase.role === "Store Manager" ? 1680000 : 250000,
+        performanceScore: staffBase.performanceScore,
+        averageShiftHours: 7.8
+      },
+      deliveryMetrics: staffBase.role === "Delivery Partner" ? {
+        deliveriesCompleted: 540,
+        distanceCovered: 1620,
+        averageDeliveryTime: 22.4,
+        rating: 4.8,
+        totalEarnings: 16200
+      } : null,
+      kitchenMetrics: staffBase.role === "Kitchen Staff" ? {
+        ordersPrepared: 320,
+        averagePreparationTime: 12.8,
+        efficiencyPercentage: 96.5,
+        shiftHours: 180
+      } : null,
+      managerMetrics: staffBase.role === "Store Manager" ? {
+        ordersManaged: 4890,
+        revenueGenerated: 1680000,
+        complaintsHandled: 12,
+        customerSatisfactionScore: 94.5
+      } : null
+    };
+
+    return successRes(staffDetail);
+  }
+
+  // Get Generated Staff Reports list
+  if (url.includes("/staff-reports") && method === "get") {
+    return successRes(db.generated_staff_reports);
+  }
+
+  // Generate Staff Report
+  if (url.includes("/reports/staff/generate") && method === "post") {
+    const newRep = {
+      id: `STF-2026-${Math.floor(100 + Math.random() * 900)}`,
+      role: data?.role || "All Roles",
+      storeName: data?.storeId === "all" ? "All Stores (Franchise-wide)" : (db.stores.find(st => st._id === data.storeId)?.name || data.storeId),
+      startDate: data?.startDate || "2026-06-23",
+      endDate: data?.endDate || "2026-06-23",
+      status: "Completed",
+      generatedBy: "Rashi Kumar (Admin)",
+      createdAt: new Date().toISOString(),
+      fileUrl: "#"
+    };
+    db.generated_staff_reports.unshift(newRep);
+    saveDB();
+    return successRes({
+      reportId: newRep.id,
+      fileUrl: newRep.fileUrl,
+      status: newRep.status
+    });
+  }
+
+  // Delete Generated Staff Report
+  const deleteStaffReportMatch = url.match(/\/staff-reports\/([^/]+)$/);
+  if (deleteStaffReportMatch && method === "delete") {
+    const id = deleteStaffReportMatch[1];
+    db.generated_staff_reports = db.generated_staff_reports.filter(r => r.id !== id);
+    saveDB();
+    return successRes({ success: true, message: "Report deleted successfully" });
+  }
+
+  // Export Staff Report
+  const exportStaffReportMatch = url.match(/\/staff-reports\/([^/]+)\/export$/);
+  if (exportStaffReportMatch && method === "get") {
+    const id = exportStaffReportMatch[1];
+    const rep = db.generated_staff_reports.find(r => r.id === id) || db.generated_staff_reports[0];
+    return successRes(rep);
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working
