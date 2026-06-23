@@ -93,7 +93,7 @@ export const franchiseAdminSidebarMenu = [
       { type: "link", label: "Sales Reports", path: "/franchise-admin/sales-report", icon: "BarChart3" },
       { type: "link", label: "Order Reports", path: "/franchise-admin/orders-report", icon: "LineChart" },
       { type: "link", label: "Staff Reports", path: "/franchise-admin/staff-reports", icon: "ClipboardList" },
-      { type: "link", label: "Inventory Reports", path: "/franchise-admin/dashboard/inventory-report", icon: "FileText" },
+      { type: "link", label: "Inventory Reports", path: "/franchise-admin/inventory-reports", icon: "FileText" },
     ],
   },
   {

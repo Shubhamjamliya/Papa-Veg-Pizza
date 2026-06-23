@@ -569,28 +569,26 @@ export default function StaffReports() {
               <>
                 <div className="w-full h-[180px] flex items-center justify-center">
                   <div className="w-[180px] h-[180px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: "Store Managers", value: roleDistribution.managers },
-                            { name: "Kitchen Staff", value: roleDistribution.kitchenStaff },
-                            { name: "Delivery Partners", value: roleDistribution.deliveryPartners }
-                          ]}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={45}
-                          outerRadius={70}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {[0, 1, 2].map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <RechartsTooltip formatter={(val) => `${val} Employees`} contentStyle={{ fontSize: "9px" }} />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <PieChart width={180} height={180}>
+                      <Pie
+                        data={[
+                          { name: "Store Managers", value: roleDistribution.managers },
+                          { name: "Kitchen Staff", value: roleDistribution.kitchenStaff },
+                          { name: "Delivery Partners", value: roleDistribution.deliveryPartners }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={45}
+                        outerRadius={70}
+                        paddingAngle={3}
+                        dataKey="value"
+                      >
+                        {[0, 1, 2].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip formatter={(val) => `${val} Employees`} contentStyle={{ fontSize: "9px" }} />
+                    </PieChart>
                   </div>
                 </div>
 
@@ -633,14 +631,12 @@ export default function StaffReports() {
             ) : (
               <div className="w-full h-[220px] overflow-x-auto scrollbar-thin">
                 <div className="w-[450px] h-[210px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={attendanceTrend} margin={{ top: 15, right: 10, left: -25, bottom: 0 }}>
-                      <XAxis dataKey="date" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(val) => `${val}%`} />
-                      <RechartsTooltip contentStyle={{ fontSize: "9px" }} formatter={(val) => `${val}%`} />
-                      <Line type="monotone" dataKey="attendancePercentage" name="Attendance Rate" stroke="var(--primary)" strokeWidth={2} activeDot={{ r: 4 }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <LineChart width={450} height={210} data={attendanceTrend} margin={{ top: 15, right: 10, left: -25, bottom: 0 }}>
+                    <XAxis dataKey="date" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(val) => `${val}%`} />
+                    <RechartsTooltip contentStyle={{ fontSize: "9px" }} formatter={(val) => `${val}%`} />
+                    <Line type="monotone" dataKey="attendancePercentage" name="Attendance Rate" stroke="var(--primary)" strokeWidth={2} activeDot={{ r: 4 }} />
+                  </LineChart>
                 </div>
               </div>
             )}

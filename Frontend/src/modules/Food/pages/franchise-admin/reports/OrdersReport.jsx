@@ -573,32 +573,30 @@ Placed Date: ${new Date(o.createdAt).toLocaleString()}
               <>
                 <div className="w-full h-[185px] flex items-center justify-center">
                   <div className="w-[180px] h-[180px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: "Delivered", value: statusDistribution.delivered },
-                            { name: "Cancelled", value: statusDistribution.cancelled },
-                            { name: "Refunded", value: statusDistribution.refunded },
-                            { name: "Preparing", value: statusDistribution.preparing },
-                            { name: "Baking", value: statusDistribution.baking },
-                            { name: "Out for Delivery", value: statusDistribution.outForDelivery },
-                            { name: "Pending / Confirm", value: statusDistribution.pending + statusDistribution.confirmed }
-                          ]}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={45}
-                          outerRadius={70}
-                          paddingAngle={2}
-                          dataKey="value"
-                        >
-                          {[0, 1, 2, 3, 4, 5, 6].map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <RechartsTooltip formatter={(val) => `${val} Orders`} contentStyle={{ fontSize: "9px" }} />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <PieChart width={180} height={180}>
+                      <Pie
+                        data={[
+                          { name: "Delivered", value: statusDistribution.delivered },
+                          { name: "Cancelled", value: statusDistribution.cancelled },
+                          { name: "Refunded", value: statusDistribution.refunded },
+                          { name: "Preparing", value: statusDistribution.preparing },
+                          { name: "Baking", value: statusDistribution.baking },
+                          { name: "Out for Delivery", value: statusDistribution.outForDelivery },
+                          { name: "Pending / Confirm", value: statusDistribution.pending + statusDistribution.confirmed }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={45}
+                        outerRadius={70}
+                        paddingAngle={2}
+                        dataKey="value"
+                      >
+                        {[0, 1, 2, 3, 4, 5, 6].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip formatter={(val) => `${val} Orders`} contentStyle={{ fontSize: "9px" }} />
+                    </PieChart>
                   </div>
                 </div>
 
@@ -645,26 +643,26 @@ Placed Date: ${new Date(o.createdAt).toLocaleString()}
             ) : (
               <div className="w-full h-[220px] overflow-x-auto scrollbar-thin">
                 <div className="w-[450px] h-[210px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={[
-                        { name: "Delivery", orders: typeDistribution.delivery },
-                        { name: "Takeaway", orders: typeDistribution.takeaway },
-                        { name: "Dine-In", orders: typeDistribution.dineIn }
-                      ]}
-                      margin={{ top: 15, right: 10, left: -25, bottom: 0 }}
-                      barSize={40}
-                    >
-                      <XAxis dataKey="name" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
-                      <RechartsTooltip contentStyle={{ fontSize: "9px" }} />
-                      <Bar dataKey="orders" name="Orders" radius={[6, 6, 0, 0]}>
-                        {[0, 1, 2].map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={BAR_COLORS[index % BAR_COLORS.length]} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <BarChart
+                    width={450}
+                    height={210}
+                    data={[
+                      { name: "Delivery", orders: typeDistribution.delivery },
+                      { name: "Takeaway", orders: typeDistribution.takeaway },
+                      { name: "Dine-In", orders: typeDistribution.dineIn }
+                    ]}
+                    margin={{ top: 15, right: 10, left: -25, bottom: 0 }}
+                    barSize={40}
+                  >
+                    <XAxis dataKey="name" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
+                    <RechartsTooltip contentStyle={{ fontSize: "9px" }} />
+                    <Bar dataKey="orders" name="Orders" radius={[6, 6, 0, 0]}>
+                      {[0, 1, 2].map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={BAR_COLORS[index % BAR_COLORS.length]} />
+                      ))}
+                    </Bar>
+                  </BarChart>
                 </div>
               </div>
             )}

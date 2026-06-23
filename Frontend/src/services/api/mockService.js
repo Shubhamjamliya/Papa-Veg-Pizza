@@ -25,7 +25,16 @@ import {
   mockManagerPerformance,
   mockStaffDetailedList,
   mockStaffShifts,
-  initialGeneratedStaffReports
+  initialGeneratedStaffReports,
+  mockInventorySummary,
+  mockConsumptionTrend,
+  mockLowStockList,
+  mockIngredientUsage,
+  mockPurchaseRequestsAnalytics,
+  mockPurchaseRequests,
+  mockStockTransactions,
+  mockSuppliersSummary,
+  initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
 
 
@@ -33,7 +42,10 @@ import {
 const getStorageItem = (key, defaultVal) => {
   try {
     const val = localStorage.getItem(`mock_db_${key}`);
-    return val ? JSON.parse(val) : defaultVal;
+    if (val === null || val === undefined || val === "null" || val === "undefined") {
+      return defaultVal;
+    }
+    return JSON.parse(val);
   } catch (_) {
     return defaultVal;
   }
@@ -102,7 +114,8 @@ let db = {
   notificationLogs: getStorageItem("notificationLogs", mockNotificationLogs),
   generated_reports: getStorageItem("generated_reports", initialGeneratedReports),
   generated_order_reports: getStorageItem("generated_order_reports", initialGeneratedOrderReports),
-  generated_staff_reports: getStorageItem("generated_staff_reports", initialGeneratedStaffReports)
+  generated_staff_reports: getStorageItem("generated_staff_reports", initialGeneratedStaffReports),
+  generated_inventory_reports: getStorageItem("generated_inventory_reports", initialGeneratedInventoryReports)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -2802,6 +2815,171 @@ export function handleMockRequest(config) {
     const id = exportStaffReportMatch[1];
     const rep = db.generated_staff_reports.find(r => r.id === id) || db.generated_staff_reports[0];
     return successRes(rep);
+  }
+
+  // --- INVENTORY REPORT ENDPOINTS ---
+  if (url.includes("/reports/inventory/summary") || url.includes("/reports/inventory/dashboard")) {
+    return successRes(mockInventorySummary);
+  }
+
+  if (url.includes("/reports/inventory/consumption-trend")) {
+    return successRes(mockConsumptionTrend);
+  }
+
+  if (url.includes("/reports/inventory/low-stock")) {
+    return successRes(mockLowStockList);
+  }
+
+  if (url.includes("/reports/inventory/ingredient-usage")) {
+    const search = config.params?.search || "";
+    const category = config.params?.category || "All";
+    const stockStatus = config.params?.stockStatus || "All";
+
+    let filtered = [...mockIngredientUsage];
+
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(i => 
+        i && (
+          (i.name || "").toLowerCase().includes(q) || 
+          (i.category || "").toLowerCase().includes(q)
+        )
+      );
+    }
+
+    if (category && category !== "All") {
+      filtered = filtered.filter(i => i && i.category === category);
+    }
+
+    if (stockStatus && stockStatus !== "All") {
+      filtered = filtered.filter(i => {
+        if (!i) return false;
+        if (stockStatus === "Low Stock") return i.closingStock <= 30 && i.closingStock > 10;
+        if (stockStatus === "Critical") return i.closingStock <= 10 && i.closingStock > 0;
+        if (stockStatus === "Out Of Stock") return i.closingStock === 0;
+        return i.closingStock > 30; // Normal
+      });
+    }
+
+    return successRes(filtered);
+  }
+
+  if (url.includes("/reports/inventory/purchase-analytics")) {
+    return successRes(mockPurchaseRequestsAnalytics);
+  }
+
+  if (url.includes("/purchase-requests")) {
+    const search = config.params?.search || "";
+    let filtered = [...mockPurchaseRequests];
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(pr => pr.ingredient.toLowerCase().includes(q) || pr.supplier.toLowerCase().includes(q));
+    }
+    return successRes(filtered);
+  }
+
+  if (url.includes("/stock-transactions")) {
+    const search = config.params?.search || "";
+    let filtered = [...mockStockTransactions];
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(tx => tx.ingredient.toLowerCase().includes(q) || tx.transactionType.toLowerCase().includes(q));
+    }
+    return successRes(filtered);
+  }
+
+  if (url.includes("/reports/inventory/suppliers")) {
+    return successRes(mockSuppliersSummary);
+  }
+
+  if (url.includes("/reports/inventory/list")) {
+    const search = config.params?.search || "";
+    let filtered = [...db.generated_inventory_reports];
+
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(r => r.storeName.toLowerCase().includes(q) || r.id.toLowerCase().includes(q));
+    }
+
+    const sortBy = config.params?.sortBy || "createdAt";
+    const sortOrder = config.params?.sortOrder || "desc";
+    filtered.sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? valA - valB : valB - valA;
+    });
+
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const totalCount = filtered.length;
+    const start = (page - 1) * limit;
+    const paginated = filtered.slice(start, start + limit);
+
+    return successRes({
+      reports: paginated,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit)
+    });
+  }
+
+  // Get report detail
+  const singleInventoryReportMatch = url.match(/\/reports\/inventory\/([^/]+)$/);
+  if (singleInventoryReportMatch && method === "get" && !url.includes("/list") && !url.includes("/generate")) {
+    const id = singleInventoryReportMatch[1];
+    const reportBase = db.generated_inventory_reports.find(r => r.id === id) || db.generated_inventory_reports[0];
+    
+    const reportDetail = {
+      ...reportBase,
+      openingStock: 1540,
+      purchasedQuantity: 1800,
+      consumedQuantity: 1245,
+      closingStock: 2095,
+      wastage: 59.8,
+      currentInventoryValue: reportBase.stockValue,
+      ingredientsTrend: [
+        { date: "Mon", consumption: 180, purchases: 150, wastage: 8 },
+        { date: "Tue", consumption: 190, purchases: 200, wastage: 12 },
+        { date: "Wed", consumption: 210, purchases: 300, wastage: 6 },
+        { date: "Thu", consumption: 175, purchases: 150, wastage: 14 }
+      ]
+    };
+    return successRes(reportDetail);
+  }
+
+  if (url.includes("/reports/inventory/generate") && method === "post") {
+    const newRep = {
+      id: `INV-2026-${Math.floor(100 + Math.random() * 900)}`,
+      storeName: data?.storeId === "all" ? "All Stores (Franchise-wide)" : (db.stores.find(st => st._id === data.storeId)?.name || data.storeId),
+      startDate: data?.startDate || "2026-06-23",
+      endDate: data?.endDate || "2026-06-23",
+      itemsConsumed: Math.floor(1000 + Math.random() * 2000),
+      stockValue: Math.floor(500000 + Math.random() * 500000),
+      generatedBy: "Rashi Kumar (Admin)",
+      status: "Completed",
+      createdAt: new Date().toISOString(),
+      fileUrl: "#"
+    };
+    db.generated_inventory_reports.unshift(newRep);
+    saveDB();
+    return successRes({
+      reportId: newRep.id,
+      fileUrl: newRep.fileUrl,
+      status: newRep.status
+    });
+  }
+
+  // Delete inventory report log
+  const deleteInventoryReportMatch = url.match(/\/reports\/inventory\/([^/]+)$/);
+  if (deleteInventoryReportMatch && method === "delete") {
+    const id = deleteInventoryReportMatch[1];
+    db.generated_inventory_reports = db.generated_inventory_reports.filter(r => r.id !== id);
+    saveDB();
+    return successRes({ success: true, message: "Inventory report deleted successfully" });
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working

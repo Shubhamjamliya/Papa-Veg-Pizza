@@ -555,14 +555,12 @@ export default function SalesReport() {
             ) : (
               <div className="w-full h-[230px] overflow-x-auto scrollbar-thin">
                 <div className="w-[600px] h-[220px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                      <XAxis dataKey="date" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val >= 1000 ? `${(val/1000).toFixed(0)}k` : val}`} />
-                      <RechartsTooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
-                      <Line type="monotone" dataKey="revenue" name="Sales Index" stroke="var(--primary)" strokeWidth={2.2} activeDot={{ r: 5 }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <LineChart width={600} height={220} data={trendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <XAxis dataKey="date" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val >= 1000 ? `${(val/1000).toFixed(0)}k` : val}`} />
+                    <RechartsTooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                    <Line type="monotone" dataKey="revenue" name="Sales Index" stroke="var(--primary)" strokeWidth={2.2} activeDot={{ r: 5 }} />
+                  </LineChart>
                 </div>
               </div>
             )}
@@ -591,29 +589,27 @@ export default function SalesReport() {
               <>
                 <div className="w-full h-[180px] flex items-center justify-center">
                   <div className="w-[180px] h-[180px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: "UPI", value: distributionData.upi, color: PIE_COLORS[0] },
-                            { name: "Card", value: distributionData.card, color: PIE_COLORS[1] },
-                            { name: "Cash", value: distributionData.cash, color: PIE_COLORS[2] },
-                            { name: "Wallet", value: distributionData.wallet, color: PIE_COLORS[3] }
-                          ]}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={45}
-                          outerRadius={70}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {[0, 1, 2, 3].map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <RechartsTooltip formatter={(val) => `${val}%`} contentStyle={{ fontSize: "9px" }} />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <PieChart width={180} height={180}>
+                      <Pie
+                        data={[
+                          { name: "UPI", value: distributionData.upi, color: PIE_COLORS[0] },
+                          { name: "Card", value: distributionData.card, color: PIE_COLORS[1] },
+                          { name: "Cash", value: distributionData.cash, color: PIE_COLORS[2] },
+                          { name: "Wallet", value: distributionData.wallet, color: PIE_COLORS[3] }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={45}
+                        outerRadius={70}
+                        paddingAngle={3}
+                        dataKey="value"
+                      >
+                        {[0, 1, 2, 3].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip formatter={(val) => `${val}%`} contentStyle={{ fontSize: "9px" }} />
+                    </PieChart>
                   </div>
                 </div>
                 

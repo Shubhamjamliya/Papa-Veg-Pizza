@@ -472,4 +472,88 @@ export const initialGeneratedStaffReports = [
   }
 ];
 
+// --- INVENTORY REPORTS DATASETS ---
+export const mockInventorySummary = {
+  totalIngredients: 45,
+  stockValue: 845200,
+  lowStockItems: 6,
+  wastagePercentage: 4.8,
+  pendingPurchaseRequests: 8,
+  inventoryTurnoverRatio: 5.2
+};
+
+export const mockConsumptionTrend = [
+  { date: "Mon", consumed: 240, purchased: 300, wastage: 12 },
+  { date: "Tue", consumed: 260, purchased: 250, wastage: 15 },
+  { date: "Wed", consumed: 280, purchased: 400, wastage: 10 },
+  { date: "Thu", consumed: 250, purchased: 200, wastage: 18 },
+  { date: "Fri", consumed: 340, purchased: 500, wastage: 14 },
+  { date: "Sat", consumed: 420, purchased: 600, wastage: 22 },
+  { date: "Sun", consumed: 390, purchased: 350, wastage: 20 }
+];
+
+export const mockLowStockList = [
+  { name: "Premium Mozzarella Cheese", currentStock: 12, minimumStock: 30, criticalLevel: 10 },
+  { name: "Fresh Mushrooms", currentStock: 8, minimumStock: 20, criticalLevel: 5 },
+  { name: "Papa Veg Pizza Sauce", currentStock: 15, minimumStock: 40, criticalLevel: 15 },
+  { name: "Organic Extra Virgin Olive Oil", currentStock: 3, minimumStock: 10, criticalLevel: 2 },
+  { name: "Fresh Basil Leaves", currentStock: 1, minimumStock: 5, criticalLevel: 1 },
+  { name: "Wheat Pizza Dough Balls", currentStock: 45, minimumStock: 100, criticalLevel: 30 }
+];
+
+export const mockIngredientUsage = [
+  { name: "Premium Mozzarella Cheese", category: "Cheese", openingStock: 50, consumed: 88, purchased: 50, closingStock: 12, wastage: 4.2, unit: "kg", wastagePercentage: 4.77 },
+  { name: "Paneer Cubes (Cottage Cheese)", category: "Cheese", openingStock: 30, consumed: 45, purchased: 40, closingStock: 25, wastage: 1.8, unit: "kg", wastagePercentage: 4.0 },
+  { name: "Papa Veg Pizza Sauce", category: "Sauces", openingStock: 40, consumed: 65, purchased: 40, closingStock: 15, wastage: 3.5, unit: "liters", wastagePercentage: 5.38 },
+  { name: "Fresh Dough Balls (Standard)", category: "Dough", openingStock: 200, consumed: 680, purchased: 600, closingStock: 120, wastage: 22.0, unit: "pcs", wastagePercentage: 3.24 },
+  { name: "Diced Tomatoes", category: "Vegetables", openingStock: 25, consumed: 58, purchased: 60, closingStock: 27, wastage: 2.8, unit: "kg", wastagePercentage: 4.83 },
+  { name: "Sliced Capsicum", category: "Vegetables", openingStock: 20, consumed: 48, purchased: 50, closingStock: 22, wastage: 2.1, unit: "kg", wastagePercentage: 4.38 },
+  { name: "Premium Wheat Base Dough", category: "Dough", openingStock: 80, consumed: 235, purchased: 200, closingStock: 45, wastage: 8.5, unit: "pcs", wastagePercentage: 3.62 }
+];
+
+export const mockPurchaseRequestsAnalytics = {
+  pending: 8,
+  approved: 15,
+  ordered: 12,
+  rejected: 3
+};
+
+export const mockPurchaseRequests = [
+  { requestNumber: "PR-2026-101", ingredient: "Premium Mozzarella Cheese", quantity: 50, supplier: "Amul Dairy Dist", requestDate: "2026-06-22T10:15:00.000Z", status: "Pending", approvedBy: "—" },
+  { requestNumber: "PR-2026-102", ingredient: "Papa Veg Pizza Sauce", quantity: 100, supplier: "Veeba Foods Pvt Ltd", requestDate: "2026-06-22T11:30:00.000Z", status: "Approved", approvedBy: "Rashi Kumar (Admin)" },
+  { requestNumber: "PR-2026-103", ingredient: "Diced Tomatoes", quantity: 60, supplier: "Indore Agri Market Agency", requestDate: "2026-06-21T09:00:00.000Z", status: "Ordered", approvedBy: "Rashi Kumar (Admin)" },
+  { requestNumber: "PR-2026-104", ingredient: "Fresh Basil Leaves", quantity: 10, supplier: "Indore Organic Green Farm", requestDate: "2026-06-20T14:40:00.000Z", status: "Rejected", approvedBy: "Rashi Kumar (Admin)" }
+];
+
+export const mockStockTransactions = [
+  { date: "2026-06-23T11:00:00.000Z", ingredient: "Premium Mozzarella Cheese", transactionType: "Consumption", quantity: 15, referenceNumber: "TXN-77402", updatedBy: "Chef Vikram Sen", remarks: "Daily Pizza Prep" },
+  { date: "2026-06-23T09:30:00.000Z", ingredient: "Premium Mozzarella Cheese", transactionType: "Purchase", quantity: 50, referenceNumber: "TXN-77399", updatedBy: "Rashi Kumar (Admin)", remarks: "Restocked from PR-2026-100" },
+  { date: "2026-06-22T17:45:00.000Z", ingredient: "Papa Veg Pizza Sauce", transactionType: "Wastage", quantity: 2.5, referenceNumber: "TXN-77382", updatedBy: "Chef Suresh Kumar", remarks: "Spillage during dispensing" },
+  { date: "2026-06-22T10:00:00.000Z", ingredient: "Paneer Cubes (Cottage Cheese)", transactionType: "Transfer", quantity: 10, referenceNumber: "TXN-77351", updatedBy: "Anoop Sharma (Mgr)", remarks: "Transferred to Bhopal Zone" },
+  { date: "2026-06-21T15:20:00.000Z", ingredient: "Premium Wheat Base Dough", transactionType: "Adjustment", quantity: -4, referenceNumber: "TXN-77312", updatedBy: "Rashi Kumar (Admin)", remarks: "Audit Stock Correction" }
+];
+
+export const mockSuppliersSummary = [
+  { supplierName: "Amul Dairy Dist", itemsSupplied: "Cheese, Butter, Cream", ordersCount: 24, totalPurchaseValue: 345000, averageDeliveryTime: 1.5, status: "Active" },
+  { supplierName: "Veeba Foods Pvt Ltd", itemsSupplied: "Pizza Sauce, Marinara Dip, Mayo", ordersCount: 18, totalPurchaseValue: 189000, averageDeliveryTime: 2.1, status: "Active" },
+  { supplierName: "Indore Agri Market Agency", itemsSupplied: "Tomatoes, Capsicum, Onions, Mushrooms", ordersCount: 42, totalPurchaseValue: 124500, averageDeliveryTime: 0.8, status: "Active" },
+  { supplierName: "Indore Organic Green Farm", itemsSupplied: "Basil Leaves, Jalapenos, Olives", ordersCount: 15, totalPurchaseValue: 56000, averageDeliveryTime: 1.2, status: "Active" }
+];
+
+export const initialGeneratedInventoryReports = [
+  {
+    id: "INV-2026-001",
+    storeName: "All Stores (Franchise-wide)",
+    startDate: "2026-05-01",
+    endDate: "2026-05-31",
+    itemsConsumed: 1245,
+    stockValue: 845200,
+    generatedBy: "Rashi Kumar (Admin)",
+    status: "Completed",
+    createdAt: "2026-06-01T10:30:00.000Z",
+    fileUrl: "#"
+  }
+];
+
+
 

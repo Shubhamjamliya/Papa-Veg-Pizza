@@ -248,15 +248,13 @@ SUMMARY METRICS:
                 <h3 className="font-extrabold text-xs text-slate-900 dark:text-white mb-4">Revenue Trend Chart</h3>
                 <div className="w-full h-[350px] overflow-x-auto scrollbar-thin">
                   <div className="w-[600px] h-[330px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={trend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <XAxis dataKey="date" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
-                        <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`} />
-                        <RechartsTooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
-                        <Legend verticalAlign="top" height={36} iconType="circle" />
-                        <Line type="monotone" dataKey="revenue" name="Revenue Trends" stroke="var(--primary)" strokeWidth={2.5} activeDot={{ r: 6 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <LineChart width={600} height={330} data={trend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <XAxis dataKey="date" stroke="#888888" fontSize={10} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#888888" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`} />
+                      <RechartsTooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                      <Legend verticalAlign="top" height={36} iconType="circle" />
+                      <Line type="monotone" dataKey="revenue" name="Revenue Trends" stroke="var(--primary)" strokeWidth={2.5} activeDot={{ r: 6 }} />
+                    </LineChart>
                   </div>
                 </div>
               </div>
@@ -267,25 +265,23 @@ SUMMARY METRICS:
               <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 rounded-xl shadow-sm flex flex-col md:flex-row gap-8 items-center">
                 <div className="w-full max-w-sm h-[260px] flex items-center justify-center">
                   <div className="w-[240px] h-[240px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={pieData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={90}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {pieData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <RechartsTooltip formatter={(val) => `${val}%`} contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
-                        <Legend />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <PieChart width={240} height={240}>
+                      <Pie
+                        data={pieData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={90}
+                        paddingAngle={3}
+                        dataKey="value"
+                      >
+                        {pieData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip formatter={(val) => `${val}%`} contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                      <Legend />
+                    </PieChart>
                   </div>
                 </div>
                 <div className="flex-1 space-y-4">
@@ -314,18 +310,16 @@ SUMMARY METRICS:
                 <h3 className="font-extrabold text-xs text-slate-900 dark:text-white">Store Revenue Comparison</h3>
                 <div className="w-full h-[280px] overflow-x-auto scrollbar-thin">
                   <div className="w-[500px] h-[270px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={storePerformance} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <XAxis dataKey="storeName" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(name) => name.replace("Papa Veg Pizza - ", "")} />
-                        <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val >= 100000 ? `${(val / 100000).toFixed(1)}L` : val}`} />
-                        <RechartsTooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
-                        <Bar dataKey="revenue" name="Store Sales" fill="var(--sa-secondary)" radius={[4, 4, 0, 0]}>
-                          {storePerformance.map((entry, idx) => (
-                            <Cell key={`cell-${idx}`} fill={idx === 0 ? "var(--primary)" : "var(--sa-secondary)"} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <BarChart width={500} height={270} data={storePerformance} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <XAxis dataKey="storeName" stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(name) => name.replace("Papa Veg Pizza - ", "")} />
+                      <YAxis stroke="#888888" fontSize={9} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val >= 100000 ? `${(val / 100000).toFixed(1)}L` : val}`} />
+                      <RechartsTooltip contentStyle={{ fontSize: "10px", borderRadius: "8px" }} />
+                      <Bar dataKey="revenue" name="Store Sales" fill="var(--sa-secondary)" radius={[4, 4, 0, 0]}>
+                        {storePerformance.map((entry, idx) => (
+                          <Cell key={`cell-${idx}`} fill={idx === 0 ? "var(--primary)" : "var(--sa-secondary)"} />
+                        ))}
+                      </Bar>
+                    </BarChart>
                   </div>
                 </div>
 
