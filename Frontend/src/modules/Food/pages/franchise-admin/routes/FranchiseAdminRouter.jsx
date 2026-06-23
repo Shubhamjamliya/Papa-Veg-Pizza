@@ -30,6 +30,7 @@ const StorePricing = lazy(() => import("@food/pages/franchise-admin/products/Sto
 
 // Promotions Management
 const Coupons = lazy(() => import("@food/pages/franchise-admin/marketing/LocalCoupons"));
+const Campaigns = lazy(() => import("@food/pages/franchise-admin/marketing/Campaigns"));
 const Cashback = lazy(() => import("@food/pages/franchise-admin/Cashback"));
 const Banners = lazy(() => import("@food/pages/franchise-admin/Banners"));
 const PromotionalBanner = lazy(() => import("@food/pages/franchise-admin/PromotionalBanner"));
@@ -151,6 +152,7 @@ export default function FranchiseAdminRouter() {
           <Route path="rider-payouts" element={<RiderPayouts />} />
           <Route path="reports" element={<Reports />} />
           <Route path="coupons" element={<Coupons />} />
+          <Route path="campaigns" element={<Campaigns />} />
 
           {/* FOOD ADMIN - All food related routes nested here */}
           <Route path="dashboard/*">
@@ -189,8 +191,8 @@ export default function FranchiseAdminRouter() {
             <Route path="global-pricing" element={<Navigate to="/franchise-admin/store-pricing" replace />} />
 
             {/* PROMOTIONS, CUSTOMERS, DELIVERYMEN, etc. */}
-            <Route path="campaigns/basic" element={<PlaceholderPage title="Basic Campaign" />} />
-            <Route path="campaigns/food" element={<PlaceholderPage title="Food Campaign" />} />
+            <Route path="campaigns/basic" element={<Navigate to="/franchise-admin/campaigns" replace />} />
+            <Route path="campaigns/food" element={<Navigate to="/franchise-admin/campaigns" replace />} />
             <Route path="coupons" element={<Navigate to="/franchise-admin/coupons" replace />} />
             <Route path="cashback" element={<Cashback />} />
             <Route path="banners" element={<Banners />} />
