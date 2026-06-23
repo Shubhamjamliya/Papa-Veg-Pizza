@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@food/components/ui/*": ["./src/shared/components/ui/*"],
       "@food/*": ["./src/modules/food/frontend/src/*"]
     }
   },
