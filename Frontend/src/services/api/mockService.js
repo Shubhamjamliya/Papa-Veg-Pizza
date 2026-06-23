@@ -1,5 +1,6 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
+import { mockCampaigns, mockCampaignPerformance } from "../../modules/Food/pages/franchise-admin/marketing/mockdata.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -64,7 +65,9 @@ let db = {
   managers: getStorageItem("managers", initialManagers),
   storeApprovals: getStorageItem("storeApprovals", initialStoreApprovals),
   storePerformance: getStorageItem("storePerformance", initialStorePerformance),
-  operatingHours: getStorageItem("operatingHours", initialOperatingHours)
+  operatingHours: getStorageItem("operatingHours", initialOperatingHours),
+  campaigns: getStorageItem("campaigns", mockCampaigns),
+  campaignPerformance: getStorageItem("campaignPerformance", mockCampaignPerformance)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -756,6 +759,102 @@ export function handleMockRequest(config) {
       averageRating: parseFloat(avgRating),
       ordersToday: 1246
     });
+  }
+
+  // --- CAMPAIGNS MARKETING MOCKS ---
+  if (url.includes("/campaign-performance/")) {
+    const id = url.split("/").pop();
+    const performance = db.campaignPerformance[id] || {
+      _id: `perf-${id}`,
+      campaignId: id,
+      impressions: 0,
+      clicks: 0,
+      conversions: 0,
+      ordersGenerated: 0,
+      revenueGenerated: 0,
+      roi: 0,
+      updatedAt: new Date().toISOString(),
+      dailyBreakdown: []
+    };
+    
+    // Add calculated CTR & Conversion percentages
+    const ctr = performance.impressions > 0 ? ((performance.clicks / performance.impressions) * 100).toFixed(2) : "0.00";
+    const conversionRate = performance.clicks > 0 ? ((performance.conversions / performance.clicks) * 100).toFixed(2) : "0.00";
+
+    const campaign = db.campaigns.find(c => c._id === id);
+    return successRes({
+      campaign,
+      performance: {
+        ...performance,
+        ctr,
+        conversionRate
+      }
+    });
+  }
+
+  if (url.includes("/campaigns")) {
+    if (method === "get") {
+      const idMatch = url.match(/\/campaigns\/([^/]+)$/);
+      if (idMatch) {
+        const id = idMatch[1];
+        const campaign = db.campaigns.find(c => c._id === id);
+        if (campaign) return successRes(campaign);
+        return errorRes("Campaign not found", 404);
+      }
+      return successRes(db.campaigns);
+    }
+    if (method === "post") {
+      const newCamp = {
+        ...data,
+        _id: `camp-${Date.now()}`,
+        status: data?.status || "draft",
+        createdBy: "Shubham Jamliya",
+        createdAt: new Date().toISOString()
+      };
+      db.campaigns.unshift(newCamp);
+      
+      // Create empty performance entry
+      db.campaignPerformance[newCamp._id] = {
+        _id: `perf-${Date.now()}`,
+        campaignId: newCamp._id,
+        impressions: 0,
+        clicks: 0,
+        conversions: 0,
+        ordersGenerated: 0,
+        revenueGenerated: 0,
+        roi: 0,
+        updatedAt: new Date().toISOString(),
+        dailyBreakdown: []
+      };
+      
+      saveDB();
+      return successMsg("Campaign created successfully", newCamp);
+    }
+
+    const match = url.match(/\/campaigns\/([^/]+)$/);
+    if (match) {
+      const id = match[1];
+      if (method === "put" || method === "patch") {
+        const idx = db.campaigns.findIndex(c => c._id === id);
+        if (idx !== -1) {
+          db.campaigns[idx] = { ...db.campaigns[idx], ...data };
+          saveDB();
+          return successMsg("Campaign updated successfully", db.campaigns[idx]);
+        }
+        return errorRes("Campaign not found", 404);
+      }
+      if (method === "delete") {
+        const idx = db.campaigns.findIndex(c => c._id === id);
+        if (idx !== -1) {
+          const removed = db.campaigns[idx];
+          db.campaigns = db.campaigns.filter(c => c._id !== id);
+          delete db.campaignPerformance[id];
+          saveDB();
+          return successMsg(`Campaign "${removed.campaignName}" deleted successfully`);
+        }
+        return errorRes("Campaign not found", 404);
+      }
+    }
   }
 
   // GET /stores/:id/performance
