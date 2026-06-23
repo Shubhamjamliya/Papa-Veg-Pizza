@@ -202,3 +202,179 @@ export const mockDashboardSummary = {
     orders: 4890
   }
 };
+
+// --- ORDER REPORTS DATASETS ---
+
+export const mockOrderDashboardSummary = {
+  totalOrders: 18450,
+  completedOrders: 16920,
+  cancelledOrders: 980,
+  refundedOrders: 550,
+  averagePreparationTime: 14.8,
+  averageDeliveryTime: 23.5,
+  averageOrderValue: 342.60
+};
+
+export const mockOrderStatusDistribution = {
+  pending: 120,
+  confirmed: 350,
+  preparing: 480,
+  baking: 290,
+  packed: 150,
+  outForDelivery: 140,
+  delivered: 16920,
+  cancelled: 980,
+  refunded: 550
+};
+
+export const mockOrderTypeDistribution = {
+  delivery: 9820,
+  takeaway: 5410,
+  dineIn: 3220
+};
+
+export const mockOrderHourlyHeatmap = [
+  // Mon
+  { day: "Mon", hour: 11, totalOrders: 42 },
+  { day: "Mon", hour: 12, totalOrders: 98 },
+  { day: "Mon", hour: 13, totalOrders: 124 },
+  { day: "Mon", hour: 14, totalOrders: 82 },
+  { day: "Mon", hour: 18, totalOrders: 112 },
+  { day: "Mon", hour: 19, totalOrders: 184 },
+  { day: "Mon", hour: 20, totalOrders: 245 },
+  { day: "Mon", hour: 21, totalOrders: 210 },
+  // Tue
+  { day: "Tue", hour: 11, totalOrders: 45 },
+  { day: "Tue", hour: 12, totalOrders: 105 },
+  { day: "Tue", hour: 13, totalOrders: 118 },
+  { day: "Tue", hour: 14, totalOrders: 78 },
+  { day: "Tue", hour: 18, totalOrders: 120 },
+  { day: "Tue", hour: 19, totalOrders: 195 },
+  { day: "Tue", hour: 20, totalOrders: 230 },
+  { day: "Tue", hour: 21, totalOrders: 205 },
+  // Wed
+  { day: "Wed", hour: 11, totalOrders: 38 },
+  { day: "Wed", hour: 12, totalOrders: 92 },
+  { day: "Wed", hour: 13, totalOrders: 110 },
+  { day: "Wed", hour: 14, totalOrders: 70 },
+  { day: "Wed", hour: 18, totalOrders: 108 },
+  { day: "Wed", hour: 19, totalOrders: 175 },
+  { day: "Wed", hour: 20, totalOrders: 225 },
+  { day: "Wed", hour: 21, totalOrders: 198 },
+  // Thu
+  { day: "Thu", hour: 11, totalOrders: 50 },
+  { day: "Thu", hour: 12, totalOrders: 115 },
+  { day: "Thu", hour: 13, totalOrders: 130 },
+  { day: "Thu", hour: 14, totalOrders: 85 },
+  { day: "Thu", hour: 18, totalOrders: 132 },
+  { day: "Thu", hour: 19, totalOrders: 210 },
+  { day: "Thu", hour: 20, totalOrders: 260 },
+  { day: "Thu", hour: 21, totalOrders: 220 },
+  // Fri
+  { day: "Fri", hour: 11, totalOrders: 65 },
+  { day: "Fri", hour: 12, totalOrders: 140 },
+  { day: "Fri", hour: 13, totalOrders: 165 },
+  { day: "Fri", hour: 14, totalOrders: 98 },
+  { day: "Fri", hour: 18, totalOrders: 185 },
+  { day: "Fri", hour: 19, totalOrders: 290 },
+  { day: "Fri", hour: 20, totalOrders: 380 },
+  { day: "Fri", hour: 21, totalOrders: 310 },
+  // Sat
+  { day: "Sat", hour: 11, totalOrders: 80 },
+  { day: "Sat", hour: 12, totalOrders: 195 },
+  { day: "Sat", hour: 13, totalOrders: 220 },
+  { day: "Sat", hour: 14, totalOrders: 140 },
+  { day: "Sat", hour: 18, totalOrders: 245 },
+  { day: "Sat", hour: 19, totalOrders: 390 },
+  { day: "Sat", hour: 20, totalOrders: 490 },
+  { day: "Sat", hour: 21, totalOrders: 430 },
+  // Sun
+  { day: "Sun", hour: 11, totalOrders: 75 },
+  { day: "Sun", hour: 12, totalOrders: 180 },
+  { day: "Sun", hour: 13, totalOrders: 210 },
+  { day: "Sun", hour: 14, totalOrders: 130 },
+  { day: "Sun", hour: 18, totalOrders: 220 },
+  { day: "Sun", hour: 19, totalOrders: 370 },
+  { day: "Sun", hour: 20, totalOrders: 460 },
+  { day: "Sun", hour: 21, totalOrders: 395 }
+];
+
+export const mockStorePerformanceOrders = [
+  { storeId: "store-1", storeName: "Papa Veg Pizza - Indore Central", orders: 4890, completedOrders: 4610, cancelledOrders: 180, avgDeliveryTime: 21.2, revenue: 1680000, growthPercentage: 14.5 },
+  { storeId: "store-2", storeName: "Papa Veg Pizza - Bhopal Zone", orders: 3950, completedOrders: 3680, cancelledOrders: 170, avgDeliveryTime: 23.4, revenue: 1350000, growthPercentage: 11.2 },
+  { storeId: "store-3", storeName: "Papa Veg Pizza - Ujjain Branch", orders: 2210, completedOrders: 2050, cancelledOrders: 90, avgDeliveryTime: 24.8, revenue: 720000, growthPercentage: 8.4 },
+  { storeId: "store-4", storeName: "Papa Veg Pizza - Gwalior Hub", orders: 1980, completedOrders: 1810, cancelledOrders: 120, avgDeliveryTime: 25.1, revenue: 650000, growthPercentage: -2.5 },
+  { storeId: "store-5", storeName: "Papa Veg Pizza - Jabalpur Outlet", orders: 1240, completedOrders: 1150, cancelledOrders: 50, avgDeliveryTime: 26.5, revenue: 380000, growthPercentage: 5.8 }
+];
+
+export const mockDetailedOrderReportsList = [
+  { orderId: "ord-1", orderNumber: "PVP-1092", customerName: "Rashi Kumar", storeName: "Papa Veg Pizza - Indore Central", amount: 450, orderType: "Delivery", status: "Delivered", deliveryTime: 22, createdAt: "2026-06-23T11:44:00.000Z" },
+  { orderId: "ord-2", orderNumber: "PVP-1093", customerName: "Amit Sharma", storeName: "Papa Veg Pizza - Bhopal Zone", amount: 590, orderType: "Takeaway", status: "Preparing", deliveryTime: 0, createdAt: "2026-06-23T11:50:00.000Z" },
+  { orderId: "ord-3", orderNumber: "PVP-1094", customerName: "Rohan Malhotra", storeName: "Papa Veg Pizza - Indore Central", amount: 399, orderType: "Delivery", status: "Out For Delivery", deliveryTime: 15, createdAt: "2026-06-23T11:51:00.000Z" },
+  { orderId: "ord-4", orderNumber: "PVP-1095", customerName: "Isha Sharma", storeName: "Papa Veg Pizza - Ujjain Branch", amount: 620, orderType: "Dine-In", status: "Baking", deliveryTime: 0, createdAt: "2026-06-23T11:52:00.000Z" },
+  { orderId: "ord-5", orderNumber: "PVP-1096", customerName: "Vikram Rathore", storeName: "Papa Veg Pizza - Gwalior Hub", amount: 320, orderType: "Delivery", status: "Delivered", deliveryTime: 28, createdAt: "2026-06-23T11:20:00.000Z" },
+  { orderId: "ord-6", orderNumber: "PVP-1097", customerName: "Pooja Patel", storeName: "Papa Veg Pizza - Jabalpur Outlet", amount: 520, orderType: "Delivery", status: "Cancelled", deliveryTime: 0, createdAt: "2026-06-23T10:15:00.000Z" },
+  { orderId: "ord-7", orderNumber: "PVP-1098", customerName: "Karan Singh", storeName: "Papa Veg Pizza - Indore Central", amount: 480, orderType: "Takeaway", status: "Refunded", deliveryTime: 0, createdAt: "2026-06-23T09:40:00.000Z" }
+];
+
+export const mockSingleOrderDetail = {
+  orderNumber: "PVP-1092",
+  customer: {
+    name: "Rashi Kumar",
+    phone: "+91 99887 76655",
+    email: "rashi.kumar@gmail.com",
+    address: "142, Palasia Square, Near HDFC Bank, Indore, Madhya Pradesh",
+    loyaltyPoints: 350
+  },
+  items: [
+    { name: "Tandoori Paneer Delight Pizza", quantity: 1, price: 399, subtotal: 399, customization: "Extra Paneer, Cheese Burst Base" },
+    { name: "Choco Lava Molten Cake", quantity: 1, price: 99, subtotal: 99, customization: "Normal" }
+  ],
+  payment: {
+    method: "UPI (Google Pay)",
+    transactionId: "TXN-8840212903",
+    amount: 498,
+    status: "Paid"
+  },
+  timeline: [
+    { stage: "Placed", timestamp: "2026-06-23T11:44:00.000Z", completed: true },
+    { stage: "Confirmed", timestamp: "2026-06-23T11:46:00.000Z", completed: true },
+    { stage: "Preparing", timestamp: "2026-06-23T11:48:00.000Z", completed: true },
+    { stage: "Baking", timestamp: "2026-06-23T11:51:00.000Z", completed: true },
+    { stage: "Packed", timestamp: "2026-06-23T11:55:00.000Z", completed: true },
+    { stage: "Assigned", timestamp: "2026-06-23T11:56:00.000Z", completed: true },
+    { stage: "Out For Delivery", timestamp: "2026-06-23T11:58:00.000Z", completed: true },
+    { stage: "Delivered", timestamp: "2026-06-23T12:06:00.000Z", completed: true }
+  ],
+  rider: {
+    name: "Rahul Dev",
+    phone: "+91 98402 12903",
+    assignedTime: "2026-06-23T11:56:00.000Z",
+    pickupTime: "2026-06-23T11:58:00.000Z",
+    deliveryTime: "2026-06-23T12:06:00.000Z"
+  },
+  invoiceSummary: {
+    subtotal: 498,
+    tax: 25,
+    discount: 50,
+    deliveryCharges: 30,
+    grandTotal: 503
+  }
+};
+
+export const initialGeneratedOrderReports = [
+  {
+    id: "ORD-2026-001",
+    reportType: "Monthly",
+    startDate: "2026-05-01",
+    endDate: "2026-05-31",
+    revenue: 4890000,
+    orders: 14280,
+    refundAmount: 98500,
+    status: "Completed",
+    generatedBy: "Rashi Kumar (Admin)",
+    createdAt: "2026-06-01T10:15:30.000Z",
+    fileUrl: "#"
+  }
+];
+

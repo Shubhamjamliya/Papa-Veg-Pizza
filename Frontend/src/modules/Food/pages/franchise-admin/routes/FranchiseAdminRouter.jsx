@@ -13,6 +13,7 @@ const StoreEarnings = lazy(() => import("@food/pages/franchise-admin/finance/Sto
 const RiderPayouts = lazy(() => import("@food/pages/franchise-admin/finance/RiderPayouts"));
 const Reports = lazy(() => import("@food/pages/franchise-admin/finance/Reports"));
 const SalesReport = lazy(() => import("@food/pages/franchise-admin/reports/SalesReport"));
+const OrdersReport = lazy(() => import("@food/pages/franchise-admin/reports/OrdersReport"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
@@ -155,6 +156,7 @@ export default function FranchiseAdminRouter() {
           <Route path="rider-payouts" element={<RiderPayouts />} />
           <Route path="reports" element={<Reports />} />
           <Route path="sales-report" element={<SalesReport />} />
+          <Route path="orders-report" element={<OrdersReport />} />
           <Route path="coupons" element={<Coupons />} />
           <Route path="campaigns" element={<Campaigns />} />
           <Route path="banners" element={<PromotionalBanners />} />
@@ -232,7 +234,7 @@ export default function FranchiseAdminRouter() {
             <Route path="expense-report" element={<Navigate to="/franchise-admin/expenses" replace />} />
             <Route path="disbursement-report/restaurants" element={<Navigate to="/franchise-admin/store-earnings" replace />} />
             <Route path="disbursement-report/deliverymen" element={<PlaceholderPage title="Deliverymen Disbursement" />} />
-            <Route path="order-report/regular" element={<PlaceholderPage title="Regular Order Report" />} />
+            <Route path="order-report/regular" element={<Navigate to="/franchise-admin/orders-report" replace />} />
             <Route path="order-report/campaign" element={<PlaceholderPage title="Campaign Order Report" />} />
             <Route path="customer-report/feedback-experience" element={<PlaceholderPage title="Customer Feedback Report" />} />
             <Route path="tax-report" element={<PlaceholderPage title="Tax Report" />} />
