@@ -378,3 +378,98 @@ export const initialGeneratedOrderReports = [
   }
 ];
 
+// --- STAFF REPORTS DATASETS ---
+export const mockStaffDashboardSummary = {
+  totalEmployees: 48,
+  activeEmployees: 42,
+  attendancePercentage: 94.6,
+  averageWorkingHours: 7.8,
+  completedDeliveries: 12450,
+  kitchenProductivity: 254
+};
+
+export const mockStaffRoleDistribution = {
+  managers: 5,
+  kitchenStaff: 18,
+  deliveryPartners: 25
+};
+
+export const mockStaffAttendanceTrend = [
+  { date: "Mon", attendancePercentage: 92.5 },
+  { date: "Tue", attendancePercentage: 94.0 },
+  { date: "Wed", attendancePercentage: 95.8 },
+  { date: "Thu", attendancePercentage: 93.2 },
+  { date: "Fri", attendancePercentage: 95.0 },
+  { date: "Sat", attendancePercentage: 96.5 },
+  { date: "Sun", attendancePercentage: 97.2 }
+];
+
+export const mockDeliveryPerformance = [
+  { id: "staff-3", name: "Rahul Dev", completedDeliveries: 540, distanceCovered: 1620, avgDeliveryTime: 22.4, rating: 4.8, totalEarnings: 16200, performanceScore: 95 },
+  { id: "staff-7", name: "Amit Patel", completedDeliveries: 480, distanceCovered: 1340, avgDeliveryTime: 24.1, rating: 4.6, totalEarnings: 14400, performanceScore: 89 },
+  { id: "staff-8", name: "Sunil Verma", completedDeliveries: 510, distanceCovered: 1490, avgDeliveryTime: 23.5, rating: 4.7, totalEarnings: 15300, performanceScore: 92 },
+  { id: "staff-9", name: "Deepak Kumar", completedDeliveries: 420, distanceCovered: 1100, avgDeliveryTime: 26.8, rating: 4.3, totalEarnings: 12600, performanceScore: 82 },
+  { id: "staff-10", name: "Vijay Singh", completedDeliveries: 495, distanceCovered: 1510, avgDeliveryTime: 21.9, rating: 4.9, totalEarnings: 14850, performanceScore: 97 }
+];
+
+export const mockKitchenPerformance = [
+  { id: "staff-2", name: "Suresh Kumar", ordersPrepared: 320, avgPrepTime: 12.8, shiftHours: 180, performanceScore: 94, efficiencyPercentage: 96.5 },
+  { id: "staff-4", name: "Rajesh Gupta", ordersPrepared: 290, avgPrepTime: 14.2, shiftHours: 175, performanceScore: 88, efficiencyPercentage: 91.2 },
+  { id: "staff-5", name: "Vikram Sen", ordersPrepared: 345, avgPrepTime: 11.5, shiftHours: 180, performanceScore: 98, efficiencyPercentage: 98.4 },
+  { id: "staff-6", name: "Pooja Sharma", ordersPrepared: 275, avgPrepTime: 15.1, shiftHours: 160, performanceScore: 85, efficiencyPercentage: 88.6 }
+];
+
+export const mockManagerPerformance = [
+  { id: "staff-1", name: "Rashi Kumar", store: "Papa Veg Pizza - Indore Central", ordersManaged: 4890, revenue: 1680000, complaints: 12, customerRating: 4.7, performanceScore: 96 },
+  { id: "staff-11", name: "Anoop Sharma", store: "Papa Veg Pizza - Bhopal Zone", ordersManaged: 3950, revenue: 1350000, complaints: 18, customerRating: 4.5, performanceScore: 91 },
+  { id: "staff-12", name: "Manish Joshi", store: "Papa Veg Pizza - Ujjain Branch", ordersManaged: 2210, revenue: 720000, complaints: 8, customerRating: 4.6, performanceScore: 93 }
+];
+
+export const mockStaffDetailedList = [
+  { id: "staff-1", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Rashi Kumar", role: "Store Manager", store: "Papa Veg Pizza - Indore Central", attendancePercentage: 98.2, performanceScore: 96, status: "Active", joiningDate: "2024-03-15T00:00:00.000Z" },
+  { id: "staff-2", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Suresh Kumar", role: "Kitchen Staff", store: "Papa Veg Pizza - Indore Central", attendancePercentage: 95.4, performanceScore: 94, status: "Active", joiningDate: "2024-05-10T00:00:00.000Z" },
+  { id: "staff-3", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Rahul Dev", role: "Delivery Partner", store: "Papa Veg Pizza - Indore Central", attendancePercentage: 92.1, performanceScore: 95, status: "Active", joiningDate: "2024-06-01T00:00:00.000Z" },
+  { id: "staff-4", photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Rajesh Gupta", role: "Kitchen Staff", store: "Papa Veg Pizza - Indore Central", attendancePercentage: 89.5, performanceScore: 88, status: "Active", joiningDate: "2024-08-20T00:00:00.000Z" },
+  { id: "staff-5", photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Vikram Sen", role: "Kitchen Staff", store: "Papa Veg Pizza - Bhopal Zone", attendancePercentage: 97.8, performanceScore: 98, status: "Active", joiningDate: "2024-04-12T00:00:00.000Z" },
+  { id: "staff-6", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Pooja Sharma", role: "Kitchen Staff", store: "Papa Veg Pizza - Bhopal Zone", attendancePercentage: 86.4, performanceScore: 85, status: "Active", joiningDate: "2025-01-10T00:00:00.000Z" },
+  { id: "staff-7", photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Amit Patel", role: "Delivery Partner", store: "Papa Veg Pizza - Bhopal Zone", attendancePercentage: 91.8, performanceScore: 89, status: "Active", joiningDate: "2024-07-15T00:00:00.000Z" },
+  { id: "staff-8", photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Sunil Verma", role: "Delivery Partner", store: "Papa Veg Pizza - Ujjain Branch", attendancePercentage: 94.2, performanceScore: 92, status: "Active", joiningDate: "2024-09-01T00:00:00.000Z" },
+  { id: "staff-9", photo: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Deepak Kumar", role: "Delivery Partner", store: "Papa Veg Pizza - Ujjain Branch", attendancePercentage: 85.0, performanceScore: 82, status: "Suspended", joiningDate: "2024-11-10T00:00:00.000Z" },
+  { id: "staff-10", photo: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Vijay Singh", role: "Delivery Partner", store: "Papa Veg Pizza - Indore Central", attendancePercentage: 96.5, performanceScore: 97, status: "Active", joiningDate: "2024-03-20T00:00:00.000Z" },
+  { id: "staff-11", photo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Anoop Sharma", role: "Store Manager", store: "Papa Veg Pizza - Bhopal Zone", attendancePercentage: 95.8, performanceScore: 91, status: "Active", joiningDate: "2024-02-18T00:00:00.000Z" },
+  { id: "staff-12", photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80&fm=webp", name: "Manish Joshi", role: "Store Manager", store: "Papa Veg Pizza - Ujjain Branch", attendancePercentage: 93.9, performanceScore: 93, status: "Inactive", joiningDate: "2024-06-10T00:00:00.000Z" }
+];
+
+export const mockStaffShifts = {
+  "staff-1": [
+    { date: "2026-06-22", startTime: "09:00", endTime: "17:00", breakTime: 45, hoursWorked: 7.25, status: "Completed" },
+    { date: "2026-06-21", startTime: "09:00", endTime: "17:00", breakTime: 45, hoursWorked: 7.25, status: "Completed" },
+    { date: "2026-06-20", startTime: "09:00", endTime: "17:00", breakTime: 45, hoursWorked: 7.25, status: "Completed" }
+  ],
+  "staff-2": [
+    { date: "2026-06-22", startTime: "10:00", endTime: "18:00", breakTime: 30, hoursWorked: 7.5, status: "Completed" },
+    { date: "2026-06-21", startTime: "10:00", endTime: "18:00", breakTime: 30, hoursWorked: 7.5, status: "Completed" },
+    { date: "2026-06-20", startTime: "10:00", endTime: "18:00", breakTime: 30, hoursWorked: 7.5, status: "Completed" }
+  ],
+  "staff-3": [
+    { date: "2026-06-22", startTime: "11:00", endTime: "19:00", breakTime: 60, hoursWorked: 7.0, status: "Completed" },
+    { date: "2026-06-21", startTime: "11:00", endTime: "19:00", breakTime: 60, hoursWorked: 7.0, status: "Completed" },
+    { date: "2026-06-20", startTime: "11:00", endTime: "19:00", breakTime: 60, hoursWorked: 7.0, status: "Completed" }
+  ]
+};
+
+export const initialGeneratedStaffReports = [
+  {
+    id: "STF-2026-001",
+    role: "All Roles",
+    storeName: "All Stores (Franchise-wide)",
+    startDate: "2026-05-01",
+    endDate: "2026-05-31",
+    status: "Completed",
+    generatedBy: "Rashi Kumar (Admin)",
+    createdAt: "2026-06-01T11:20:00.000Z",
+    fileUrl: "#"
+  }
+];
+
+
