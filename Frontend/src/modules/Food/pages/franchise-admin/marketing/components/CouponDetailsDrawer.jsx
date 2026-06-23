@@ -14,7 +14,7 @@ export default function CouponDetailsDrawer({ visible, onClose, coupon, getCoupo
 
   // Resolve store names
   const storeNames = useMemo(() => {
-    if (!coupon || coupon.storeIds.length === 0) return ["All Stores"];
+    if (!coupon || !coupon.storeIds || coupon.storeIds.length === 0) return ["All Stores"];
     return coupon.storeIds.map(sid => {
       const match = mockStores.find(s => s._id === sid);
       return match ? match.name : sid;
@@ -23,7 +23,7 @@ export default function CouponDetailsDrawer({ visible, onClose, coupon, getCoupo
 
   // Resolve product names
   const productNames = useMemo(() => {
-    if (!coupon || coupon.applicableProducts.length === 0) return ["All Products"];
+    if (!coupon || !coupon.applicableProducts || coupon.applicableProducts.length === 0) return ["All Products"];
     return coupon.applicableProducts.map(pid => {
       const match = mockProducts.find(p => p._id === pid);
       return match ? match.name : pid;
@@ -32,7 +32,7 @@ export default function CouponDetailsDrawer({ visible, onClose, coupon, getCoupo
 
   // Resolve category names
   const categoryNames = useMemo(() => {
-    if (!coupon || coupon.applicableCategories.length === 0) return ["All Categories"];
+    if (!coupon || !coupon.applicableCategories || coupon.applicableCategories.length === 0) return ["All Categories"];
     return coupon.applicableCategories.map(cid => {
       const match = mockCategories.find(c => c._id === cid);
       return match ? match.name : cid;

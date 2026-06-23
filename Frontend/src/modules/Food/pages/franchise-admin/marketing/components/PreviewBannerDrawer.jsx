@@ -200,18 +200,18 @@ export default function PreviewBannerDrawer({ visible, onClose, banner, stores =
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-zinc-100 dark:border-zinc-900 text-[10px]">
-              <div>
-                <span className="block text-[8px] font-black uppercase text-zinc-400">Display Priority</span>
-                <span className="mt-0.5 block">{getPriorityBadge(banner.priority)}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-3.5 border-t border-zinc-150 dark:border-zinc-800 text-[10px]">
+              <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Display Priority</span>
+                <div className="mt-0.5">{getPriorityBadge(banner.priority)}</div>
               </div>
-              <div>
-                <span className="block text-[8px] font-black uppercase text-zinc-400">Created By</span>
-                <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5 block">{banner.createdBy || "Admin"}</span>
+              <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Created By</span>
+                <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5">{banner.createdBy || "Admin"}</span>
               </div>
-              <div className="col-span-2">
-                <span className="block text-[8px] font-black uppercase text-zinc-400">Created At</span>
-                <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5 block">
+              <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Created At</span>
+                <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5">
                   {new Date(banner.createdAt || Date.now()).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                 </span>
               </div>

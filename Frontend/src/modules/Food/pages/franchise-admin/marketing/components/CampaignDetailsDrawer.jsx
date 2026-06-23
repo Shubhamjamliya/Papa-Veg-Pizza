@@ -132,22 +132,22 @@ export default function CampaignDetailsDrawer({ visible, onClose, campaignId, ge
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-zinc-100 dark:border-zinc-900 text-[10px]">
-                <div>
-                  <span className="block text-[8px] font-black uppercase text-zinc-400">Allocated Budget</span>
-                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200">{formatCurrency(currentCamp?.budget)}</span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-zinc-100 dark:border-zinc-900 text-[10px]">
+                <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                  <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Allocated Budget</span>
+                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5">{formatCurrency(currentCamp?.budget)}</span>
                 </div>
-                <div>
-                  <span className="block text-[8px] font-black uppercase text-zinc-400">Target Audience</span>
-                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200 capitalize">{currentCamp?.targetAudience} Customers</span>
+                <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                  <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Target Audience</span>
+                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5 capitalize">{currentCamp?.targetAudience} Customers</span>
                 </div>
-                <div>
-                  <span className="block text-[8px] font-black uppercase text-zinc-400">Expected Reach</span>
-                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200">{currentCamp?.expectedReach?.toLocaleString("en-IN")} Reach</span>
+                <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                  <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Expected Reach</span>
+                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5">{currentCamp?.expectedReach?.toLocaleString("en-IN")} Reach</span>
                 </div>
-                <div>
-                  <span className="block text-[8px] font-black uppercase text-zinc-400">Created By</span>
-                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200">{currentCamp?.createdBy}</span>
+                <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+                  <span className="block text-[8px] font-black uppercase text-zinc-400 tracking-wider">Created By</span>
+                  <span className="font-extrabold text-zinc-800 dark:text-zinc-200 mt-0.5 truncate" title={currentCamp?.createdBy}>{currentCamp?.createdBy}</span>
                 </div>
               </div>
 

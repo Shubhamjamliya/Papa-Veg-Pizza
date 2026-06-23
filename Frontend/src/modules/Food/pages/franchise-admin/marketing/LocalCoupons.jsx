@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Table, Select, Tag, Tooltip, Dropdown, Pagination, Skeleton, Empty, ConfigProvider } from "antd";
 import { 
   Ticket, Calendar, RefreshCw, Download, Search, Eye, Edit, 
-  Trash2, Copy, Power, Filter, HelpCircle, ChevronDown, ListFilter, DollarSign 
+  Trash2, Copy, Power, Filter, HelpCircle, ChevronDown, ListFilter, IndianRupee 
 } from "lucide-react";
 import { useLocalCoupons } from "./hooks/useLocalCoupons";
 import { mockStores } from "./mockData";
-import CreateCouponModal from "./components/CreateCouponModal";
-import EditCouponModal from "./components/EditCouponModal";
-import CloneCouponModal from "./components/CloneCouponModal";
-import CouponDetailsDrawer from "./components/CouponDetailsDrawer";
-import ActivateDeactivateModal from "./components/ActivateDeactivateModal";
-import DeleteConfirmationModal from "./components/DeleteConfirmationModal";
+import LocalCouponModals from "./components/LocalCouponModals";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import emptyCouponsWebp from "../../../../../assets/empty_reports.webp"; // Reusing high-quality WebP asset
@@ -62,6 +57,20 @@ export default function LocalCoupons() {
     getCouponUsageDetails,
     handleResetFilters
   } = couponsHook;
+
+  // Debounced search state
+  const [localSearch, setLocalSearch] = useState(search);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(localSearch);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, setSearch]);
+
+  useEffect(() => {
+    setLocalSearch(search);
+  }, [search]);
 
   // Local Modal Visibility States
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -136,9 +145,9 @@ export default function LocalCoupons() {
             setSelectedCoupon(record);
             setShowDetailsDrawer(true);
           }}
-          className="font-black text-blue-600 bg-blue-50 dark:bg-blue-950/20 px-2 py-0.5 rounded font-mono text-[10px] cursor-pointer hover:underline border-0 text-left"
+          className="font-black text-[var(--primary)] bg-[var(--secondary)]/10 dark:bg-[var(--secondary)]/5 px-2 py-0.5 rounded font-mono text-[10px] cursor-pointer hover:underline border-0 text-left"
         >
-          {code}
+          {code || record.code || "COUPON"}
         </button>
       )
     },
@@ -147,7 +156,8 @@ export default function LocalCoupons() {
       dataIndex: "title",
       key: "title",
       sorter: true,
-      className: "font-bold text-zinc-700 dark:text-zinc-350"
+      className: "font-bold text-zinc-700 dark:text-zinc-350",
+      render: (title, record) => title || record.couponCode || record.code || "Untitled Offer"
     },
     {
       title: "Discount Type",
@@ -294,7 +304,7 @@ export default function LocalCoupons() {
         return (
           <div className="flex items-center justify-center">
             <Dropdown menu={{ items }} placement="bottomRight" trigger={["click"]}>
-              <button className="flex items-center gap-1 px-2.5 py-1 text-[8.5px] font-black uppercase rounded-lg bg-zinc-100 hover:bg-zinc-250 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-700 dark:text-zinc-200 transition-all duration-200 cursor-pointer shadow-xs border-0">
+              <button className="flex items-center gap-1 px-2.5 py-1 text-[8.5px] font-black uppercase rounded-lg bg-[var(--secondary)]/10 hover:bg-[var(--primary)] text-[var(--primary)] hover:text-white transition-all duration-200 cursor-pointer shadow-xs border-0">
                 Options
                 <ChevronDown size={10} className="opacity-60" />
               </button>
@@ -345,7 +355,7 @@ export default function LocalCoupons() {
           <div className="flex items-center gap-2 shrink-0 flex-wrap">
             <button
               onClick={handleExportCSV}
-              className="flex items-center justify-center gap-1.5 px-4 py-2 border border-zinc-250 dark:border-zinc-800 hover:border-[var(--primary)] hover:text-[var(--primary)] text-zinc-700 dark:text-zinc-200 rounded-lg shadow-sm font-extrabold transition-all duration-200 cursor-pointer text-[10px] uppercase active:scale-[0.97] h-8 bg-transparent"
+              className="flex items-center justify-center gap-1.5 px-4 py-2 border border-[var(--primary)]/20 hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--secondary)]/10 text-zinc-700 dark:text-zinc-200 rounded-lg shadow-sm font-extrabold transition-all duration-200 cursor-pointer text-[10px] uppercase active:scale-[0.97] h-8 bg-transparent"
             >
               <Download size={13} />
               <span>Export</span>
@@ -361,7 +371,7 @@ export default function LocalCoupons() {
 
             <button
               onClick={handleRefresh}
-              className="flex items-center justify-center p-2 bg-zinc-100 hover:bg-zinc-250 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-750 dark:text-zinc-200 rounded-lg shadow-sm border-0 transition-all duration-200 cursor-pointer active:scale-[0.95] h-8 w-8"
+              className="flex items-center justify-center p-2 bg-[var(--secondary)]/10 hover:bg-[var(--secondary)]/20 text-[var(--primary)] rounded-lg shadow-sm border border-transparent transition-all duration-200 cursor-pointer active:scale-[0.95] h-8 w-8"
               title="Reload coupons list"
             >
               <RefreshCw size={13} className={loading ? "animate-spin text-[var(--primary)]" : "text-[var(--primary)]"} />
@@ -511,7 +521,7 @@ export default function LocalCoupons() {
                 )}
               </div>
               <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 text-emerald-650 shrink-0">
-                <DollarSign size={14} />
+                <IndianRupee size={14} />
               </div>
             </div>
           </Card>
@@ -531,8 +541,8 @@ export default function LocalCoupons() {
                 <input
                   type="text"
                   placeholder="Coupon code or title..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
+                  value={localSearch}
+                  onChange={e => setLocalSearch(e.target.value)}
                   className="pl-8 pr-3 py-1.5 w-full text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:border-[var(--primary)] transition-all font-semibold h-[32px]"
                 />
               </div>
@@ -672,104 +682,27 @@ export default function LocalCoupons() {
           )}
         </div>
 
-        {/* Modal Declarations */}
-
-        {/* Create Coupon Modal */}
-        <CreateCouponModal
-          visible={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          onSubmit={async (payload) => {
-            try {
-              await createCoupon(payload);
-              setShowCreateModal(false);
-            } catch (err) {
-              // error handled in hook toast
-            }
-          }}
-        />
-
-        {/* Edit Coupon Modal */}
-        <EditCouponModal
-          visible={showEditModal}
-          onClose={() => {
-            setShowEditModal(false);
-            setSelectedCoupon(null);
-          }}
-          coupon={selectedCoupon}
-          onSubmit={async (id, payload) => {
-            try {
-              await updateCoupon(id, payload);
-              setShowEditModal(false);
-              setSelectedCoupon(null);
-            } catch (err) {
-              // error handled in hook toast
-            }
-          }}
-        />
-
-        {/* Clone Coupon Modal */}
-        <CloneCouponModal
-          visible={showCloneModal}
-          onClose={() => {
-            setShowCloneModal(false);
-            setSelectedCoupon(null);
-          }}
-          coupon={selectedCoupon}
-          onSubmit={async (payload) => {
-            try {
-              await createCoupon(payload);
-              setShowCloneModal(false);
-              setSelectedCoupon(null);
-            } catch (err) {
-              // error handled in hook toast
-            }
-          }}
-        />
-
-        {/* Coupon Details Drawer */}
-        <CouponDetailsDrawer
-          visible={showDetailsDrawer}
-          onClose={() => {
-            setShowDetailsDrawer(false);
-            setSelectedCoupon(null);
-          }}
-          coupon={selectedCoupon}
+        {/* Modal Declarations Container */}
+        <LocalCouponModals
+          showCreateModal={showCreateModal}
+          setShowCreateModal={setShowCreateModal}
+          showEditModal={showEditModal}
+          setShowEditModal={setShowEditModal}
+          showCloneModal={showCloneModal}
+          setShowCloneModal={setShowCloneModal}
+          showDetailsDrawer={showDetailsDrawer}
+          setShowDetailsDrawer={setShowDetailsDrawer}
+          showStatusModal={showStatusModal}
+          setShowStatusModal={setShowStatusModal}
+          showDeleteModal={showDeleteModal}
+          setShowDeleteModal={setShowDeleteModal}
+          selectedCoupon={selectedCoupon}
+          setSelectedCoupon={setSelectedCoupon}
+          createCoupon={createCoupon}
+          updateCoupon={updateCoupon}
+          deleteCoupon={deleteCoupon}
+          toggleCouponStatus={toggleCouponStatus}
           getCouponUsageDetails={getCouponUsageDetails}
-        />
-
-        {/* Activate / Deactivate Toggle Modal */}
-        <ActivateDeactivateModal
-          visible={showStatusModal}
-          onCancel={() => {
-            setShowStatusModal(false);
-            setSelectedCoupon(null);
-          }}
-          onConfirm={async () => {
-            if (selectedCoupon) {
-              await toggleCouponStatus(selectedCoupon._id);
-              setShowStatusModal(false);
-              setSelectedCoupon(null);
-            }
-          }}
-          coupon={selectedCoupon}
-        />
-
-        {/* Delete Confirmation Modal */}
-        <DeleteConfirmationModal
-          visible={showDeleteModal}
-          onCancel={() => {
-            setShowDeleteModal(false);
-            setSelectedCoupon(null);
-          }}
-          onConfirm={async () => {
-            if (selectedCoupon) {
-              await deleteCoupon(selectedCoupon._id);
-              setShowDeleteModal(false);
-              setSelectedCoupon(null);
-            }
-          }}
-          coupon={selectedCoupon}
-          usageCount={selectedCoupon ? (getCouponUsageDetails(selectedCoupon._id)?.analytics?.totalUsage || 0) : 0}
         />
 
       </div>
