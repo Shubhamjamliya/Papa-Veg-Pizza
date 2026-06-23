@@ -281,3 +281,109 @@ export const mockCampaignPerformance = {
     ]
   }
 };
+
+export const mockCoupons = [
+  { _id: "coup-1", code: "PAPA50", discountType: "percentage", discountValue: 50, maxDiscount: 150, minOrderValue: 299, status: "active", startDate: "2026-06-01", endDate: "2026-07-31", stores: ["store-indore-1"] },
+  { _id: "coup-2", code: "FREEGB", discountType: "fixed", discountValue: 129, maxDiscount: 129, minOrderValue: 399, status: "active", startDate: "2026-06-05", endDate: "2026-08-31", stores: ["store-indore-1", "store-bhopal-1"] },
+  { _id: "coup-3", code: "WELCOME100", discountType: "fixed", discountValue: 100, maxDiscount: 100, minOrderValue: 199, status: "active", startDate: "2026-05-01", endDate: "2026-12-31", stores: [] },
+  { _id: "coup-4", code: "DIWALI25", discountType: "percentage", discountValue: 25, maxDiscount: 300, minOrderValue: 499, status: "active", startDate: "2026-10-15", endDate: "2026-11-05", stores: [] }
+];
+
+export const mockCouponUsage = [
+  {
+    _id: "usage-1",
+    couponId: "coup-1",
+    analytics: { totalUsage: 1450, totalDiscountGiven: 142000, ordersMatching: 1450 }
+  },
+  {
+    _id: "usage-2",
+    couponId: "coup-2",
+    analytics: { totalUsage: 890, totalDiscountGiven: 114810, ordersMatching: 890 }
+  }
+];
+
+export const mockProducts = [
+  { _id: "prod-1", name: "Margherita Pizza", price: 249, category: "cat-1", image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=400&q=85" },
+  { _id: "prod-2", name: "Veg Supreme Pizza", price: 399, category: "cat-1", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=85" },
+  { _id: "prod-3", name: "Paneer Tikka Pizza", price: 349, category: "cat-1", image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=400&q=85" },
+  { _id: "prod-4", name: "Double Cheese Burst Margherita", price: 299, category: "cat-1", image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=400&q=85" },
+  { _id: "prod-5", name: "Garlic Breadsticks", price: 129, category: "cat-3", image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?auto=format&fit=crop&w=400&q=85" }
+];
+
+export const mockCategories = [
+  { _id: "cat-1", name: "Pizzas", status: "Active" },
+  { _id: "cat-2", name: "Beverages", status: "Active" },
+  { _id: "cat-3", name: "Sides", status: "Active" },
+  { _id: "cat-4", name: "Desserts", status: "Active" }
+];
+
+export const mockBanners = [
+  {
+    _id: "banner-1",
+    franchiseId: "fran-central-1",
+    title: "Diwali Feast Pizza Combo",
+    subtitle: "Get Flat 25% Off on all Family Pizza Combos. Celebrate Diwali with Papa Veg Pizza!",
+    imageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
+    mobileImageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80",
+    redirectType: "coupon",
+    redirectId: "coup-4",
+    stores: ["store-indore-1", "store-bhopal-1"],
+    startDate: "2026-10-15",
+    endDate: "2026-11-05",
+    priority: 2,
+    status: "inactive",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2026-06-20T10:00:00Z"
+  },
+  {
+    _id: "banner-2",
+    franchiseId: "fran-central-1",
+    title: "Weekend Midnight Flash Sale",
+    subtitle: "Buy 1 Get 1 Free on all Medium Pizzas. Every Saturday and Sunday from 10 PM to 1 AM.",
+    imageUrl: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=1200&q=80",
+    mobileImageUrl: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=600&q=80",
+    redirectType: "campaign",
+    redirectId: "camp-2",
+    stores: ["store-indore-1", "store-indore-2", "store-ujjain-1"],
+    startDate: "2026-06-01",
+    endDate: "2026-07-31",
+    priority: 5,
+    status: "active",
+    createdBy: "Rajesh Kumar",
+    createdAt: "2026-05-25T11:30:00Z"
+  },
+  {
+    _id: "banner-3",
+    franchiseId: "fran-central-1",
+    title: "Monsoon Paneer Tikka Blast",
+    subtitle: "Savor the rain with our special Paneer Tikka pizza at flat ₹150 off.",
+    imageUrl: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=1200&q=80",
+    mobileImageUrl: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=600&q=80",
+    redirectType: "product",
+    redirectId: "prod-3",
+    stores: [],
+    startDate: "2026-06-15",
+    endDate: "2026-06-30",
+    priority: 8,
+    status: "active",
+    createdBy: "Amit Sharma",
+    createdAt: "2026-06-14T09:15:00Z"
+  },
+  {
+    _id: "banner-4",
+    franchiseId: "fran-central-1",
+    title: "IPL Cheese Burst Dhamaka",
+    subtitle: "Cheer for your team with 40% Off on all Cheese Burst Pizzas during match hours.",
+    imageUrl: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=1200&q=80",
+    mobileImageUrl: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=600&q=80",
+    redirectType: "campaign",
+    redirectId: "camp-5",
+    stores: ["store-jabalpur-1", "store-dewas-1"],
+    startDate: "2026-05-20",
+    endDate: "2026-05-25",
+    priority: 1,
+    status: "active",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2026-05-18T12:00:00Z"
+  }
+];
