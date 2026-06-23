@@ -8,7 +8,15 @@ import {
   mockRevenueTrends,
   mockPaymentDistributionData,
   initialGeneratedReports,
-  mockDashboardSummary
+  mockDashboardSummary,
+  mockOrderDashboardSummary,
+  mockOrderStatusDistribution,
+  mockOrderTypeDistribution,
+  mockOrderHourlyHeatmap,
+  mockStorePerformanceOrders,
+  mockDetailedOrderReportsList,
+  mockSingleOrderDetail,
+  initialGeneratedOrderReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
 
 
@@ -83,7 +91,8 @@ let db = {
   coupons: getStorageItem("coupons", mockCoupons),
   notifications: getStorageItem("notifications", mockNotifications),
   notificationLogs: getStorageItem("notificationLogs", mockNotificationLogs),
-  generated_reports: getStorageItem("generated_reports", initialGeneratedReports)
+  generated_reports: getStorageItem("generated_reports", initialGeneratedReports),
+  generated_order_reports: getStorageItem("generated_order_reports", initialGeneratedOrderReports)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -142,6 +151,119 @@ export function handleMockRequest(config) {
   const successRes = (payload) => ({ success: true, status: 200, data: { success: true, data: payload } });
   const successMsg = (msg, payload = null) => ({ success: true, status: 200, data: { success: true, message: msg, data: payload } });
   const errorRes = (msg, status = 400) => ({ success: false, status, data: { success: false, message: msg } });
+
+  // --- ORDER REPORT ENDPOINTS ---
+  if (url.includes("/reports/orders/dashboard") || url.includes("/reports/orders/summary")) {
+    const storeId = config.params?.storeId;
+    if (storeId && storeId !== "all") {
+      return successRes({
+        ...mockOrderDashboardSummary,
+        totalOrders: Math.floor(mockOrderDashboardSummary.totalOrders / 3),
+        completedOrders: Math.floor(mockOrderDashboardSummary.completedOrders / 3),
+        cancelledOrders: Math.floor(mockOrderDashboardSummary.cancelledOrders / 3),
+        refundedOrders: Math.floor(mockOrderDashboardSummary.refundedOrders / 3),
+        averageOrderValue: 338.40
+      });
+    }
+    return successRes(mockOrderDashboardSummary);
+  }
+
+  if (url.includes("/reports/orders/status-distribution")) {
+    return successRes(mockOrderStatusDistribution);
+  }
+
+  if (url.includes("/reports/orders/hourly")) {
+    return successRes(mockOrderHourlyHeatmap);
+  }
+
+  if (url.includes("/reports/orders/order-type")) {
+    return successRes(mockOrderTypeDistribution);
+  }
+
+  if (url.includes("/reports/orders/store-performance")) {
+    return successRes(mockStorePerformanceOrders);
+  }
+
+  if (url.includes("/reports/orders/list")) {
+    const search = config.params?.search || "";
+    let filtered = [...mockDetailedOrderReportsList];
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(o => 
+        o.orderNumber.toLowerCase().includes(q) || 
+        o.customerName.toLowerCase().includes(q) || 
+        o.storeName.toLowerCase().includes(q)
+      );
+    }
+    const sortBy = config.params?.sortBy || "createdAt";
+    const sortOrder = config.params?.sortOrder || "desc";
+    filtered.sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? valA - valB : valB - valA;
+    });
+
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const totalCount = filtered.length;
+    const start = (page - 1) * limit;
+    const paginated = filtered.slice(start, start + limit);
+    return successRes({
+      orders: paginated,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit)
+    });
+  }
+
+  if (url.includes("/reports/orders/generate") && method === "post") {
+    const newRep = {
+      id: `ORD-2026-${Math.floor(100 + Math.random() * 900)}`,
+      reportType: data?.reportType || "Custom",
+      startDate: data?.startDate || "2026-06-23",
+      endDate: data?.endDate || "2026-06-23",
+      revenue: Math.floor(500000 + Math.random() * 2000000),
+      orders: Math.floor(1500 + Math.random() * 5000),
+      refundAmount: data?.includeRefunds ? Math.floor(10000 + Math.random() * 50000) : 0,
+      status: "Completed",
+      generatedBy: "Rashi Kumar (Admin)",
+      createdAt: new Date().toISOString(),
+      fileUrl: "#"
+    };
+    db.generated_order_reports.unshift(newRep);
+    saveDB();
+    return successRes({
+      reportId: newRep.id,
+      fileUrl: newRep.fileUrl,
+      status: newRep.status
+    });
+  }
+
+  // Single Order API Match
+  const singleOrderMatch = url.match(/\/orders\/([^/]+)$/);
+  if (singleOrderMatch && method === "get" && !url.includes("/reports/")) {
+    const id = singleOrderMatch[1];
+    return successRes({
+      ...mockSingleOrderDetail,
+      orderId: id,
+      orderNumber: id.startsWith("ord-") ? `PVP-${id.replace("ord-", "109")}` : id
+    });
+  }
+
+  // Invoice API Match
+  const invoiceMatch = url.match(/\/orders\/([^/]+)\/invoice$/);
+  if (invoiceMatch && method === "get") {
+    const id = invoiceMatch[1];
+    return successRes({
+      ...mockSingleOrderDetail,
+      orderId: id,
+      orderNumber: id.startsWith("ord-") ? `PVP-${id.replace("ord-", "109")}` : id
+    });
+  }
 
   // --- SALES REPORT ENDPOINTS ---
   if (url.includes("/reports/sales/dashboard") || url.includes("/reports/sales/summary")) {
