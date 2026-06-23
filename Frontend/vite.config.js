@@ -20,7 +20,6 @@ export default defineConfig({
       '@food/api/axios': path.resolve(servicesApi, 'axios.js'),
       '@food/api/config': path.resolve(servicesApi, 'config.js'),
       '@food/api': servicesApi,
-      '@food/components/ui': path.resolve(__dirname, './src/shared/components/ui'),
       '@food': foodSrc,
       '@': path.resolve(__dirname, './src'),
     },
