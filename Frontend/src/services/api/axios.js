@@ -138,12 +138,24 @@ function createModuleClient(moduleName) {
     (err) => Promise.reject(err)
   );
 
-  // Response Interceptor
   client.interceptors.response.use(
     (response) => response,
     async (err) => {
       const original = err?.config;
       
+      // Standalone mock fallback for network/404/5xx errors in dev mode
+      const isNetworkOr404 = !err.response || err.response.status === 404 || err.response.status === 502 || err.response.status === 504;
+      const isDev = typeof import.meta !== "undefined" && (import.meta.env?.DEV || import.meta.env?.VITE_STANDALONE_MOCK === "true");
+      if (isNetworkOr404 && isDev && original && !original._isFallback) {
+        original._isFallback = true;
+        console.warn(`[Axios Client: ${moduleName}] Failed: ${err.message}. Falling back to mock data...`);
+        try {
+          return await mockAdapter(original);
+        } catch (mockErr) {
+          return Promise.reject(mockErr);
+        }
+      }
+
       if (err?.response?.status === 429) return Promise.reject(err);
       
       // 403 handling (Forbidden vs Unauthorized)
@@ -253,6 +265,27 @@ apiClient.interceptors.request.use(
     return config;
   },
   (err) => Promise.reject(err)
+);
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (err) => {
+    const original = err?.config;
+    
+    // Standalone mock fallback for network/404/5xx errors in dev mode
+    const isNetworkOr404 = !err.response || err.response.status === 404 || err.response.status === 502 || err.response.status === 504;
+    const isDev = typeof import.meta !== "undefined" && (import.meta.env?.DEV || import.meta.env?.VITE_STANDALONE_MOCK === "true");
+    if (isNetworkOr404 && isDev && original && !original._isFallback) {
+      original._isFallback = true;
+      console.warn(`[Axios Client: legacy] Failed: ${err.message}. Falling back to mock data...`);
+      try {
+        return await mockAdapter(original);
+      } catch (mockErr) {
+        return Promise.reject(mockErr);
+      }
+    }
+    return Promise.reject(err);
+  }
 );
 
 export default apiClient;
