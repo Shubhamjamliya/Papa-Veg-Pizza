@@ -22,8 +22,7 @@ const AdminSignup = lazy(() => import("@food/pages/franchise-admin/auth/AdminSig
 const AdminForgotPassword = lazy(() => import("@food/pages/franchise-admin/auth/AdminForgotPassword"))
 const SuperAdminRouter = lazy(() => import("./pages/superadmin/routes/SuperAdminRouter"))
 
-// Delivery Module
-const DeliveryRouter = lazy(() => import("../DeliveryV2"))
+
 
 function UserPathRedirect() {
   const location = useLocation()
@@ -101,11 +100,7 @@ export default function App() {
               }
             />
 
-            {/* Delivery Module - Already mapped to /delivery */}
-            <Route
-              path="delivery/*"
-              element={<DeliveryRouter />}
-            />
+
 
             {/* Super Admin Module */}
             <Route
