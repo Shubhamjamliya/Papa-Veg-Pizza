@@ -1,6 +1,6 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
-import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
+import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -70,7 +70,9 @@ let db = {
   campaignPerformance: getStorageItem("campaignPerformance", mockCampaignPerformance),
   banners: getStorageItem("banners", mockBanners),
   products: getStorageItem("products", mockProducts),
-  coupons: getStorageItem("coupons", mockCoupons)
+  coupons: getStorageItem("coupons", mockCoupons),
+  notifications: getStorageItem("notifications", mockNotifications),
+  notificationLogs: getStorageItem("notificationLogs", mockNotificationLogs)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -2043,6 +2045,305 @@ export function handleMockRequest(config) {
       totalCount,
       page,
       limit
+    });
+  }
+
+  // === NOTIFICATIONS MANAGEMENT ENDPOINTS ===
+
+  // 1. GET /stores - Get all outlets
+  if (url.match(/\/stores$/) && method === "get") {
+    return successRes(db.stores);
+  }
+
+  // 2. GET /notifications - Get filtered and paginated list
+  if (url.includes("/notifications") && method === "get") {
+    let list = [...db.notifications];
+
+    const search = config.params?.search || "";
+    const channel = config.params?.channel || "";
+    const audience = config.params?.audience || "";
+    const status = config.params?.status || "";
+    const startDate = config.params?.startDate || "";
+    const endDate = config.params?.endDate || "";
+
+    if (search) {
+      const q = search.toLowerCase().trim();
+      list = list.filter(n => n.title.toLowerCase().includes(q) || (n.message || "").toLowerCase().includes(q));
+    }
+
+    if (channel && channel !== "All") {
+      list = list.filter(n => n.notificationType && n.notificationType.includes(channel.toLowerCase()));
+    }
+
+    if (audience && audience !== "All") {
+      list = list.filter(n => n.targetAudience === audience.toLowerCase());
+    }
+
+    if (status && status !== "All") {
+      list = list.filter(n => n.status === status.toLowerCase());
+    }
+
+    if (startDate) {
+      list = list.filter(n => new Date(n.createdAt) >= new Date(startDate));
+    }
+
+    if (endDate) {
+      // End of day
+      const endLimit = new Date(endDate);
+      endLimit.setHours(23, 59, 59, 999);
+      list = list.filter(n => new Date(n.createdAt) <= endLimit);
+    }
+
+    // Dynamic calculations of sentCount and openRate from logs
+    const resultList = list.map(n => {
+      const logs = db.notificationLogs.filter(l => l.notificationId === n._id);
+      const sentCount = logs.length;
+      const openedCount = logs.filter(l => l.opened).length;
+      const openRate = sentCount > 0 ? Math.round((openedCount / sentCount) * 100) : 0;
+      
+      return {
+        ...n,
+        sentCount: n.status === "sent" ? (sentCount || 1200) : 0, // mock high reach for list if logs small
+        openRate: n.status === "sent" ? (openRate || 68) : 0
+      };
+    });
+
+    // Sort by createdAt desc
+    resultList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    const page = parseInt(config.params?.page || "1", 10);
+    const limit = parseInt(config.params?.limit || "10", 10);
+    const totalCount = resultList.length;
+
+    const startIndex = (page - 1) * limit;
+    const paginated = resultList.slice(startIndex, startIndex + limit);
+
+    return successRes({
+      list: paginated,
+      totalCount,
+      page,
+      limit
+    });
+  }
+
+  // Helper to generate simulated logs
+  const simulateLogs = (notificationId, targetAudience, channels, storeIds) => {
+    const customerNames = [
+      "Rohan Malhotra", "Aarav Sharma", "Pooja Patel", "Rashi Kumar", "Amit Verma", 
+      "Siddharth Jain", "Neha Gupta", "Vikram Singh", "Preeti Mishra", "Deepak Rawat",
+      "Priya Verma", "Aman Gupta", "Kunal Sen", "Kiran Joshi", "Aanchal Mehta",
+      "Devendra Rajput", "Shalini Dwivedi", "Rajesh Tiwari", "Meera Nair", "Harsh Vardhan"
+    ];
+    const channelsList = channels && channels.length > 0 ? channels : ["push"];
+    const storesList = storeIds && storeIds.length > 0 ? storeIds : db.stores.map(s => s._id);
+
+    const generated = [];
+    customerNames.forEach((name, idx) => {
+      channelsList.forEach(chan => {
+        const isDelivered = Math.random() < 0.96;
+        const isOpened = isDelivered && Math.random() < 0.70;
+        const isClicked = isOpened && Math.random() < 0.35;
+        const storeId = storesList[Math.floor(Math.random() * storesList.length)];
+        
+        generated.push({
+          _id: `log-${notificationId}-${idx}-${chan}`,
+          notificationId,
+          customerId: `cust-${idx + 10}`,
+          customerName: name,
+          channel: chan,
+          sentStatus: isDelivered ? "delivered" : "failed",
+          opened: isOpened,
+          clicked: isClicked,
+          deliveredAt: isDelivered ? new Date(Date.now() - 600000).toISOString() : null,
+          storeId
+        });
+      });
+    });
+    return generated;
+  };
+
+  // 3. POST /notifications - Create notification
+  if (url.includes("/notifications") && method === "post") {
+    const newId = `notif-${Date.now()}`;
+    const newNotification = {
+      _id: newId,
+      franchiseId: data?.franchiseId || "fran-central-1",
+      title: data?.title || "",
+      message: data?.message || "",
+      notificationType: data?.notificationType || ["push"],
+      targetAudience: data?.targetAudience || "all",
+      stores: data?.stores || [],
+      scheduleTime: data?.scheduleTime || new Date().toISOString(),
+      status: data?.status || "draft",
+      createdBy: "Shubham Jamliya",
+      createdAt: new Date().toISOString()
+    };
+
+    db.notifications.push(newNotification);
+
+    // If immediate send
+    if (newNotification.status === "sent") {
+      const generatedLogs = simulateLogs(
+        newId, 
+        newNotification.targetAudience, 
+        newNotification.notificationType, 
+        newNotification.stores
+      );
+      db.notificationLogs.push(...generatedLogs);
+    }
+
+    saveDB();
+    return successMsg("Notification created successfully.", newNotification);
+  }
+
+  // 4. PUT /notifications/:id - Update notification
+  const specificNotificationMatch = url.match(/\/notifications\/([^/]+)$/);
+  if (specificNotificationMatch && method === "put") {
+    const id = specificNotificationMatch[1];
+    const idx = db.notifications.findIndex(n => n._id === id);
+
+    if (idx !== -1) {
+      const previousStatus = db.notifications[idx].status;
+      const updated = {
+        ...db.notifications[idx],
+        ...data,
+        updatedAt: new Date().toISOString()
+      };
+
+      db.notifications[idx] = updated;
+
+      // If transitioning to sent
+      if (updated.status === "sent" && previousStatus !== "sent") {
+        // Clear any existing logs first just in case
+        db.notificationLogs = db.notificationLogs.filter(l => l.notificationId !== id);
+        const generatedLogs = simulateLogs(
+          id, 
+          updated.targetAudience, 
+          updated.notificationType, 
+          updated.stores
+        );
+        db.notificationLogs.push(...generatedLogs);
+      }
+
+      saveDB();
+      return successMsg("Notification updated successfully.", updated);
+    }
+    return errorRes("Notification not found.", 404);
+  }
+
+  // 5. DELETE /notifications/:id - Delete notification
+  if (specificNotificationMatch && method === "delete") {
+    const id = specificNotificationMatch[1];
+    const exists = db.notifications.some(n => n._id === id);
+    if (exists) {
+      db.notifications = db.notifications.filter(n => n._id !== id);
+      db.notificationLogs = db.notificationLogs.filter(l => l.notificationId !== id);
+      saveDB();
+      return successMsg("Notification archived successfully.");
+    }
+    return errorRes("Notification not found.", 404);
+  }
+
+  // 6. GET /notification-logs/:id - Get analytics & detailed logs
+  const specificLogsMatch = url.match(/\/notification-logs\/([^/]+)$/);
+  if (specificLogsMatch && method === "get") {
+    const notifId = specificLogsMatch[1];
+    const notif = db.notifications.find(n => n._id === notifId);
+    
+    if (!notif) {
+      return errorRes("Notification not found.", 404);
+    }
+
+    let logs = db.notificationLogs.filter(l => l.notificationId === notifId);
+
+    // If notification is sent but logs are empty, auto-generate them
+    if (notif.status === "sent" && logs.length === 0) {
+      logs = simulateLogs(notifId, notif.targetAudience, notif.notificationType, notif.stores);
+      db.notificationLogs.push(...logs);
+      saveDB();
+    }
+
+    // Filter local logs for list search
+    const logSearch = config.params?.search || "";
+    let filteredLogs = [...logs];
+    if (logSearch) {
+      const q = logSearch.toLowerCase().trim();
+      filteredLogs = filteredLogs.filter(l => 
+        l.customerName.toLowerCase().includes(q) || 
+        l.channel.toLowerCase().includes(q) ||
+        l.sentStatus.toLowerCase().includes(q)
+      );
+    }
+
+    // Pagination
+    const page = parseInt(config.params?.page || "1", 10);
+    const limit = parseInt(config.params?.limit || "10", 10);
+    const startIndex = (page - 1) * limit;
+    const paginatedLogs = filteredLogs.slice(startIndex, startIndex + limit);
+
+    // KPI Calculations
+    const sent = logs.length;
+    const delivered = logs.filter(l => l.sentStatus === "delivered").length;
+    const failed = logs.filter(l => l.sentStatus === "failed").length;
+    const opened = logs.filter(l => l.opened).length;
+    const clicked = logs.filter(l => l.clicked).length;
+
+    const openRate = delivered > 0 ? Math.round((opened / delivered) * 100) : 0;
+    const ctr = delivered > 0 ? Math.round((clicked / delivered) * 100) : 0;
+
+    // Deviceswise simulation
+    const deviceData = [
+      { device: "Android", count: Math.round(sent * 0.58), percentage: 58 },
+      { device: "iOS", count: Math.round(sent * 0.30), percentage: 30 },
+      { device: "Web Browser", count: Math.round(sent * 0.12), percentage: 12 }
+    ];
+
+    // Pie chart simulation
+    const pieChartData = [
+      { name: "Delivered", value: delivered, color: "#10b981" },
+      { name: "Failed", value: failed, color: "#ef4444" },
+      { name: "Pending", value: notif.status === "scheduled" ? sent : 0, color: "#3b82f6" }
+    ];
+
+    // Store breakdown simulation
+    const storesList = notif.stores && notif.stores.length > 0 ? notif.stores : db.stores.map(s => s._id);
+    const storeData = storesList.map(storeId => {
+      const storeName = db.stores.find(s => s._id === storeId)?.name || "Unknown Store";
+      const storeLogs = logs.filter(l => l.storeId === storeId);
+      
+      const sDelivered = storeLogs.filter(l => l.sentStatus === "delivered").length;
+      const sOpened = storeLogs.filter(l => l.opened).length;
+      const sClicked = storeLogs.filter(l => l.clicked).length;
+      const sCtr = sDelivered > 0 ? parseFloat(((sClicked / sDelivered) * 100).toFixed(1)) : 0;
+
+      return {
+        store: storeName,
+        delivered: sDelivered,
+        opened: sOpened,
+        clicked: sClicked,
+        ctr: sCtr
+      };
+    });
+
+    return successRes({
+      aggregates: {
+        sent: notif.status === "sent" ? (sent || 1200) : 0,
+        delivered: notif.status === "sent" ? (delivered || 1160) : 0,
+        failed: notif.status === "sent" ? (failed || 40) : 0,
+        opened: notif.status === "sent" ? (opened || 780) : 0,
+        clicked: notif.status === "sent" ? (clicked || 240) : 0,
+        openRate: notif.status === "sent" ? (openRate || 67) : 0,
+        ctr: notif.status === "sent" ? (ctr || 21) : 0
+      },
+      pieChartData,
+      deviceData,
+      storeData,
+      logsList: {
+        list: paginatedLogs,
+        totalCount: filteredLogs.length,
+        page,
+        limit
+      }
     });
   }
 
