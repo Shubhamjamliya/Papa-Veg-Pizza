@@ -1,6 +1,6 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
-import { mockCampaigns, mockCampaignPerformance } from "../../modules/Food/pages/franchise-admin/marketing/mockdata.js";
+import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -67,7 +67,10 @@ let db = {
   storePerformance: getStorageItem("storePerformance", initialStorePerformance),
   operatingHours: getStorageItem("operatingHours", initialOperatingHours),
   campaigns: getStorageItem("campaigns", mockCampaigns),
-  campaignPerformance: getStorageItem("campaignPerformance", mockCampaignPerformance)
+  campaignPerformance: getStorageItem("campaignPerformance", mockCampaignPerformance),
+  banners: getStorageItem("banners", mockBanners),
+  products: getStorageItem("products", mockProducts),
+  coupons: getStorageItem("coupons", mockCoupons)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -855,6 +858,119 @@ export function handleMockRequest(config) {
         return errorRes("Campaign not found", 404);
       }
     }
+  }
+
+  // --- BANNERS MARKETING MOCKS ---
+  if (url.includes("/banners")) {
+    if (method === "get") {
+      const idMatch = url.match(/\/banners\/([^/]+)$/);
+      if (idMatch) {
+        const id = idMatch[1];
+        const banner = db.banners.find(b => b._id === id);
+        if (banner) return successRes(banner);
+        return errorRes("Banner not found", 404);
+      }
+      
+      let bannersList = [...db.banners];
+      const params = config.params || {};
+      const search = params.search || "";
+      const status = params.status || "All";
+      const redirectType = params.redirectType || "All";
+      const storeId = params.storeId || "All";
+      
+      if (search) {
+        const q = search.toLowerCase();
+        bannersList = bannersList.filter(b => b.title?.toLowerCase().includes(q) || b.subtitle?.toLowerCase().includes(q));
+      }
+      
+      if (status !== "All") {
+        bannersList = bannersList.filter(b => {
+          const now = new Date();
+          if (status.toLowerCase() === "active") {
+            const isNotExpired = new Date(b.endDate) >= now;
+            const isStarted = new Date(b.startDate) <= now;
+            return b.status === "active" && isNotExpired && isStarted;
+          }
+          if (status.toLowerCase() === "expired") {
+            return new Date(b.endDate) < now;
+          }
+          if (status.toLowerCase() === "scheduled") {
+            return new Date(b.startDate) > now;
+          }
+          return b.status === status.toLowerCase();
+        });
+      }
+      
+      if (redirectType !== "All") {
+        bannersList = bannersList.filter(b => b.redirectType === redirectType.toLowerCase());
+      }
+      
+      if (storeId !== "All" && storeId) {
+        bannersList = bannersList.filter(b => !b.stores || b.stores.length === 0 || b.stores.includes(storeId));
+      }
+      
+      return successRes(bannersList);
+    }
+    
+    if (method === "post") {
+      const newBanner = {
+        ...data,
+        _id: `banner-${Date.now()}`,
+        status: data?.status || "inactive",
+        createdBy: "Shubham Jamliya",
+        createdAt: new Date().toISOString()
+      };
+      db.banners.unshift(newBanner);
+      saveDB();
+      return successMsg("Banner created successfully", newBanner);
+    }
+
+    const match = url.match(/\/banners\/([^/]+)$/);
+    if (match) {
+      const id = match[1];
+      if (method === "put" || method === "patch") {
+        const idx = db.banners.findIndex(b => b._id === id);
+        if (idx !== -1) {
+          db.banners[idx] = { ...db.banners[idx], ...data };
+          saveDB();
+          return successMsg("Banner updated successfully", db.banners[idx]);
+        }
+        return errorRes("Banner not found", 404);
+      }
+      if (method === "delete") {
+        const idx = db.banners.findIndex(b => b._id === id);
+        if (idx !== -1) {
+          const removed = db.banners[idx];
+          db.banners = db.banners.filter(b => b._id !== id);
+          saveDB();
+          return successMsg(`Banner "${removed.title}" deleted successfully`);
+        }
+        return errorRes("Banner not found", 404);
+      }
+    }
+  }
+
+  // --- IMAGE UPLOAD MOCK ---
+  if (url.includes("/upload")) {
+    if (method === "post") {
+      const mockImageUrls = [
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=1200&q=80"
+      ];
+      const randomUrl = mockImageUrls[Math.floor(Math.random() * mockImageUrls.length)];
+      return successRes({ imageUrl: randomUrl });
+    }
+  }
+
+  // --- ADDITIONAL MARKETING GETTERS ---
+  if (url.includes("/products") && method === "get") {
+    return successRes(db.products);
+  }
+
+  if (url.includes("/coupons") && method === "get") {
+    return successRes(db.coupons);
   }
 
   // GET /stores/:id/performance
