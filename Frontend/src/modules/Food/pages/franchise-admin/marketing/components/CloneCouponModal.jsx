@@ -78,7 +78,7 @@ export default function CloneCouponModal({ visible, onClose, onSubmit, coupon })
   useEffect(() => {
     if (coupon) {
       // Suggest code
-      let baseCode = coupon.couponCode;
+      let baseCode = coupon.couponCode || "";
       if (baseCode.includes("_CLONE")) {
         baseCode = baseCode.split("_CLONE")[0];
       }
@@ -87,11 +87,11 @@ export default function CloneCouponModal({ visible, onClose, onSubmit, coupon })
 
       reset({
         couponCode: suggestedCode,
-        title: `Clone of ${coupon.title}`,
-        description: coupon.description,
+        title: `Clone of ${coupon.title || ""}`,
+        description: coupon.description || "",
         status: "active", // default active for clones
-        discountType: coupon.discountType,
-        discountValue: coupon.discountValue,
+        discountType: coupon.discountType || "percentage",
+        discountValue: coupon.discountValue || 0,
         maximumDiscount: coupon.maximumDiscount || null,
         minimumOrderAmount: coupon.minimumOrderAmount || null,
         usageLimit: coupon.usageLimit || null,
@@ -99,9 +99,9 @@ export default function CloneCouponModal({ visible, onClose, onSubmit, coupon })
         storeIds: coupon.storeIds || [],
         applicableProducts: coupon.applicableProducts || [],
         applicableCategories: coupon.applicableCategories || [],
-        customerType: coupon.customerType,
-        startDate: coupon.startDate,
-        endDate: coupon.endDate
+        customerType: coupon.customerType || "all",
+        startDate: coupon.startDate || "",
+        endDate: coupon.endDate || ""
       });
       setActiveTab("basic");
     }

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Table, Tag, Tooltip, Pagination, Skeleton, Switch } from "antd";
 import { 
   Plus, Download, RefreshCw, Search, Eye, Edit, 
@@ -7,12 +7,7 @@ import {
   AlertTriangle, CheckCircle, Activity, ExternalLink
 } from "lucide-react";
 import { useBanners } from "./hooks/useBanners";
-import CreateBannerModal from "./components/CreateBannerModal";
-import EditBannerModal from "./components/EditBannerModal";
-import PreviewBannerDrawer from "./components/PreviewBannerDrawer";
-import ActivateBannerModal from "./components/ActivateBannerModal";
-import DeactivateBannerModal from "./components/DeactivateBannerModal";
-import DeleteBannerModal from "./components/DeleteBannerModal";
+import BannerModals from "./components/BannerModals";
 import { toast } from "sonner";
 
 export default function PromotionalBanners() {
@@ -60,6 +55,20 @@ export default function PromotionalBanners() {
     deleteBanner,
     updateBannerStatus
   } = bannersHook;
+
+  // Debounced search state
+  const [localSearch, setLocalSearch] = useState(search);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(localSearch);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, setSearch]);
+
+  useEffect(() => {
+    setLocalSearch(search);
+  }, [search]);
 
   // View state: 'grid' or 'table'
   const [viewMode, setViewMode] = useState("grid");
@@ -422,8 +431,8 @@ export default function PromotionalBanners() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={13} />
             <input
               type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
               placeholder="Search banner title or text..."
               className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-[var(--primary)] font-semibold transition-all h-8"
             />
@@ -706,100 +715,31 @@ export default function PromotionalBanners() {
         </div>
       )}
 
-      {/* 5. LIFE-CYCLE OPERATION MODALS */}
-      
-      {/* Create Banner Modal */}
-      <CreateBannerModal
-        visible={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onSubmit={createBanner}
+      {/* MODALS CONTAINER */}
+      <BannerModals
+        showCreateModal={showCreateModal}
+        setShowCreateModal={setShowCreateModal}
+        showEditModal={showEditModal}
+        setShowEditModal={setShowEditModal}
+        showPreviewDrawer={showPreviewDrawer}
+        setShowPreviewDrawer={setShowPreviewDrawer}
+        showActivateModal={showActivateModal}
+        setShowActivateModal={setShowActivateModal}
+        showDeactivateModal={showDeactivateModal}
+        setShowDeactivateModal={setShowDeactivateModal}
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        selectedBanner={selectedBanner}
+        setSelectedBanner={setSelectedBanner}
+        createBanner={createBanner}
+        updateBanner={updateBanner}
+        deleteBanner={deleteBanner}
+        updateBannerStatus={updateBannerStatus}
         stores={stores}
         products={products}
         categories={categories}
         coupons={coupons}
         campaigns={campaigns}
-      />
-
-      {/* Edit Banner Modal */}
-      <EditBannerModal
-        visible={showEditModal}
-        onClose={() => {
-          setShowEditModal(false);
-          setSelectedBanner(null);
-        }}
-        onSubmit={updateBanner}
-        banner={selectedBanner}
-        stores={stores}
-        products={products}
-        categories={categories}
-        coupons={coupons}
-        campaigns={campaigns}
-      />
-
-      {/* Preview Banner Drawer */}
-      <PreviewBannerDrawer
-        visible={showPreviewDrawer}
-        onClose={() => {
-          setShowPreviewDrawer(false);
-          setSelectedBanner(null);
-        }}
-        banner={selectedBanner}
-        stores={stores}
-        products={products}
-        categories={categories}
-        coupons={coupons}
-        campaigns={campaigns}
-      />
-
-      {/* Activate Banner Modal */}
-      <ActivateBannerModal
-        open={showActivateModal}
-        onCancel={() => {
-          setShowActivateModal(false);
-          setSelectedBanner(null);
-        }}
-        onConfirm={async () => {
-          if (selectedBanner) {
-            await updateBannerStatus(selectedBanner._id, "active");
-            setShowActivateModal(false);
-            setSelectedBanner(null);
-          }
-        }}
-        banner={selectedBanner}
-      />
-
-      {/* Deactivate Banner Modal */}
-      <DeactivateBannerModal
-        open={showDeactivateModal}
-        onCancel={() => {
-          setShowDeactivateModal(false);
-          setSelectedBanner(null);
-        }}
-        onConfirm={async () => {
-          if (selectedBanner) {
-            await updateBannerStatus(selectedBanner._id, "inactive");
-            setShowDeactivateModal(false);
-            setSelectedBanner(null);
-          }
-        }}
-        banner={selectedBanner}
-      />
-
-      {/* Delete Banner Modal */}
-      <DeleteBannerModal
-        open={showDeleteModal}
-        onCancel={() => {
-          setShowDeleteModal(false);
-          setSelectedBanner(null);
-        }}
-        onConfirm={async () => {
-          if (selectedBanner) {
-            await deleteBanner(selectedBanner._id);
-            setShowDeleteModal(false);
-            setSelectedBanner(null);
-          }
-        }}
-        banner={selectedBanner}
       />
     </div>
   );

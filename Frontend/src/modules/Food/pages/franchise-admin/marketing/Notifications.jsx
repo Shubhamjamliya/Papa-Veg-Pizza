@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Tag, Tooltip, Pagination, Skeleton, Progress } from "antd";
 import { 
   Bell, Plus, Download, RefreshCw, Search, Eye, Edit, 
@@ -7,13 +7,7 @@ import {
   CheckCircle2, Activity, Smartphone, Mail, Info, Percent, Send, XCircle, RotateCcw
 } from "lucide-react";
 import { useNotifications } from "./hooks/useNotifications";
-import SendNotificationModal from "./components/SendNotificationModal";
-import EditNotificationModal from "./components/EditNotificationModal";
-import ViewNotificationDrawer from "./components/ViewNotificationDrawer";
-import NotificationAnalyticsDrawer from "./components/NotificationAnalyticsDrawer";
-import CancelNotificationModal from "./components/CancelNotificationModal";
-import ResendNotificationModal from "./components/ResendNotificationModal";
-import DeleteNotificationModal from "./components/DeleteNotificationModal";
+import NotificationModals from "./components/NotificationModals";
 import { toast } from "sonner";
 import dayjs from "dayjs";
 
@@ -75,6 +69,20 @@ export default function Notifications() {
     setLogLimit,
     fetchAnalytics
   } = notificationsHook;
+
+  // Debounced search state
+  const [localSearch, setLocalSearch] = useState(search);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(localSearch);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, setSearch]);
+
+  useEffect(() => {
+    setLocalSearch(search);
+  }, [search]);
 
   // Modal Visibility States
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -463,8 +471,8 @@ export default function Notifications() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={13} />
             <input
               type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
               placeholder="Search title or content text..."
               className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-[var(--primary)] font-semibold transition-all h-8"
             />
@@ -606,47 +614,29 @@ export default function Notifications() {
         </div>
       )}
 
-      {/* 5. MODAL DIALOGS CONNECTIONS */}
-
-      {/* Send Notification Modal */}
-      <SendNotificationModal
-        visible={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onSubmit={createNotification}
-        stores={stores}
-      />
-
-      {/* Edit Notification Modal */}
-      <EditNotificationModal
-        visible={showEditModal}
-        onClose={() => {
-          setShowEditModal(false);
-          setSelectedNotification(null);
-        }}
-        onSubmit={updateNotification}
-        notification={selectedNotification}
-        stores={stores}
-      />
-
-      {/* View Notification Details Drawer */}
-      <ViewNotificationDrawer
-        visible={showViewDrawer}
-        onClose={() => {
-          setShowViewDrawer(false);
-          setSelectedNotification(null);
-        }}
-        notification={selectedNotification}
-        stores={stores}
-      />
-
-      {/* Advanced Logs & Charts Analytics Drawer */}
-      <NotificationAnalyticsDrawer
-        visible={showAnalyticsDrawer}
-        onClose={() => {
-          setShowAnalyticsDrawer(false);
-          setSelectedNotification(null);
-        }}
-        notification={selectedNotification}
+      {/* MODALS CONTAINER */}
+      <NotificationModals
+        showCreateModal={showCreateModal}
+        setShowCreateModal={setShowCreateModal}
+        showEditModal={showEditModal}
+        setShowEditModal={setShowEditModal}
+        showViewDrawer={showViewDrawer}
+        setShowViewDrawer={setShowViewDrawer}
+        showAnalyticsDrawer={showAnalyticsDrawer}
+        setShowAnalyticsDrawer={setShowAnalyticsDrawer}
+        showCancelModal={showCancelModal}
+        setShowCancelModal={setShowCancelModal}
+        showResendModal={showResendModal}
+        setShowResendModal={setShowResendModal}
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        selectedNotification={selectedNotification}
+        setSelectedNotification={setSelectedNotification}
+        createNotification={createNotification}
+        updateNotification={updateNotification}
+        deleteNotification={deleteNotification}
+        cancelNotification={cancelNotification}
+        resendNotification={resendNotification}
         loadingAnalytics={loadingAnalytics}
         analyticsData={analyticsData}
         logsList={logsList}
@@ -656,57 +646,7 @@ export default function Notifications() {
         setLogPage={setLogPage}
         logLimit={logLimit}
         setLogLimit={setLogLimit}
-      />
-
-      {/* Cancel Scheduled Notification warning Modal */}
-      <CancelNotificationModal
-        open={showCancelModal}
-        onCancel={() => {
-          setShowCancelModal(false);
-          setSelectedNotification(null);
-        }}
-        onConfirm={async () => {
-          if (selectedNotification) {
-            await cancelNotification(selectedNotification._id);
-            setShowCancelModal(false);
-            setSelectedNotification(null);
-          }
-        }}
-        notification={selectedNotification}
-      />
-
-      {/* Resend Campaign Modal */}
-      <ResendNotificationModal
-        open={showResendModal}
-        onCancel={() => {
-          setShowResendModal(false);
-          setSelectedNotification(null);
-        }}
-        onConfirm={async (option) => {
-          if (selectedNotification) {
-            await resendNotification(selectedNotification._id, option);
-            setShowResendModal(false);
-            setSelectedNotification(null);
-          }
-        }}
-        notification={selectedNotification}
-      />
-
-      {/* Delete / Archive notification Modal */}
-      <DeleteNotificationModal
-        open={showDeleteModal}
-        onCancel={() => {
-          setShowDeleteModal(false);
-          setSelectedNotification(null);
-        }}
-        onConfirm={async () => {
-          if (selectedNotification) {
-            await deleteNotification(selectedNotification._id);
-            setShowDeleteModal(false);
-            setSelectedNotification(null);
-          }
-        }}
-        notification={selectedNotification}
+        stores={stores}
       />
 
     </div>

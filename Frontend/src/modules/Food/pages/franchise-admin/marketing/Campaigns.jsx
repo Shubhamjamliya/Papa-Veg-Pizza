@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Table, Select, Tag, Tooltip, Dropdown, Pagination, Skeleton, ConfigProvider, Progress } from "antd";
 import { 
   Megaphone, Plus, Download, RefreshCw, Search, Eye, Edit, 
@@ -6,12 +6,7 @@ import {
   Calendar, ShoppingBag, TrendingUp, Play
 } from "lucide-react";
 import { useCampaigns } from "./hooks/useCampaigns";
-import CreateCampaignModal from "./components/CreateCampaignModal";
-import EditCampaignModal from "./components/EditCampaignModal";
-import PauseCampaignModal from "./components/PauseCampaignModal";
-import ResumeCampaignModal from "./components/ResumeCampaignModal";
-import DeleteCampaignModal from "./components/DeleteCampaignModal";
-import CampaignDetailsDrawer from "./components/CampaignDetailsDrawer";
+import CampaignModals from "./components/CampaignModals";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import emptyReportsWebp from "../../../../../assets/empty_reports.webp";
@@ -62,6 +57,20 @@ export default function Campaigns() {
     updateCampaignStatus,
     getCampaignPerformanceDetails
   } = campaignsHook;
+
+  // Debounced search state
+  const [localSearch, setLocalSearch] = useState(search);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(localSearch);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [localSearch, setSearch]);
+
+  useEffect(() => {
+    setLocalSearch(search);
+  }, [search]);
 
   // Modal Visibility States
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -597,8 +606,8 @@ export default function Campaigns() {
                 <input
                   type="text"
                   placeholder="Search campaign name..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
+                  value={localSearch}
+                  onChange={e => setLocalSearch(e.target.value)}
                   className="pl-8 pr-3 py-1.5 w-full text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:border-[var(--primary)] transition-all font-semibold h-[32px]"
                 />
               </div>
@@ -747,119 +756,26 @@ export default function Campaigns() {
 
         {/* MODALS */}
 
-        {/* Create Campaign Modal */}
-        <CreateCampaignModal
-          visible={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          stores={stores}
-          onSubmit={async (payload) => {
-            try {
-              await createCampaign(payload);
-              return true;
-            } catch (_) {
-              return false;
-            }
-          }}
-        />
-
-        {/* Edit Campaign Modal */}
-        <EditCampaignModal
-          visible={showEditModal}
-          onClose={() => {
-            setShowEditModal(false);
-            setSelectedCampaign(null);
-          }}
-          campaign={selectedCampaign}
-          stores={stores}
-          onSubmit={async (id, payload) => {
-            try {
-              await updateCampaign(id, payload);
-              return true;
-            } catch (_) {
-              return false;
-            }
-          }}
-        />
-
-        {/* Pause Campaign Warning Modal */}
-        <PauseCampaignModal
-          visible={showPauseModal}
-          onCancel={() => {
-            setShowPauseModal(false);
-            setSelectedCampaign(null);
-          }}
-          campaign={selectedCampaign}
-          onConfirm={async () => {
-            if (selectedCampaign) {
-              await updateCampaignStatus(selectedCampaign._id, "paused");
-              setShowPauseModal(false);
-              setSelectedCampaign(null);
-            }
-          }}
-        />
-
-        {/* Resume Campaign Modal */}
-        <ResumeCampaignModal
-          visible={showResumeModal}
-          onCancel={() => {
-            setShowResumeModal(false);
-            setSelectedCampaign(null);
-          }}
-          campaign={selectedCampaign}
-          onConfirm={async () => {
-            if (selectedCampaign) {
-              await updateCampaignStatus(selectedCampaign._id, "active");
-              setShowResumeModal(false);
-              setSelectedCampaign(null);
-            }
-          }}
-        />
-
-        {/* Delete Campaign Confirmation Modal */}
-        <DeleteCampaignModal
-          visible={showDeleteModal}
-          onCancel={() => {
-            setShowDeleteModal(false);
-            setSelectedCampaign(null);
-          }}
-          campaign={selectedCampaign}
-          performance={{
-            ordersGenerated: selectedCampaign ? {
-              "camp-2": 950,
-              "camp-3": 410,
-              "camp-4": 1680,
-              "camp-5": 3250,
-              "camp-6": 220,
-              "camp-7": 520,
-              "camp-8": 290
-            }[selectedCampaign._id] || 0 : 0,
-            revenueGenerated: selectedCampaign ? {
-              "camp-2": 345000,
-              "camp-3": 128600,
-              "camp-4": 420000,
-              "camp-5": 980000,
-              "camp-6": 108000,
-              "camp-7": 156000,
-              "camp-8": 115000
-            }[selectedCampaign._id] || 0 : 0
-          }}
-          onConfirm={async () => {
-            if (selectedCampaign) {
-              await deleteCampaign(selectedCampaign._id);
-              setShowDeleteModal(false);
-              setSelectedCampaign(null);
-            }
-          }}
-        />
-
-        {/* Campaign Performance Analytics Drawer */}
-        <CampaignDetailsDrawer
-          visible={showDetailsDrawer}
-          onClose={() => {
-            setShowDetailsDrawer(false);
-            setSelectedCampaign(null);
-          }}
-          campaignId={selectedCampaign?._id}
+        {/* MODALS CONTAINER */}
+        <CampaignModals
+          showCreateModal={showCreateModal}
+          setShowCreateModal={setShowCreateModal}
+          showEditModal={showEditModal}
+          setShowEditModal={setShowEditModal}
+          showPauseModal={showPauseModal}
+          setShowPauseModal={setShowPauseModal}
+          showResumeModal={showResumeModal}
+          setShowResumeModal={setShowResumeModal}
+          showDeleteModal={showDeleteModal}
+          setShowDeleteModal={setShowDeleteModal}
+          showDetailsDrawer={showDetailsDrawer}
+          setShowDetailsDrawer={setShowDetailsDrawer}
+          selectedCampaign={selectedCampaign}
+          setSelectedCampaign={setSelectedCampaign}
+          createCampaign={createCampaign}
+          updateCampaign={updateCampaign}
+          deleteCampaign={deleteCampaign}
+          updateCampaignStatus={updateCampaignStatus}
           getCampaignPerformanceDetails={getCampaignPerformanceDetails}
           stores={stores}
         />

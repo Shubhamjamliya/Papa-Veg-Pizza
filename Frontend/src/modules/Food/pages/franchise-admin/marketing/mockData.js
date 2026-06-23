@@ -283,10 +283,74 @@ export const mockCampaignPerformance = {
 };
 
 export const mockCoupons = [
-  { _id: "coup-1", code: "PAPA50", discountType: "percentage", discountValue: 50, maxDiscount: 150, minOrderValue: 299, status: "active", startDate: "2026-06-01", endDate: "2026-07-31", stores: ["store-indore-1"] },
-  { _id: "coup-2", code: "FREEGB", discountType: "fixed", discountValue: 129, maxDiscount: 129, minOrderValue: 399, status: "active", startDate: "2026-06-05", endDate: "2026-08-31", stores: ["store-indore-1", "store-bhopal-1"] },
-  { _id: "coup-3", code: "WELCOME100", discountType: "fixed", discountValue: 100, maxDiscount: 100, minOrderValue: 199, status: "active", startDate: "2026-05-01", endDate: "2026-12-31", stores: [] },
-  { _id: "coup-4", code: "DIWALI25", discountType: "percentage", discountValue: 25, maxDiscount: 300, minOrderValue: 499, status: "active", startDate: "2026-10-15", endDate: "2026-11-05", stores: [] }
+  { 
+    _id: "coup-1", 
+    couponCode: "PAPA50", 
+    code: "PAPA50",
+    title: "Flat 50% Off Special", 
+    description: "Get flat 50% discount on Margherita pizzas. Maximum discount up to ₹150.", 
+    discountType: "percentage", 
+    discountValue: 50, 
+    maximumDiscount: 150, 
+    minimumOrderAmount: 299, 
+    status: "active", 
+    startDate: "2026-06-01", 
+    endDate: "2026-07-31", 
+    storeIds: ["store-indore-1"],
+    createdBy: "Shubham Jamliya",
+    createdAt: "2026-06-01T10:00:00Z"
+  },
+  { 
+    _id: "coup-2", 
+    couponCode: "FREEGB", 
+    code: "FREEGB",
+    title: "Free Garlic Breadsticks", 
+    description: "Get a free Stuffed Garlic Bread on orders above ₹399.", 
+    discountType: "fixed", 
+    discountValue: 129, 
+    maximumDiscount: 129, 
+    minimumOrderAmount: 399, 
+    status: "active", 
+    startDate: "2026-06-05", 
+    endDate: "2026-08-31", 
+    storeIds: ["store-indore-1", "store-bhopal-1"],
+    createdBy: "Rajesh Kumar",
+    createdAt: "2026-06-05T12:00:00Z"
+  },
+  { 
+    _id: "coup-3", 
+    couponCode: "WELCOME100", 
+    code: "WELCOME100",
+    title: "Welcome Discount Offer", 
+    description: "Flat ₹100 off on your first order. Minimum order value ₹199.", 
+    discountType: "fixed", 
+    discountValue: 100, 
+    maximumDiscount: 100, 
+    minimumOrderAmount: 199, 
+    status: "active", 
+    startDate: "2026-05-01", 
+    endDate: "2026-12-31", 
+    storeIds: [],
+    createdBy: "Amit Sharma",
+    createdAt: "2026-05-01T09:00:00Z"
+  },
+  { 
+    _id: "coup-4", 
+    couponCode: "DIWALI25", 
+    code: "DIWALI25",
+    title: "Diwali Fest Combo Discount", 
+    description: "Celebrate Diwali with 25% off on all items. Minimum order value ₹499.", 
+    discountType: "percentage", 
+    discountValue: 25, 
+    maximumDiscount: 300, 
+    minimumOrderAmount: 499, 
+    status: "active", 
+    startDate: "2026-10-15", 
+    endDate: "2026-11-05", 
+    storeIds: [],
+    createdBy: "Shubham Jamliya",
+    createdAt: "2026-06-20T10:00:00Z"
+  }
 ];
 
 export const mockCouponUsage = [

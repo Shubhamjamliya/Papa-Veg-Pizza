@@ -122,29 +122,29 @@ export default function ViewNotificationDrawer({ visible, onClose, notification,
         <Card size="small" className="shadow-xs border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950"
           title={<span className="text-[9px] font-black uppercase text-zinc-400">Settings Configuration</span>}
         >
-          <div className="grid grid-cols-2 gap-4 text-[10px] font-semibold text-zinc-550">
-            <div>
-              <span className="block text-[8px] font-black text-zinc-400 uppercase">Channels</span>
-              <span className="mt-1 block">{renderChannelTags(notification.notificationType)}</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px] font-semibold">
+            <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+              <span className="block text-[8px] font-black text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">Channels</span>
+              <div className="mt-0.5">{renderChannelTags(notification.notificationType)}</div>
             </div>
 
-            <div>
-              <span className="block text-[8px] font-black text-zinc-400 uppercase">Target Audience</span>
-              <span className="mt-1.5 block font-black text-slate-800 dark:text-zinc-200 capitalize">
+            <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+              <span className="block text-[8px] font-black text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">Target Audience</span>
+              <span className="mt-1 font-black text-slate-850 dark:text-zinc-200 capitalize">
                 {notification.targetAudience} Customers
               </span>
             </div>
 
-            <div>
-              <span className="block text-[8px] font-black text-zinc-400 uppercase">Publish Date</span>
-              <span className="mt-1 block font-black text-slate-800 dark:text-zinc-200">
+            <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+              <span className="block text-[8px] font-black text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">Publish Date</span>
+              <span className="mt-1 font-black text-slate-850 dark:text-zinc-200">
                 {notification.scheduleTime ? dayjs(notification.scheduleTime).format("DD MMM YYYY, hh:mm A") : "Immediate"}
               </span>
             </div>
 
-            <div>
-              <span className="block text-[8px] font-black text-zinc-400 uppercase">Configured By</span>
-              <span className="mt-1 block font-black text-slate-800 dark:text-zinc-200">
+            <div className="bg-zinc-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-zinc-150 dark:border-zinc-800 flex flex-col gap-1">
+              <span className="block text-[8px] font-black text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">Configured By</span>
+              <span className="mt-1 font-black text-slate-850 dark:text-zinc-200">
                 {notification.createdBy || "Franchise Admin"}
               </span>
             </div>

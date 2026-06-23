@@ -78,12 +78,12 @@ export default function EditCouponModal({ visible, onClose, onSubmit, coupon }) 
   useEffect(() => {
     if (coupon) {
       reset({
-        couponCode: coupon.couponCode,
-        title: coupon.title,
-        description: coupon.description,
-        status: coupon.status === "expired" ? "inactive" : coupon.status, // normal status
-        discountType: coupon.discountType,
-        discountValue: coupon.discountValue,
+        couponCode: coupon.couponCode || "",
+        title: coupon.title || "",
+        description: coupon.description || "",
+        status: coupon.status === "expired" ? "inactive" : (coupon.status || "active"), // normal status
+        discountType: coupon.discountType || "percentage",
+        discountValue: coupon.discountValue || 0,
         maximumDiscount: coupon.maximumDiscount || null,
         minimumOrderAmount: coupon.minimumOrderAmount || null,
         usageLimit: coupon.usageLimit || null,
@@ -91,9 +91,9 @@ export default function EditCouponModal({ visible, onClose, onSubmit, coupon }) 
         storeIds: coupon.storeIds || [],
         applicableProducts: coupon.applicableProducts || [],
         applicableCategories: coupon.applicableCategories || [],
-        customerType: coupon.customerType,
-        startDate: coupon.startDate,
-        endDate: coupon.endDate
+        customerType: coupon.customerType || "all",
+        startDate: coupon.startDate || "",
+        endDate: coupon.endDate || ""
       });
       setActiveTab("basic");
     }
