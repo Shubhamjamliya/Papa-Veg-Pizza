@@ -12,6 +12,7 @@ const Expenses = lazy(() => import("@food/pages/franchise-admin/finance/Expenses
 const StoreEarnings = lazy(() => import("@food/pages/franchise-admin/finance/StoreEarnings"));
 const RiderPayouts = lazy(() => import("@food/pages/franchise-admin/finance/RiderPayouts"));
 const Reports = lazy(() => import("@food/pages/franchise-admin/finance/Reports"));
+const SalesReport = lazy(() => import("@food/pages/franchise-admin/reports/SalesReport"));
 const AdminProfile = lazy(() => import("@food/pages/franchise-admin/AdminProfile"));
 const AdminSettings = lazy(() => import("@food/pages/franchise-admin/AdminSettings"));
 const RefundRequests = lazy(() => import("@food/pages/franchise-admin/orders/RefundRequests"));
@@ -153,6 +154,7 @@ export default function FranchiseAdminRouter() {
           <Route path="store-earnings" element={<StoreEarnings />} />
           <Route path="rider-payouts" element={<RiderPayouts />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="sales-report" element={<SalesReport />} />
           <Route path="coupons" element={<Coupons />} />
           <Route path="campaigns" element={<Campaigns />} />
           <Route path="banners" element={<PromotionalBanners />} />
@@ -237,7 +239,7 @@ export default function FranchiseAdminRouter() {
             <Route path="restaurant-vat-report" element={<PlaceholderPage title="Restaurant VAT Report" />} />
             
             {/* Extra Report paths from sidebar */}
-            <Route path="sales-report" element={<PlaceholderPage title="Sales Report" />} />
+            {/* Mapped outside to /franchise-admin/sales-report */}
             <Route path="staff-report" element={<PlaceholderPage title="Staff Report" />} />
             <Route path="inventory-report" element={<PlaceholderPage title="Inventory Report" />} />
 
