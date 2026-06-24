@@ -1,5 +1,5 @@
-// Mock Data for Kitchen Queue Operations Console
-// Complies with MongoDB schemas for orders, order_items, customers, stores, staff
+// Mock Data for Kitchen Queue & Preparation Board Operations
+// Complies with MongoDB schemas for orders, order_items, customers, stores, staff, recipes, ingredients, shortages
 
 export const mockChefs = [
   {
@@ -368,5 +368,194 @@ export const initialMockOrders = [
         specialInstructions: "Serve chilled."
       }
     ]
+  }
+];
+
+// MOCK INGREDIENTS
+export const mockIngredients = [
+  { _id: "ing-001", name: "Premium Mozzarella Cheese", currentStock: 24.5, unit: "kg", availability: "In Stock" },
+  { _id: "ing-002", name: "Fresh Pizza Dough (Medium)", currentStock: 12.0, unit: "units", availability: "In Stock" },
+  { _id: "ing-003", name: "Fresh Pizza Dough (Large)", currentStock: 2.0, unit: "units", availability: "Low Stock" },
+  { _id: "ing-004", name: "Signature Pizza Sauce", currentStock: 8.5, unit: "liters", availability: "In Stock" },
+  { _id: "ing-005", name: "Sliced Mushrooms", currentStock: 4.2, unit: "kg", availability: "In Stock" },
+  { _id: "ing-006", name: "Diced Tricolor Capsicum", currentStock: 0.0, unit: "kg", availability: "Out of Stock" },
+  { _id: "ing-007", name: "Fresh Diced Paneer", currentStock: 6.0, unit: "kg", availability: "In Stock" },
+  { _id: "ing-008", name: "Spicy Jalapeno Slices", currentStock: 1.5, unit: "kg", availability: "Low Stock" },
+  { _id: "ing-009", name: "Black Olive Slices", currentStock: 3.8, unit: "kg", availability: "In Stock" },
+  { _id: "ing-010", name: "Sweet Corn Kernels", currentStock: 5.0, unit: "kg", availability: "In Stock" }
+];
+
+// MOCK RECIPES
+export const mockRecipes = [
+  {
+    _id: "rec-001",
+    name: "Double Cheese Margherita Pizza",
+    image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+    prepTime: 10,
+    difficulty: "Easy",
+    recipeCode: "REC-MARG-01",
+    ingredients: [
+      { ingredientId: "ing-002", name: "Fresh Pizza Dough (Medium)", quantity: 1, unit: "unit" },
+      { ingredientId: "ing-004", name: "Signature Pizza Sauce", quantity: 120, unit: "ml" },
+      { ingredientId: "ing-001", name: "Premium Mozzarella Cheese", quantity: 180, unit: "g" }
+    ],
+    instructions: [
+      "Stretches fresh pizza dough to 10-inch diameter on screen.",
+      "Spreads 120ml signature pizza sauce evenly, leaving 1/2-inch border.",
+      "Distributes 180g mozzarella cheese uniformly over sauce.",
+      "Inspect edges for topping symmetry.",
+      "Transfers stretched pizza to oven loading line."
+    ]
+  },
+  {
+    _id: "rec-002",
+    name: "Farmhouse Pizza",
+    image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&q=80&w=300&fm=webp",
+    prepTime: 12,
+    difficulty: "Medium",
+    recipeCode: "REC-FARM-03",
+    ingredients: [
+      { ingredientId: "ing-002", name: "Fresh Pizza Dough (Medium)", quantity: 1, unit: "unit" },
+      { ingredientId: "ing-004", name: "Signature Pizza Sauce", quantity: 120, unit: "ml" },
+      { ingredientId: "ing-001", name: "Premium Mozzarella Cheese", quantity: 140, unit: "g" },
+      { ingredientId: "ing-005", name: "Sliced Mushrooms", quantity: 40, unit: "g" },
+      { ingredientId: "ing-006", name: "Diced Tricolor Capsicum", quantity: 45, unit: "g" },
+      { ingredientId: "ing-007", name: "Fresh Diced Paneer", quantity: 50, unit: "g" }
+    ],
+    instructions: [
+      "Stretch fresh dough, ensure thickness is consistent.",
+      "Apply 120ml pizza sauce and spread evenly.",
+      "Sprinkle 100g mozzarella cheese.",
+      "Distribute mushrooms, capsicum, and paneer cubes uniformly.",
+      "Top with remaining 40g cheese and slide to oven deck."
+    ]
+  },
+  {
+    _id: "rec-003",
+    name: "Tandoori Paneer Pizza",
+    image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&q=80&w=300&fm=webp",
+    prepTime: 15,
+    difficulty: "Hard",
+    recipeCode: "REC-TAND-05",
+    ingredients: [
+      { ingredientId: "ing-002", name: "Fresh Pizza Dough (Medium)", quantity: 1, unit: "unit" },
+      { ingredientId: "ing-004", name: "Signature Pizza Sauce", quantity: 100, unit: "ml" },
+      { ingredientId: "ing-001", name: "Premium Mozzarella Cheese", quantity: 130, unit: "g" },
+      { ingredientId: "ing-007", name: "Fresh Diced Paneer", quantity: 80, unit: "g" },
+      { ingredientId: "ing-010", name: "Sweet Corn Kernels", quantity: 30, unit: "g" }
+    ],
+    instructions: [
+      "Stretch dough to designated size.",
+      "Mix paneer cubes in tandoori marinade marinade first.",
+      "Spread thin layer of sauce, add cheese base.",
+      "Arrange tandoori paneer cubes and corn evenly.",
+      "Dust crust edges with garlic-herb seasoning before baking."
+    ]
+  }
+];
+
+// INITIAL PREPARATION BOARD ITEMS (TRACKED BY ORDER ITEM WORKFLOW)
+export const initialMockPrepItems = [
+  {
+    _id: "prep-item-001",
+    orderId: "ord-1052",
+    orderNumber: "PVP-1052",
+    priority: "VIP",
+    name: "Farmhouse Pizza",
+    size: "Large",
+    crust: "Cheese Burst",
+    quantity: 1,
+    assigned_chef: "chef-001", // Chef Rajesh Kumar
+    current_stage: "dough_prep", // assigned, dough_prep, sauce, toppings, ready_for_baking
+    started_time: new Date(Date.now() - 4 * 60000).toISOString(), // started 4 mins ago
+    estimated_time: 12, // 12 mins to prepare
+    paused: false,
+    pauseReason: "",
+    recipeId: "rec-002"
+  },
+  {
+    _id: "prep-item-002",
+    orderId: "ord-1052",
+    orderNumber: "PVP-1052",
+    priority: "VIP",
+    name: "Choco Lava Cake",
+    size: "Regular",
+    crust: "N/A",
+    quantity: 2,
+    assigned_chef: "chef-001",
+    current_stage: "assigned",
+    started_time: new Date(Date.now() - 3 * 60000).toISOString(),
+    estimated_time: 8,
+    paused: false,
+    pauseReason: "",
+    recipeId: null
+  },
+  {
+    _id: "prep-item-003",
+    orderId: "ord-1053",
+    orderNumber: "PVP-1053",
+    priority: "EXPRESS",
+    name: "Tandoori Paneer Pizza",
+    size: "Medium",
+    crust: "Thin Crust",
+    quantity: 1,
+    assigned_chef: "chef-003", // Chef Sanjay Sharma
+    current_stage: "sauce",
+    started_time: new Date(Date.now() - 8 * 60000).toISOString(), // started 8 mins ago
+    estimated_time: 15,
+    paused: false,
+    pauseReason: "",
+    recipeId: "rec-003"
+  },
+  {
+    _id: "prep-item-004",
+    orderId: "ord-1055",
+    orderNumber: "PVP-1055",
+    priority: "NORMAL",
+    name: "Country Special Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 1,
+    assigned_chef: null, // Unassigned
+    current_stage: "assigned",
+    started_time: new Date(Date.now() - 1 * 60000).toISOString(),
+    estimated_time: 12,
+    paused: false,
+    pauseReason: "",
+    recipeId: null
+  },
+  {
+    _id: "prep-item-005",
+    orderId: "ord-1051",
+    orderNumber: "PVP-1051",
+    priority: "NORMAL",
+    name: "Double Cheese Margherita Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 2,
+    assigned_chef: "chef-004", // Chef Priya Patel
+    current_stage: "toppings",
+    started_time: new Date(Date.now() - 14 * 60000).toISOString(), // 14 mins ago (Exceeded SLA 10) -> Delayed
+    estimated_time: 10,
+    paused: false,
+    pauseReason: "",
+    recipeId: "rec-001"
+  },
+  {
+    _id: "prep-item-006",
+    orderId: "ord-1049",
+    orderNumber: "PVP-1049",
+    priority: "NORMAL",
+    name: "Veggie Supreme Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 1,
+    assigned_chef: "chef-003",
+    current_stage: "ready_for_baking",
+    started_time: new Date(Date.now() - 9 * 60000).toISOString(),
+    estimated_time: 12,
+    paused: false,
+    pauseReason: "",
+    recipeId: "rec-002"
   }
 ];
