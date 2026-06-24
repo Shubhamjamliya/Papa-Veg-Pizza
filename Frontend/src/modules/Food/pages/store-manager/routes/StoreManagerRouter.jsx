@@ -16,6 +16,7 @@ import BakingStation from "../kitchenOperations/BakingStation"
 import PackagingStation from "../kitchenOperations/PackagingStation"
 import DelayedOrders from "../kitchenOperations/DelayedOrders"
 import AssignRider from "../deliveryOperations/AssignRider"
+import RiderAvailability from "../deliveryOperations/RiderAvailability"
 
 
 
@@ -220,11 +221,7 @@ export default function StoreManagerRouter() {
             path="delivery/availability" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Rider Availability" 
-                  description="Manage on-duty riders and active status" 
-                  allowedRoles={["store_manager"]}
-                />
+                <RiderAvailability />
               </RoleProtectedRoute>
             } 
           />
