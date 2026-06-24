@@ -4,6 +4,7 @@ import * as Icons from "lucide-react"
 import StoreOperationsLayout from "../layouts/StoreOperationsLayout"
 import Loader from "@food/components/Loader"
 import StoreOperationsDashboard from "../dashboard/StoreOperationsDashboard"
+import IncomingOrders from "../orders/IncomingOrders"
 
 // A role-based routing wrapper that prevents unauthorized roles from viewing pages
 function RoleProtectedRoute({ allowedRoles, children }) {
@@ -105,11 +106,7 @@ export default function StoreManagerRouter() {
             path="orders/incoming" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
-                <PagePlaceholder 
-                  title="Incoming Orders" 
-                  description="Awaiting acceptance and store confirmation" 
-                  allowedRoles={["store_manager", "kitchen_supervisor"]}
-                />
+                <IncomingOrders />
               </RoleProtectedRoute>
             } 
           />
