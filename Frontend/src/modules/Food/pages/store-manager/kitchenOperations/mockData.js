@@ -1084,4 +1084,198 @@ export const initialMockPackagingLogs = [
   }
 ];
 
+// INITIAL MOCK DELAYED ORDERS
+export const initialMockDelayedOrders = [
+  {
+    _id: "ord-1058",
+    orderNumber: "PVP-1058",
+    customer: {
+      name: "Aarav Sharma",
+      phone: "+91 98765 43210"
+    },
+    status: "preparing", // Queued, Preparing, Baking, Packaging, Ready
+    assigned_staff: "chef-001", // Chef Rajesh Kumar
+    createdAt: new Date(Date.now() - 35 * 60000).toISOString(),
+    expectedReadyTime: new Date(Date.now() - 15 * 60000).toISOString(), // 15 mins overdue
+    sla_minutes: 20,
+    priority: "VIP",
+    grandTotal: 650,
+    isDelayed: true,
+    delay_duration: 18, // minutes
+    reason: "Ingredient Shortage", // kitchen_issues.reason
+    timeline: [
+      { status: "Placed", time: new Date(Date.now() - 45 * 60000).toISOString() },
+      { status: "Confirmed", time: new Date(Date.now() - 40 * 60000).toISOString() },
+      { status: "Queued", time: new Date(Date.now() - 35 * 60000).toISOString() },
+      { status: "Preparing", time: new Date(Date.now() - 30 * 60000).toISOString(), delay: 12 }
+    ],
+    items: [
+      { name: "Double Cheese Margherita Pizza", quantity: 2, size: "Medium" },
+      { name: "Garlic Breadsticks", quantity: 1, size: "Regular" }
+    ]
+  },
+  {
+    _id: "ord-1059",
+    orderNumber: "PVP-1059",
+    customer: {
+      name: "Priya Patel",
+      phone: "+91 87654 32109"
+    },
+    status: "baking",
+    assigned_staff: "staff-002", // Amit Sharma
+    createdAt: new Date(Date.now() - 40 * 60000).toISOString(),
+    expectedReadyTime: new Date(Date.now() - 18 * 60000).toISOString(),
+    sla_minutes: 22,
+    priority: "EXPRESS",
+    grandTotal: 450,
+    isDelayed: true,
+    delay_duration: 22, // minutes (Critical > 20)
+    reason: "Machine Failure",
+    timeline: [
+      { status: "Placed", time: new Date(Date.now() - 50 * 60000).toISOString() },
+      { status: "Confirmed", time: new Date(Date.now() - 46 * 60000).toISOString() },
+      { status: "Queued", time: new Date(Date.now() - 42 * 60000).toISOString() },
+      { status: "Preparing", time: new Date(Date.now() - 35 * 60000).toISOString() },
+      { status: "Baking", time: new Date(Date.now() - 25 * 60000).toISOString(), delay: 17 }
+    ],
+    items: [
+      { name: "Farmhouse Pizza", quantity: 1, size: "Large" }
+    ]
+  },
+  {
+    _id: "ord-1060",
+    orderNumber: "PVP-1060",
+    customer: {
+      name: "Rohan Malhotra",
+      phone: "+91 76543 21098"
+    },
+    status: "packaging",
+    assigned_staff: "staff-pack-001", // Karan Johar
+    createdAt: new Date(Date.now() - 28 * 60000).toISOString(),
+    expectedReadyTime: new Date(Date.now() - 8 * 60000).toISOString(),
+    sla_minutes: 20,
+    priority: "NORMAL",
+    grandTotal: 890,
+    isDelayed: true,
+    delay_duration: 8,
+    reason: "High Order Volume",
+    timeline: [
+      { status: "Placed", time: new Date(Date.now() - 35 * 60000).toISOString() },
+      { status: "Confirmed", time: new Date(Date.now() - 32 * 60000).toISOString() },
+      { status: "Queued", time: new Date(Date.now() - 28 * 60000).toISOString() },
+      { status: "Preparing", time: new Date(Date.now() - 20 * 60000).toISOString() },
+      { status: "Baking", time: new Date(Date.now() - 12 * 60000).toISOString() },
+      { status: "Packaging", time: new Date(Date.now() - 4 * 60000).toISOString(), delay: 6 }
+    ],
+    items: [
+      { name: "Veggie Supreme Pizza", quantity: 2, size: "Medium" },
+      { name: "Choco Lava Cake", quantity: 2, size: "Regular" }
+    ]
+  },
+  {
+    _id: "ord-1061",
+    orderNumber: "PVP-1061",
+    customer: {
+      name: "Isha Verma",
+      phone: "+91 99887 76655"
+    },
+    status: "queued",
+    assigned_staff: null,
+    createdAt: new Date(Date.now() - 25 * 60000).toISOString(),
+    expectedReadyTime: new Date(Date.now() - 5 * 60000).toISOString(),
+    sla_minutes: 20,
+    priority: "NORMAL",
+    grandTotal: 320,
+    isDelayed: true,
+    delay_duration: 12,
+    reason: "Staff Shortage",
+    timeline: [
+      { status: "Placed", time: new Date(Date.now() - 30 * 60000).toISOString() },
+      { status: "Confirmed", time: new Date(Date.now() - 25 * 60000).toISOString() },
+      { status: "Queued", time: new Date(Date.now() - 20 * 60000).toISOString(), delay: 12 }
+    ],
+    items: [
+      { name: "Tandoori Paneer Pizza", quantity: 1, size: "Medium" }
+    ]
+  },
+  {
+    _id: "ord-1062",
+    orderNumber: "PVP-1062",
+    customer: {
+      name: "Sanjay Sharma",
+      phone: "+91 91234 56789"
+    },
+    status: "preparing",
+    assigned_staff: "chef-003", // Chef Sanjay Sharma
+    createdAt: new Date(Date.now() - 55 * 60000).toISOString(),
+    expectedReadyTime: new Date(Date.now() - 25 * 60000).toISOString(),
+    sla_minutes: 30,
+    priority: "VIP",
+    grandTotal: 1200,
+    isDelayed: true,
+    delay_duration: 35, // minutes (Critical > 30)
+    reason: "Ingredient Shortage",
+    timeline: [
+      { status: "Placed", time: new Date(Date.now() - 65 * 60000).toISOString() },
+      { status: "Confirmed", time: new Date(Date.now() - 60 * 60000).toISOString() },
+      { status: "Queued", time: new Date(Date.now() - 55 * 60000).toISOString() },
+      { status: "Preparing", time: new Date(Date.now() - 45 * 60000).toISOString(), delay: 30 }
+    ],
+    items: [
+      { name: "Peppy Paneer Pizza", quantity: 2, size: "Large" },
+      { name: "Country Special Pizza", quantity: 1, size: "Medium" }
+    ]
+  },
+  {
+    _id: "ord-1063",
+    orderNumber: "PVP-1063",
+    customer: {
+      name: "Amit Varma",
+      phone: "+91 93456 78901"
+    },
+    status: "baking",
+    assigned_staff: "staff-003", // Pooja Patel
+    createdAt: new Date(Date.now() - 75 * 60000).toISOString(),
+    expectedReadyTime: new Date(Date.now() - 45 * 60000).toISOString(),
+    sla_minutes: 30,
+    priority: "EXPRESS",
+    grandTotal: 580,
+    isDelayed: true,
+    delay_duration: 50, // minutes (Critical > 45)
+    reason: "Machine Failure",
+    timeline: [
+      { status: "Placed", time: new Date(Date.now() - 85 * 60000).toISOString() },
+      { status: "Confirmed", time: new Date(Date.now() - 80 * 60000).toISOString() },
+      { status: "Queued", time: new Date(Date.now() - 75 * 60000).toISOString() },
+      { status: "Preparing", time: new Date(Date.now() - 65 * 60000).toISOString() },
+      { status: "Baking", time: new Date(Date.now() - 50 * 60000).toISOString(), delay: 45 }
+    ],
+    items: [
+      { name: "Double Cheese Margherita Pizza", quantity: 1, size: "Large" },
+      { name: "Stuffed Garlic Bread", quantity: 1, size: "Regular" }
+    ]
+  }
+];
+
+// INITIAL MOCK ESCALATIONS
+export const initialMockEscalations = [
+  {
+    _id: "esc-001",
+    orderId: "ord-1059",
+    severity: "High",
+    reason: "Oven temperature fluctuation causing delay",
+    assignedTo: "mgt-002", // Kitchen Supervisor (Arvind Swamy)
+    notes: "Supervisor checking the heating elements.",
+    createdAt: new Date(Date.now() - 10 * 60000).toISOString()
+  }
+];
+
+// MOCK MANAGEMENT STAFF
+export const mockManagementStaff = [
+  { _id: "mgt-001", name: "Suresh Kumar", role: "Store Manager", status: "active", avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=100&fm=webp" },
+  { _id: "mgt-002", name: "Arvind Swamy", role: "Kitchen Supervisor", status: "active", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&fm=webp" },
+  { _id: "mgt-003", name: "Vikram Rathore", role: "Operations Manager", status: "active", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&fm=webp" }
+];
+
+
 
