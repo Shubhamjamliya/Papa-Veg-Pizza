@@ -9,6 +9,8 @@ import ActiveOrders from "../orders/ActiveOrders"
 import ReadyOrders from "../orders/ReadyOrders"
 import CompletedOrders from "../orders/CompletedOrders"
 import CancelledOrders from "../orders/CancelledOrders"
+import KitchenQueue from "../kitchenOperations/KitchenQueue"
+
 
 // A role-based routing wrapper that prevents unauthorized roles from viewing pages
 function RoleProtectedRoute({ allowedRoles, children }) {
@@ -151,11 +153,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="kitchen/queue" 
             element={
-              <PagePlaceholder 
-                title="Kitchen Queue" 
-                description="Live cooking backlog and preparation pipeline" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <KitchenQueue />
+              </RoleProtectedRoute>
             } 
           />
           <Route 
