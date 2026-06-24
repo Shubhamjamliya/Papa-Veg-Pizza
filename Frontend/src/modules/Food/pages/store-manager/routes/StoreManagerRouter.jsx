@@ -15,6 +15,7 @@ import PizzaStation from "../kitchenOperations/PizzaStation"
 import BakingStation from "../kitchenOperations/BakingStation"
 import PackagingStation from "../kitchenOperations/PackagingStation"
 import DelayedOrders from "../kitchenOperations/DelayedOrders"
+import AssignRider from "../deliveryOperations/AssignRider"
 
 
 
@@ -211,11 +212,7 @@ export default function StoreManagerRouter() {
             path="delivery/assign" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Assign Rider" 
-                  description="Assign delivery partners to ready orders manually or auto-dispatch" 
-                  allowedRoles={["store_manager"]}
-                />
+                <AssignRider />
               </RoleProtectedRoute>
             } 
           />
