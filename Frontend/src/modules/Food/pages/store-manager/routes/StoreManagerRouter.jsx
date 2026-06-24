@@ -14,6 +14,7 @@ import PreparationBoard from "../kitchenOperations/PreparationBoard"
 import PizzaStation from "../kitchenOperations/PizzaStation"
 import BakingStation from "../kitchenOperations/BakingStation"
 import PackagingStation from "../kitchenOperations/PackagingStation"
+import DelayedOrders from "../kitchenOperations/DelayedOrders"
 
 
 
@@ -200,11 +201,7 @@ export default function StoreManagerRouter() {
             path="kitchen/delayed-orders" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
-                <PagePlaceholder 
-                  title="Delayed Orders" 
-                  description="Delayed items requiring manager intervention" 
-                  allowedRoles={["store_manager", "kitchen_supervisor"]}
-                />
+                <DelayedOrders />
               </RoleProtectedRoute>
             } 
           />
