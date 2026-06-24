@@ -17,6 +17,7 @@ import PackagingStation from "../kitchenOperations/PackagingStation"
 import DelayedOrders from "../kitchenOperations/DelayedOrders"
 import AssignRider from "../deliveryOperations/AssignRider"
 import RiderAvailability from "../deliveryOperations/RiderAvailability"
+import DeliveryTracking from "../deliveryOperations/DeliveryTracking"
 
 
 
@@ -229,11 +230,7 @@ export default function StoreManagerRouter() {
             path="delivery/tracking" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Delivery Tracking" 
-                  description="Live map tracking for active delivery riders" 
-                  allowedRoles={["store_manager"]}
-                />
+                <DeliveryTracking />
               </RoleProtectedRoute>
             } 
           />

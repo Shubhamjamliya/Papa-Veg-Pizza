@@ -1,5 +1,5 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
-import { initialMockStoreRiders } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
+import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
 import {
@@ -116,7 +116,9 @@ let db = {
   generated_order_reports: getStorageItem("generated_order_reports", initialGeneratedOrderReports),
   generated_staff_reports: getStorageItem("generated_staff_reports", initialGeneratedStaffReports),
   generated_inventory_reports: getStorageItem("generated_inventory_reports", initialGeneratedInventoryReports),
-  store_riders: getStorageItem("store_riders", initialMockStoreRiders)
+  store_riders: getStorageItem("store_riders", initialMockStoreRiders),
+  live_deliveries: getStorageItem("live_deliveries", initialMockLiveDeliveries),
+  tracking_data: getStorageItem("tracking_data", initialMockTrackingData)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -3152,6 +3154,22 @@ export function handleMockRequest(config) {
       return successRes(rider);
     }
     return errorRes("Rider not found", 404);
+  }
+
+  // GET /store/delivery/live
+  if (url.includes("/store/delivery/live") && method === "get") {
+    return successRes(db.live_deliveries);
+  }
+
+  // GET /store/tracking/:orderId
+  const trackingDetailMatch = url.match(/\/store\/tracking\/([^/]+)$/);
+  if (trackingDetailMatch && method === "get") {
+    const id = trackingDetailMatch[1];
+    const tracking = db.tracking_data[id];
+    if (tracking) {
+      return successRes(tracking);
+    }
+    return errorRes("Tracking not found for order", 404);
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working

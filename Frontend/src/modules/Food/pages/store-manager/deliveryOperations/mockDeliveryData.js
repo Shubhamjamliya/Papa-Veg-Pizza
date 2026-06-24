@@ -243,3 +243,238 @@ export const initialMockStoreRiders = [
     activeOrders: 0
   }
 ];
+
+export const initialMockLiveDeliveries = [
+  {
+    _id: "track-101",
+    orderId: "ORD-1025",
+    customerName: "Arjun Mehta",
+    riderName: "Rahul Singh",
+    pickupTime: new Date(Date.now() - 15 * 60000).toISOString(),
+    eta: "12 mins",
+    deliveryStatus: "out_for_delivery"
+  },
+  {
+    _id: "track-102",
+    orderId: "ORD-1026",
+    customerName: "Sunita Sharma",
+    riderName: "Amit Patel",
+    pickupTime: new Date(Date.now() - 8 * 60000).toISOString(),
+    eta: "8 mins",
+    deliveryStatus: "picked_up"
+  },
+  {
+    _id: "track-103",
+    orderId: "ORD-1027",
+    customerName: "Vikram Malhotra",
+    riderName: "Vikram Rao",
+    pickupTime: "",
+    eta: "22 mins",
+    deliveryStatus: "assigned"
+  },
+  {
+    _id: "track-104",
+    orderId: "ORD-1028",
+    customerName: "Nisha Gupta",
+    riderName: "Suresh Pillai",
+    pickupTime: new Date(Date.now() - 35 * 60000).toISOString(),
+    eta: "Delivered",
+    deliveryStatus: "delivered"
+  },
+  {
+    _id: "track-105",
+    orderId: "ORD-1029",
+    customerName: "Rohan Verma",
+    riderName: "Pooja Varma",
+    pickupTime: new Date(Date.now() - 2 * 60000).toISOString(),
+    eta: "15 mins",
+    deliveryStatus: "out_for_delivery"
+  }
+];
+
+export const initialMockTrackingData = {
+  "ORD-1025": {
+    customer: {
+      name: "Arjun Mehta",
+      phone: "+91 98765 12345",
+      address: "Flat 402, Block C, Shalimar Township, Vijay Nagar, Indore",
+      latitude: 22.7513,
+      longitude: 75.8953
+    },
+    rider: {
+      name: "Rahul Singh",
+      mobile: "+91 98260 11223",
+      vehicleNumber: "MP-09-AB-1234",
+      latitude: 22.7445,
+      longitude: 75.8965,
+      speed: 35
+    },
+    order: {
+      orderId: "ORD-1025",
+      amount: 650,
+      items: [
+        { name: "Double Cheese Margherita Pizza", quantity: 2, size: "Medium" },
+        { name: "Garlic Breadsticks", quantity: 1, size: "Regular" }
+      ],
+      pickupTime: new Date(Date.now() - 15 * 60000).toISOString()
+    },
+    store: {
+      latitude: 22.7432,
+      longitude: 75.8970
+    },
+    timeline: {
+      assignedAt: new Date(Date.now() - 25 * 60000).toISOString(),
+      acceptedAt: new Date(Date.now() - 22 * 60000).toISOString(),
+      pickupAt: new Date(Date.now() - 15 * 60000).toISOString(),
+      outForDeliveryAt: new Date(Date.now() - 12 * 60000).toISOString(),
+      deliveredAt: ""
+    }
+  },
+  "ORD-1026": {
+    customer: {
+      name: "Sunita Sharma",
+      phone: "+91 91234 56789",
+      address: "House No. 12, Saket Colony, Old Palasia, Indore",
+      latitude: 22.7315,
+      longitude: 75.8820
+    },
+    rider: {
+      name: "Amit Patel",
+      mobile: "+91 94250 44556",
+      vehicleNumber: "MP-09-CD-5678",
+      latitude: 22.7390,
+      longitude: 75.8910,
+      speed: 28
+    },
+    order: {
+      orderId: "ORD-1026",
+      amount: 450,
+      items: [
+        { name: "Farmhouse Pizza", quantity: 1, size: "Large" }
+      ],
+      pickupTime: new Date(Date.now() - 8 * 60000).toISOString()
+    },
+    store: {
+      latitude: 22.7432,
+      longitude: 75.8970
+    },
+    timeline: {
+      assignedAt: new Date(Date.now() - 18 * 60000).toISOString(),
+      acceptedAt: new Date(Date.now() - 16 * 60000).toISOString(),
+      pickupAt: new Date(Date.now() - 8 * 60000).toISOString(),
+      outForDeliveryAt: "",
+      deliveredAt: ""
+    }
+  },
+  "ORD-1027": {
+    customer: {
+      name: "Vikram Malhotra",
+      phone: "+91 99887 76655",
+      address: "Flat 101, Palasia Heights, Near Palasia Square, Indore",
+      latitude: 22.7280,
+      longitude: 75.8910
+    },
+    rider: {
+      name: "Vikram Rao",
+      mobile: "+91 91110 99887",
+      vehicleNumber: "MP-09-GH-3456",
+      latitude: 22.7432,
+      longitude: 75.8970,
+      speed: 0
+    },
+    order: {
+      orderId: "ORD-1027",
+      amount: 1250,
+      items: [
+        { name: "Veggie Supreme Pizza", quantity: 2, size: "Medium" },
+        { name: "Peppy Paneer Pizza", quantity: 1, size: "Large" }
+      ],
+      pickupTime: ""
+    },
+    store: {
+      latitude: 22.7432,
+      longitude: 75.8970
+    },
+    timeline: {
+      assignedAt: new Date(Date.now() - 5 * 60000).toISOString(),
+      acceptedAt: "",
+      pickupAt: "",
+      outForDeliveryAt: "",
+      deliveredAt: ""
+    }
+  },
+  "ORD-1028": {
+    customer: {
+      name: "Nisha Gupta",
+      phone: "+91 93456 78901",
+      address: "Apt 205, Sector B, Scheme 54, Vijay Nagar, Indore",
+      latitude: 22.7560,
+      longitude: 75.8940
+    },
+    rider: {
+      name: "Suresh Pillai",
+      mobile: "+91 98930 77889",
+      vehicleNumber: "MP-09-EF-9012",
+      latitude: 22.7560,
+      longitude: 75.8940,
+      speed: 0
+    },
+    order: {
+      orderId: "ORD-1028",
+      amount: 350,
+      items: [
+        { name: "Tandoori Paneer Pizza", quantity: 1, size: "Medium" }
+      ],
+      pickupTime: new Date(Date.now() - 35 * 60000).toISOString()
+    },
+    store: {
+      latitude: 22.7432,
+      longitude: 75.8970
+    },
+    timeline: {
+      assignedAt: new Date(Date.now() - 45 * 60000).toISOString(),
+      acceptedAt: new Date(Date.now() - 42 * 60000).toISOString(),
+      pickupAt: new Date(Date.now() - 35 * 60000).toISOString(),
+      outForDeliveryAt: new Date(Date.now() - 30 * 60000).toISOString(),
+      deliveredAt: new Date(Date.now() - 10 * 60000).toISOString()
+    }
+  },
+  "ORD-1029": {
+    customer: {
+      name: "Rohan Verma",
+      phone: "+91 95555 44444",
+      address: "B-44, Anurag Nagar, Behind Press Complex, Indore",
+      latitude: 22.7380,
+      longitude: 75.8850
+    },
+    rider: {
+      name: "Pooja Varma",
+      mobile: "+91 97550 55443",
+      vehicleNumber: "MP-09-IJ-7890",
+      latitude: 22.7410,
+      longitude: 75.8910,
+      speed: 38
+    },
+    order: {
+      orderId: "ORD-1029",
+      amount: 890,
+      items: [
+        { name: "Country Special Pizza", quantity: 1, size: "Medium" },
+        { name: "Double Cheese Margherita Pizza", quantity: 1, size: "Large" }
+      ],
+      pickupTime: new Date(Date.now() - 10 * 60000).toISOString()
+    },
+    store: {
+      latitude: 22.7432,
+      longitude: 75.8970
+    },
+    timeline: {
+      assignedAt: new Date(Date.now() - 20 * 60000).toISOString(),
+      acceptedAt: new Date(Date.now() - 18 * 60000).toISOString(),
+      pickupAt: new Date(Date.now() - 10 * 60000).toISOString(),
+      outForDeliveryAt: new Date(Date.now() - 7 * 60000).toISOString(),
+      deliveredAt: ""
+    }
+  }
+};
+
