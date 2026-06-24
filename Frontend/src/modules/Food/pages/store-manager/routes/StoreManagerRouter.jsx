@@ -18,6 +18,7 @@ import DelayedOrders from "../kitchenOperations/DelayedOrders"
 import AssignRider from "../deliveryOperations/AssignRider"
 import RiderAvailability from "../deliveryOperations/RiderAvailability"
 import DeliveryTracking from "../deliveryOperations/DeliveryTracking"
+import DeliveryIssue from "../deliveryOperations/DeliveryIssue"
 
 
 
@@ -238,11 +239,7 @@ export default function StoreManagerRouter() {
             path="delivery/issues" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Delivery Issues" 
-                  description="Rider delays, wrong address reports, and transit issues" 
-                  allowedRoles={["store_manager"]}
-                />
+                <DeliveryIssue />
               </RoleProtectedRoute>
             } 
           />

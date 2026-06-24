@@ -1,5 +1,5 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
-import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
+import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData, initialMockDeliveryIssues, initialMockNotifications, initialMockDeliveryTimelines } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
 import {
@@ -118,7 +118,10 @@ let db = {
   generated_inventory_reports: getStorageItem("generated_inventory_reports", initialGeneratedInventoryReports),
   store_riders: getStorageItem("store_riders", initialMockStoreRiders),
   live_deliveries: getStorageItem("live_deliveries", initialMockLiveDeliveries),
-  tracking_data: getStorageItem("tracking_data", initialMockTrackingData)
+  tracking_data: getStorageItem("tracking_data", initialMockTrackingData),
+  delivery_issues: getStorageItem("delivery_issues", initialMockDeliveryIssues),
+  delivery_notifications: getStorageItem("delivery_notifications", initialMockNotifications),
+  delivery_timelines: getStorageItem("delivery_timelines", initialMockDeliveryTimelines)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -3170,6 +3173,132 @@ export function handleMockRequest(config) {
       return successRes(tracking);
     }
     return errorRes("Tracking not found for order", 404);
+  }
+
+  // GET /store/delivery/issues
+  if (url.includes("/store/delivery/issues") && method === "get") {
+    return successRes(db.delivery_issues);
+  }
+
+  // POST /store/delivery/issues
+  if (url.includes("/store/delivery/issues") && method === "post") {
+    const rider = db.store_riders.find(r => r._id === data.riderId);
+    const newIssue = {
+      _id: `TKT-${Math.floor(305 + Math.random() * 100)}`,
+      orderId: data.orderId,
+      riderId: data.riderId,
+      riderName: rider ? rider.name : "Not Assigned",
+      issueType: data.issueType,
+      description: data.description || "",
+      reportedBy: data.reportedBy || "Store Manager",
+      severity: data.severity || "medium",
+      status: "open",
+      resolution: "",
+      refundAmount: 0,
+      penaltyAmount: 0,
+      createdAt: new Date().toISOString()
+    };
+    db.delivery_issues.unshift(newIssue);
+    
+    // Add a timeline node
+    if (!db.delivery_timelines[data.orderId]) {
+      db.delivery_timelines[data.orderId] = [];
+    }
+    db.delivery_timelines[data.orderId].push({
+      status: `issue_reported_${data.issueType.toLowerCase().replace(/\s+/g, "_")}`,
+      updatedBy: data.reportedBy || "Store Manager",
+      timestamp: new Date().toISOString()
+    });
+
+    // Create notification
+    const newNotif = {
+      _id: `notif-${Date.now()}`,
+      userId: "manager-1",
+      title: "Delivery Issue Created",
+      message: `${data.issueType} reported for Order ${data.orderId}`,
+      type: data.severity === "critical" ? "critical" : "warning",
+      isRead: false,
+      createdAt: new Date().toISOString()
+    };
+    db.delivery_notifications.unshift(newNotif);
+
+    saveDB();
+    return successRes(newIssue);
+  }
+
+  // PATCH /store/delivery/issues/:id
+  const issuePatchMatch = url.match(/\/store\/delivery\/issues\/([^/]+)$/);
+  if (issuePatchMatch && method === "patch") {
+    const id = issuePatchMatch[1];
+    const idx = db.delivery_issues.findIndex(iss => iss._id === id);
+    if (idx !== -1) {
+      const issue = db.delivery_issues[idx];
+      const updated = {
+        ...issue,
+        ...data,
+      };
+      
+      if (data.reassignRiderId) {
+        const newRider = db.store_riders.find(r => r._id === data.reassignRiderId);
+        if (newRider) {
+          updated.riderId = newRider._id;
+          updated.riderName = newRider.name;
+        }
+      }
+
+      db.delivery_issues[idx] = updated;
+
+      // Update timelines
+      if (db.delivery_timelines[issue.orderId]) {
+        db.delivery_timelines[issue.orderId].push({
+          status: `issue_resolved_${updated.status}`,
+          updatedBy: "Store Manager",
+          timestamp: new Date().toISOString()
+        });
+      }
+
+      // Create notification
+      const newNotif = {
+        _id: `notif-${Date.now()}`,
+        userId: "manager-1",
+        title: `Issue ${updated.status}`,
+        message: `Issue ticket ${id} has been set to ${updated.status}.`,
+        type: updated.status === "resolved" ? "success" : "info",
+        isRead: false,
+        createdAt: new Date().toISOString()
+      };
+      db.delivery_notifications.unshift(newNotif);
+
+      saveDB();
+      return successRes(updated);
+    }
+    return errorRes("Issue ticket not found", 404);
+  }
+
+  // GET /store/delivery/notifications
+  if (url.includes("/store/delivery/notifications") && method === "get") {
+    return successRes(db.delivery_notifications);
+  }
+
+  // PATCH /store/delivery/notifications/:id
+  const notifPatchMatch = url.match(/\/store\/delivery\/notifications\/([^/]+)$/);
+  if (notifPatchMatch && method === "patch") {
+    const id = notifPatchMatch[1];
+    const idx = db.delivery_notifications.findIndex(n => n._id === id);
+    if (idx !== -1) {
+      db.delivery_notifications[idx].isRead = true;
+      saveDB();
+      return successRes(db.delivery_notifications[idx]);
+    }
+    return errorRes("Notification not found", 404);
+  }
+
+  // GET /store/delivery/timeline/:orderId
+  const timelineMatch = url.match(/\/store\/delivery\/timeline\/([^/]+)$/);
+  if (timelineMatch && method === "get") {
+    const orderId = timelineMatch[1];
+    const timeline = db.delivery_timelines[orderId] || [];
+    return successRes(timeline);
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working
