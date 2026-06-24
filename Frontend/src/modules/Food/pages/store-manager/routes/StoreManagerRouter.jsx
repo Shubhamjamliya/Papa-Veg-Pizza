@@ -7,6 +7,7 @@ import StoreOperationsDashboard from "../dashboard/StoreOperationsDashboard"
 import IncomingOrders from "../orders/IncomingOrders"
 import ActiveOrders from "../orders/ActiveOrders"
 import ReadyOrders from "../orders/ReadyOrders"
+import CompletedOrders from "../orders/CompletedOrders"
 
 // A role-based routing wrapper that prevents unauthorized roles from viewing pages
 function RoleProtectedRoute({ allowedRoles, children }) {
@@ -131,11 +132,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="orders/completed" 
             element={
-              <PagePlaceholder 
-                title="Completed Orders" 
-                description="Past fulfilled orders and transactions history" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
+                <CompletedOrders />
+              </RoleProtectedRoute>
             } 
           />
           <Route 

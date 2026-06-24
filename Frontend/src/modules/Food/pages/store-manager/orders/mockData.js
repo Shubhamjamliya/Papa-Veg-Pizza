@@ -915,4 +915,488 @@ export const initialMockReadyOrders = [
   }
 ];
 
+export const initialMockCompletedOrders = [
+  {
+    _id: "comp-001",
+    orderNumber: "PVP-90812",
+    customerId: "cust-5011",
+    status: "completed",
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 45 * 60 * 1000).toISOString(), // 3 days ago
+    deliveredAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 15 * 60 * 1000).toISOString(),
+    totalDuration: 30, // 30 minutes
+    customerRating: 5,
+    review: "Excellent crust and toppings! The Double Cheese Margherita was loaded with fresh cheese.",
+    invoiceUrl: "/invoices/invoice-90812.pdf",
+    transactionId: "TXN_778129031",
+    paymentMethod: "Online",
+    paymentGateway: "Razorpay",
+    refundStatus: "none",
+    refundAmount: 0,
+    refundTransactionId: "",
+    deliveryPartnerId: "rider-001", // Ramesh Kumar
+    couponId: "cp-50",
+    couponCode: "PVPWELCOME",
+    couponType: "flat",
+    discountAmount: 50.00,
+    couponCampaignName: "Welcome Offer 2026",
+    subtotal: 1100.00,
+    taxes: 55.00, // CGST + SGST (5%)
+    deliveryCharges: 40.00,
+    packingCharges: 15.00,
+    tipAmount: 20.00,
+    grandTotal: 1180.00, // High Value Order (> 1000)
+    orderType: "delivery",
+    priority: "vip",
+    orderSource: "Website",
+    customer: {
+      name: "Rahul Sharma",
+      phone: "+91 98765 12345",
+      email: "rahul.sharma@gmail.com",
+      loyaltyPoints: 450,
+      previousOrdersCount: 15
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Large",
+        variant: "Pan Crust",
+        unitPrice: 280,
+        subtotal: 560,
+        customizations: {
+          crustType: "Pan Crust",
+          cheeseLevel: "Extra Cheese",
+          extraToppings: ["Mushroom", "Black Olives"],
+          specialInstructions: "Make it extra cheesy!"
+        }
+      },
+      {
+        productId: "prod-002",
+        name: "Tandoori Paneer Pizza",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Medium",
+        variant: "Cheese Burst",
+        unitPrice: 270,
+        subtotal: 540,
+        customizations: {
+          crustType: "Cheese Burst",
+          cheeseLevel: "Regular Cheese",
+          extraToppings: ["Onion", "Paneer Tikka"],
+          specialInstructions: "Spicy and well done."
+        }
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 45 * 60 * 1000).toISOString(), note: "Order placed via Website" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 43 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 40 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 30 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 22 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 18 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" },
+      { status: "picked_up", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 16 * 60 * 1000).toISOString(), note: "Picked up by rider Ramesh Kumar" },
+      { status: "delivered", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 15 * 60 * 1000).toISOString(), note: "Delivered to customer" },
+      { status: "completed", timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 - 10 * 60 * 1000).toISOString(), note: "Feedback received, order closed" }
+    ]
+  },
+  {
+    _id: "comp-002",
+    orderNumber: "PVP-90815",
+    customerId: "cust-5012",
+    status: "delivered",
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 50 * 60 * 1000).toISOString(), // 2 days ago
+    deliveredAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 10 * 60 * 1000).toISOString(),
+    totalDuration: 40,
+    customerRating: 4,
+    review: "Pizza was hot and tasty, but delivery took a little longer than expected.",
+    invoiceUrl: "/invoices/invoice-90815.pdf",
+    transactionId: "",
+    paymentMethod: "COD",
+    paymentGateway: "Cash",
+    refundStatus: "none",
+    refundAmount: 0,
+    refundTransactionId: "",
+    deliveryPartnerId: "rider-002", // Sunita Patil
+    couponId: "",
+    couponCode: "",
+    couponType: "",
+    discountAmount: 0,
+    couponCampaignName: "",
+    subtotal: 420.00,
+    taxes: 21.00,
+    deliveryCharges: 40.00,
+    packingCharges: 10.00,
+    tipAmount: 0,
+    grandTotal: 491.00,
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "Android",
+    customer: {
+      name: "Sneha Patel",
+      phone: "+91 99887 11223",
+      email: "sneha.patel@yahoo.com",
+      loyaltyPoints: 120,
+      previousOrdersCount: 3
+    },
+    items: [
+      {
+        productId: "prod-003",
+        name: "Veggie Supreme Pizza",
+        image: "https://images.unsplash.com/photo-1571066811602-716837d681de?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Thin Crust",
+        unitPrice: 240,
+        subtotal: 240,
+        customizations: {
+          crustType: "Thin Crust",
+          cheeseLevel: "Regular Cheese",
+          extraToppings: ["Capsicum", "Tomato"],
+          specialInstructions: "Cut into 6 slices."
+        }
+      },
+      {
+        productId: "prod-004",
+        name: "Garlic Breadsticks",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Standard",
+        variant: "Original",
+        unitPrice: 90,
+        subtotal: 180,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 50 * 60 * 1000).toISOString(), note: "Order placed via Android" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 48 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 45 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 32 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 24 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 20 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" },
+      { status: "picked_up", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 15 * 60 * 1000).toISOString(), note: "Picked up by rider Sunita Patil" },
+      { status: "delivered", timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 - 10 * 60 * 1000).toISOString(), note: "Delivered to customer" }
+    ]
+  },
+  {
+    _id: "comp-003",
+    orderNumber: "PVP-90820",
+    customerId: "cust-5013",
+    status: "completed",
+    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 120 * 60 * 1000).toISOString(), // 1 day ago
+    deliveredAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 95 * 60 * 1000).toISOString(),
+    totalDuration: 25,
+    customerRating: 3,
+    review: "Taste was average, crust was a bit dry. Delivery was quick though.",
+    invoiceUrl: "/invoices/invoice-90820.pdf",
+    transactionId: "TXN_WALLET_88201",
+    paymentMethod: "Wallet",
+    paymentGateway: "Paytm Wallet",
+    refundStatus: "none",
+    refundAmount: 0,
+    refundTransactionId: "",
+    deliveryPartnerId: "rider-003", // Ajay Sharma
+    couponId: "",
+    couponCode: "",
+    couponType: "",
+    discountAmount: 0,
+    couponCampaignName: "",
+    subtotal: 800.00,
+    taxes: 40.00,
+    deliveryCharges: 0.00,
+    packingCharges: 10.00,
+    tipAmount: 10.00,
+    grandTotal: 860.00,
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "iOS",
+    customer: {
+      name: "Vikram Singh",
+      phone: "+91 97766 55443",
+      email: "vikram.s@gmail.com",
+      loyaltyPoints: 310,
+      previousOrdersCount: 9
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 440,
+        customizations: {}
+      },
+      {
+        productId: "prod-003",
+        name: "Veggie Supreme Pizza",
+        image: "https://images.unsplash.com/photo-1571066811602-716837d681de?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Cheese Burst",
+        unitPrice: 310,
+        subtotal: 310,
+        customizations: {
+          crustType: "Cheese Burst",
+          cheeseLevel: "Regular Cheese"
+        }
+      },
+      {
+        productId: "prod-005",
+        name: "Choco Lava Cake",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Standard",
+        variant: "Original",
+        unitPrice: 50,
+        subtotal: 50,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 120 * 60 * 1000).toISOString(), note: "Order placed via iOS App" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 118 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 115 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 105 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 99 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 97 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" },
+      { status: "picked_up", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 96 * 60 * 1000).toISOString(), note: "Picked up by rider Ajay Sharma" },
+      { status: "delivered", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 95 * 60 * 1000).toISOString(), note: "Delivered to customer" },
+      { status: "completed", timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 80 * 60 * 1000).toISOString(), note: "Feedback logged" }
+    ]
+  },
+  {
+    _id: "comp-004",
+    orderNumber: "PVP-90825",
+    customerId: "cust-5014",
+    status: "completed",
+    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+    deliveredAt: new Date(Date.now() - 5.5 * 60 * 60 * 1000).toISOString(),
+    totalDuration: 30,
+    customerRating: 5,
+    review: "Amazing taste! Tandoori paneer was fresh and spicy. Worth the price.",
+    invoiceUrl: "/invoices/invoice-90825.pdf",
+    transactionId: "TXN_778129090",
+    paymentMethod: "Online",
+    paymentGateway: "Razorpay",
+    refundStatus: "none",
+    refundAmount: 0,
+    refundTransactionId: "",
+    deliveryPartnerId: null, // Self-pickup
+    couponId: "cp-100",
+    couponCode: "FESTIVE100",
+    couponType: "flat",
+    discountAmount: 100.00,
+    couponCampaignName: "Festive Season Discount",
+    subtotal: 1200.00,
+    taxes: 60.00,
+    deliveryCharges: 0.00,
+    packingCharges: 20.00,
+    tipAmount: 0,
+    grandTotal: 1180.00, // High Value Order (> 1000)
+    orderType: "pickup",
+    priority: "normal",
+    orderSource: "POS",
+    customer: {
+      name: "Aarav Verma",
+      phone: "+91 96655 44332",
+      email: "aarav.v@gmail.com",
+      loyaltyPoints: 210,
+      previousOrdersCount: 4
+    },
+    items: [
+      {
+        productId: "prod-002",
+        name: "Tandoori Paneer Pizza",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 3,
+        size: "Large",
+        variant: "Pan Crust",
+        unitPrice: 320,
+        subtotal: 960,
+        customizations: {
+          crustType: "Pan Crust",
+          cheeseLevel: "Extra Cheese",
+          extraToppings: ["Paneer Tikka"]
+        }
+      },
+      {
+        productId: "prod-003",
+        name: "Veggie Supreme Pizza",
+        image: "https://images.unsplash.com/photo-1571066811602-716837d681de?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Thin Crust",
+        unitPrice: 240,
+        subtotal: 240,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), note: "POS order placed at store counter" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 5.8 * 60 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 5.6 * 60 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 5.55 * 60 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 5.5 * 60 * 60 * 1000).toISOString(), note: "Marked ready for counter pickup" },
+      { status: "delivered", timestamp: new Date(Date.now() - 5.5 * 60 * 60 * 1000).toISOString(), note: "Picked up by customer Aarav Verma" },
+      { status: "completed", timestamp: new Date(Date.now() - 5.4 * 60 * 60 * 1000).toISOString(), note: "Order closed" }
+    ]
+  },
+  {
+    _id: "comp-005",
+    orderNumber: "PVP-90830",
+    customerId: "cust-5015",
+    status: "completed",
+    createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), // 8 hours ago
+    deliveredAt: new Date(Date.now() - 7.5 * 60 * 60 * 1000).toISOString(),
+    totalDuration: 30,
+    customerRating: 5,
+    review: "Awesome, refund processed fast too since they forgot my dessert. Pizza was delicious.",
+    invoiceUrl: "/invoices/invoice-90830.pdf",
+    transactionId: "TXN_778129101",
+    paymentMethod: "Online",
+    paymentGateway: "Razorpay",
+    refundStatus: "refunded",
+    refundAmount: 150.00,
+    refundTransactionId: "REF_9912001A",
+    deliveryPartnerId: "rider-001", // Ramesh Kumar
+    couponId: "",
+    couponCode: "",
+    couponType: "",
+    discountAmount: 0,
+    couponCampaignName: "",
+    subtotal: 650.00,
+    taxes: 32.50,
+    deliveryCharges: 40.00,
+    packingCharges: 10.00,
+    tipAmount: 0,
+    grandTotal: 732.50,
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "Swiggy",
+    customer: {
+      name: "Ananya Iyer",
+      phone: "+91 95544 33221",
+      email: "ananya.iyer@gmail.com",
+      loyaltyPoints: 90,
+      previousOrdersCount: 2
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 440,
+        customizations: {}
+      },
+      {
+        productId: "prod-005",
+        name: "Choco Lava Cake",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 3,
+        size: "Standard",
+        variant: "Original",
+        unitPrice: 50,
+        subtotal: 150,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), note: "Swiggy Channel Order accepted" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 7.9 * 60 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 7.7 * 60 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 7.6 * 60 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 7.55 * 60 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" },
+      { status: "picked_up", timestamp: new Date(Date.now() - 7.52 * 60 * 60 * 1000).toISOString(), note: "Picked up by rider Ramesh Kumar" },
+      { status: "delivered", timestamp: new Date(Date.now() - 7.5 * 60 * 60 * 1000).toISOString(), note: "Delivered to customer" },
+      { status: "completed", timestamp: new Date(Date.now() - 7.3 * 60 * 60 * 1000).toISOString(), note: "Refund issued for missing items. Order closed." }
+    ]
+  },
+  {
+    _id: "comp-006",
+    orderNumber: "PVP-90835",
+    customerId: "cust-5016",
+    status: "delivered",
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+    deliveredAt: new Date(Date.now() - 1.5 * 60 * 60 * 1000).toISOString(),
+    totalDuration: 30,
+    customerRating: 1,
+    review: "Pizza was absolutely cold and dry. Very disappointed with Swiggy delivery partner.",
+    invoiceUrl: "/invoices/invoice-90835.pdf",
+    transactionId: "TXN_778129112",
+    paymentMethod: "Online",
+    paymentGateway: "Razorpay",
+    refundStatus: "none",
+    refundAmount: 0,
+    refundTransactionId: "",
+    deliveryPartnerId: "rider-002", // Sunita Patil
+    couponId: "",
+    couponCode: "",
+    couponType: "",
+    discountAmount: 0,
+    couponCampaignName: "",
+    subtotal: 510.00,
+    taxes: 25.50,
+    deliveryCharges: 40.00,
+    packingCharges: 10.00,
+    tipAmount: 0,
+    grandTotal: 585.50,
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "Zomato",
+    customer: {
+      name: "Sameer Joshi",
+      phone: "+91 94433 22110",
+      email: "sameer.joshi@outlook.com",
+      loyaltyPoints: 40,
+      previousOrdersCount: 1
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 220,
+        customizations: {}
+      },
+      {
+        productId: "prod-002",
+        name: "Tandoori Paneer Pizza",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 290,
+        subtotal: 290,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), note: "Zomato Channel Order accepted" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 1.9 * 60 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 1.7 * 60 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 1.6 * 60 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 1.55 * 60 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" },
+      { status: "picked_up", timestamp: new Date(Date.now() - 1.52 * 60 * 65 * 1000).toISOString(), note: "Picked up by rider Sunita Patil" },
+      { status: "delivered", timestamp: new Date(Date.now() - 1.5 * 60 * 60 * 1000).toISOString(), note: "Delivered to customer Sameer Joshi" }
+    ]
+  }
+];
+
+
 

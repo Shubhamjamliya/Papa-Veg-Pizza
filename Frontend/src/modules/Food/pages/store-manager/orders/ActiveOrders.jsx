@@ -23,7 +23,8 @@ import {
   Calendar,
   Sparkles,
   ShieldAlert,
-  ArrowRight
+  ArrowRight,
+  Eye
 } from "lucide-react";
 import {
   Input,
@@ -338,43 +339,48 @@ export default function ActiveOrders() {
     {
       title: <span className="text-xs font-black text-slate-700 dark:text-zinc-300">Actions</span>,
       key: "actions",
+      width: 140,
       render: (_, record) => (
-        <div className="flex gap-1.5 flex-wrap">
-          <Button
-            size="small"
-            onClick={() => openModal("details", record)}
-            className="text-[10px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-0.5 cursor-pointer"
-          >
-            Details
-          </Button>
+        <div className="flex gap-1.5 items-center">
+          <Tooltip title="View Details">
+            <Button
+              size="small"
+              onClick={() => openModal("details", record)}
+              icon={<Eye size={12} />}
+              className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+            />
+          </Tooltip>
 
           {(role === "store_manager" || role === "kitchen_supervisor") && (
             <>
-              <Button
-                size="small"
-                onClick={() => openModal("assign", record)}
-                className="text-[10px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-0.5 cursor-pointer"
-              >
-                Assign
-              </Button>
-              <Button
-                size="small"
-                onClick={() => openModal("priority", record)}
-                className="text-[10px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-0.5 cursor-pointer"
-              >
-                Priority
-              </Button>
+              <Tooltip title="Assign Staff">
+                <Button
+                  size="small"
+                  onClick={() => openModal("assign", record)}
+                  icon={<UserCheck size={12} />}
+                  className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+                />
+              </Tooltip>
+              <Tooltip title="Change Priority">
+                <Button
+                  size="small"
+                  onClick={() => openModal("priority", record)}
+                  icon={<ShieldAlert size={12} />}
+                  className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+                />
+              </Tooltip>
             </>
           )}
 
           {(role === "store_manager" || role === "kitchen_supervisor" || role === "packaging_staff") && (
-            <Button
-              size="small"
-              onClick={() => openModal("ready", record)}
-              className="text-[10px] font-bold !bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full px-3 py-0.5 cursor-pointer shadow-md shadow-primary/15"
-            >
-              Mark Ready
-            </Button>
+            <Tooltip title="Mark Ready">
+              <Button
+                size="small"
+                onClick={() => openModal("ready", record)}
+                icon={<CheckCircle2 size={12} />}
+                className="!bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer shadow-md shadow-primary/15 active:scale-95 transition-all"
+              />
+            </Tooltip>
           )}
         </div>
       )
@@ -497,34 +503,37 @@ export default function ActiveOrders() {
         </div>
 
         {/* Card Responsive Actions */}
-        <div className="flex items-center justify-between gap-1 border-t border-zinc-100 dark:border-zinc-800/30 pt-2">
-          <Button
-            size="small"
-            onClick={() => openModal("details", orderObj)}
-            className="text-[9px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-1 cursor-pointer w-full text-center"
-          >
-            Details
-          </Button>
-
-          {(role === "store_manager" || role === "kitchen_supervisor") && (
+        <div className="flex items-center justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800/30 pt-2">
+          <Tooltip title="View Details">
             <Button
               size="small"
-              onClick={() => openModal("assign", orderObj)}
-              className="text-[9px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-1 cursor-pointer w-full text-center"
-            >
-              Assign
-            </Button>
+              onClick={() => openModal("details", orderObj)}
+              icon={<Eye size={12} />}
+              className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+            />
+          </Tooltip>
+
+          {(role === "store_manager" || role === "kitchen_supervisor") && (
+            <Tooltip title="Assign Staff">
+              <Button
+                size="small"
+                onClick={() => openModal("assign", orderObj)}
+                icon={<UserCheck size={12} />}
+                className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+              />
+            </Tooltip>
           )}
 
           {(role === "store_manager" || role === "kitchen_supervisor" || role === "packaging_staff") && 
            (orderObj.status === "packaging" || role === "store_manager" || role === "kitchen_supervisor") && (
-            <Button
-              size="small"
-              onClick={() => openModal("ready", orderObj)}
-              className="text-[9px] font-bold !bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full px-2 py-1 cursor-pointer w-full text-center flex items-center justify-center gap-0.5 shadow-md shadow-primary/15"
-            >
-              Ready <ArrowRight size={10} />
-            </Button>
+            <Tooltip title="Mark Ready">
+              <Button
+                size="small"
+                onClick={() => openModal("ready", orderObj)}
+                icon={<CheckCircle2 size={12} />}
+                className="!bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer shadow-md shadow-primary/15 active:scale-95 transition-all"
+              />
+            </Tooltip>
           )}
         </div>
       </div>
