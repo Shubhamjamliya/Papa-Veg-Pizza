@@ -647,3 +647,272 @@ export const initialMockActiveOrders = [
   }
 ];
 
+export const initialMockRiders = [
+  {
+    _id: "rider-001",
+    name: "Ramesh Kumar",
+    employeeId: "EMP-PV-RID-01",
+    status: "active",
+    availability: "available",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-09-AB-1234",
+    phone: "+91 98765 11111",
+    rating: 4.8,
+    currentDeliveries: 0
+  },
+  {
+    _id: "rider-002",
+    name: "Sunita Patil",
+    employeeId: "EMP-PV-RID-02",
+    status: "active",
+    availability: "available",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-09-CD-5678",
+    phone: "+91 98765 22222",
+    rating: 4.9,
+    currentDeliveries: 0
+  },
+  {
+    _id: "rider-003",
+    name: "Ajay Sharma",
+    employeeId: "EMP-PV-RID-03",
+    status: "active",
+    availability: "available",
+    vehicleType: "Bike",
+    vehicleNumber: "MP-09-EF-9012",
+    phone: "+91 98765 33333",
+    rating: 4.6,
+    currentDeliveries: 1
+  },
+  {
+    _id: "rider-004",
+    name: "Vijay Singh",
+    employeeId: "EMP-PV-RID-04",
+    status: "active",
+    availability: "available",
+    vehicleType: "Scooter",
+    vehicleNumber: "MP-09-GH-3456",
+    phone: "+91 98765 44444",
+    rating: 4.7,
+    currentDeliveries: 0
+  }
+];
+
+export const initialMockReadyOrders = [
+  {
+    _id: "660c1d2eef20092c4820a021",
+    orderNumber: "PVP-10261",
+    customerId: "cust-7701",
+    customer: {
+      name: "Arjun Mehta",
+      phone: "+91 98222 33333",
+      email: "arjun.mehta@gmail.com",
+      loyaltyPoints: 150,
+      previousOrdersCount: 8
+    },
+    storeId: "st-indore-01",
+    status: "ready",
+    createdAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(), // 25 mins ago
+    readyAt: new Date(Date.now() - 3 * 60 * 1000).toISOString(), // 3 mins ago (Green)
+    orderType: "delivery",
+    priority: "normal",
+    paymentMethod: "Online",
+    grandTotal: 345.00,
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 220,
+        customizations: {
+          crustType: "Pan Crust",
+          cheeseLevel: "Extra Cheese"
+        }
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(), note: "Order placed" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 24 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 23 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 7 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" }
+    ],
+    deliveryAddress: {
+      houseNumber: "House 204",
+      street: "Anand Nagar",
+      landmark: "Near Anand Club",
+      city: "Indore",
+      pincode: "452001",
+      notes: "Deliver to security guard.",
+      googleMapsLink: "https://maps.google.com/?q=22.7196,75.8577"
+    },
+    deliveryPartnerId: null,
+    riderAssignedAt: null
+  },
+  {
+    _id: "660c1d2eef20092c4820a022",
+    orderNumber: "PVP-10262",
+    customerId: "cust-7702",
+    customer: {
+      name: "Kavya Nair",
+      phone: "+91 94000 55555",
+      email: "kavya.nair@yahoo.in",
+      loyaltyPoints: 45,
+      previousOrdersCount: 1
+    },
+    storeId: "st-indore-01",
+    status: "ready",
+    createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 mins ago
+    readyAt: new Date(Date.now() - 8 * 60 * 1000).toISOString(), // 8 mins ago (Normal)
+    orderType: "pickup",
+    priority: "urgent",
+    paymentMethod: "COD",
+    grandTotal: 490.00,
+    items: [
+      {
+        productId: "prod-002",
+        name: "Paneer Tikka Pizza",
+        image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Large",
+        variant: "Thin Crust",
+        unitPrice: 380,
+        subtotal: 380,
+        customizations: {
+          crustType: "Thin Crust",
+          extraToppings: ["Onion", "Sweet Corn"]
+        }
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), note: "Order placed" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 29 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 28 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 20 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 12 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 8 * 60 * 1000).toISOString(), note: "Marked ready for pickup" }
+    ],
+    deliveryAddress: {
+      houseNumber: "N/A - Store Pickup",
+      street: "N/A",
+      landmark: "N/A",
+      city: "Indore",
+      pincode: "452001",
+      notes: "Will pick up by 12:45 PM",
+      googleMapsLink: ""
+    },
+    deliveryPartnerId: null,
+    riderAssignedAt: null
+  },
+  {
+    _id: "660c1d2eef20092c4820a023",
+    orderNumber: "PVP-10263",
+    customerId: "cust-7703",
+    customer: {
+      name: "Suresh Kumar",
+      phone: "+91 88777 66666",
+      email: "suresh.kumar@gmail.com",
+      loyaltyPoints: 680,
+      previousOrdersCount: 19
+    },
+    storeId: "st-indore-01",
+    status: "ready",
+    createdAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
+    readyAt: new Date(Date.now() - 12 * 60 * 1000).toISOString(), // 12 mins ago (Yellow - waiting > 10m)
+    orderType: "delivery",
+    priority: "vip",
+    paymentMethod: "Online",
+    grandTotal: 720.00,
+    items: [
+      {
+        productId: "prod-003",
+        name: "Stuffed Garlic Bread",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Regular",
+        variant: "Classic",
+        unitPrice: 140,
+        subtotal: 280,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 40 * 60 * 1000).toISOString(), note: "Order placed" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 38 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 36 * 65000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 17 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 12 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" }
+    ],
+    deliveryAddress: {
+      houseNumber: "Flat 505, Block B",
+      street: "Shalimar Township",
+      landmark: "Near Apollo Hospital",
+      city: "Indore",
+      pincode: "452010",
+      notes: "",
+      googleMapsLink: "https://maps.google.com/?q=22.7508,75.8956"
+    },
+    deliveryPartnerId: "rider-001", // Assigned Ramesh Kumar
+    riderAssignedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "660c1d2eef20092c4820a024",
+    orderNumber: "PVP-10264",
+    customerId: "cust-7704",
+    customer: {
+      name: "Priya Patel",
+      phone: "+91 99887 76655",
+      email: "priya.patel@outlook.com",
+      loyaltyPoints: 0,
+      previousOrdersCount: 0
+    },
+    storeId: "st-indore-01",
+    status: "ready",
+    createdAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+    readyAt: new Date(Date.now() - 18 * 60 * 1000).toISOString(), // 18 mins ago (Red - waiting > 15m)
+    orderType: "delivery",
+    priority: "urgent",
+    paymentMethod: "Online",
+    grandTotal: 290.00,
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 220,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(), note: "Order placed" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 44 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "preparing", timestamp: new Date(Date.now() - 40 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 22 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 18 * 60 * 1000).toISOString(), note: "Marked ready for dispatch" }
+    ],
+    deliveryAddress: {
+      houseNumber: "Building D, Flat 101",
+      street: "Vijay Nagar",
+      landmark: "Opposite Sayaji Hotel",
+      city: "Indore",
+      pincode: "452010",
+      notes: "Call when you reach gate.",
+      googleMapsLink: ""
+    },
+    deliveryPartnerId: null,
+    riderAssignedAt: null
+  }
+];
+
+

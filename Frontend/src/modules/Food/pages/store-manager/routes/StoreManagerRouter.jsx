@@ -6,6 +6,7 @@ import Loader from "@food/components/Loader"
 import StoreOperationsDashboard from "../dashboard/StoreOperationsDashboard"
 import IncomingOrders from "../orders/IncomingOrders"
 import ActiveOrders from "../orders/ActiveOrders"
+import ReadyOrders from "../orders/ReadyOrders"
 
 // A role-based routing wrapper that prevents unauthorized roles from viewing pages
 function RoleProtectedRoute({ allowedRoles, children }) {
@@ -122,11 +123,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="orders/ready" 
             element={
-              <PagePlaceholder 
-                title="Ready Orders" 
-                description="Items completed, boxed, and ready for pickup or rider assignment" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "delivery_coordinator", "kitchen_staff", "packaging_staff"]}>
+                <ReadyOrders />
+              </RoleProtectedRoute>
             } 
           />
           <Route 
