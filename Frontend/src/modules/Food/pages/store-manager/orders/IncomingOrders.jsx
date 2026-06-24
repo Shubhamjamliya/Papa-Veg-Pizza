@@ -281,15 +281,15 @@ export default function IncomingOrders() {
       title: "Actions",
       key: "actions",
       fixed: "right",
-      width: 180,
+      width: 140,
       render: (_, record) => (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <Tooltip title="View Details">
             <Button
               type="text"
               icon={<Eye size={14} className="text-zinc-500" />}
               onClick={() => handleOpenView(record)}
-              className="hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-lg"
+              className="hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-lg flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
             />
           </Tooltip>
           
@@ -299,33 +299,33 @@ export default function IncomingOrders() {
                 type="text"
                 icon={<Printer size={14} className="text-zinc-500" />}
                 onClick={() => handleOpenPrint(record)}
-                className="hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-lg"
+                className="hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-lg flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
               />
             </Tooltip>
           )}
 
           {(isManager || isSupervisor) && (
-            <Button
-              type="primary"
-              size="small"
-              icon={<Check size={12} />}
-              onClick={() => handleOpenAccept(record)}
-              className="!bg-primary hover:!bg-primary-hover border-0 text-white rounded-full px-3.5 py-1.5 text-[10px] font-bold active:scale-95 transition-all cursor-pointer"
-            >
-              Accept
-            </Button>
+            <Tooltip title="Accept Order">
+              <Button
+                type="primary"
+                size="small"
+                icon={<Check size={12} />}
+                onClick={() => handleOpenAccept(record)}
+                className="!bg-primary hover:!bg-primary-hover border-0 text-white rounded-full flex items-center justify-center w-7 h-7 p-0 active:scale-95 transition-all cursor-pointer shadow-md shadow-primary/10"
+              />
+            </Tooltip>
           )}
 
           {isManager && (
-            <Button
-              danger
-              size="small"
-              icon={<XCircle size={12} />}
-              onClick={() => handleOpenReject(record)}
-              className="hover:bg-rose-50 text-rose-600 border border-rose-150 rounded-full px-3.5 py-1.5 text-[10px] font-bold active:scale-95 transition-all cursor-pointer dark:bg-card dark:border-border"
-            >
-              Reject
-            </Button>
+            <Tooltip title="Reject Order">
+              <Button
+                danger
+                size="small"
+                icon={<XCircle size={12} />}
+                onClick={() => handleOpenReject(record)}
+                className="hover:bg-rose-50 text-rose-600 border border-rose-150 rounded-full flex items-center justify-center w-7 h-7 p-0 active:scale-95 transition-all cursor-pointer dark:bg-card dark:border-border"
+              />
+            </Tooltip>
           )}
         </div>
       )
@@ -629,43 +629,46 @@ export default function IncomingOrders() {
 
                 {/* Action Buttons */}
                 <div className="flex items-center justify-between gap-1.5 pt-1.5 border-t border-border">
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
                     {(isManager || isSupervisor) && (
                       <Tooltip title="Quick Print Receipt">
                         <Button
                           shape="circle"
-                          icon={<Printer size={13} />}
+                          icon={<Printer size={12} />}
                           onClick={() => handleOpenPrint(order)}
-                          className="bg-muted hover:bg-muted text-muted-foreground hover:text-foreground border-0 flex items-center justify-center shrink-0"
+                          className="bg-muted hover:bg-muted text-muted-foreground hover:text-foreground border-0 flex items-center justify-center w-7 h-7 p-0 shrink-0 cursor-pointer"
                         />
                       </Tooltip>
                     )}
-                    <Button
-                      onClick={() => handleOpenView(order)}
-                      className="text-[10px] font-bold border border-zinc-250 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200 rounded-full px-3.5 py-1.5 active:scale-95 transition-all cursor-pointer"
-                    >
-                      Details
-                    </Button>
+                    <Tooltip title="View Details">
+                      <Button
+                        onClick={() => handleOpenView(order)}
+                        icon={<Eye size={12} />}
+                        className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+                      />
+                    </Tooltip>
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
                     {isManager && (
-                      <Button
-                        danger
-                        onClick={() => handleOpenReject(order)}
-                        className="text-[10px] font-bold hover:bg-rose-50 border border-rose-150 text-rose-600 rounded-full px-3.5 py-1.5 dark:bg-card dark:border-border active:scale-95 transition-all cursor-pointer"
-                      >
-                        Reject
-                      </Button>
+                      <Tooltip title="Reject Order">
+                        <Button
+                          danger
+                          onClick={() => handleOpenReject(order)}
+                          icon={<XCircle size={12} />}
+                          className="hover:bg-rose-50 text-rose-600 border border-rose-150 rounded-full flex items-center justify-center w-7 h-7 p-0 dark:bg-card dark:border-border active:scale-95 transition-all cursor-pointer"
+                        />
+                      </Tooltip>
                     )}
                     {(isManager || isSupervisor) && (
-                      <Button
-                        type="primary"
-                        onClick={() => handleOpenAccept(order)}
-                        className="text-[10px] font-bold !bg-primary hover:!bg-primary-hover border-0 text-white rounded-full px-4 py-1.5 shadow-md shadow-primary/15 active:scale-95 transition-all cursor-pointer"
-                      >
-                        Accept
-                      </Button>
+                      <Tooltip title="Accept Order">
+                        <Button
+                          type="primary"
+                          onClick={() => handleOpenAccept(order)}
+                          icon={<Check size={12} />}
+                          className="!bg-primary hover:!bg-primary-hover border-0 text-white rounded-full flex items-center justify-center w-7 h-7 p-0 shadow-md shadow-primary/15 active:scale-95 transition-all cursor-pointer"
+                        />
+                      </Tooltip>
                     )}
                   </div>
                 </div>

@@ -25,7 +25,9 @@ import {
   AlertOctagon,
   Phone,
   UserX,
-  CreditCard
+  CreditCard,
+  Eye,
+  Check
 } from "lucide-react";
 import {
   Input,
@@ -334,59 +336,65 @@ export default function ReadyOrders() {
     {
       title: <span className="text-xs font-black text-slate-700 dark:text-zinc-300">Actions</span>,
       key: "actions",
+      width: 140,
       render: (_, record) => {
         const timer = getWaitingTimeDetails(record.readyAt || record.createdAt);
         const isDelivery = record.orderType === "delivery";
         const hasRider = !!record.deliveryPartnerId;
 
         return (
-          <div className="flex gap-1.5 flex-wrap">
-            <Button
-              size="small"
-              onClick={() => openModal("details", record)}
-              className="text-[10px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-0.5 cursor-pointer"
-            >
-              Details
-            </Button>
-
-            {role !== "kitchen_staff" && isDelivery && !hasRider && (
+          <div className="flex gap-1.5 items-center">
+            <Tooltip title="View Details">
               <Button
                 size="small"
-                onClick={() => openModal("assign", record)}
-                className="text-[10px] font-bold !bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full px-3 py-0.5 cursor-pointer shadow-md shadow-primary/15"
-              >
-                Assign Rider
-              </Button>
+                onClick={() => openModal("details", record)}
+                icon={<Eye size={12} />}
+                className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+              />
+            </Tooltip>
+
+            {role !== "kitchen_staff" && isDelivery && !hasRider && (
+              <Tooltip title="Assign Rider">
+                <Button
+                  size="small"
+                  onClick={() => openModal("assign", record)}
+                  icon={<Bike size={12} />}
+                  className="!bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer shadow-md shadow-primary/15 active:scale-95 transition-all"
+                />
+              </Tooltip>
             )}
 
             {role !== "kitchen_staff" && (!isDelivery || hasRider) && (
-              <Button
-                size="small"
-                onClick={() => openModal("pickup", record)}
-                className="text-[10px] font-bold !bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full px-3 py-0.5 cursor-pointer shadow-md shadow-primary/15"
-              >
-                Confirm Pickup
-              </Button>
+              <Tooltip title="Confirm Pickup">
+                <Button
+                  size="small"
+                  onClick={() => openModal("pickup", record)}
+                  icon={<Check size={12} />}
+                  className="!bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer shadow-md shadow-primary/15 active:scale-95 transition-all"
+                />
+              </Tooltip>
             )}
 
-            <Button
-              size="small"
-              onClick={() => openModal("print", record)}
-              className="text-[10px] font-bold border border-zinc-250 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 rounded-full px-2 py-0.5 hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-95 transition-all cursor-pointer flex items-center gap-0.5"
-            >
-              <Printer size={10} className="text-primary" /> Receipt
-            </Button>
-
-            {!record.isEscalated && timer.minutes >= 10 && (
+            <Tooltip title="Print Receipt">
               <Button
                 size="small"
-                danger
-                type="text"
-                onClick={() => openModal("escalate", record)}
-                className="text-[10px] font-extrabold hover:bg-red-50 dark:hover:bg-red-950/20 active:scale-95 rounded-full px-2 py-0.5 cursor-pointer flex items-center gap-0.5"
-              >
-                <AlertOctagon size={10} className="text-red-500" /> Escalate
-              </Button>
+                onClick={() => openModal("print", record)}
+                icon={<Printer size={12} className="text-primary" />}
+                className="border border-zinc-250 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 rounded-full flex items-center justify-center w-7 h-7 p-0 hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-95 transition-all cursor-pointer"
+              />
+            </Tooltip>
+
+            {!record.isEscalated && timer.minutes >= 10 && (
+              <Tooltip title="Escalate Order">
+                <Button
+                  size="small"
+                  danger
+                  type="text"
+                  onClick={() => openModal("escalate", record)}
+                  icon={<AlertOctagon size={12} className="text-red-500" />}
+                  className="hover:bg-red-50 dark:hover:bg-red-955/20 active:scale-95 rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+                />
+              </Tooltip>
             )}
           </div>
         );
@@ -511,42 +519,46 @@ export default function ReadyOrders() {
         </div>
 
         {/* Card Actions */}
-        <div className="flex items-center justify-between gap-1 border-t border-zinc-100 dark:border-zinc-800/30 pt-2">
-          <Button
-            size="small"
-            onClick={() => openModal("details", orderObj)}
-            className="text-[9px] font-bold !border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full px-2 py-1 cursor-pointer w-full text-center"
-          >
-            Details
-          </Button>
-
-          {role !== "kitchen_staff" && isDelivery && !hasRider && (
+        <div className="flex items-center justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800/30 pt-2">
+          <Tooltip title="View Details">
             <Button
               size="small"
-              onClick={() => openModal("assign", orderObj)}
-              className="text-[9px] font-bold !bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full px-2 py-1 cursor-pointer w-full text-center flex items-center justify-center gap-0.5 shadow-md shadow-primary/15"
-            >
-              Assign Rider
-            </Button>
+              onClick={() => openModal("details", orderObj)}
+              icon={<Eye size={12} />}
+              className="!border-primary/45 !text-primary bg-white dark:bg-zinc-900 hover:!bg-primary/5 hover:!border-primary hover:!text-primary-hover active:scale-95 transition-all rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer"
+            />
+          </Tooltip>
+
+          {role !== "kitchen_staff" && isDelivery && !hasRider && (
+            <Tooltip title="Assign Rider">
+              <Button
+                size="small"
+                onClick={() => openModal("assign", orderObj)}
+                icon={<Bike size={12} />}
+                className="!bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer shadow-md shadow-primary/15 active:scale-95 transition-all"
+              />
+            </Tooltip>
           )}
 
           {role !== "kitchen_staff" && (!isDelivery || hasRider) && (
-            <Button
-              size="small"
-              onClick={() => openModal("pickup", orderObj)}
-              className="text-[9px] font-bold !bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full px-2 py-1 cursor-pointer w-full text-center flex items-center justify-center gap-0.5 shadow-md shadow-primary/15"
-            >
-              Pickup
-            </Button>
+            <Tooltip title="Confirm Pickup">
+              <Button
+                size="small"
+                onClick={() => openModal("pickup", orderObj)}
+                icon={<Check size={12} />}
+                className="!bg-primary hover:!bg-primary-hover border-0 !text-white rounded-full flex items-center justify-center w-7 h-7 p-0 cursor-pointer shadow-md shadow-primary/15 active:scale-95 transition-all"
+              />
+            </Tooltip>
           )}
 
-          <Button
-            size="small"
-            onClick={() => openModal("print", orderObj)}
-            className="text-[9px] font-bold border border-zinc-250 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 rounded-full px-2 py-1 hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-95 transition-all cursor-pointer w-full text-center flex items-center justify-center gap-0.5"
-          >
-            <Printer size={10} className="text-primary" /> Receipt
-          </Button>
+          <Tooltip title="Print Receipt">
+            <Button
+              size="small"
+              onClick={() => openModal("print", orderObj)}
+              icon={<Printer size={12} className="text-primary" />}
+              className="border border-zinc-250 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 rounded-full flex items-center justify-center w-7 h-7 p-0 hover:bg-zinc-50 dark:hover:bg-zinc-800 active:scale-95 transition-all cursor-pointer"
+            />
+          </Tooltip>
         </div>
       </div>
     );
