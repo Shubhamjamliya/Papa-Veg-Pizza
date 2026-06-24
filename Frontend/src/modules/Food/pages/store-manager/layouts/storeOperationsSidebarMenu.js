@@ -44,7 +44,7 @@ export const storeOperationsSidebarMenu = [
         label: "Cancelled Orders",
         path: "/store-operations/orders/cancelled",
         icon: "XCircle",
-        allowedRoles: ["store_manager", "kitchen_supervisor", "kitchen_staff"]
+        allowedRoles: ["store_manager", "kitchen_supervisor"]
       }
     ]
   },

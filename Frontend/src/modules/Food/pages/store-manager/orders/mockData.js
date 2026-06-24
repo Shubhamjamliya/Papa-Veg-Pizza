@@ -1398,5 +1398,298 @@ export const initialMockCompletedOrders = [
   }
 ];
 
+export const initialMockCancelledOrders = [
+  {
+    _id: "canc-001",
+    orderNumber: "PVP-20101",
+    customerId: "cust-5011",
+    status: "cancelled",
+    cancelReason: "Customer requested cancellation because they ordered the wrong size.",
+    cancelledBy: "customer",
+    cancelledAt: new Date(Date.now() - 3 * 60 * 1000).toISOString(), // 3 mins ago (Reopen Eligible!)
+    refundStatus: "refund_completed",
+    refundAmount: 450,
+    refundTransactionId: "RFD_TXN_998122",
+    paymentMethod: "Online",
+    transactionId: "TXN_778129031",
+    grandTotal: 450,
+    createdAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 3 * 60 * 1000).toISOString(),
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "Website",
+    customer: {
+      name: "Rahul Sharma",
+      phone: "+91 98765 12345",
+      email: "rahul.sharma@gmail.com",
+      loyaltyPoints: 450,
+      previousOrdersCount: 15
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 220,
+        customizations: {}
+      },
+      {
+        productId: "prod-003",
+        name: "Stuffed Garlic Bread",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Regular",
+        variant: "Classic",
+        unitPrice: 140,
+        subtotal: 140,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 10 * 60 * 1000).toISOString(), note: "Order placed via Website" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 9 * 60 * 1000).toISOString(), note: "Accepted by store manager" },
+      { status: "cancelled", timestamp: new Date(Date.now() - 3 * 60 * 1000).toISOString(), note: "Cancelled by Customer. Reason: wrong size" },
+      { status: "refund_initiated", timestamp: new Date(Date.now() - 2 * 60 * 1000).toISOString(), note: "Refund initiated automatically" },
+      { status: "refund_completed", timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(), note: "Refund processed successfully" }
+    ],
+    notes: "Customer contacted support shortly after ordering."
+  },
+  {
+    _id: "canc-002",
+    orderNumber: "PVP-20102",
+    customerId: "cust-5012",
+    status: "rejected",
+    cancelReason: "Store rejected the order because Paneer was out of stock.",
+    cancelledBy: "store",
+    cancelledAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(), // 40 mins ago
+    refundStatus: "refund_pending",
+    refundAmount: 650,
+    refundTransactionId: "",
+    paymentMethod: "Online",
+    transactionId: "TXN_778129032",
+    grandTotal: 650,
+    createdAt: new Date(Date.now() - 55 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
+    orderType: "delivery",
+    priority: "vip",
+    orderSource: "Mobile App",
+    customer: {
+      name: "Priya Patel",
+      phone: "+91 99887 76655",
+      email: "priya.patel@outlook.com",
+      loyaltyPoints: 120,
+      previousOrdersCount: 4
+    },
+    items: [
+      {
+        productId: "prod-002",
+        name: "Tandoori Paneer Pizza",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 290,
+        subtotal: 580,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 55 * 60 * 1000).toISOString(), note: "Order placed via Mobile App" },
+      { status: "rejected", timestamp: new Date(Date.now() - 40 * 60 * 1000).toISOString(), note: "Rejected by store. Reason: Paneer out of stock." }
+    ],
+    notes: "Call customer and offer alternative toppings next time."
+  },
+  {
+    _id: "canc-003",
+    orderNumber: "PVP-20103",
+    customerId: "cust-5013",
+    status: "cancelled",
+    cancelReason: "System cancelled due to rider availability timeout.",
+    cancelledBy: "system",
+    cancelledAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    refundStatus: "none",
+    refundAmount: 0,
+    refundTransactionId: "",
+    paymentMethod: "COD",
+    transactionId: "",
+    grandTotal: 320,
+    createdAt: new Date(Date.now() - 2.5 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "Zomato",
+    customer: {
+      name: "Amit Verma",
+      phone: "+91 97766 55443",
+      email: "amit.verma@yahoo.com",
+      loyaltyPoints: 0,
+      previousOrdersCount: 0
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 1,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 220,
+        subtotal: 220,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 2.5 * 60 * 60 * 1000).toISOString(), note: "Zomato order received" },
+      { status: "confirmed", timestamp: new Date(Date.now() - 2.45 * 60 * 60 * 1000).toISOString(), note: "Accepted by store" },
+      { status: "preparing", timestamp: new Date(Date.now() - 2.4 * 60 * 60 * 1000).toISOString(), note: "Moved to preparing" },
+      { status: "baking", timestamp: new Date(Date.now() - 2.3 * 60 * 60 * 1000).toISOString(), note: "Moved to baking" },
+      { status: "packaging", timestamp: new Date(Date.now() - 2.2 * 60 * 60 * 1000).toISOString(), note: "Moved to packaging" },
+      { status: "ready", timestamp: new Date(Date.now() - 2.15 * 60 * 60 * 1000).toISOString(), note: "Marked ready" },
+      { status: "cancelled", timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), note: "System auto-cancelled. No delivery partner assigned." }
+    ]
+  },
+  {
+    _id: "canc-004",
+    orderNumber: "PVP-20104",
+    customerId: "cust-5014",
+    status: "cancelled",
+    cancelReason: "Customer requested cancellation before acceptance.",
+    cancelledBy: "customer",
+    cancelledAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    refundStatus: "refund_completed",
+    refundAmount: 1200,
+    refundTransactionId: "RFD_TXN_998125",
+    paymentMethod: "Wallet",
+    transactionId: "TXN_778129034",
+    grandTotal: 1200,
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000 - 15 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    orderType: "pickup",
+    priority: "normal",
+    orderSource: "Mobile App",
+    customer: {
+      name: "Suresh Kumar",
+      phone: "+91 88777 66666",
+      email: "suresh.kumar@gmail.com",
+      loyaltyPoints: 680,
+      previousOrdersCount: 19
+    },
+    items: [
+      {
+        productId: "prod-002",
+        name: "Tandoori Paneer Pizza",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 4,
+        size: "Medium",
+        variant: "Pan Crust",
+        unitPrice: 290,
+        subtotal: 1160,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000 - 15 * 60 * 1000).toISOString(), note: "Placed order via Mobile App" },
+      { status: "cancelled", timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), note: "Cancelled by Customer. Reason: Placed duplicate order." },
+      { status: "refund_initiated", timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), note: "Refund to Wallet initiated" },
+      { status: "refund_completed", timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), note: "Refund added to customer Wallet" }
+    ]
+  },
+  {
+    _id: "canc-005",
+    orderNumber: "PVP-20105",
+    customerId: "cust-5015",
+    status: "rejected",
+    cancelReason: "Store rejected the order: Address out of delivery range.",
+    cancelledBy: "store",
+    cancelledAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    refundStatus: "refund_failed",
+    refundAmount: 890,
+    refundTransactionId: "",
+    paymentMethod: "Online",
+    transactionId: "TXN_778129035",
+    grandTotal: 890,
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000 - 10 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    orderType: "delivery",
+    priority: "normal",
+    orderSource: "Website",
+    customer: {
+      name: "Neha Gupta",
+      phone: "+91 91122 33445",
+      email: "neha.gupta@gmail.com",
+      loyaltyPoints: 300,
+      previousOrdersCount: 8
+    },
+    items: [
+      {
+        productId: "prod-001",
+        name: "Double Cheese Margherita Pizza",
+        image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&q=80&w=300&fm=webp",
+        quantity: 2,
+        size: "Large",
+        variant: "Pan Crust",
+        unitPrice: 280,
+        subtotal: 560,
+        customizations: {}
+      }
+    ],
+    timeline: [
+      { status: "received", timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000 - 10 * 60 * 1000).toISOString(), note: "Placed order via Website" },
+      { status: "rejected", timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), note: "Rejected by store. Reason: Out of delivery area." },
+      { status: "refund_initiated", timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), note: "Refund initiation failed due to bank gateway error" }
+    ]
+  }
+];
+
+export const initialMockRefunds = [
+  {
+    _id: "ref-101",
+    orderId: "canc-001",
+    customerId: "cust-5011",
+    amount: 450,
+    refundType: "full",
+    refundMethod: "original_source",
+    refundReason: "Customer Request",
+    status: "completed",
+    referenceNumber: "REF_REFID_778129031",
+    processedBy: "System Auto",
+    createdAt: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 1 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "ref-102",
+    orderId: "canc-004",
+    customerId: "cust-5014",
+    amount: 1200,
+    refundType: "full",
+    refundMethod: "wallet",
+    refundReason: "Duplicate Order",
+    status: "completed",
+    referenceNumber: "REF_REFID_778129034",
+    processedBy: "Store Manager",
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+  },
+  {
+    _id: "ref-103",
+    orderId: "canc-005",
+    customerId: "cust-5015",
+    amount: 890,
+    refundType: "full",
+    refundMethod: "original_source",
+    refundReason: "Store Rejection",
+    status: "failed",
+    referenceNumber: "REF_FAILED_39812",
+    processedBy: "System Auto",
+    createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+  }
+];
+
+
 
 

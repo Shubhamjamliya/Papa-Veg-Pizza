@@ -8,6 +8,7 @@ import IncomingOrders from "../orders/IncomingOrders"
 import ActiveOrders from "../orders/ActiveOrders"
 import ReadyOrders from "../orders/ReadyOrders"
 import CompletedOrders from "../orders/CompletedOrders"
+import CancelledOrders from "../orders/CancelledOrders"
 
 // A role-based routing wrapper that prevents unauthorized roles from viewing pages
 function RoleProtectedRoute({ allowedRoles, children }) {
@@ -140,11 +141,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="orders/cancelled" 
             element={
-              <PagePlaceholder 
-                title="Cancelled Orders" 
-                description="Voided and cancelled order logs with reasons" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
+                <CancelledOrders />
+              </RoleProtectedRoute>
             } 
           />
 
