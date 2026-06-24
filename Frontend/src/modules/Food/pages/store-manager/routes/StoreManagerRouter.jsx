@@ -11,6 +11,8 @@ import CompletedOrders from "../orders/CompletedOrders"
 import CancelledOrders from "../orders/CancelledOrders"
 import KitchenQueue from "../kitchenOperations/KitchenQueue"
 import PreparationBoard from "../kitchenOperations/PreparationBoard"
+import PizzaStation from "../kitchenOperations/PizzaStation"
+
 
 
 
@@ -171,11 +173,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="kitchen/pizza-station" 
             element={
-              <PagePlaceholder 
-                title="Pizza Station" 
-                description="Pizza dough stretching, saucing, cheesing, and topping operations" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <PizzaStation />
+              </RoleProtectedRoute>
             } 
           />
           <Route 

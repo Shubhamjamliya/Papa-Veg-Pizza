@@ -1,4 +1,4 @@
-// Mock Data for Kitchen Queue & Preparation Board Operations
+// Mock Data for Kitchen Queue, Preparation Board & Pizza Station Operations
 // Complies with MongoDB schemas for orders, order_items, customers, stores, staff, recipes, ingredients, shortages
 
 export const mockChefs = [
@@ -557,5 +557,135 @@ export const initialMockPrepItems = [
     paused: false,
     pauseReason: "",
     recipeId: "rec-002"
+  }
+];
+
+// INITIAL PIZZA STATION ITEMS (ASSEMBLY WORKFLOW)
+export const initialMockPizzaStationItems = [
+  {
+    _id: "pzs-001",
+    pizzaId: "PIZ-451",
+    orderId: "ord-1051",
+    orderNumber: "PVP-1051",
+    name: "Double Cheese Margherita Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 2,
+    assigned_chef: "chef-001", // Chef Rajesh
+    assembly_status: "assembly_started", // assigned, assembly_started, assembly_paused, assembly_completed, ready_for_baking
+    assembly_started_time: new Date(Date.now() - 5 * 60000).toISOString(), // 5 mins ago
+    completed_time: null,
+    target_time: 10, // 10 mins assembly SLA
+    toppings: ["Extra Cheese", "Tomato"],
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    recipeId: "rec-001",
+    priority: "NORMAL"
+  },
+  {
+    _id: "pzs-002",
+    pizzaId: "PIZ-452",
+    orderId: "ord-1052",
+    orderNumber: "PVP-1052",
+    name: "Farmhouse Pizza",
+    size: "Large",
+    crust: "Cheese Burst",
+    quantity: 1,
+    assigned_chef: "chef-003", // Chef Sanjay
+    assembly_status: "assigned",
+    assembly_started_time: null,
+    completed_time: null,
+    target_time: 12,
+    toppings: ["Mushrooms", "Capsicum", "Paneer"],
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    recipeId: "rec-002",
+    priority: "VIP"
+  },
+  {
+    _id: "pzs-003",
+    pizzaId: "PIZ-453",
+    orderId: "ord-1053",
+    orderNumber: "PVP-1053",
+    name: "Tandoori Paneer Pizza",
+    size: "Medium",
+    crust: "Thin Crust",
+    quantity: 1,
+    assigned_chef: "chef-004", // Chef Priya
+    assembly_status: "assembly_paused",
+    assembly_started_time: new Date(Date.now() - 15 * 60000).toISOString(),
+    completed_time: null,
+    target_time: 10,
+    toppings: ["Tandoori Paneer", "Red Paprika", "Onion"],
+    paused: true,
+    pauseReason: "Ingredient unavailable",
+    pauseNotes: "Out of tricolor capsicum for custom seasoning.",
+    recipeId: "rec-003",
+    priority: "EXPRESS"
+  },
+  {
+    _id: "pzs-004",
+    pizzaId: "PIZ-454",
+    orderId: "ord-1054",
+    orderNumber: "PVP-1054",
+    name: "Veggie Supreme Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 2,
+    assigned_chef: null, // Unassigned
+    assembly_status: "assigned",
+    assembly_started_time: null,
+    completed_time: null,
+    target_time: 12,
+    toppings: ["Onion", "Capsicum", "Mushroom", "Sweet Corn", "Black Olives"],
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    recipeId: "rec-002",
+    priority: "NORMAL"
+  },
+  {
+    _id: "pzs-005",
+    pizzaId: "PIZ-455",
+    orderId: "ord-1055",
+    orderNumber: "PVP-1055",
+    name: "Country Special Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 1,
+    assigned_chef: "chef-001",
+    assembly_status: "assembly_completed",
+    assembly_started_time: new Date(Date.now() - 12 * 60000).toISOString(),
+    completed_time: new Date(Date.now() - 2 * 60000).toISOString(), // completed 2 mins ago
+    target_time: 10,
+    toppings: ["Onion", "Tomato", "Capsicum"],
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    recipeId: "rec-002",
+    priority: "NORMAL"
+  },
+  {
+    _id: "pzs-006",
+    pizzaId: "PIZ-449",
+    orderId: "ord-1049",
+    orderNumber: "PVP-1049",
+    name: "Double Cheese Margherita Pizza",
+    size: "Large",
+    crust: "Pan",
+    quantity: 1,
+    assigned_chef: "chef-003",
+    assembly_status: "assembly_started", // started 14 mins ago (Exceeded Target 10) -> Delayed
+    assembly_started_time: new Date(Date.now() - 14 * 60000).toISOString(),
+    completed_time: null,
+    target_time: 10,
+    toppings: ["Extra Cheese", "Basil"],
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    recipeId: "rec-001",
+    priority: "NORMAL"
   }
 ];
