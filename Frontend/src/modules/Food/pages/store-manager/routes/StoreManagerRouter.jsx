@@ -12,6 +12,7 @@ import CancelledOrders from "../orders/CancelledOrders"
 import KitchenQueue from "../kitchenOperations/KitchenQueue"
 import PreparationBoard from "../kitchenOperations/PreparationBoard"
 import PizzaStation from "../kitchenOperations/PizzaStation"
+import BakingStation from "../kitchenOperations/BakingStation"
 
 
 
@@ -181,11 +182,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="kitchen/baking-station" 
             element={
-              <PagePlaceholder 
-                title="Baking Station" 
-                description="Oven temperatures, baking queues, and timed bakes" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <BakingStation />
+              </RoleProtectedRoute>
             } 
           />
           <Route 
