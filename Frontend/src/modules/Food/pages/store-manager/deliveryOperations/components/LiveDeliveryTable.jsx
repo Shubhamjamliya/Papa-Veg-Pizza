@@ -108,10 +108,11 @@ export default function LiveDeliveryTable({ deliveries = [], isLoading, onTrack 
                     <button
                       onClick={() => onTrack(delivery.orderId)}
                       disabled={delivery.deliveryStatus === "delivered"}
+                      style={delivery.deliveryStatus !== "delivered" ? { backgroundColor: "var(--primary)" } : {}}
                       className={`h-8 px-3 rounded-xl text-[10px] uppercase font-black tracking-wider transition-all shadow-sm flex items-center gap-1 ml-auto cursor-pointer ${
                         delivery.deliveryStatus === "delivered"
                           ? "bg-slate-100 dark:bg-zinc-800 text-slate-400 border border-slate-200 dark:border-zinc-800 cursor-not-allowed"
-                          : "bg-[var(--primary)] text-white hover:bg-[var(--sa-primary-hover)]"
+                          : "text-white hover:opacity-90"
                       }`}
                     >
                       <Navigation size={11} className={delivery.deliveryStatus === "delivered" ? "" : "animate-pulse"} />
@@ -176,10 +177,11 @@ export default function LiveDeliveryTable({ deliveries = [], isLoading, onTrack 
               <button
                 onClick={() => onTrack(delivery.orderId)}
                 disabled={delivery.deliveryStatus === "delivered"}
+                style={delivery.deliveryStatus !== "delivered" ? { backgroundColor: "var(--primary)" } : {}}
                 className={`w-full h-9 rounded-xl text-[10px] uppercase font-black tracking-wider transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer ${
                   delivery.deliveryStatus === "delivered"
                     ? "bg-slate-100 dark:bg-zinc-800 text-slate-400 border border-slate-200 dark:border-zinc-800 cursor-not-allowed"
-                    : "bg-[var(--primary)] text-white hover:bg-[var(--sa-primary-hover)]"
+                    : "text-white hover:opacity-90"
                 }`}
               >
                 <Navigation size={12} className={delivery.deliveryStatus === "delivered" ? "" : "animate-pulse"} />

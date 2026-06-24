@@ -478,3 +478,123 @@ export const initialMockTrackingData = {
   }
 };
 
+export const initialMockDeliveryIssues = [
+  {
+    _id: "TKT-301",
+    orderId: "ORD-1025",
+    riderId: "rider-1",
+    riderName: "Rahul Singh",
+    issueType: "Rider Not Responding",
+    description: "Rider is not answering calls for the last 15 minutes. Pizza is out for delivery.",
+    reportedBy: "Store Manager",
+    severity: "critical",
+    status: "open",
+    resolution: "",
+    refundAmount: 0,
+    penaltyAmount: 0,
+    createdAt: new Date(Date.now() - 20 * 60000).toISOString()
+  },
+  {
+    _id: "TKT-302",
+    orderId: "ORD-1026",
+    riderId: "rider-2",
+    riderName: "Amit Patel",
+    issueType: "Late Delivery",
+    description: "Order is delayed by 15 mins beyond estimated window. Customer is complaining.",
+    reportedBy: "Customer",
+    severity: "medium",
+    status: "in_progress",
+    resolution: "",
+    refundAmount: 0,
+    penaltyAmount: 0,
+    createdAt: new Date(Date.now() - 40 * 60000).toISOString()
+  },
+  {
+    _id: "TKT-303",
+    orderId: "ORD-1027",
+    riderId: "rider-4",
+    riderName: "Vikram Rao",
+    issueType: "Wrong Address",
+    description: "Rider reached Palasia instead of Vijay Nagar. Confused about block C Shalimar Township.",
+    reportedBy: "Rider",
+    severity: "low",
+    status: "resolved",
+    resolution: "Rider redirected to Shalimar Township Block C. Reached successfully.",
+    refundAmount: 100,
+    penaltyAmount: 0,
+    createdAt: new Date(Date.now() - 120 * 60000).toISOString()
+  },
+  {
+    _id: "TKT-304",
+    orderId: "ORD-1029",
+    riderId: "rider-5",
+    riderName: "Pooja Varma",
+    issueType: "Vehicle Breakdown",
+    description: "Rider reported a tyre puncture near Press Complex. Pizza is cooling down.",
+    reportedBy: "Rider",
+    severity: "critical",
+    status: "escalated",
+    resolution: "",
+    refundAmount: 0,
+    penaltyAmount: 0,
+    createdAt: new Date(Date.now() - 10 * 60000).toISOString()
+  }
+];
+
+export const initialMockNotifications = [
+  {
+    _id: "notif-1",
+    userId: "manager-1",
+    title: "Critical Delivery Exception",
+    message: "Rider Pooja Varma reported Vehicle Breakdown for ORD-1029",
+    type: "critical",
+    isRead: false,
+    createdAt: new Date(Date.now() - 10 * 60000).toISOString()
+  },
+  {
+    _id: "notif-2",
+    userId: "manager-1",
+    title: "Late Delivery Ticket Opened",
+    message: "Customer Sunita Sharma opened Late Delivery ticket for ORD-1026",
+    type: "warning",
+    isRead: false,
+    createdAt: new Date(Date.now() - 40 * 60000).toISOString()
+  }
+];
+
+export const initialMockDeliveryTimelines = {
+  "ORD-1025": [
+    { status: "ready_for_pickup", updatedBy: "Store Staff", timestamp: new Date(Date.now() - 30 * 60000).toISOString() },
+    { status: "rider_assigned", updatedBy: "Store Manager", timestamp: new Date(Date.now() - 25 * 60000).toISOString() },
+    { status: "accepted", updatedBy: "Rider Rahul", timestamp: new Date(Date.now() - 22 * 60000).toISOString() },
+    { status: "picked_up", updatedBy: "Rider Rahul", timestamp: new Date(Date.now() - 15 * 60000).toISOString() },
+    { status: "out_for_delivery", updatedBy: "Rider Rahul", timestamp: new Date(Date.now() - 12 * 60000).toISOString() }
+  ],
+  "ORD-1026": [
+    { status: "ready_for_pickup", updatedBy: "Store Staff", timestamp: new Date(Date.now() - 25 * 60000).toISOString() },
+    { status: "rider_assigned", updatedBy: "Store Manager", timestamp: new Date(Date.now() - 18 * 60000).toISOString() },
+    { status: "accepted", updatedBy: "Rider Amit", timestamp: new Date(Date.now() - 16 * 60000).toISOString() },
+    { status: "picked_up", updatedBy: "Rider Amit", timestamp: new Date(Date.now() - 8 * 60000).toISOString() }
+  ],
+  "ORD-1027": [
+    { status: "ready_for_pickup", updatedBy: "Store Staff", timestamp: new Date(Date.now() - 10 * 60000).toISOString() },
+    { status: "rider_assigned", updatedBy: "Store Manager", timestamp: new Date(Date.now() - 5 * 60000).toISOString() }
+  ],
+  "ORD-1028": [
+    { status: "ready_for_pickup", updatedBy: "Store Staff", timestamp: new Date(Date.now() - 60 * 60000).toISOString() },
+    { status: "rider_assigned", updatedBy: "Store Manager", timestamp: new Date(Date.now() - 45 * 60000).toISOString() },
+    { status: "accepted", updatedBy: "Rider Suresh", timestamp: new Date(Date.now() - 42 * 60000).toISOString() },
+    { status: "picked_up", updatedBy: "Rider Suresh", timestamp: new Date(Date.now() - 35 * 60000).toISOString() },
+    { status: "out_for_delivery", updatedBy: "Rider Suresh", timestamp: new Date(Date.now() - 30 * 60000).toISOString() },
+    { status: "delivered", updatedBy: "Rider Suresh", timestamp: new Date(Date.now() - 10 * 60000).toISOString() }
+  ],
+  "ORD-1029": [
+    { status: "ready_for_pickup", updatedBy: "Store Staff", timestamp: new Date(Date.now() - 25 * 60000).toISOString() },
+    { status: "rider_assigned", updatedBy: "Store Manager", timestamp: new Date(Date.now() - 20 * 60000).toISOString() },
+    { status: "accepted", updatedBy: "Rider Pooja", timestamp: new Date(Date.now() - 18 * 60000).toISOString() },
+    { status: "picked_up", updatedBy: "Rider Pooja", timestamp: new Date(Date.now() - 10 * 60000).toISOString() },
+    { status: "out_for_delivery", updatedBy: "Rider Pooja", timestamp: new Date(Date.now() - 7 * 60000).toISOString() }
+  ]
+};
+
+

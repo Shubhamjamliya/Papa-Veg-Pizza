@@ -38,7 +38,8 @@ export default function RiderDetailsModal({ visible, onClose, riderId, rider, is
           <div className="flex gap-2 justify-end pt-3 border-t border-slate-100 dark:border-zinc-800">
             <a
               href={`tel:${rider.mobile}`}
-              className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--sa-primary-hover)] text-white font-extrabold rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
+              style={{ backgroundColor: "var(--primary)" }}
+              className="px-4 py-2 text-white font-extrabold rounded-xl text-xs transition-all shadow-sm flex items-center gap-1.5 cursor-pointer hover:opacity-90"
             >
               <Phone size={12} />
               <span>Call Rider</span>
