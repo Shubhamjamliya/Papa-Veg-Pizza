@@ -908,3 +908,180 @@ export const initialMockKitchenIssues = [
   }
 ];
 
+// MOCK PACKAGING STAFF
+export const mockPackagingStaff = [
+  {
+    _id: "staff-pack-001",
+    employeeId: "EMP-PACK-301",
+    name: "Karan Johar",
+    role: "Packaging Officer",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&fm=webp"
+  },
+  {
+    _id: "staff-pack-002",
+    employeeId: "EMP-PACK-302",
+    name: "Nisha Patel",
+    role: "QA Inspector",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&fm=webp"
+  },
+  {
+    _id: "staff-pack-003",
+    employeeId: "EMP-PACK-303",
+    name: "Arjun Rampal",
+    role: "Sealing Specialist",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&fm=webp"
+  }
+];
+
+// INITIAL PACKAGING ORDERS
+export const initialMockPackagingOrders = [
+  {
+    _id: "ord-1048",
+    orderNumber: "PVP-1048",
+    customer: {
+      name: "Rohan Gupta",
+      phone: "+91 91234 56789",
+      deliveryAddress: {
+        street: "12, Scheme 54",
+        area: "Vijay Nagar",
+        city: "Indore",
+        zipcode: "452010"
+      }
+    },
+    items: [
+      { name: "Double Cheese Margherita Pizza", quantity: 2, size: "Medium" },
+      { name: "Veggie Supreme Pizza", quantity: 1, size: "Large" }
+    ],
+    deliveryType: "Delivery",
+    packaging_status: "ready_for_packaging",
+    status: "preparing",
+    assigned_staff: null,
+    packaging_start_time: null,
+    packaging_end_time: null,
+    pickup_number: "P-104",
+    createdAt: new Date(Date.now() - 40 * 60000).toISOString()
+  },
+  {
+    _id: "ord-1047",
+    orderNumber: "PVP-1047",
+    customer: {
+      name: "Meera Sen",
+      phone: "+91 98765 12345",
+      deliveryAddress: {
+        street: "Flat 302, Royal Palms",
+        area: "Nipania",
+        city: "Indore",
+        zipcode: "452016"
+      }
+    },
+    items: [
+      { name: "Farmhouse Pizza", quantity: 1, size: "Large" }
+    ],
+    deliveryType: "Takeaway",
+    packaging_status: "packaging_started",
+    status: "preparing",
+    assigned_staff: "staff-pack-001",
+    packaging_start_time: new Date(Date.now() - 4 * 60000).toISOString(),
+    packaging_end_time: null,
+    pickup_number: "T-301",
+    createdAt: new Date(Date.now() - 35 * 60000).toISOString()
+  },
+  {
+    _id: "ord-1046",
+    orderNumber: "PVP-1046",
+    customer: {
+      name: "Aman Verma",
+      phone: "+91 93456 78901",
+      deliveryAddress: {
+        street: "Table 5 (Dine-in)",
+        area: "Main Store Hall",
+        city: "Indore",
+        zipcode: "452001"
+      }
+    },
+    items: [
+      { name: "Peppy Paneer Pizza", quantity: 1, size: "Medium" },
+      { name: "Fresh Veggie Pizza", quantity: 2, size: "Regular" }
+    ],
+    deliveryType: "Dine In",
+    packaging_status: "quality_checked",
+    status: "preparing",
+    assigned_staff: "staff-pack-002",
+    packaging_start_time: new Date(Date.now() - 8 * 60000).toISOString(),
+    packaging_end_time: null,
+    pickup_number: "D-05",
+    createdAt: new Date(Date.now() - 25 * 60000).toISOString()
+  },
+  {
+    _id: "ord-1045",
+    orderNumber: "PVP-1045",
+    customer: {
+      name: "Preeti Joshi",
+      phone: "+91 95555 44444",
+      deliveryAddress: {
+        street: "A-23, Saket",
+        area: "Old Palasia",
+        city: "Indore",
+        zipcode: "452018"
+      }
+    },
+    items: [
+      { name: "Tandoori Paneer Pizza", quantity: 1, size: "Medium" }
+    ],
+    deliveryType: "Delivery",
+    packaging_status: "sealed",
+    status: "preparing",
+    assigned_staff: "staff-pack-003",
+    packaging_start_time: new Date(Date.now() - 9 * 60000).toISOString(),
+    packaging_end_time: new Date(Date.now() - 4 * 60000).toISOString(),
+    pickup_number: "P-103",
+    createdAt: new Date(Date.now() - 30 * 60000).toISOString()
+  },
+  {
+    _id: "ord-1044",
+    orderNumber: "PVP-1044",
+    customer: {
+      name: "Sanjay Shah",
+      phone: "+91 97777 88888",
+      deliveryAddress: {
+        street: "B-44, Shalimar Complex",
+        area: "Vijay Nagar",
+        city: "Indore",
+        zipcode: "452010"
+      }
+    },
+    items: [
+      { name: "Double Cheese Margherita Pizza", quantity: 1, size: "Medium" }
+    ],
+    deliveryType: "Delivery",
+    packaging_status: "ready_for_pickup",
+    status: "ready_for_pickup",
+    assigned_staff: "staff-pack-001",
+    packaging_start_time: new Date(Date.now() - 15 * 60000).toISOString(),
+    packaging_end_time: new Date(Date.now() - 10 * 60000).toISOString(),
+    pickup_number: "P-102",
+    createdAt: new Date(Date.now() - 50 * 60000).toISOString()
+  }
+];
+
+// INITIAL PACKAGING LOGS
+export const initialMockPackagingLogs = [
+  {
+    _id: "log-001",
+    orderId: "ord-1045",
+    pizzaCountVerified: true,
+    saucesIncluded: true,
+    cutleryIncluded: true,
+    billAttached: true,
+    qualityVerified: true,
+    packagingSealed: true,
+    notes: "Everything checked, double sauces added.",
+    packaging_staff: "staff-pack-003",
+    createdAt: new Date(Date.now() - 4 * 60000).toISOString()
+  }
+];
+
+
