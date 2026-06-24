@@ -1,4 +1,5 @@
 import { initialStores, initialManagers, initialStoreApprovals, initialStorePerformance, initialOperatingHours } from "../../modules/Food/pages/franchise-admin/storeManagement/mockStoresData.js";
+import { initialMockStoreRiders } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
 import {
@@ -114,7 +115,8 @@ let db = {
   generated_reports: getStorageItem("generated_reports", initialGeneratedReports),
   generated_order_reports: getStorageItem("generated_order_reports", initialGeneratedOrderReports),
   generated_staff_reports: getStorageItem("generated_staff_reports", initialGeneratedStaffReports),
-  generated_inventory_reports: getStorageItem("generated_inventory_reports", initialGeneratedInventoryReports)
+  generated_inventory_reports: getStorageItem("generated_inventory_reports", initialGeneratedInventoryReports),
+  store_riders: getStorageItem("store_riders", initialMockStoreRiders)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -3134,6 +3136,22 @@ export function handleMockRequest(config) {
     db.generated_inventory_reports = db.generated_inventory_reports.filter(r => r.id !== id);
     saveDB();
     return successRes({ success: true, message: "Inventory report deleted successfully" });
+  }
+
+  // GET /store/riders
+  if (url.includes("/store/riders") && method === "get") {
+    return successRes(db.store_riders);
+  }
+
+  // GET /store/rider/:id
+  const riderDetailMatch = url.match(/\/store\/rider\/([^/]+)$/);
+  if (riderDetailMatch && method === "get") {
+    const id = riderDetailMatch[1];
+    const rider = db.store_riders.find((r) => r._id === id);
+    if (rider) {
+      return successRes(rider);
+    }
+    return errorRes("Rider not found", 404);
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working
