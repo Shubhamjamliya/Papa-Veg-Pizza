@@ -689,3 +689,222 @@ export const initialMockPizzaStationItems = [
     priority: "NORMAL"
   }
 ];
+
+// MOCK BAKING STAFF
+export const mockStaff = [
+  {
+    _id: "staff-001",
+    employeeId: "EMP-BAKE-201",
+    name: "Rahul Verma",
+    role: "Baking Assistant",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100&fm=webp"
+  },
+  {
+    _id: "staff-002",
+    employeeId: "EMP-BAKE-202",
+    name: "Amit Sharma",
+    role: "Oven Supervisor",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100&fm=webp"
+  },
+  {
+    _id: "staff-003",
+    employeeId: "EMP-BAKE-203",
+    name: "Pooja Patel",
+    role: "Baking Specialist",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&fm=webp"
+  },
+  {
+    _id: "staff-004",
+    employeeId: "EMP-BAKE-204",
+    name: "Sandip Joshi",
+    role: "Kitchen Crew",
+    status: "active",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&fm=webp"
+  }
+];
+
+// INITIAL OVENS STATUS
+export const initialMockOvens = [
+  {
+    _id: "oven-01",
+    oven_number: "OVEN-01",
+    status: "busy", // available, busy, maintenance, offline
+    temperature: 250,
+    current_pizza: "Double Cheese Margherita",
+    remaining_time: 240, // 4 mins left
+    expectedDuration: 8
+  },
+  {
+    _id: "oven-02",
+    oven_number: "OVEN-02",
+    status: "available",
+    temperature: 248,
+    current_pizza: null,
+    remaining_time: null,
+    expectedDuration: null
+  },
+  {
+    _id: "oven-03",
+    oven_number: "OVEN-03",
+    status: "busy",
+    temperature: 252,
+    current_pizza: "Veggie Supreme Pizza",
+    remaining_time: 80, // 1 min 20s left
+    expectedDuration: 8
+  },
+  {
+    _id: "oven-04",
+    oven_number: "OVEN-04",
+    status: "maintenance",
+    temperature: 150,
+    current_pizza: null,
+    remaining_time: null,
+    expectedDuration: null
+  },
+  {
+    _id: "oven-05",
+    oven_number: "OVEN-05",
+    status: "offline",
+    temperature: 25,
+    current_pizza: null,
+    remaining_time: null,
+    expectedDuration: null
+  }
+];
+
+// INITIAL MOCK BAKING ITEMS (order_items)
+export const initialMockBakingItems = [
+  {
+    _id: "bake-item-001",
+    orderItemId: "oi-1051-1",
+    orderId: "ord-1051",
+    orderNumber: "PVP-1051",
+    name: "Double Cheese Margherita Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 2,
+    assigned_oven: "oven-01",
+    assigned_staff: "staff-001",
+    baking_status: "baking_started", // ready_for_baking, baking_started, baking_paused, baking_completed, packaging
+    started_time: new Date(Date.now() - 4 * 60000).toISOString(), // started 4 mins ago
+    completed_time: null,
+    target_time: 8, // expectedDuration in minutes
+    temperature: 250,
+    expectedDuration: 8,
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    remarks: "Extra crispy crust requested",
+    priority: "NORMAL"
+  },
+  {
+    _id: "bake-item-002",
+    orderItemId: "oi-1052-1",
+    orderId: "ord-1052",
+    orderNumber: "PVP-1052",
+    name: "Farmhouse Pizza",
+    size: "Large",
+    crust: "Cheese Burst",
+    quantity: 1,
+    assigned_oven: null,
+    assigned_staff: null,
+    baking_status: "ready_for_baking",
+    started_time: null,
+    completed_time: null,
+    target_time: 10,
+    temperature: 250,
+    expectedDuration: 10,
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    remarks: "",
+    priority: "VIP"
+  },
+  {
+    _id: "bake-item-003",
+    orderItemId: "oi-1053-1",
+    orderId: "ord-1053",
+    orderNumber: "PVP-1053",
+    name: "Tandoori Paneer Pizza",
+    size: "Medium",
+    crust: "Thin Crust",
+    quantity: 1,
+    assigned_oven: "oven-03",
+    assigned_staff: "staff-003",
+    baking_status: "baking_started",
+    started_time: new Date(Date.now() - 6.5 * 60000).toISOString(), // started 6.5 mins ago
+    completed_time: null,
+    target_time: 8,
+    temperature: 250,
+    expectedDuration: 8,
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    remarks: "No onions",
+    priority: "EXPRESS"
+  },
+  {
+    _id: "bake-item-004",
+    orderItemId: "oi-1054-1",
+    orderId: "ord-1054",
+    orderNumber: "PVP-1054",
+    name: "Veggie Supreme Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 2,
+    assigned_oven: "oven-01",
+    assigned_staff: "staff-002",
+    baking_status: "baking_paused",
+    started_time: new Date(Date.now() - 10 * 60000).toISOString(),
+    completed_time: null,
+    target_time: 8,
+    temperature: 250,
+    expectedDuration: 8,
+    paused: true,
+    pauseReason: "Machine issue",
+    pauseNotes: "Oven door sensor fault",
+    remarks: "",
+    priority: "NORMAL"
+  },
+  {
+    _id: "bake-item-005",
+    orderItemId: "oi-1055-1",
+    orderId: "ord-1055",
+    orderNumber: "PVP-1055",
+    name: "Country Special Pizza",
+    size: "Medium",
+    crust: "New Hand Tossed",
+    quantity: 1,
+    assigned_oven: "oven-02",
+    assigned_staff: "staff-001",
+    baking_status: "baking_completed",
+    started_time: new Date(Date.now() - 9 * 60000).toISOString(),
+    completed_time: new Date(Date.now() - 1 * 60000).toISOString(),
+    target_time: 8,
+    temperature: 250,
+    expectedDuration: 8,
+    paused: false,
+    pauseReason: "",
+    pauseNotes: "",
+    remarks: "",
+    priority: "NORMAL"
+  }
+];
+
+// INITIAL KITCHEN ISSUES
+export const initialMockKitchenIssues = [
+  {
+    _id: "issue-001",
+    orderItemId: "oi-1050-1",
+    issueType: "Overcooked", // Overcooked, Undercooked, Machine Failure, Temperature Error, Burnt Crust, Cheese Issue, Other
+    severity: "High", // Low, Medium, High, Critical
+    remarks: "Oven ran 15 deg hot, cheese scorched",
+    image: "",
+    notifyManager: true,
+    createdAt: new Date(Date.now() - 30 * 60000).toISOString()
+  }
+];
+
