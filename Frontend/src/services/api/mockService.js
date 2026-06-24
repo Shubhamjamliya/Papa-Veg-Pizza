@@ -409,6 +409,161 @@ export function handleMockRequest(config) {
     });
   }
 
+  // --- STORE OPERATIONS DASHBOARD WIDGETS ---
+  if (url.includes("/store/dashboard/today-sales")) {
+    return successRes({ todaySales: 45230, percentageChange: 12 });
+  }
+  if (url.includes("/store/dashboard/today-orders")) {
+    return successRes({ totalOrders: 136 });
+  }
+  if (url.includes("/store/dashboard/active-orders")) {
+    return successRes({ activeOrders: 23 });
+  }
+  if (url.includes("/store/dashboard/prep-time")) {
+    return successRes({ avgPrepTime: 14 });
+  }
+  if (url.includes("/store/dashboard/pending-deliveries")) {
+    return successRes({ pendingDeliveries: 8 });
+  }
+  if (url.includes("/store/dashboard/low-stock")) {
+    return successRes({ lowStockItems: 5 });
+  }
+  if (url.includes("/store/dashboard/staff-duty")) {
+    return successRes({ staffOnDuty: 12 });
+  }
+  if (url.includes("/store/dashboard/customer-rating")) {
+    return successRes({ rating: 4.7 });
+  }
+  if (url.includes("/store/dashboard/hourly-sales")) {
+    const filter = config.params?.filter || "daily";
+    const data = filter === "daily" 
+      ? [
+          { hour: "10 AM", sales: 3200 },
+          { hour: "11 AM", sales: 4800 },
+          { hour: "12 PM", sales: 8500 },
+          { hour: "01 PM", sales: 12000 },
+          { hour: "02 PM", sales: 9400 },
+          { hour: "03 PM", sales: 5500 },
+          { hour: "04 PM", sales: 4200 },
+          { hour: "05 PM", sales: 6800 },
+          { hour: "06 PM", sales: 11000 },
+          { hour: "07 PM", sales: 18500 },
+          { hour: "08 PM", sales: 24000 },
+          { hour: "09 PM", sales: 19000 },
+          { hour: "10 PM", sales: 12500 },
+          { hour: "11 PM", sales: 6200 }
+        ]
+      : filter === "weekly"
+        ? [
+            { hour: "Mon", sales: 42000 },
+            { hour: "Tue", sales: 48000 },
+            { hour: "Wed", sales: 51000 },
+            { hour: "Thu", sales: 58000 },
+            { hour: "Fri", sales: 74000 },
+            { hour: "Sat", sales: 92000 },
+            { hour: "Sun", sales: 86000 }
+          ]
+        : [
+            { hour: "Jan", sales: 1420000 },
+            { hour: "Feb", sales: 1550000 },
+            { hour: "Mar", sales: 1680000 },
+            { hour: "Apr", sales: 1820000 },
+            { hour: "May", sales: 2010000 },
+            { hour: "Jun", sales: 1980000 }
+          ];
+    return successRes(data);
+  }
+  if (url.includes("/store/dashboard/top-products")) {
+    return successRes([
+      { productName: "Paneer Tikka Pizza", sold: 82, revenue: 24600 },
+      { productName: "Double Cheese Margherita", sold: 68, revenue: 18360 },
+      { productName: "Farmhouse Delight", sold: 54, revenue: 15120 },
+      { productName: "Veg Supreme Feast", sold: 41, revenue: 13530 },
+      { productName: "Capsicum Onion Classic", sold: 35, revenue: 7700 }
+    ]);
+  }
+  if (url.includes("/store/dashboard/staff-overview")) {
+    return successRes({ present: 12, late: 2, absent: 1 });
+  }
+  if (url.includes("/store/dashboard/order-status")) {
+    return successRes({
+      incoming: 5,
+      preparing: 8,
+      baking: 3,
+      packaging: 4,
+      ready: 2,
+      delivered: 70,
+      cancelled: 5
+    });
+  }
+  if (url.includes("/store/dashboard/live-orders")) {
+    return successRes({
+      incoming: [
+        { orderNumber: "PV-8850", customer: "Rohan Malhotra", amount: 640, eta: "25m", status: "Incoming" },
+        { orderNumber: "PV-8849", customer: "Alok Gupta", amount: 480, eta: "20m", status: "Incoming" },
+        { orderNumber: "PV-8848", customer: "Pooja Patel", amount: 550, eta: "30m", status: "Incoming" }
+      ],
+      preparing: [
+        { orderNumber: "PV-8842", customer: "Amit Verma", amount: 590, eta: "12m", status: "Preparing" },
+        { orderNumber: "PV-8841", customer: "Isha Sharma", amount: 390, eta: "15m", status: "Preparing" },
+        { orderNumber: "PV-8840", customer: "Deepak Rawat", amount: 720, eta: "8m", status: "Preparing" },
+        { orderNumber: "PV-8843", customer: "Neha Sen", amount: 420, eta: "14m", status: "Preparing" },
+        { orderNumber: "PV-8844", customer: "Vijay Nair", amount: 650, eta: "10m", status: "Preparing" }
+      ],
+      ready: [
+        { orderNumber: "PV-8839", customer: "Karan Singh", amount: 340, eta: "0m", status: "Ready" },
+        { orderNumber: "PV-8837", customer: "Sanjay Jha", amount: 980, eta: "0m", status: "Ready" }
+      ],
+      delivery: [
+        { orderNumber: "PV-8830", customer: "Sunil Dutt", amount: 1150, eta: "18m", status: "Out For Delivery" },
+        { orderNumber: "PV-8828", customer: "Kriti Sen", amount: 460, eta: "22m", status: "Out For Delivery" }
+      ]
+    });
+  }
+  if (url.includes("/store/dashboard/kitchen-performance")) {
+    return successRes({
+      avgPrepTime: 13,
+      delayedOrders: 3,
+      pizzaStation: 80,
+      bakingStation: 50,
+      packagingStation: 20
+    });
+  }
+  if (url.includes("/store/dashboard/inventory-alerts")) {
+    return successRes({
+      lowStock: [
+        { ingredient: "Processed Cheese", availableQty: 2, minQty: 15, reorderLevel: 10, unit: "kg", supplier: "Amul Dairy Corp", severity: "Critical" },
+        { ingredient: "Olives", availableQty: 0.5, minQty: 5, reorderLevel: 3, unit: "kg", supplier: "Del Monte Foods", severity: "Critical" },
+        { ingredient: "Pizza Sauce", availableQty: 4, minQty: 12, reorderLevel: 8, unit: "litres", supplier: "Kissan Food Systems", severity: "Warning" },
+        { ingredient: "Capsicum", availableQty: 6, minQty: 10, reorderLevel: 5, unit: "kg", supplier: "Local Mandi Vendor", severity: "Normal" }
+      ]
+    });
+  }
+  if (url.includes("/store/dashboard/delivery-overview")) {
+    return successRes({
+      availableRiders: 6,
+      assignedRiders: 9,
+      delayedDeliveries: 2
+    });
+  }
+  if (url.includes("/store/dashboard/recent-complaints")) {
+    return successRes([
+      { orderNumber: "PV-8839", customer: "Rohan Malhotra", issueType: "Cold food delivered", priority: "High", status: "Open", phone: "9826012431", time: "15m ago" },
+      { orderNumber: "PV-8835", customer: "Isha Sharma", issueType: "Missing beverage", priority: "Medium", status: "Open", phone: "9977544021", time: "28m ago" },
+      { orderNumber: "PV-8830", customer: "Amit Verma", issueType: "Delayed courier", priority: "Low", status: "In Progress", phone: "9893012903", time: "1h ago" },
+      { orderNumber: "PV-8822", customer: "Pooja Patel", issueType: "Incorrect pizza base", priority: "Critical", status: "Open", phone: "9111223344", time: "2h ago" }
+    ]);
+  }
+  if (url.includes("/store/dashboard/activity-logs")) {
+    return successRes([
+      { id: 1, action: "Order PV-8842 accepted", user: "Manager (Shubham)", type: "order", timestamp: "1m ago" },
+      { id: 2, action: "Margherita pizza moved to Baking", user: "Chef (Vijay)", type: "kitchen", timestamp: "5m ago" },
+      { id: 3, action: "Low stock alert triggered: Paneer", user: "System", type: "inventory", timestamp: "14m ago" },
+      { id: 4, action: "Rider assigned: Ramesh Singh", user: "Auto-Dispatch", type: "delivery", timestamp: "20m ago" },
+      { id: 5, action: "Shift started: Assistant Manager Pooja", user: "Pooja Rawat", type: "staff", timestamp: "1h ago" }
+    ]);
+  }
+
   if (url.includes("/stores/dropdown")) {
     return successRes(mockStoresList);
   }
