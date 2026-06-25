@@ -2,7 +2,7 @@ import { initialStores, initialManagers, initialStoreApprovals, initialStorePerf
 import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData, initialMockDeliveryIssues, initialMockNotifications, initialMockDeliveryTimelines } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
-import { initialMockStaff, initialMockAttendance, initialMockShifts } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
+import { initialMockStaff, initialMockAttendance, initialMockShifts, initialMockPerformance } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
 import {
   mockStoresList,
   mockProductsPerformance,
@@ -125,7 +125,8 @@ let db = {
   delivery_timelines: getStorageItem("delivery_timelines", initialMockDeliveryTimelines),
   staff: getStorageItem("staff", initialMockStaff),
   attendance: getStorageItem("attendance", initialMockAttendance),
-  shifts: getStorageItem("shifts", initialMockShifts)
+  shifts: getStorageItem("shifts", initialMockShifts),
+  performance: getStorageItem("performance", initialMockPerformance)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -3285,6 +3286,69 @@ export function handleMockRequest(config) {
       return successRes(db.shifts[idx]);
     }
     return errorRes("Shift not found", 404);
+  }
+
+  // --- STAFF PERFORMANCE ENDPOINTS ---
+  // GET /store/performance/:staffId
+  const storePerformanceDetailsMatch = url.match(/\/store\/performance\/([^/]+)$/);
+  if (storePerformanceDetailsMatch && method === "get") {
+    const staffId = storePerformanceDetailsMatch[1];
+    const period = config.params?.period || "monthly";
+    const found = db.performance.find((p) => p.staffId === staffId && p.period === period);
+    const staffObj = db.staff.find((s) => s._id === staffId);
+    if (found) {
+      return successRes({ ...found, staff: staffObj || null });
+    }
+    return successRes({
+      staffId,
+      period,
+      totalOrders: 0,
+      avgPreparationTime: 0,
+      delayedOrders: 0,
+      attendancePercentage: 100,
+      customerComplaints: 0,
+      rating: 5.0,
+      score: 100,
+      staff: staffObj || null
+    });
+  }
+
+  // GET /store/performance
+  if (url.includes("/store/performance") && method === "get" && !storePerformanceDetailsMatch) {
+    const filters = config.params || {};
+    const period = filters.period || "monthly";
+
+    let list = db.performance.filter((p) => p.period === period);
+
+    let joinedList = list.map((p) => {
+      const staffObj = db.staff.find((s) => s._id === p.staffId);
+      return {
+        ...p,
+        fullName: staffObj?.fullName || "",
+        employeeCode: staffObj?.employeeCode || "",
+        role: staffObj?.role || "",
+        profileImage: staffObj?.profileImage || "",
+        status: staffObj?.status || "active"
+      };
+    });
+
+    if (filters.role && filters.role !== "All") {
+      const r = filters.role.toLowerCase().replace(/ /g, "_");
+      joinedList = joinedList.filter((p) => p.role.toLowerCase().replace(/ /g, "_") === r);
+    }
+
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      joinedList = joinedList.filter(
+        (p) =>
+          p.fullName.toLowerCase().includes(q) ||
+          p.employeeCode.toLowerCase().includes(q)
+      );
+    }
+
+    joinedList.sort((a, b) => b.score - a.score);
+
+    return successRes(joinedList);
   }
 
   // GET /staff (supervisors query)

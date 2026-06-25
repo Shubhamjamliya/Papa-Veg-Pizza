@@ -440,3 +440,222 @@ export const initialMockShifts = [
   }
 ];
 
+export const initialMockPerformance = [
+  // MONTHLY
+  {
+    _id: "perf-m-1",
+    storeId: "store-indore-01",
+    staffId: "staff-1",
+    period: "monthly",
+    totalOrders: 152,
+    avgPreparationTime: 8.5,
+    delayedOrders: 3,
+    attendancePercentage: 98,
+    customerComplaints: 0,
+    rating: 4.8,
+    score: 95.2,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-m-2",
+    storeId: "store-indore-01",
+    staffId: "staff-2",
+    period: "monthly",
+    totalOrders: 120,
+    avgPreparationTime: 6.2,
+    delayedOrders: 1,
+    attendancePercentage: 94,
+    customerComplaints: 1,
+    rating: 4.9,
+    score: 93.6,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-m-3",
+    storeId: "store-indore-01",
+    staffId: "staff-3",
+    period: "monthly",
+    totalOrders: 98,
+    avgPreparationTime: 9.8,
+    delayedOrders: 4,
+    attendancePercentage: 96,
+    customerComplaints: 0,
+    rating: 4.7,
+    score: 91.0,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-m-4",
+    storeId: "store-indore-01",
+    staffId: "staff-4",
+    period: "monthly",
+    totalOrders: 140,
+    avgPreparationTime: 7.0,
+    delayedOrders: 12,
+    attendancePercentage: 90,
+    customerComplaints: 3,
+    rating: 4.2,
+    score: 83.5,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-m-5",
+    storeId: "store-indore-01",
+    staffId: "staff-5",
+    period: "monthly",
+    totalOrders: 110,
+    avgPreparationTime: 8.0,
+    delayedOrders: 2,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.6,
+    score: 94.5,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+
+  // WEEKLY
+  {
+    _id: "perf-w-1",
+    storeId: "store-indore-01",
+    staffId: "staff-1",
+    period: "weekly",
+    totalOrders: 38,
+    avgPreparationTime: 8.2,
+    delayedOrders: 1,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.9,
+    score: 96.8,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-w-2",
+    storeId: "store-indore-01",
+    staffId: "staff-2",
+    period: "weekly",
+    totalOrders: 32,
+    avgPreparationTime: 6.4,
+    delayedOrders: 0,
+    attendancePercentage: 92,
+    customerComplaints: 0,
+    rating: 4.8,
+    score: 92.5,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-w-3",
+    storeId: "store-indore-01",
+    staffId: "staff-3",
+    period: "weekly",
+    totalOrders: 25,
+    avgPreparationTime: 10.0,
+    delayedOrders: 1,
+    attendancePercentage: 96,
+    customerComplaints: 0,
+    rating: 4.6,
+    score: 91.8,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-w-4",
+    storeId: "store-indore-01",
+    staffId: "staff-4",
+    period: "weekly",
+    totalOrders: 35,
+    avgPreparationTime: 7.2,
+    delayedOrders: 4,
+    attendancePercentage: 85,
+    customerComplaints: 1,
+    rating: 4.0,
+    score: 80.2,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-w-5",
+    storeId: "store-indore-01",
+    staffId: "staff-5",
+    period: "weekly",
+    totalOrders: 28,
+    avgPreparationTime: 8.5,
+    delayedOrders: 0,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.7,
+    score: 95.0,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+
+  // DAILY
+  {
+    _id: "perf-d-1",
+    storeId: "store-indore-01",
+    staffId: "staff-1",
+    period: "daily",
+    totalOrders: 6,
+    avgPreparationTime: 7.8,
+    delayedOrders: 0,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 5.0,
+    score: 98.5,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-d-2",
+    storeId: "store-indore-01",
+    staffId: "staff-2",
+    period: "daily",
+    totalOrders: 8,
+    avgPreparationTime: 5.9,
+    delayedOrders: 0,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.9,
+    score: 97.2,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-d-3",
+    storeId: "store-indore-01",
+    staffId: "staff-3",
+    period: "daily",
+    totalOrders: 4,
+    avgPreparationTime: 10.2,
+    delayedOrders: 0,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.5,
+    score: 89.0,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-d-4",
+    storeId: "store-indore-01",
+    staffId: "staff-4",
+    period: "daily",
+    totalOrders: 7,
+    avgPreparationTime: 6.8,
+    delayedOrders: 1,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.2,
+    score: 87.5,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  },
+  {
+    _id: "perf-d-5",
+    storeId: "store-indore-01",
+    staffId: "staff-5",
+    period: "daily",
+    totalOrders: 5,
+    avgPreparationTime: 8.1,
+    delayedOrders: 0,
+    attendancePercentage: 100,
+    customerComplaints: 0,
+    rating: 4.7,
+    score: 94.8,
+    createdAt: "2026-06-25T00:00:00.000Z"
+  }
+];
+
+
