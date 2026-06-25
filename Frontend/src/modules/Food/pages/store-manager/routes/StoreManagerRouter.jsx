@@ -23,6 +23,7 @@ import IngredientStock from "../inventory/IngredientStock"
 import StockRequests from "../inventory/StockRequests"
 import WasteManagement from "../inventory/WasteManagement"
 import LowStockAlerts from "../inventory/LowStockAlerts"
+import IngredientShortages from "../inventory/IngredientShortages"
 
 
 
@@ -284,12 +285,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="inventory/shortages" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
-                <PagePlaceholder 
-                  title="Ingredient Shortages" 
-                  description="Out-of-stock items requiring item disabling or warehouse dispatch" 
-                  allowedRoles={["store_manager", "kitchen_supervisor"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <IngredientShortages />
               </RoleProtectedRoute>
             } 
           />

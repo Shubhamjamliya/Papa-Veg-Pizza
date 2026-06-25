@@ -51,7 +51,7 @@ export function AlertDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl lg:max-w-[calc(100vw-340px)] xl:max-w-3xl lg:left-[calc(50%+140px)] p-4 md:p-5 rounded-2xl border border-zinc-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
+      <DialogContent className="w-[calc(100vw-32px)] sm:w-full max-w-3xl lg:max-w-[calc(100vw-340px)] xl:max-w-3xl lg:left-[calc(50%+140px)] p-4 md:p-5 rounded-2xl border border-zinc-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden max-h-[90vh] md:max-h-[85vh] flex flex-col">
         
         {/* Header */}
         <DialogHeader className="mb-3">

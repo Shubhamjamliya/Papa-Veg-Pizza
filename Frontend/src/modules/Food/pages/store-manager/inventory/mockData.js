@@ -723,5 +723,233 @@ export const setLocalInventoryAlerts = (alerts) => {
   localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
 };
 
+// ==========================================
+// Ingredient Shortages & Stock Transfers DB
+// ==========================================
+
+export const initialMockShortages = [
+  {
+    _id: "shortage-001",
+    storeId: "st-indore-01",
+    ingredientId: "ing-005",
+    ingredientName: "Sliced Jalapenos (Pickled)",
+    shortageQty: 15.0,
+    affectedOrders: 3,
+    severity: "critical",
+    status: "active",
+    actionTaken: "",
+    createdBy: "System Auto-Detection",
+    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+    resolvedBy: "",
+    resolvedAt: "",
+    resolutionNote: ""
+  },
+  {
+    _id: "shortage-002",
+    storeId: "st-indore-01",
+    ingredientId: "ing-013",
+    ingredientName: "Large Pizza Box (Corrugated)",
+    shortageQty: 120.0,
+    affectedOrders: 5,
+    severity: "high",
+    status: "active",
+    actionTaken: "",
+    createdBy: "System Auto-Detection",
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
+    resolvedBy: "",
+    resolvedAt: "",
+    resolutionNote: ""
+  },
+  {
+    _id: "shortage-003",
+    storeId: "st-indore-01",
+    ingredientId: "ing-004",
+    ingredientName: "Fresh Paneer Cubes (Tikka Size)",
+    shortageQty: 5.0,
+    affectedOrders: 2,
+    severity: "medium",
+    status: "resolved",
+    actionTaken: "Transferred stock from Vijay Nagar store",
+    createdBy: "System Auto-Detection",
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+    resolvedBy: "Shubham Jamliya",
+    resolvedAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+    resolutionNote: "Completed stock transfer from Vijay Nagar branch."
+  }
+];
+
+export const initialMockTransfers = [
+  {
+    _id: "tr-001",
+    fromStore: "Vijay Nagar Store (Indore)",
+    fromStoreId: "st-indore-02",
+    toStore: "Indore Main Store",
+    toStoreId: "st-indore-01",
+    ingredientId: "ing-004",
+    ingredientName: "Fresh Paneer Cubes (Tikka Size)",
+    quantity: 10.0,
+    status: "completed",
+    approvedBy: "Admin (Rohan Sharma)",
+    reason: "Emergency paneer transfer for weekend orders",
+    remarks: "Transfer completed successfully",
+    createdAt: new Date(Date.now() - 3600000 * 18).toISOString()
+  },
+  {
+    _id: "tr-002",
+    fromStore: "Palasia Store (Indore)",
+    fromStoreId: "st-indore-03",
+    toStore: "Indore Main Store",
+    toStoreId: "st-indore-01",
+    ingredientId: "ing-005",
+    ingredientName: "Sliced Jalapenos (Pickled)",
+    quantity: 15.0,
+    status: "pending",
+    approvedBy: "",
+    reason: "Replenish pickled jalapenos for pizza toppings",
+    remarks: "Awaiting Admin approval",
+    createdAt: new Date(Date.now() - 3600000 * 1).toISOString()
+  }
+];
+
+export const mockStores = [
+  {
+    storeId: "st-indore-02",
+    name: "Vijay Nagar Store, Indore",
+    distance: 3.2,
+    availableQty: 45.0,
+    managerName: "Rohan Sharma"
+  },
+  {
+    storeId: "st-indore-03",
+    name: "Palasia Store, Indore",
+    distance: 5.1,
+    availableQty: 22.5,
+    managerName: "Anjali Gupta"
+  },
+  {
+    storeId: "st-bhopal-01",
+    name: "Arera Colony Store, Bhopal",
+    distance: 190.0,
+    availableQty: 80.0,
+    managerName: "Ramesh Saxena"
+  }
+];
+
+export const mockAffectedOrders = {
+  "ing-005": [
+    { _id: "ORD-9021", customer: "Aarav Mehta", pizzaName: "Double Cheese Margherita + Jalapenos", quantity: 2, status: "preparing", expectedDelivery: "12:55 PM", revenue: 740.00 },
+    { _id: "ORD-9024", customer: "Diya Sharma", pizzaName: "Spicy Jalapeno Veg Supreme", quantity: 1, status: "pending", expectedDelivery: "01:10 PM", revenue: 490.00 },
+    { _id: "ORD-9027", customer: "Kabir Kapoor", pizzaName: "Paneer Tikka Pizza (Jalapeno Crust)", quantity: 3, status: "preparing", expectedDelivery: "01:05 PM", revenue: 1280.00 }
+  ],
+  "ing-013": [
+    { _id: "ORD-8941", customer: "Rohan Verma", pizzaName: "Party Veg Feast (Large Size)", quantity: 4, status: "preparing", expectedDelivery: "01:00 PM", revenue: 2400.00 },
+    { _id: "ORD-8945", customer: "Ananya Gupta", pizzaName: "Double Cheese Burst Pizza (Large Size)", quantity: 2, status: "pending", expectedDelivery: "01:15 PM", revenue: 1100.00 }
+  ],
+  "ing-004": [
+    { _id: "ORD-8910", customer: "Devendra Singh", pizzaName: "Paneer Tikka Stuffed Garlic Bread", quantity: 2, status: "completed", expectedDelivery: "Yesterday", revenue: 380.00 },
+    { _id: "ORD-8912", customer: "Meera Nair", pizzaName: "Peppy Paneer Pizza (Medium)", quantity: 1, status: "completed", expectedDelivery: "Yesterday", revenue: 450.00 }
+  ]
+};
+
+export const mockShortageTimeline = {
+  "shortage-001": [
+    { user: "System Auto-Detection", action: "detected", remarks: "Stock level dropped to 0.0 KG (below minimum 5.0 KG)", createdAt: new Date(Date.now() - 3600000 * 5).toISOString() },
+    { user: "Vijay Saxena", action: "reported", remarks: "Confirmed shortage in kitchen during morning pizza prep line", createdAt: new Date(Date.now() - 3600000 * 4).toISOString() }
+  ],
+  "shortage-002": [
+    { user: "System Auto-Detection", action: "detected", remarks: "Stock level dropped to 0.0 Pcs (below minimum 100.0 Pcs)", createdAt: new Date(Date.now() - 3600000 * 8).toISOString() }
+  ],
+  "shortage-003": [
+    { user: "System Auto-Detection", action: "detected", remarks: "Stock level dropped to 8.5 KG (below minimum 10.0 KG)", createdAt: new Date(Date.now() - 3600000 * 24).toISOString() },
+    { user: "Shubham Jamliya", action: "transfer_initiated", remarks: "Requested 10kg transfer from Vijay Nagar store", createdAt: new Date(Date.now() - 3600000 * 22).toISOString() },
+    { user: "Shubham Jamliya", action: "resolved", remarks: "Transfer completed and stock replenished.", createdAt: new Date(Date.now() - 3600000 * 18).toISOString() }
+  ]
+};
+
+const SHORTAGES_KEY = "pvp_inventory_shortages";
+const TRANSFERS_KEY = "pvp_stock_transfers";
+
+export const getLocalShortages = () => {
+  try {
+    let shortages = JSON.parse(localStorage.getItem(SHORTAGES_KEY));
+    if (!shortages || !Array.isArray(shortages)) {
+      shortages = initialMockShortages;
+    }
+
+    // Auto-syncing engine: automatically create active shortages if stock is 0
+    const ingredients = getLocalIngredients();
+    let changed = false;
+
+    ingredients.forEach((ing) => {
+      if (ing.currentStock === 0) {
+        const hasActiveShortage = shortages.some(s => s.ingredientId === ing._id && s.status === "active");
+        if (!hasActiveShortage) {
+          shortages.push({
+            _id: `shortage-${Date.now()}-${ing._id}`,
+            storeId: ing.storeId || "st-indore-01",
+            ingredientId: ing._id,
+            ingredientName: ing.ingredientName,
+            shortageQty: ing.minimumStock * 2,
+            affectedOrders: ing._id === "ing-005" ? 3 : ing._id === "ing-013" ? 5 : 2,
+            severity: ing.minimumStock > 10 ? "critical" : "high",
+            status: "active",
+            actionTaken: "",
+            createdBy: "System Auto-Detection",
+            createdAt: new Date().toISOString(),
+            resolvedBy: "",
+            resolvedAt: "",
+            resolutionNote: ""
+          });
+          changed = true;
+        }
+      } else {
+        // Auto-resolve shortages if stock is replenished
+        const activeShortageIndex = shortages.findIndex(s => s.ingredientId === ing._id && s.status === "active");
+        if (activeShortageIndex !== -1) {
+          shortages[activeShortageIndex] = {
+            ...shortages[activeShortageIndex],
+            status: "resolved",
+            resolvedBy: "System Auto-Sync",
+            resolvedAt: new Date().toISOString(),
+            resolutionNote: "Stock level replenished above 0.",
+            actionTaken: "Inventory replenishment detected"
+          };
+          changed = true;
+        }
+      }
+    });
+
+    if (changed || !localStorage.getItem(SHORTAGES_KEY)) {
+      localStorage.setItem(SHORTAGES_KEY, JSON.stringify(shortages));
+    }
+    return shortages;
+  } catch (e) {
+    localStorage.setItem(SHORTAGES_KEY, JSON.stringify(initialMockShortages));
+    return initialMockShortages;
+  }
+};
+
+export const setLocalShortages = (shortages) => {
+  localStorage.setItem(SHORTAGES_KEY, JSON.stringify(shortages));
+};
+
+export const getLocalTransfers = () => {
+  try {
+    let transfers = JSON.parse(localStorage.getItem(TRANSFERS_KEY));
+    if (!transfers || !Array.isArray(transfers)) {
+      transfers = initialMockTransfers;
+      localStorage.setItem(TRANSFERS_KEY, JSON.stringify(transfers));
+    }
+    return transfers;
+  } catch (e) {
+    localStorage.setItem(TRANSFERS_KEY, JSON.stringify(initialMockTransfers));
+    return initialMockTransfers;
+  }
+};
+
+export const setLocalTransfers = (transfers) => {
+  localStorage.setItem(TRANSFERS_KEY, JSON.stringify(transfers));
+};
+
 
 
