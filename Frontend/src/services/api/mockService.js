@@ -2,7 +2,7 @@ import { initialStores, initialManagers, initialStoreApprovals, initialStorePerf
 import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData, initialMockDeliveryIssues, initialMockNotifications, initialMockDeliveryTimelines } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
-import { initialMockStaff } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
+import { initialMockStaff, initialMockAttendance } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
 import {
   mockStoresList,
   mockProductsPerformance,
@@ -123,7 +123,8 @@ let db = {
   delivery_issues: getStorageItem("delivery_issues", initialMockDeliveryIssues),
   delivery_notifications: getStorageItem("delivery_notifications", initialMockNotifications),
   delivery_timelines: getStorageItem("delivery_timelines", initialMockDeliveryTimelines),
-  staff: getStorageItem("staff", initialMockStaff)
+  staff: getStorageItem("staff", initialMockStaff),
+  attendance: getStorageItem("attendance", initialMockAttendance)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -2980,7 +2981,174 @@ export function handleMockRequest(config) {
       saveDB();
       return successRes(deleted);
     }
-    return errorRes("Staff member not found", 404);
+  }
+
+  // --- KITCHEN ATTENDANCE ENDPOINTS ---
+  // GET /store/attendance/:id (Single record)
+  const storeAttendanceDetailsMatch = url.match(/\/store\/attendance\/([^/]+)$/);
+  if (storeAttendanceDetailsMatch && method === "get" && !url.includes("/bulk")) {
+    const id = storeAttendanceDetailsMatch[1];
+    const found = db.attendance.find((a) => a._id === id);
+    if (found) {
+      return successRes(found);
+    }
+    return errorRes("Attendance record not found", 404);
+  }
+
+  // GET /store/attendance
+  if (url.includes("/store/attendance") && method === "get" && !storeAttendanceDetailsMatch) {
+    const filters = config.params || {};
+    let list = [...db.attendance];
+
+    // Filter by Date
+    if (filters.date) {
+      list = list.filter((a) => a.date === filters.date);
+    }
+
+    // Filter by Shift
+    if (filters.shiftId && filters.shiftId !== "All") {
+      list = list.filter((a) => a.shiftId === filters.shiftId);
+    }
+
+    // Filter by Status
+    if (filters.status && filters.status !== "All") {
+      list = list.filter((a) => a.status === filters.status);
+    }
+
+    // Filter by Search and Role
+    if (filters.search || (filters.role && filters.role !== "All")) {
+      list = list.filter((a) => {
+        const staffObj = db.staff.find((s) => s._id === a.staffId);
+        if (!staffObj) return false;
+
+        if (filters.role && filters.role !== "All") {
+          if (staffObj.role !== filters.role) return false;
+        }
+
+        if (filters.search) {
+          const q = filters.search.toLowerCase();
+          const nameMatch = staffObj.fullName && staffObj.fullName.toLowerCase().includes(q);
+          const codeMatch = staffObj.employeeCode && staffObj.employeeCode.toLowerCase().includes(q);
+          return nameMatch || codeMatch;
+        }
+
+        return true;
+      });
+    }
+
+    return successRes(list);
+  }
+
+  // POST /store/attendance/bulk
+  if (url.includes("/store/attendance/bulk") && method === "post") {
+    const payload = data || {};
+    const attendances = payload.attendances || [];
+
+    db.attendance = db.attendance.filter(
+      (a) => !(a.date === payload.date && a.shiftId === payload.shiftId)
+    );
+
+    const newRecords = attendances.map((item) => {
+      let checkIn = "";
+      let checkOut = "";
+      let totalHours = 0;
+      let overtimeHours = 0;
+
+      if (item.status === "present") {
+        checkIn = "09:00 AM";
+        checkOut = "05:00 PM";
+        totalHours = 8.0;
+        overtimeHours = 0;
+      } else if (item.status === "half_day") {
+        checkIn = "09:00 AM";
+        checkOut = "01:00 PM";
+        totalHours = 4.0;
+        overtimeHours = 0;
+      }
+
+      return {
+        _id: `att-bulk-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+        storeId: payload.storeId || "store-indore-01",
+        staffId: item.staffId,
+        shiftId: payload.shiftId,
+        date: payload.date,
+        checkIn,
+        checkOut,
+        totalHours,
+        overtimeHours,
+        status: item.status,
+        markedBy: payload.markedBy || "Shubham Jamliya",
+        notes: "",
+        createdAt: new Date().toISOString()
+      };
+    });
+
+    db.attendance = [...newRecords, ...db.attendance];
+    saveDB();
+    return successRes(newRecords);
+  }
+
+  // POST /store/attendance
+  if (url.includes("/store/attendance") && method === "post" && !url.includes("/bulk")) {
+    const payload = data || {};
+    const newRecord = {
+      _id: `att-${Date.now()}`,
+      storeId: payload.storeId || "store-indore-01",
+      staffId: payload.staffId,
+      shiftId: payload.shiftId,
+      date: payload.date,
+      checkIn: payload.checkIn || "",
+      checkOut: payload.checkOut || "",
+      totalHours: Number(payload.totalHours) || 0,
+      overtimeHours: Number(payload.overtimeHours) || 0,
+      status: payload.status,
+      markedBy: payload.markedBy || "Shubham Jamliya",
+      notes: payload.notes || "",
+      createdAt: new Date().toISOString()
+    };
+
+    db.attendance = [newRecord, ...db.attendance];
+    saveDB();
+    return successRes(newRecord);
+  }
+
+  // PUT /store/attendance/:id
+  const storeAttendancePutMatch = url.match(/\/store\/attendance\/([^/]+)$/);
+  if (storeAttendancePutMatch && method === "put") {
+    const id = storeAttendancePutMatch[1];
+    const payload = data || {};
+    const idx = db.attendance.findIndex((a) => a._id === id);
+    if (idx !== -1) {
+      db.attendance[idx] = {
+        ...db.attendance[idx],
+        shiftId: payload.shiftId ?? db.attendance[idx].shiftId,
+        date: payload.date ?? db.attendance[idx].date,
+        checkIn: payload.checkIn ?? db.attendance[idx].checkIn,
+        checkOut: payload.checkOut ?? db.attendance[idx].checkOut,
+        totalHours: payload.totalHours !== undefined ? Number(payload.totalHours) : db.attendance[idx].totalHours,
+        overtimeHours: payload.overtimeHours !== undefined ? Number(payload.overtimeHours) : db.attendance[idx].overtimeHours,
+        status: payload.status ?? db.attendance[idx].status,
+        notes: payload.notes ?? db.attendance[idx].notes,
+        markedBy: payload.markedBy ?? db.attendance[idx].markedBy
+      };
+      saveDB();
+      return successRes(db.attendance[idx]);
+    }
+    return errorRes("Attendance record not found", 404);
+  }
+
+  // DELETE /store/attendance/:id
+  const storeAttendanceDeleteMatch = url.match(/\/store\/attendance\/([^/]+)$/);
+  if (storeAttendanceDeleteMatch && method === "delete") {
+    const id = storeAttendanceDeleteMatch[1];
+    const idx = db.attendance.findIndex((a) => a._id === id);
+    if (idx !== -1) {
+      const deleted = db.attendance[idx];
+      db.attendance = db.attendance.filter((a) => a._id !== id);
+      saveDB();
+      return successRes(deleted);
+    }
+    return errorRes("Attendance record not found", 404);
   }
 
   // GET /staff (supervisors query)

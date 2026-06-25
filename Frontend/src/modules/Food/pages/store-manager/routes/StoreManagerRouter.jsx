@@ -25,6 +25,7 @@ import WasteManagement from "../inventory/WasteManagement"
 import LowStockAlerts from "../inventory/LowStockAlerts"
 import IngredientShortages from "../inventory/IngredientShortages"
 import KitchenStaff from "../staffManagement/KitchenStaff"
+import Attendance from "../staffManagement/Attendance"
 
 
 
@@ -304,12 +305,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="staff/attendance" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Staff Attendance" 
-                  description="Log check-ins, check-outs, and shift hours" 
-                  allowedRoles={["store_manager"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
+                <Attendance />
               </RoleProtectedRoute>
             } 
           />
