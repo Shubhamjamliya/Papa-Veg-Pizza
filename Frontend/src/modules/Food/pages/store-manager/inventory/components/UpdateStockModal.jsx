@@ -124,63 +124,63 @@ export function UpdateStockModal({ isOpen, onClose, ingredientId }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl lg:max-w-[calc(100vw-320px)] xl:max-w-2xl lg:left-[calc(50%+140px)] p-6 rounded-3xl border border-zinc-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden max-h-[95vh] flex flex-col">
+      <DialogContent className="max-w-lg lg:max-w-[calc(100vw-340px)] xl:max-w-lg lg:left-[calc(50%+140px)] p-4 md:p-5 rounded-2xl border border-zinc-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden max-h-[95vh] flex flex-col">
         
         {/* Header */}
-        <DialogHeader className="mb-4">
-          <DialogTitle className="text-lg font-black text-zinc-900 dark:text-white tracking-tight flex items-center gap-2">
-            <RefreshCw className="text-[var(--primary)] w-5 h-5 animate-spin-slow" />
+        <DialogHeader className="mb-3">
+          <DialogTitle className="text-sm font-black text-zinc-900 dark:text-white tracking-tight flex items-center gap-1.5">
+            <RefreshCw className="text-[var(--primary)] w-4 h-4 animate-spin-slow" />
             Update Ingredient Stock
           </DialogTitle>
-          <DialogDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
+          <DialogDescription className="text-zinc-505 dark:text-zinc-400 text-[10px]">
             Log manual updates, stock deliveries, issues, or write-offs. All fields are audited.
           </DialogDescription>
         </DialogHeader>
 
         {isLoading ? (
-          <div className="flex-1 py-12 flex flex-col items-center justify-center space-y-4">
-            <div className="w-10 h-10 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-bold">Fetching current stock level...</p>
+          <div className="flex-1 py-8 flex flex-col items-center justify-center space-y-3">
+            <div className="w-8 h-8 border-3 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-bold">Fetching current stock level...</p>
           </div>
         ) : !ingredient ? (
-          <div className="flex-1 py-12 text-center text-zinc-400 dark:text-zinc-505 font-bold">
+          <div className="flex-1 py-8 text-center text-zinc-400 dark:text-zinc-505 font-bold text-xs">
             No ingredient data loaded.
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-5 pr-1 select-none">
+          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-4 pr-1 select-none">
             
             {/* Quick overview of current stock */}
-            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-100 dark:border-zinc-850 flex items-center justify-between">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-100 dark:border-zinc-850 flex items-center justify-between">
               <div>
-                <p className="text-xs font-black text-slate-800 dark:text-white">{ingredient.ingredientName}</p>
-                <p className="text-[10px] text-zinc-400 mt-0.5">Category: {ingredient.category} | Current Stock: {currentStock} {unit}</p>
+                <p className="text-xs font-black text-slate-800 dark:text-white leading-tight">{ingredient.ingredientName}</p>
+                <p className="text-[9px] text-zinc-400 mt-0.5">Category: {ingredient.category} | Current Stock: {currentStock} {unit}</p>
               </div>
-              <span className="text-xs font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-3 py-1 rounded-xl">
+              <span className="text-[10px] font-bold text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded-lg">
                 {unit}
               </span>
             </div>
 
             {/* Grid Layout fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
               
               {/* Type Select */}
-              <div className="space-y-1.5">
-                <Label className="text-xs font-black text-slate-700 dark:text-zinc-300">Transaction Type</Label>
+              <div className="space-y-1">
+                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Transaction Type</Label>
                 <Select value={transactionType} onValueChange={handleTypeChange}>
-                  <SelectTrigger className="w-full h-10 px-3 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus:ring-1 focus:ring-[var(--primary)] bg-white dark:bg-zinc-900">
+                  <SelectTrigger className="w-full h-8 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus:ring-1 focus:ring-[var(--primary)] bg-white dark:bg-zinc-900">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 rounded-xl">
-                    <SelectItem value="stock_in" className="text-xs font-semibold py-2">▲ Stock In (Delivery / Refill)</SelectItem>
-                    <SelectItem value="stock_out" className="text-xs font-semibold py-2">▼ Stock Out (Kitchen Waste / Spoilage)</SelectItem>
-                    <SelectItem value="adjustment" className="text-xs font-semibold py-2">⚙ Adjustment (Stock Audit Correction)</SelectItem>
+                  <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-850 rounded-lg">
+                    <SelectItem value="stock_in" className="text-xs font-semibold py-1.5">▲ Stock In (Delivery)</SelectItem>
+                    <SelectItem value="stock_out" className="text-xs font-semibold py-1.5">▼ Stock Out (Waste)</SelectItem>
+                    <SelectItem value="adjustment" className="text-xs font-semibold py-1.5">⚙ Adjustment (Audit)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Quantity Input */}
-              <div className="space-y-1.5">
-                <Label className="text-xs font-black text-slate-700 dark:text-zinc-300">Quantity</Label>
+              <div className="space-y-1">
+                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Quantity</Label>
                 <div className="relative">
                   <Input 
                     type="number"
@@ -188,34 +188,34 @@ export function UpdateStockModal({ isOpen, onClose, ingredientId }) {
                     placeholder="e.g. 10.5"
                     value={quantity}
                     onChange={(e) => handleQuantityChange(e.target.value)}
-                    className="h-10 px-3 pr-10 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus-visible:ring-1 focus-visible:ring-[var(--primary)]"
+                    className="h-8 px-2.5 pr-8 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus-visible:ring-1 focus-visible:ring-[var(--primary)]"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-zinc-400">
+                  <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-bold text-zinc-400">
                     {unit}
                   </span>
                 </div>
               </div>
 
               {/* Readonly current stock */}
-              <div className="space-y-1.5">
-                <Label className="text-xs font-black text-zinc-400">Current Stock (ReadOnly)</Label>
+              <div className="space-y-1">
+                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Current Stock (ReadOnly)</Label>
                 <Input 
                   type="text"
                   value={`${currentStock} ${unit}`}
                   disabled
-                  className="h-10 px-3 rounded-xl border border-zinc-100 dark:border-zinc-850 bg-slate-50 dark:bg-zinc-950 text-zinc-400 text-xs font-semibold"
+                  className="h-8 px-2.5 rounded-lg border border-zinc-100 dark:border-zinc-855 bg-slate-50 dark:bg-zinc-950 text-zinc-400 text-xs font-semibold"
                 />
               </div>
 
               {/* Readonly stock preview */}
-              <div className="space-y-1.5">
-                <Label className="text-xs font-black text-slate-700 dark:text-zinc-300">New Stock Preview</Label>
+              <div className="space-y-1">
+                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">New Stock Preview</Label>
                 <div className="flex items-center">
                   <Input 
                     type="text"
                     value={`${Number(newStockPreview.toFixed(2))} ${unit}`}
                     disabled
-                    className={`h-10 px-3 rounded-xl border text-xs font-black ${
+                    className={`h-8 px-2.5 rounded-lg border text-xs font-black ${
                       newStockPreview <= ingredient.minimumStock
                         ? "bg-rose-50 border-rose-200 text-rose-600 dark:bg-rose-950/20 dark:border-rose-900/30 dark:text-rose-400"
                         : "bg-emerald-50 border-emerald-200 text-emerald-600 dark:bg-emerald-950/20 dark:border-emerald-900/30 dark:text-emerald-400"
@@ -225,42 +225,42 @@ export function UpdateStockModal({ isOpen, onClose, ingredientId }) {
               </div>
 
               {/* Reason Field */}
-              <div className="md:col-span-2 space-y-1.5">
-                <Label className="text-xs font-black text-slate-700 dark:text-zinc-300">Reason for update</Label>
+              <div className="md:col-span-2 space-y-1">
+                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Reason for update</Label>
                 <Textarea 
-                  placeholder="Describe why this stock is being altered (e.g. Weekly replenishment, stock expired, inventory count audit)"
+                  placeholder="Describe why this stock is being altered"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus-visible:ring-1 focus-visible:ring-[var(--primary)] min-h-[60px]"
+                  className="rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus-visible:ring-1 focus-visible:ring-[var(--primary)] min-h-[50px] resize-none"
                 />
               </div>
 
               {/* Notes Field */}
-              <div className="md:col-span-2 space-y-1.5">
-                <Label className="text-xs font-black text-slate-700 dark:text-zinc-300">Notes (Optional)</Label>
+              <div className="md:col-span-2 space-y-1">
+                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Notes (Optional)</Label>
                 <Textarea 
                   placeholder="Additional audit or delivery slip notes"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus-visible:ring-1 focus-visible:ring-[var(--primary)] min-h-[50px]"
+                  className="rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold focus-visible:ring-1 focus-visible:ring-[var(--primary)] min-h-[40px] resize-none"
                 />
               </div>
             </div>
 
             {/* Error Message banner */}
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 text-rose-600 dark:text-rose-400 text-xs font-bold flex items-center gap-2">
-                <AlertCircle size={14} className="flex-shrink-0" />
+              <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/30 text-rose-600 dark:text-rose-400 text-[11px] font-bold flex items-center gap-1.5">
+                <AlertCircle size={13} className="flex-shrink-0" />
                 <span>{errorMsg}</span>
               </div>
             )}
             
             {/* Action Buttons */}
-            <div className="pt-4 border-t border-zinc-150 dark:border-zinc-800 flex items-center justify-end gap-2.5">
+            <div className="pt-3 border-t border-zinc-150 dark:border-zinc-800 flex items-center justify-end gap-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2 text-xs font-bold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-xl transition-all"
+                className="px-4 py-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg transition-all"
                 disabled={updateStockMutation.isPending}
               >
                 Cancel
@@ -269,15 +269,15 @@ export function UpdateStockModal({ isOpen, onClose, ingredientId }) {
               <button
                 type="submit"
                 disabled={!!errorMsg || updateStockMutation.isPending || !quantity || !reason}
-                className="px-5 py-2 text-xs font-bold text-white bg-[var(--primary)] hover:bg-[var(--primary)]/90 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-all flex items-center gap-1.5 shadow-sm"
+                className="px-4 py-1.5 text-xs font-bold text-white bg-[var(--primary)] hover:bg-[var(--primary)]/90 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all flex items-center gap-1 shadow-sm cursor-pointer"
               >
                 {updateStockMutation.isPending ? (
                   <>
-                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Updating...
                   </>
                 ) : (
-                  "Confirm Stock Change"
+                  "Confirm Change"
                 )}
               </button>
             </div>

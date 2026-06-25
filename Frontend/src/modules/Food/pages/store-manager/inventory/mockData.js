@@ -371,3 +371,102 @@ export const getLocalTransactions = () => {
 export const setLocalTransactions = (transactions) => {
   localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(transactions));
 };
+
+// ==========================================
+// Stock Requests Mock Data & Local Storage DB
+// ==========================================
+
+export const initialMockStockRequests = [
+  {
+    _id: "req-001",
+    requestNo: "SR-2026-001",
+    storeId: "st-indore-01",
+    ingredientId: "ing-003",
+    ingredientName: "Classic Tomato Pizza Sauce",
+    requestedQty: 12.0,
+    approvedQty: 0.0,
+    urgency: "high",
+    reason: "Saturday night prep rush requires extra tomato sauce",
+    requestedBy: "Aman Verma",
+    approvedBy: "",
+    status: "pending",
+    remarks: "",
+    createdAt: new Date(Date.now() - 3600000 * 3).toISOString() // 3 hours ago
+  },
+  {
+    _id: "req-002",
+    requestNo: "SR-2026-002",
+    storeId: "st-indore-01",
+    ingredientId: "ing-004",
+    ingredientName: "Fresh Paneer Cubes (Tikka Size)",
+    requestedQty: 15.0,
+    approvedQty: 15.0,
+    urgency: "critical",
+    reason: "Bulk party order for 40 paneer tikka pizzas tomorrow morning",
+    requestedBy: "Vijay Saxena",
+    approvedBy: "Shubham Jamliya",
+    status: "approved",
+    remarks: "Approved full quantity for party order",
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString() // 8 hours ago
+  },
+  {
+    _id: "req-003",
+    requestNo: "SR-2026-003",
+    storeId: "st-indore-01",
+    ingredientId: "ing-001",
+    ingredientName: "Premium Mozzarella Cheese",
+    requestedQty: 80.0,
+    approvedQty: 0.0,
+    urgency: "low",
+    reason: "Requesting excess cheese buffer for upcoming holidays",
+    requestedBy: "Aman Verma",
+    approvedBy: "Shubham Jamliya",
+    status: "rejected",
+    remarks: "Rejected. Store has active cheese storage limits, cannot hold over 50kg.",
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString() // 1 day ago
+  },
+  {
+    _id: "req-004",
+    requestNo: "SR-2026-004",
+    storeId: "st-indore-01",
+    ingredientId: "ing-002",
+    ingredientName: "Dough Flour (Premium Maida)",
+    requestedQty: 50.0,
+    approvedQty: 50.0,
+    urgency: "medium",
+    reason: "Regular weekly dough batch replenishment",
+    requestedBy: "Vijay Saxena",
+    approvedBy: "Shubham Jamliya",
+    status: "fulfilled",
+    remarks: "Delivered in full by supplier on-site",
+    createdAt: new Date(Date.now() - 3600000 * 48).toISOString() // 2 days ago
+  }
+];
+
+export const mockStaffProfiles = {
+  "Aman Verma": { name: "Aman Verma", shift: "Morning Shift (09:00 - 17:00)", department: "Kitchen Operations", role: "Kitchen Staff" },
+  "Vijay Saxena": { name: "Vijay Saxena", shift: "Evening Shift (17:00 - 01:00)", department: "Baking & Dough Prep", role: "Kitchen Supervisor" },
+  "Ramesh Singh": { name: "Ramesh Singh", shift: "General Shift (11:00 - 19:00)", department: "Kitchen Operations", role: "Kitchen Supervisor" },
+  "Shubham Jamliya": { name: "Shubham Jamliya", shift: "Store General Hours", department: "Administration", role: "Store Manager" }
+};
+
+const STOCK_REQUESTS_KEY = "pvp_stock_requests";
+
+export const getLocalStockRequests = () => {
+  try {
+    let list = JSON.parse(localStorage.getItem(STOCK_REQUESTS_KEY));
+    if (!list || !Array.isArray(list) || list.length === 0) {
+      list = initialMockStockRequests;
+      localStorage.setItem(STOCK_REQUESTS_KEY, JSON.stringify(list));
+    }
+    return list;
+  } catch (e) {
+    localStorage.setItem(STOCK_REQUESTS_KEY, JSON.stringify(initialMockStockRequests));
+    return initialMockStockRequests;
+  }
+};
+
+export const setLocalStockRequests = (requests) => {
+  localStorage.setItem(STOCK_REQUESTS_KEY, JSON.stringify(requests));
+};
+
