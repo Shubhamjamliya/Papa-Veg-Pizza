@@ -75,24 +75,24 @@ export function IngredientDetailsModal({ isOpen, onClose, ingredientId }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl lg:max-w-[calc(100vw-320px)] xl:max-w-4xl lg:left-[calc(50%+140px)] p-6 rounded-3xl border border-zinc-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
+      <DialogContent className="max-w-3xl lg:max-w-[calc(100vw-340px)] xl:max-w-3xl lg:left-[calc(50%+140px)] p-4 md:p-5 rounded-2xl border border-zinc-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden max-h-[90vh] flex flex-col">
         
         {/* Modal Header */}
-        <DialogHeader className="mb-4">
-          <DialogTitle className="text-lg font-black text-zinc-900 dark:text-white tracking-tight flex items-center gap-2">
-            <Boxes className="text-[var(--primary)] w-5 h-5" />
+        <DialogHeader className="mb-3">
+          <DialogTitle className="text-sm font-black text-zinc-900 dark:text-white tracking-tight flex items-center gap-1.5">
+            <Boxes className="text-[var(--primary)] w-4 h-4" />
             Ingredient Details
           </DialogTitle>
-          <DialogDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
+          <DialogDescription className="text-zinc-550 dark:text-zinc-400 text-[10px]">
             Review detailed reports, threshold configurations, and usage statistics.
           </DialogDescription>
         </DialogHeader>
 
         {/* Loading and Error Handlers */}
         {isLoading ? (
-          <div className="flex-1 py-12 flex flex-col items-center justify-center space-y-4">
-            <div className="w-10 h-10 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-bold">Fetching ingredient metrics...</p>
+          <div className="flex-1 py-8 flex flex-col items-center justify-center space-y-3">
+            <div className="w-8 h-8 border-3 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-bold">Fetching ingredient metrics...</p>
           </div>
         ) : error ? (
           <div className="flex-1 py-12 flex flex-col items-center justify-center text-center space-y-3">
@@ -110,14 +110,14 @@ export function IngredientDetailsModal({ isOpen, onClose, ingredientId }) {
           <div className="flex-1 overflow-y-auto space-y-6 pr-1 select-none">
             
             {/* Quick Hero Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-100 dark:border-zinc-850">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-100 dark:border-zinc-850">
               <div>
-                <h3 className="text-base font-black text-slate-900 dark:text-white">{data.ingredient.ingredientName}</h3>
-                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">ID: {data.ingredient._id} | Last Updated by {data.ingredient.lastUpdatedBy}</p>
+                <h3 className="text-sm font-black text-slate-900 dark:text-white leading-tight">{data.ingredient.ingredientName}</h3>
+                <p className="text-[10px] text-zinc-400 dark:text-zinc-505 mt-0.5">ID: {data.ingredient._id} | Last Updated by {data.ingredient.lastUpdatedBy}</p>
               </div>
               <div className="flex items-center gap-2">
                 {getStatusBadge(data.ingredient.status)}
-                <span className="text-xs font-bold text-zinc-500 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 rounded-xl">
+                <span className="text-[10px] font-bold text-zinc-500 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2 py-0.5 rounded-lg">
                   {data.ingredient.category}
                 </span>
               </div>
@@ -125,12 +125,12 @@ export function IngredientDetailsModal({ isOpen, onClose, ingredientId }) {
 
             {/* Content Tabs */}
             <Tabs defaultValue="basic" className="w-full">
-              <TabsList className="grid grid-cols-4 gap-1 p-1 bg-slate-100 dark:bg-zinc-950 rounded-2xl border border-slate-200/50 dark:border-zinc-850 mb-6">
-                <TabsTrigger value="basic" className="rounded-xl py-2 text-xs font-bold transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-sm">
-                  <Info size={14} className="inline mr-1.5" /> Basic
+              <TabsList className="grid grid-cols-4 gap-1 p-0.5 bg-slate-100 dark:bg-zinc-950 rounded-xl border border-slate-200/50 dark:border-zinc-850 mb-4">
+                <TabsTrigger value="basic" className="rounded-lg py-1.5 text-xs font-bold transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-sm">
+                  <Info size={13} className="inline mr-1" /> Basic
                 </TabsTrigger>
-                <TabsTrigger value="stock" className="rounded-xl py-2 text-xs font-bold transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-sm">
-                  <ClipboardList size={14} className="inline mr-1.5" /> Stock Info
+                <TabsTrigger value="stock" className="rounded-lg py-1.5 text-xs font-bold transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-sm">
+                  <ClipboardList size={13} className="inline mr-1" /> Stock Info
                 </TabsTrigger>
                 <TabsTrigger value="stats" className="rounded-xl py-2 text-xs font-bold transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-900 data-[state=active]:shadow-sm">
                   <Activity size={14} className="inline mr-1.5" /> Consumption
@@ -291,10 +291,10 @@ export function IngredientDetailsModal({ isOpen, onClose, ingredientId }) {
         )}
 
         {/* Footer Actions */}
-        <div className="mt-6 pt-4 border-t border-zinc-150 dark:border-zinc-800 flex items-center justify-end">
+        <div className="mt-4 pt-3 border-t border-zinc-150 dark:border-zinc-800 flex items-center justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2 text-xs font-bold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-xl transition-all"
+            className="px-4 py-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-lg transition-all cursor-pointer"
           >
             Close Panel
           </button>

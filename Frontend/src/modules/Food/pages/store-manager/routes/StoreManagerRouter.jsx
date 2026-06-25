@@ -20,6 +20,7 @@ import RiderAvailability from "../deliveryOperations/RiderAvailability"
 import DeliveryTracking from "../deliveryOperations/DeliveryTracking"
 import DeliveryIssue from "../deliveryOperations/DeliveryIssue"
 import IngredientStock from "../inventory/IngredientStock"
+import StockRequests from "../inventory/StockRequests"
 
 
 
@@ -257,11 +258,9 @@ export default function StoreManagerRouter() {
           <Route 
             path="inventory/requests" 
             element={
-              <PagePlaceholder 
-                title="Stock Requests" 
-                description="Raise ingredient replenishment requests to franchise warehouse" 
-                allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}
-              />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <StockRequests />
+              </RoleProtectedRoute>
             } 
           />
           <Route 

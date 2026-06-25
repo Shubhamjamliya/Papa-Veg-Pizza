@@ -165,16 +165,16 @@ export default function IngredientStock() {
   };
 
   return (
-    <div className="p-6 md:p-8 space-y-6 select-none bg-neutral-100 dark:bg-zinc-950 min-h-screen">
+    <div className="p-4 space-y-4 select-none bg-neutral-105 dark:bg-zinc-950 min-h-screen">
       
       {/* 1. Page Header Block */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-zinc-900 p-6 rounded-3xl border border-zinc-150 dark:border-zinc-800 shadow-sm transition-all">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-zinc-150 dark:border-zinc-800 shadow-sm transition-all">
         <div>
-          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-            <ClipboardList className="text-[var(--primary)] w-6 h-6" />
+          <h1 className="text-base font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+            <ClipboardList className="text-[var(--primary)] w-5 h-5" />
             Ingredient Stock
           </h1>
-          <p className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">
+          <p className="text-zinc-500 dark:text-zinc-400 text-[11px] mt-0.5">
             Monitor, edit, and audit ingredient inventory, stock transactions, and value indexes.
           </p>
         </div>
@@ -185,9 +185,9 @@ export default function IngredientStock() {
           {/* Refresh Action */}
           <button
             onClick={handleRefresh}
-            className="h-9 px-3 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-700 dark:text-zinc-350 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center gap-1.5 bg-white dark:bg-zinc-900 cursor-pointer"
+            className="h-8 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-700 dark:text-zinc-355 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center gap-1 bg-white dark:bg-zinc-900 cursor-pointer"
           >
-            <RefreshCw size={13} className="text-indigo-500" />
+            <RefreshCw size={12} className="text-indigo-500" />
             Sync
           </button>
 
@@ -195,9 +195,9 @@ export default function IngredientStock() {
           {(role === "store_manager" || role === "kitchen_supervisor") && (
             <button
               onClick={handleExportCSV}
-              className="h-9 px-3 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-700 dark:text-zinc-350 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center gap-1.5 bg-white dark:bg-zinc-900 cursor-pointer"
+              className="h-8 px-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-bold text-zinc-700 dark:text-zinc-355 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all flex items-center gap-1 bg-white dark:bg-zinc-900 cursor-pointer"
             >
-              <Download size={13} className="text-emerald-500" />
+              <Download size={12} className="text-emerald-500" />
               Export CSV
             </button>
           )}
@@ -206,9 +206,9 @@ export default function IngredientStock() {
           {role === "store_manager" && (
             <button
               onClick={handleGlobalUpdateStock}
-              className="h-9 px-3.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-[var(--primary)]/10 cursor-pointer"
+              className="h-8 px-3 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm shadow-[var(--primary)]/10 cursor-pointer"
             >
-              <Plus size={14} className="stroke-[2.5]" />
+              <Plus size={13} className="stroke-[2.5]" />
               Update Stock
             </button>
           )}
@@ -227,7 +227,7 @@ export default function IngredientStock() {
       />
 
       {/* 4. Table view Container */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         <IngredientsTable 
           data={ingredientsData?.data || []}
           isLoading={isIngredientsLoading}
