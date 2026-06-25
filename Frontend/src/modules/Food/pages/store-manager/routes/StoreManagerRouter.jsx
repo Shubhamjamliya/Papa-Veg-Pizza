@@ -27,6 +27,7 @@ import IngredientShortages from "../inventory/IngredientShortages"
 import KitchenStaff from "../staffManagement/KitchenStaff"
 import Attendance from "../staffManagement/Attendance"
 import ShiftManagement from "../staffManagement/ShiftManagement"
+import Performance from "../staffManagement/Performance"
 
 
 
@@ -322,12 +323,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="staff/performance" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Staff Performance" 
-                  description="Preparation speed, rating reviews, and attendance KPI reports" 
-                  allowedRoles={["store_manager"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
+                <Performance />
               </RoleProtectedRoute>
             } 
           />
