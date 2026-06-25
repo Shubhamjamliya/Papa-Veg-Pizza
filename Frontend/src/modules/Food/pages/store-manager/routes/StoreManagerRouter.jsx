@@ -34,6 +34,7 @@ import Reviews from "../customers/Reviews"
 import DailySales from "../reports/DailySales"
 import OrderReports from "../reports/OrderReports"
 import KitchenPerformance from "../reports/KitchenPerformance"
+import StaffPerformance from "../reports/StaffPerformance"
 
 
 
@@ -391,11 +392,7 @@ export default function StoreManagerRouter() {
             path="reports/staff" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Staff Report" 
-                  description="Attendance overview, efficiency rating, and shift coverage reports" 
-                  allowedRoles={["store_manager"]}
-                />
+                <StaffPerformance />
               </RoleProtectedRoute>
             } 
           />

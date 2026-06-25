@@ -38,7 +38,7 @@ import {
   mockSuppliersSummary,
   initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
-import { mockDailySales, mockDetailedOrders, mockStoreKitchenPerformance, getMockKitchenDayDetails, getMockDelayAnalysis, getMockWasteAnalysis } from "../../modules/Food/pages/store-manager/reports/mockData.js";
+import { mockDailySales, mockDetailedOrders, mockStoreKitchenPerformance, getMockKitchenDayDetails, getMockDelayAnalysis, getMockWasteAnalysis, mockStaffPerformance, getMockStaffDetails, getMockStaffComparison } from "../../modules/Food/pages/store-manager/reports/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -1226,6 +1226,162 @@ export function handleMockRequest(config) {
       },
       data: "Date,Revenue,Orders\n2026-06-25,48900,98"
     };
+  }
+
+  // --- STAFF PERFORMANCE COMPARISON ENDPOINT ---
+  if (url.includes("/reports/staff-comparison") && method === "get") {
+    const staffA = config.params?.staffA;
+    const staffB = config.params?.staffB;
+    return successRes(getMockStaffComparison(staffA, staffB));
+  }
+
+  // --- STAFF PERFORMANCE DETAIL REPORT ENDPOINT ---
+  const staffDetailMatch = url.match(/\/reports\/staff\/([^/]+)$/);
+  if (staffDetailMatch && method === "get" && !url.includes("summary") && !url.includes("dashboard") && !url.includes("role-distribution") && !url.includes("attendance-trend") && !url.includes("delivery-performance") && !url.includes("kitchen-performance") && !url.includes("manager-performance") && !url.includes("list")) {
+    const staffId = staffDetailMatch[1];
+    return successRes(getMockStaffDetails(staffId));
+  }
+
+  // --- STAFF PERFORMANCE EXPORT ENDPOINT ---
+  if (url.includes("/reports/export-staff") && method === "post") {
+    return {
+      success: true,
+      status: 200,
+      headers: {
+        "content-type": "text/csv",
+        "content-disposition": "attachment; filename=\"StaffPerformance_Report.csv\""
+      },
+      data: "Staff,Role,Attendance,Orders,Avg Prep Time,Complaints,Efficiency,Rating\nChef Sanjay,Chef,96%,245,14.5m,1,98%,4.8"
+    };
+  }
+
+  // --- STAFF PERFORMANCE DASHBOARD ENDPOINT ---
+  if (url.includes("/reports/staff-performance") && method === "get" && !url.includes("/reports/staff/")) {
+    const params = config.params || {};
+    const role = params.role || "All";
+    const station = params.station || "All";
+    const period = params.period || "monthly";
+    const search = params.search || "";
+    const page = Number(params.page) || 1;
+    const limit = Number(params.limit) || 10;
+    const sortBy = params.sortBy || "efficiency";
+    const sortOrder = params.sortOrder || "desc";
+
+    let filtered = [...mockStaffPerformance];
+
+    // Role filtering
+    if (role !== "All") {
+      filtered = filtered.filter(s => s.role.toLowerCase() === role.toLowerCase());
+    }
+
+    // Station filtering
+    if (station !== "All") {
+      filtered = filtered.filter(s => s.station.toLowerCase() === station.toLowerCase());
+    }
+
+    // Search filtering
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        s.role.toLowerCase().includes(q)
+      );
+    }
+
+    // Aggregate Dashboard Metrics
+    let totalOrders = 0;
+    let totalPrepTime = 0;
+    let totalComplaints = 0;
+    let totalEfficiency = 0;
+    let totalAttendance = 0;
+
+    filtered.forEach(s => {
+      totalOrders += s.orders;
+      totalPrepTime += s.avgPrepTime;
+      totalComplaints += s.complaints;
+      totalEfficiency += s.efficiency;
+      totalAttendance += s.attendance;
+    });
+
+    const count = filtered.length;
+    const avgPrep = count > 0 ? parseFloat((totalPrepTime / count).toFixed(1)) : 12;
+    const avgAttendance = count > 0 ? Math.round(totalAttendance / count) : 95;
+    const avgEfficiency = count > 0 ? Math.round(totalEfficiency / count) : 94;
+
+    const sortedRankings = [...mockStaffPerformance].sort((a, b) => b.efficiency - a.efficiency);
+    const topPerformerRaw = sortedRankings[0] || mockStaffPerformance[0];
+
+    const dashboard = {
+      topPerformer: {
+        name: topPerformerRaw.name,
+        avatar: topPerformerRaw.profileImage,
+        role: topPerformerRaw.role,
+        efficiency: topPerformerRaw.efficiency,
+        rating: topPerformerRaw.rating,
+        ordersCompleted: topPerformerRaw.orders
+      },
+      avgAttendance,
+      avgAttendanceTrend: 1.5,
+      avgPrepTime: avgPrep,
+      customerComplaints: totalComplaints,
+      customerComplaintsTrend: -2,
+      delayedTasks: Math.round(totalOrders * 0.03),
+      staffEfficiency: avgEfficiency
+    };
+
+    // Rankings chart data
+    const rankings = sortedRankings.slice(0, 5).map(s => ({
+      name: s.name.split(" ")[1] ? `${s.name.split(" ")[0]} ${s.name.split(" ")[1][0]}.` : s.name,
+      role: s.role,
+      efficiency: s.efficiency
+    }));
+
+    // Attendance Trend chart data
+    const attendanceTrend = [
+      { month: "Jan", attendance: 93 },
+      { month: "Feb", attendance: 94 },
+      { month: "Mar", attendance: 95 },
+      { month: "Apr", attendance: 92 },
+      { month: "May", attendance: 96 },
+      { month: "Jun", attendance: avgAttendance }
+    ];
+
+    // Complaints analysis chart data
+    const complaintsAnalysis = filtered.map(s => ({
+      name: s.name.split(" ")[0],
+      complaints: s.complaints,
+      severity: s.complaints > 2 ? "High" : s.complaints > 0 ? "Medium" : "Low"
+    }));
+
+    // Sorting Table Rows
+    const sorted = [...filtered].sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+    });
+
+    const total = sorted.length;
+    const pages = Math.ceil(total / limit);
+    const startIdx = (page - 1) * limit;
+    const paginated = sorted.slice(startIdx, startIdx + limit);
+
+    return successRes({
+      dashboard,
+      rankings,
+      attendanceTrend,
+      complaintsAnalysis,
+      staffPerformance: paginated,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages
+      }
+    });
   }
 
   // --- KITCHEN PERFORMANCE DELAY ANALYSIS ENDPOINT ---
