@@ -28,6 +28,7 @@ import KitchenStaff from "../staffManagement/KitchenStaff"
 import Attendance from "../staffManagement/Attendance"
 import ShiftManagement from "../staffManagement/ShiftManagement"
 import Performance from "../staffManagement/Performance"
+import CustomerOrders from "../customers/CustomerOrders"
 
 
 
@@ -333,12 +334,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="customers/orders" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Customer Orders Log" 
-                  description="Search customer orders, profiles, and order frequencies" 
-                  allowedRoles={["store_manager"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "assistant_manager", "store_owner"]}>
+                <CustomerOrders />
               </RoleProtectedRoute>
             } 
           />

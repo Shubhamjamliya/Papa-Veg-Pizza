@@ -53,6 +53,10 @@ export default function Sidebar({ isOpen, onClose, role }) {
         return "Kitchen Supervisor"
       case "kitchen_staff":
         return "Kitchen Staff"
+      case "assistant_manager":
+        return "Assistant Manager"
+      case "store_owner":
+        return "Store Owner"
       default:
         return "Store Staff"
     }

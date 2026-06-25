@@ -62,7 +62,9 @@ export default function Navbar({ onToggleSidebar, role, onRoleChange }) {
   const roleLabels = {
     store_manager: "Store Manager",
     kitchen_supervisor: "Kitchen Supervisor",
-    kitchen_staff: "Kitchen Staff"
+    kitchen_staff: "Kitchen Staff",
+    assistant_manager: "Assistant Manager",
+    store_owner: "Store Owner"
   }
 
   useEffect(() => {
