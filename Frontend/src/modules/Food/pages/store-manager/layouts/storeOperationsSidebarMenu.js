@@ -212,14 +212,14 @@ export const storeOperationsSidebarMenu = [
   {
     type: "section",
     label: "Customers",
-    allowedRoles: ["store_manager"],
+    allowedRoles: ["store_manager", "assistant_manager", "store_owner"],
     items: [
       {
         type: "link",
         label: "Customer Orders",
         path: "/store-operations/customers/orders",
         icon: "History",
-        allowedRoles: ["store_manager"]
+        allowedRoles: ["store_manager", "assistant_manager", "store_owner"]
       },
       {
         type: "link",

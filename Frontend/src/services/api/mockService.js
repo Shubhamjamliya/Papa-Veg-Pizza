@@ -93,6 +93,410 @@ const initialEmergencyReports = [
   { id: "report-1", title: "Accident reported", description: "Rider reported a minor road incident near sector 62", status: "pending", priority: "high", createdAt: new Date().toISOString() }
 ];
 
+const initialMockCustomers = [
+  {
+    _id: "cust-1",
+    name: "Aarav Sharma",
+    mobile: "9876543210",
+    email: "aarav.sharma@gmail.com",
+    totalOrders: 14,
+    totalSpent: 6480,
+    loyaltyPoints: 320,
+    lastOrderDate: "2026-06-24T12:30:00Z",
+    createdAt: "2025-08-15T10:00:00Z"
+  },
+  {
+    _id: "cust-2",
+    name: "Ananya Patel",
+    mobile: "9123456789",
+    email: "ananya.patel@yahoo.com",
+    totalOrders: 8,
+    totalSpent: 3820,
+    loyaltyPoints: 190,
+    lastOrderDate: "2026-06-25T11:15:00Z",
+    createdAt: "2025-11-20T14:30:00Z"
+  },
+  {
+    _id: "cust-3",
+    name: "Rohan Verma",
+    mobile: "9812345678",
+    email: "rohan.verma@outlook.com",
+    totalOrders: 1,
+    totalSpent: 450,
+    loyaltyPoints: 20,
+    lastOrderDate: "2026-06-25T15:10:00Z",
+    createdAt: "2026-06-25T15:00:00Z"
+  },
+  {
+    _id: "cust-4",
+    name: "Aditi Rao",
+    mobile: "9988776655",
+    email: "aditi.rao@gmail.com",
+    totalOrders: 25,
+    totalSpent: 12450,
+    loyaltyPoints: 620,
+    lastOrderDate: "2026-06-20T20:45:00Z",
+    createdAt: "2025-01-10T09:15:00Z"
+  },
+  {
+    _id: "cust-5",
+    name: "Vikram Singh",
+    mobile: "9765432109",
+    email: "vikram.singh@gmail.com",
+    totalOrders: 5,
+    totalSpent: 2150,
+    loyaltyPoints: 100,
+    lastOrderDate: "2026-05-15T18:20:00Z",
+    createdAt: "2026-02-12T11:45:00Z"
+  },
+  {
+    _id: "cust-6",
+    name: "Pooja Hegde",
+    mobile: "9654321098",
+    email: "pooja.hegde@hotmail.com",
+    totalOrders: 12,
+    totalSpent: 5290,
+    loyaltyPoints: 260,
+    lastOrderDate: "2026-06-25T13:00:00Z",
+    createdAt: "2025-09-05T16:40:00Z"
+  },
+  {
+    _id: "cust-7",
+    name: "Kabir Mehta",
+    mobile: "9543210987",
+    email: "kabir.mehta@gmail.com",
+    totalOrders: 18,
+    totalSpent: 8900,
+    loyaltyPoints: 440,
+    lastOrderDate: "2026-06-22T21:10:00Z",
+    createdAt: "2025-05-18T10:30:00Z"
+  },
+  {
+    _id: "cust-8",
+    name: "Diya Iyer",
+    mobile: "9432109876",
+    email: "diya.iyer@gmail.com",
+    totalOrders: 3,
+    totalSpent: 1200,
+    loyaltyPoints: 60,
+    lastOrderDate: "2026-06-25T14:50:00Z",
+    createdAt: "2026-01-20T12:00:00Z"
+  }
+];
+
+const initialMockOrders = [
+  {
+    _id: "ord-1",
+    customerId: "cust-1",
+    storeId: "store-104",
+    orderNumber: "PVP-9081",
+    orderStatus: "delivered",
+    paymentStatus: "paid",
+    paymentMethod: "UPI / PhonePe",
+    totalAmount: 480,
+    deliveryType: "delivery",
+    addressId: "addr-1",
+    riderId: "rider-1",
+    createdAt: "2026-06-24T12:30:00Z"
+  },
+  {
+    _id: "ord-2",
+    customerId: "cust-2",
+    storeId: "store-104",
+    orderNumber: "PVP-9082",
+    orderStatus: "delivered",
+    paymentStatus: "paid",
+    paymentMethod: "Netbanking",
+    totalAmount: 590,
+    deliveryType: "delivery",
+    addressId: "addr-2",
+    riderId: "rider-2",
+    createdAt: "2026-06-25T11:15:00Z"
+  },
+  {
+    _id: "ord-3",
+    customerId: "cust-3",
+    storeId: "store-104",
+    orderNumber: "PVP-9083",
+    orderStatus: "preparing",
+    paymentStatus: "pending",
+    paymentMethod: "COD",
+    totalAmount: 450,
+    deliveryType: "takeaway",
+    addressId: null,
+    riderId: null,
+    createdAt: "2026-06-25T15:10:00Z"
+  },
+  {
+    _id: "ord-4",
+    customerId: "cust-4",
+    storeId: "store-104",
+    orderNumber: "PVP-9084",
+    orderStatus: "refunded",
+    paymentStatus: "refunded",
+    paymentMethod: "Credit Card",
+    totalAmount: 750,
+    deliveryType: "delivery",
+    addressId: "addr-4",
+    riderId: "rider-3",
+    createdAt: "2026-06-20T20:45:00Z"
+  },
+  {
+    _id: "ord-5",
+    customerId: "cust-6",
+    storeId: "store-104",
+    orderNumber: "PVP-9085",
+    orderStatus: "delivered",
+    paymentStatus: "paid",
+    paymentMethod: "UPI / Paytm",
+    totalAmount: 320,
+    deliveryType: "delivery",
+    addressId: "addr-6",
+    riderId: "rider-4",
+    createdAt: "2026-06-25T13:00:00Z"
+  },
+  {
+    _id: "ord-6",
+    customerId: "cust-7",
+    storeId: "store-104",
+    orderNumber: "PVP-9086",
+    orderStatus: "ready",
+    paymentStatus: "paid",
+    paymentMethod: "UPI / GooglePay",
+    totalAmount: 620,
+    deliveryType: "takeaway",
+    addressId: null,
+    riderId: null,
+    createdAt: "2026-06-22T21:10:00Z"
+  },
+  {
+    _id: "ord-7",
+    customerId: "cust-8",
+    storeId: "store-104",
+    orderNumber: "PVP-9087",
+    orderStatus: "delivered",
+    paymentStatus: "paid",
+    paymentMethod: "COD",
+    totalAmount: 380,
+    deliveryType: "delivery",
+    addressId: "addr-8",
+    riderId: "rider-1",
+    createdAt: "2026-06-25T14:50:00Z"
+  },
+  {
+    _id: "ord-8",
+    customerId: "cust-1",
+    storeId: "store-104",
+    orderNumber: "PVP-8001",
+    orderStatus: "delivered",
+    paymentStatus: "paid",
+    paymentMethod: "UPI / PhonePe",
+    totalAmount: 350,
+    deliveryType: "delivery",
+    addressId: "addr-1",
+    riderId: "rider-1",
+    createdAt: "2026-05-10T11:00:00Z"
+  },
+  {
+    _id: "ord-9",
+    customerId: "cust-4",
+    storeId: "store-104",
+    orderNumber: "PVP-8002",
+    orderStatus: "delivered",
+    paymentStatus: "paid",
+    paymentMethod: "UPI / Paytm",
+    totalAmount: 490,
+    deliveryType: "delivery",
+    addressId: "addr-4",
+    riderId: "rider-3",
+    createdAt: "2026-06-12T19:30:00Z"
+  }
+];
+
+const initialMockOrderItems = [
+  { _id: "item-1", orderId: "ord-1", name: "Veg Supreme Pizza", quantity: 1, price: 399, customizations: "Size: Large, Extra Cheese: Yes, Toppings: Onion, Capsicum" },
+  { _id: "item-2", orderId: "ord-1", name: "Garlic Breadsticks", quantity: 1, price: 81, customizations: "None" },
+  { _id: "item-3", orderId: "ord-2", name: "Farmhouse Delight Pizza", quantity: 1, price: 349, customizations: "Size: Medium, Extra Cheese: No" },
+  { _id: "item-4", orderId: "ord-2", name: "Chocolate Lava Cake", quantity: 2, price: 99, customizations: "None" },
+  { _id: "item-5", orderId: "ord-3", name: "Peppy Paneer Pizza", quantity: 1, price: 399, customizations: "Size: Medium, Extra Cheese: Yes" },
+  { _id: "item-6", orderId: "ord-3", name: "Pepsi Can", quantity: 1, price: 51, customizations: "None" },
+  { _id: "item-7", orderId: "ord-4", name: "Double Cheese Margherita", quantity: 2, price: 299, customizations: "Size: Medium" },
+  { _id: "item-8", orderId: "ord-4", name: "Stuffed Garlic Bread", quantity: 1, price: 152, customizations: "Extra Cheese: Yes" },
+  { _id: "item-9", orderId: "ord-5", name: "Capsicum Pizza", quantity: 2, price: 160, customizations: "Size: Regular" },
+  { _id: "item-10", orderId: "ord-6", name: "Tandoori Paneer Pizza", quantity: 1, price: 449, customizations: "Size: Large, Extra Cheese: Yes" },
+  { _id: "item-11", orderId: "ord-6", name: "Garlic Breadsticks", quantity: 1, price: 129, customizations: "None" },
+  { _id: "item-12", orderId: "ord-6", name: "Choco Lava Cake", quantity: 1, price: 42, customizations: "None" },
+  { _id: "item-13", orderId: "ord-7", name: "Country Special Pizza", quantity: 1, price: 329, customizations: "Size: Medium, Extra Cheese: Yes" },
+  { _id: "item-14", orderId: "ord-7", name: "Pepsi Can", quantity: 1, price: 51, customizations: "None" }
+];
+
+const initialMockPayments = [
+  { _id: "pay-1", orderId: "ord-1", transactionId: "TXN908123891", amount: 480, method: "UPI / PhonePe", status: "success", createdAt: "2026-06-24T12:31:00Z" },
+  { _id: "pay-2", orderId: "ord-2", transactionId: "TXN908223892", amount: 590, method: "Netbanking", status: "success", createdAt: "2026-06-25T11:16:00Z" },
+  { _id: "pay-3", orderId: "ord-3", transactionId: "TXN908323893", amount: 450, method: "Cash On Delivery", status: "pending", createdAt: "2026-06-25T15:10:00Z" },
+  { _id: "pay-4", orderId: "ord-4", transactionId: "TXN908423894", amount: 750, method: "Credit Card", status: "refunded", createdAt: "2026-06-20T20:46:00Z" },
+  { _id: "pay-5", orderId: "ord-5", transactionId: "TXN908523895", amount: 320, method: "UPI / Paytm", status: "success", createdAt: "2026-06-25T13:01:00Z" },
+  { _id: "pay-6", orderId: "ord-6", transactionId: "TXN908623896", amount: 620, method: "UPI / GooglePay", status: "success", createdAt: "2026-06-22T21:11:00Z" },
+  { _id: "pay-7", orderId: "ord-7", transactionId: "TXN908723897", amount: 380, method: "Cash On Delivery", status: "success", createdAt: "2026-06-25T14:55:00Z" }
+];
+
+const initialMockRefunds = [
+  {
+    _id: "ref-1",
+    orderId: "ord-4",
+    orderNumber: "PVP-9084",
+    reason: "Late delivery and cold pizza. Customer refused to accept.",
+    amount: 750,
+    status: "approved",
+    approvedBy: "Store Manager (Shubham Jamliya)",
+    createdAt: "2026-06-20T21:30:00Z"
+  },
+  {
+    _id: "ref-2",
+    orderId: "ord-5",
+    orderNumber: "PVP-9085",
+    reason: "Incorrect toppings delivered. Wrong pizza prepared.",
+    amount: 320,
+    status: "pending",
+    approvedBy: "--",
+    createdAt: "2026-06-25T13:30:00Z"
+  }
+];
+
+const initialMockComplaints = [
+  {
+    _id: "comp-1",
+    customerId: "cust-1",
+    issue: "Order PVP-8001 was missing extra seasoning packets",
+    status: "resolved",
+    resolution: "Refunded ₹50 seasoning charge and added 50 loyalty points.",
+    createdAt: "2026-05-10T12:00:00Z"
+  },
+  {
+    _id: "comp-2",
+    customerId: "cust-4",
+    issue: "Late delivery and cold pizza on order PVP-9084",
+    status: "resolved",
+    resolution: "Approved full refund of ₹750 immediately.",
+    createdAt: "2026-06-20T21:05:00Z"
+  },
+  {
+    _id: "comp-3",
+    customerId: "cust-6",
+    issue: "Wrong toppings delivered on order PVP-9085",
+    status: "open",
+    resolution: "Pending investigation by kitchen supervisor.",
+    createdAt: "2026-06-25T13:20:00Z"
+  }
+];
+
+const initialMockReviews = [
+  {
+    _id: "rev-1",
+    customerId: "cust-1",
+    rating: 5,
+    comment: "Excellent paneer toppings and hot packaging!",
+    productName: "Veg Supreme Pizza",
+    createdAt: "2026-06-24T13:10:00Z"
+  },
+  {
+    _id: "rev-2",
+    customerId: "cust-2",
+    rating: 4,
+    comment: "Garlic bread was outstanding. Pizza was slightly cold.",
+    productName: "Farmhouse Delight Pizza",
+    createdAt: "2026-06-25T12:00:00Z"
+  },
+  {
+    _id: "rev-3",
+    customerId: "cust-4",
+    rating: 1,
+    comment: "Very bad delivery experience, took 1.5 hours and pizza was cold.",
+    productName: "Double Cheese Margherita",
+    createdAt: "2026-06-20T22:00:00Z"
+  },
+  {
+    _id: "rev-4",
+    customerId: "cust-7",
+    rating: 5,
+    comment: "Best Veg Pizza franchise in town. Spicy paneer was great.",
+    productName: "Tandoori Paneer Pizza",
+    createdAt: "2026-06-22T22:00:00Z"
+  }
+];
+
+const initialMockDeliveryTracking = [
+  {
+    orderId: "ord-1",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-24T12:30:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-24T12:35:00Z" },
+      { status: "Ready", timestamp: "2026-06-24T12:47:00Z" },
+      { status: "Rider Assigned", timestamp: "2026-06-24T12:49:00Z" },
+      { status: "Out For Delivery", timestamp: "2026-06-24T12:51:00Z" },
+      { status: "Delivered", timestamp: "2026-06-24T13:05:00Z" }
+    ]
+  },
+  {
+    orderId: "ord-2",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-25T11:15:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-25T11:20:00Z" },
+      { status: "Ready", timestamp: "2026-06-25T11:32:00Z" },
+      { status: "Rider Assigned", timestamp: "2026-06-25T11:33:00Z" },
+      { status: "Out For Delivery", timestamp: "2026-06-25T11:35:00Z" },
+      { status: "Delivered", timestamp: "2026-06-25T11:49:00Z" }
+    ]
+  },
+  {
+    orderId: "ord-3",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-25T15:10:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-25T15:15:00Z" }
+    ]
+  },
+  {
+    orderId: "ord-4",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-20T20:45:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-20T20:50:00Z" },
+      { status: "Ready", timestamp: "2026-06-20T21:05:00Z" },
+      { status: "Rider Assigned", timestamp: "2026-06-20T21:10:00Z" },
+      { status: "Out For Delivery", timestamp: "2026-06-20T21:15:00Z" }
+    ]
+  },
+  {
+    orderId: "ord-5",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-25T13:00:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-25T13:05:00Z" },
+      { status: "Ready", timestamp: "2026-06-25T13:18:00Z" },
+      { status: "Rider Assigned", timestamp: "2026-06-25T13:20:00Z" },
+      { status: "Out For Delivery", timestamp: "2026-06-25T13:22:00Z" },
+      { status: "Delivered", timestamp: "2026-06-25T13:38:00Z" }
+    ]
+  },
+  {
+    orderId: "ord-6",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-22T21:10:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-22T21:15:00Z" },
+      { status: "Ready", timestamp: "2026-06-22T21:28:00Z" }
+    ]
+  },
+  {
+    orderId: "ord-7",
+    stages: [
+      { status: "Order Placed", timestamp: "2026-06-25T14:50:00Z" },
+      { status: "Kitchen Started", timestamp: "2026-06-25T14:55:00Z" },
+      { status: "Ready", timestamp: "2026-06-25T15:08:00Z" },
+      { status: "Rider Assigned", timestamp: "2026-06-25T15:10:00Z" },
+      { status: "Out For Delivery", timestamp: "2026-06-25T15:12:00Z" },
+      { status: "Delivered", timestamp: "2026-06-25T15:28:00Z" }
+    ]
+  }
+];
+
 // Initialize Database Collections
 let db = {
   categories: getStorageItem("categories", initialCategories),
@@ -126,7 +530,15 @@ let db = {
   staff: getStorageItem("staff", initialMockStaff),
   attendance: getStorageItem("attendance", initialMockAttendance),
   shifts: getStorageItem("shifts", initialMockShifts),
-  performance: getStorageItem("performance", initialMockPerformance)
+  performance: getStorageItem("performance", initialMockPerformance),
+  customers: getStorageItem("customers", initialMockCustomers),
+  store_orders: getStorageItem("store_orders", initialMockOrders),
+  order_items: getStorageItem("order_items", initialMockOrderItems),
+  payments: getStorageItem("payments", initialMockPayments),
+  refunds: getStorageItem("refunds", initialMockRefunds),
+  customer_complaints: getStorageItem("customer_complaints", initialMockComplaints),
+  customer_reviews: getStorageItem("customer_reviews", initialMockReviews),
+  delivery_tracking: getStorageItem("delivery_tracking", initialMockDeliveryTracking)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -3879,6 +4291,224 @@ export function handleMockRequest(config) {
     const orderId = timelineMatch[1];
     const timeline = db.delivery_timelines[orderId] || [];
     return successRes(timeline);
+  }
+
+  // GET /store/customers/orders
+  if (url.includes("/store/customers/orders") && method === "get") {
+    const search = config.params?.search || "";
+    const status = config.params?.status || "";
+    const paymentStatus = config.params?.paymentStatus || "";
+    const returning = config.params?.returning === "true" || config.params?.returning === true;
+    const highValue = config.params?.highValue === "true" || config.params?.highValue === true;
+    const startDate = config.params?.startDate || "";
+    const endDate = config.params?.endDate || "";
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const sortBy = config.params?.sortBy || "name";
+    const sortOrder = config.params?.sortOrder || "asc";
+
+    let filtered = [...db.customers];
+
+    // Filter by search (name, email, mobile)
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(c => 
+        c.name.toLowerCase().includes(q) || 
+        c.email.toLowerCase().includes(q) || 
+        c.mobile.includes(q)
+      );
+    }
+
+    // Filter by returning customer (totalOrders > 1)
+    if (returning) {
+      filtered = filtered.filter(c => c.totalOrders > 1);
+    }
+
+    // Filter by high value customer (totalSpent >= 5000)
+    if (highValue) {
+      filtered = filtered.filter(c => c.totalSpent >= 5000);
+    }
+
+    // Date range filtering
+    if (startDate && endDate) {
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+      filtered = filtered.filter(c => {
+        const d = new Date(c.lastOrderDate).getTime();
+        return d >= start && d <= end;
+      });
+    }
+
+    // Join order details for table display (each customer gets their latest order details)
+    let customersWithOrders = filtered.map(c => {
+      // Find latest order for this customer
+      const cOrders = db.store_orders.filter(o => o.customerId === c._id);
+      cOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const latestOrder = cOrders[0] || null;
+      return {
+        ...c,
+        recentOrder: latestOrder ? {
+          _id: latestOrder._id,
+          orderNumber: latestOrder.orderNumber,
+          createdAt: latestOrder.createdAt,
+          totalAmount: latestOrder.totalAmount,
+          paymentStatus: latestOrder.paymentStatus,
+          deliveryType: latestOrder.deliveryType,
+          orderStatus: latestOrder.orderStatus
+        } : null
+      };
+    });
+
+    // Apply Order Status filter
+    if (status && status !== "All") {
+      customersWithOrders = customersWithOrders.filter(c => 
+        c.recentOrder && c.recentOrder.orderStatus.toLowerCase() === status.toLowerCase()
+      );
+    }
+
+    // Apply Payment Status filter
+    if (paymentStatus && paymentStatus !== "All") {
+      customersWithOrders = customersWithOrders.filter(c => 
+        c.recentOrder && c.recentOrder.paymentStatus.toLowerCase() === paymentStatus.toLowerCase()
+      );
+    }
+
+    // Sorting
+    customersWithOrders.sort((a, b) => {
+      let valA, valB;
+      if (sortBy === "name") {
+        valA = a.name;
+        valB = b.name;
+      } else if (sortBy === "mobile") {
+        valA = a.mobile;
+        valB = b.mobile;
+      } else if (sortBy === "orderNumber") {
+        valA = a.recentOrder ? a.recentOrder.orderNumber : "";
+        valB = b.recentOrder ? b.recentOrder.orderNumber : "";
+      } else if (sortBy === "lastOrderDate" || sortBy === "orderDate") {
+        valA = a.lastOrderDate;
+        valB = b.lastOrderDate;
+      } else if (sortBy === "totalSpent" || sortBy === "orderAmount" || sortBy === "totalAmount") {
+        valA = a.recentOrder ? a.recentOrder.totalAmount : 0;
+        valB = b.recentOrder ? b.recentOrder.totalAmount : 0;
+      } else if (sortBy === "totalOrders") {
+        valA = a.totalOrders;
+        valB = b.totalOrders;
+      } else {
+        valA = a.name;
+        valB = b.name;
+      }
+
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+    });
+
+    const totalCount = customersWithOrders.length;
+    const pages = Math.ceil(totalCount / limit);
+    const start = (page - 1) * limit;
+    const paginated = customersWithOrders.slice(start, start + limit);
+
+    return successRes({
+      customers: paginated,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        pages
+      }
+    });
+  }
+
+  // GET /store/customers/:customerId
+  const customerDetailMatch = url.match(/\/store\/customers\/([^/]+)$/);
+  if (customerDetailMatch && method === "get") {
+    const customerId = customerDetailMatch[1];
+    const customer = db.customers.find(c => c._id === customerId);
+    if (!customer) {
+      return errorRes("Customer not found", 404);
+    }
+
+    const recentOrders = db.store_orders.filter(o => o.customerId === customerId);
+    recentOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    const complaints = db.customer_complaints.filter(c => c.customerId === customerId);
+    const reviews = db.customer_reviews.filter(r => r.customerId === customerId);
+
+    return successRes({
+      customerProfile: customer,
+      recentOrders,
+      complaints,
+      reviews
+    });
+  }
+
+  // GET /store/orders/:orderId
+  const orderDetailMatch = url.match(/\/store\/orders\/([^/]+)$/);
+  if (orderDetailMatch && method === "get") {
+    const orderId = orderDetailMatch[1];
+    const order = db.store_orders.find(o => o._id === orderId);
+    if (!order) {
+      return errorRes("Order not found", 404);
+    }
+
+    const customer = db.customers.find(c => c._id === order.customerId);
+    const items = db.order_items.filter(it => it.orderId === orderId);
+    const payments = db.payments.filter(p => p.orderId === orderId);
+    
+    // Get delivery tracking nodes
+    const trackingObj = db.delivery_tracking.find(t => t.orderId === orderId);
+    const deliveryTracking = trackingObj ? trackingObj.stages : [];
+
+    const refunds = db.refunds.filter(r => r.orderId === orderId);
+
+    return successRes({
+      order: {
+        ...order,
+        customerName: customer ? customer.name : "Unknown Customer",
+        customerEmail: customer ? customer.email : "",
+        customerMobile: customer ? customer.mobile : ""
+      },
+      items: items.map(it => ({
+        ...it,
+        subtotal: it.quantity * it.price
+      })),
+      payments,
+      deliveryTracking,
+      refunds
+    });
+  }
+
+  // POST /store/orders/:orderId/refund (Trigger simulated refund request)
+  const orderRefundMatch = url.match(/\/store\/orders\/([^/]+)\/refund$/);
+  if (orderRefundMatch && method === "post") {
+    const orderId = orderRefundMatch[1];
+    const order = db.store_orders.find(o => o._id === orderId);
+    if (!order) {
+      return errorRes("Order not found", 404);
+    }
+
+    // Create a refund record
+    const newRefund = {
+      _id: `ref-${Math.floor(100 + Math.random() * 900)}`,
+      orderId: order._id,
+      orderNumber: order.orderNumber,
+      reason: data?.reason || "Customer Complaint / Quality Issues",
+      amount: order.totalAmount,
+      status: "pending",
+      approvedBy: "--",
+      createdAt: new Date().toISOString()
+    };
+
+    db.refunds.unshift(newRefund);
+    
+    // Update order paymentStatus and orderStatus
+    order.paymentStatus = "refunded";
+    order.orderStatus = "refunded";
+
+    saveDB();
+    return successRes(newRefund);
   }
 
   // Default Fallback: Success for all operations so the admin panel continues working
