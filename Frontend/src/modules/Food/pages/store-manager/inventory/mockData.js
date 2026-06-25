@@ -470,3 +470,119 @@ export const setLocalStockRequests = (requests) => {
   localStorage.setItem(STOCK_REQUESTS_KEY, JSON.stringify(requests));
 };
 
+// ==========================================
+// Waste Logs Mock Data & Local Storage DB
+// ==========================================
+
+export const initialMockWasteLogs = [
+  {
+    _id: "waste-001",
+    storeId: "st-indore-01",
+    ingredientId: "ing-001",
+    ingredientName: "Premium Mozzarella Cheese",
+    quantity: 4.5,
+    wasteType: "expired",
+    reason: "Cheese bag left open in defrost chamber, caught mold",
+    reportedBy: "Aman Verma",
+    approvedBy: "Shubham Jamliya",
+    estimatedLoss: 1890.0,
+    remarks: "Standard spoilage write-off. Re-trained shift team on sealing protocols.",
+    status: "approved",
+    images: [
+      "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1508737027454-e6454ef45afd?auto=format&fit=crop&w=600&q=80"
+    ],
+    timeline: [
+      { user: "Aman Verma", action: "reported", remarks: "Cheese bag left open in defrost chamber, caught mold", createdAt: new Date(Date.now() - 3600000 * 24).toISOString() },
+      { user: "Shubham Jamliya", action: "approved", remarks: "Standard spoilage write-off. Re-trained shift team on sealing protocols.", createdAt: new Date(Date.now() - 3600000 * 22).toISOString() }
+    ],
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString()
+  },
+  {
+    _id: "waste-002",
+    storeId: "st-indore-01",
+    ingredientId: "ing-004",
+    ingredientName: "Fresh Paneer Cubes (Tikka Size)",
+    quantity: 2.0,
+    wasteType: "burnt",
+    reason: "Burnt during tandoori deck pre-heat calibration",
+    reportedBy: "Vijay Saxena",
+    approvedBy: "",
+    estimatedLoss: 720.0,
+    remarks: "",
+    status: "pending",
+    images: [
+      "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=600&q=80"
+    ],
+    timeline: [
+      { user: "Vijay Saxena", action: "reported", remarks: "Burnt during tandoori deck pre-heat calibration", createdAt: new Date(Date.now() - 3600000 * 4).toISOString() }
+    ],
+    createdAt: new Date(Date.now() - 3600000 * 4).toISOString()
+  },
+  {
+    _id: "waste-003",
+    storeId: "st-indore-01",
+    ingredientId: "ing-003",
+    ingredientName: "Classic Tomato Pizza Sauce",
+    quantity: 3.0,
+    wasteType: "spillage",
+    reason: "Dispenser bucket slipped off packaging counter line",
+    reportedBy: "Ramesh Singh",
+    approvedBy: "Shubham Jamliya",
+    estimatedLoss: 540.0,
+    remarks: "Countertop cleaned. Floor slip signs deployed.",
+    status: "approved",
+    images: [
+      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=600&q=80"
+    ],
+    timeline: [
+      { user: "Ramesh Singh", action: "reported", remarks: "Dispenser bucket slipped off packaging counter line", createdAt: new Date(Date.now() - 3600000 * 12).toISOString() },
+      { user: "Shubham Jamliya", action: "approved", remarks: "Countertop cleaned. Floor slip signs deployed.", createdAt: new Date(Date.now() - 3600000 * 10).toISOString() }
+    ],
+    createdAt: new Date(Date.now() - 3600000 * 12).toISOString()
+  },
+  {
+    _id: "waste-004",
+    storeId: "st-indore-01",
+    ingredientId: "ing-007",
+    ingredientName: "Fresh Red Onions (Diced)",
+    quantity: 5.0,
+    wasteType: "damaged",
+    reason: "Vegetable crate fell off transport cart, onions crushed/soiled",
+    reportedBy: "Aman Verma",
+    approvedBy: "",
+    estimatedLoss: 175.0,
+    remarks: "",
+    status: "pending",
+    images: [
+      "https://images.unsplash.com/photo-1580196782150-e4e261908237?auto=format&fit=crop&w=600&q=80"
+    ],
+    timeline: [
+      { user: "Aman Verma", action: "reported", remarks: "Vegetable crate fell off transport cart, onions crushed/soiled", createdAt: new Date(Date.now() - 3600000 * 2).toISOString() }
+    ],
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+  }
+];
+
+const WASTE_LOGS_KEY = "pvp_waste_logs";
+
+export const getLocalWasteLogs = () => {
+  try {
+    let list = JSON.parse(localStorage.getItem(WASTE_LOGS_KEY));
+    // Force refresh if list is empty or outdated (fewer items than initialMockWasteLogs)
+    if (!list || !Array.isArray(list) || list.length < initialMockWasteLogs.length) {
+      list = initialMockWasteLogs;
+      localStorage.setItem(WASTE_LOGS_KEY, JSON.stringify(list));
+    }
+    return list;
+  } catch (e) {
+    localStorage.setItem(WASTE_LOGS_KEY, JSON.stringify(initialMockWasteLogs));
+    return initialMockWasteLogs;
+  }
+};
+
+export const setLocalWasteLogs = (wasteLogs) => {
+  localStorage.setItem(WASTE_LOGS_KEY, JSON.stringify(wasteLogs));
+};
+
+

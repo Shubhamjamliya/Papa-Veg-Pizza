@@ -21,6 +21,7 @@ import DeliveryTracking from "../deliveryOperations/DeliveryTracking"
 import DeliveryIssue from "../deliveryOperations/DeliveryIssue"
 import IngredientStock from "../inventory/IngredientStock"
 import StockRequests from "../inventory/StockRequests"
+import WasteManagement from "../inventory/WasteManagement"
 
 
 
@@ -266,12 +267,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="inventory/waste" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
-                <PagePlaceholder 
-                  title="Waste Management" 
-                  description="Log spoiled ingredients, dropped food, and excess waste" 
-                  allowedRoles={["store_manager", "kitchen_supervisor"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <WasteManagement />
               </RoleProtectedRoute>
             } 
           />
