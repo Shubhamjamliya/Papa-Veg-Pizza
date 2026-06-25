@@ -205,7 +205,7 @@ export default function Complaints() {
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1.5 px-4.5 py-2.5 bg-neutral-50 dark:bg-zinc-850 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-650 dark:text-zinc-300 font-bold rounded-2xl text-xs border border-zinc-200 dark:border-zinc-850 transition-all cursor-pointer shadow-sm"
+            className="flex items-center gap-1.5 px-4.5 py-2.5 bg-neutral-50 dark:bg-zinc-850 hover:bg-neutral-100 dark:hover:bg-zinc-850 text-zinc-650 dark:text-zinc-300 font-bold rounded-2xl text-xs border border-zinc-200 dark:border-zinc-850 transition-all cursor-pointer shadow-sm"
           >
             <FileDown size={13} className="text-zinc-400" />
             <span>Export CSV</span>
@@ -213,7 +213,7 @@ export default function Complaints() {
 
           <button
             onClick={handleDownloadReports}
-            className="flex items-center gap-1.5 px-4.5 py-2.5 bg-neutral-50 dark:bg-zinc-850 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-650 dark:text-zinc-300 font-bold rounded-2xl text-xs border border-zinc-200 dark:border-zinc-850 transition-all cursor-pointer shadow-sm"
+            className="flex items-center gap-1.5 px-4.5 py-2.5 bg-neutral-50 dark:bg-zinc-850 hover:bg-neutral-100 dark:hover:bg-zinc-850 text-zinc-650 dark:text-zinc-300 font-bold rounded-2xl text-xs border border-zinc-200 dark:border-zinc-850 transition-all cursor-pointer shadow-sm"
           >
             <Download size={13} className="text-zinc-400" />
             <span>Download Reports</span>

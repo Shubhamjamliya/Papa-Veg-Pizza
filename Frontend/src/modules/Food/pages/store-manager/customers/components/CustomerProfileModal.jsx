@@ -160,7 +160,7 @@ export default function CustomerProfileModal({ visible, onClose, customerId, onV
                 <div className="bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-800 rounded-xl p-3.5 shadow-sm text-center">
                   <span className="text-[9px] font-black text-zinc-400 uppercase tracking-wider block">Cancelled Orders</span>
                   <span className="text-lg font-black text-rose-500 mt-1 block">
-                    {complaints.filter(c => c.issue.toLowerCase().includes("cancelled") || c.status === "failed").length}
+                    {complaints.filter(c => (c.issue || c.description || "").toLowerCase().includes("cancelled") || c.status === "failed").length}
                   </span>
                 </div>
 
@@ -168,7 +168,7 @@ export default function CustomerProfileModal({ visible, onClose, customerId, onV
                 <div className="bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-800 rounded-xl p-3.5 shadow-sm text-center">
                   <span className="text-[9px] font-black text-zinc-400 uppercase tracking-wider block">Refund Count</span>
                   <span className="text-lg font-black text-amber-500 mt-1 block">
-                    {complaints.filter(c => c.issue.toLowerCase().includes("refund")).length || 1}
+                    {complaints.filter(c => (c.issue || c.description || "").toLowerCase().includes("refund")).length || 1}
                   </span>
                 </div>
               </div>

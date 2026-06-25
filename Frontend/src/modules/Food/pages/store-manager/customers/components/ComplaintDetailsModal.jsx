@@ -18,10 +18,10 @@ export default function ComplaintDetailsModal({
   onResolveTrigger,
   userRole
 }) {
-  if (!visible) return null;
-
-  const { data: complaint, isLoading, isError, refetch } = useComplaintDetails(complaintId);
+  const { data: complaint, isLoading, isError, refetch } = useComplaintDetails(visible ? complaintId : null);
   const isReadOnly = userRole === "assistant_manager";
+
+  if (!visible) return null;
 
   const handleRetry = () => {
     refetch();

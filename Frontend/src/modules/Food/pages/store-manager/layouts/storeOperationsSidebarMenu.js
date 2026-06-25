@@ -233,7 +233,7 @@ export const storeOperationsSidebarMenu = [
         label: "Reviews",
         path: "/store-operations/customers/reviews",
         icon: "Star",
-        allowedRoles: ["store_manager"]
+        allowedRoles: ["store_manager", "store_owner", "assistant_manager", "customer_experience_manager"]
       }
     ]
   },

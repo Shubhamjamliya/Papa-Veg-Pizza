@@ -29,7 +29,8 @@ import Attendance from "../staffManagement/Attendance"
 import ShiftManagement from "../staffManagement/ShiftManagement"
 import Performance from "../staffManagement/Performance"
 import CustomerOrders from "../customers/CustomerOrders"
-import Complaints from "../complaints/Complaints"
+import Complaints from "../customers/Complaints"
+import Reviews from "../customers/Reviews"
 
 
 
@@ -351,12 +352,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="customers/reviews" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Store Reviews" 
-                  description="Customer reviews, feedback rating, and station specific reviews" 
-                  allowedRoles={["store_manager"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "store_owner", "assistant_manager", "customer_experience_manager"]}>
+                <Reviews />
               </RoleProtectedRoute>
             } 
           />

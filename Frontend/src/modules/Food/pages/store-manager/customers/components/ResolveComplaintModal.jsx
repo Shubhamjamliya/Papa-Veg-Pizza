@@ -11,9 +11,7 @@ export default function ResolveComplaintModal({
   complaintId,
   userRole
 }) {
-  if (!visible) return null;
-
-  const { data: complaint, isLoading } = useComplaintDetails(complaintId);
+  const { data: complaint, isLoading } = useComplaintDetails(visible ? complaintId : null);
   const resolveMutation = useResolveComplaint();
 
   const [staff, setStaff] = useState("");
@@ -24,6 +22,8 @@ export default function ResolveComplaintModal({
   const [evidenceUrl, setEvidenceUrl] = useState("");
 
   const isReadOnly = userRole === "assistant_manager";
+
+  if (!visible) return null;
 
   // Pre-fill fields or reset when modal opens
   useEffect(() => {

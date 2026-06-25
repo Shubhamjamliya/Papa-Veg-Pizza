@@ -30,8 +30,8 @@ export default function ComplaintsHistoryTable({ complaints = [] }) {
               <td className="px-4 py-2.5 font-mono font-extrabold text-[10px] text-zinc-900 dark:text-white uppercase">
                 {comp._id}
               </td>
-              <td className="px-4 py-2.5 text-zinc-850 dark:text-zinc-200 font-bold max-w-[200px] truncate" title={comp.issue}>
-                {comp.issue}
+              <td className="px-4 py-2.5 text-zinc-850 dark:text-zinc-200 font-bold max-w-[200px] truncate" title={comp.issue || comp.description || ""}>
+                {comp.issue || comp.description || comp.complaintType || "Complaint"}
               </td>
               <td className="px-4 py-2.5">
                 <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
@@ -42,8 +42,8 @@ export default function ComplaintsHistoryTable({ complaints = [] }) {
                   {comp.status}
                 </span>
               </td>
-              <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400 font-medium max-w-[220px] truncate" title={comp.resolution}>
-                {comp.resolution || "Under Investigation"}
+              <td className="px-4 py-2.5 text-zinc-500 dark:text-zinc-400 font-medium max-w-[220px] truncate" title={typeof comp.resolution === "object" ? comp.resolution?.actionTaken : comp.resolution}>
+                {typeof comp.resolution === "object" ? comp.resolution?.actionTaken : (comp.resolution || "Under Investigation")}
               </td>
               <td className="px-4 py-2.5 text-zinc-400 dark:text-zinc-500 font-bold">
                 {new Date(comp.createdAt).toLocaleDateString("en-IN", {

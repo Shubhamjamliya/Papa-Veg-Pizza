@@ -191,14 +191,194 @@ export const mockOrders = [
 ];
 
 export const mockComplaints = [
-  { _id: "comp-1", customerId: "cust-1", issue: "Order PVP-8001 was missing seasoning packets", status: "resolved", resolution: "Refunded ₹50 seasoning charge and added 50 loyalty points.", createdAt: "2026-05-10T12:00:00Z" },
-  { _id: "comp-2", customerId: "cust-4", issue: "Late delivery and cold pizza on order PVP-9084", status: "resolved", resolution: "Approved full refund of ₹750 immediately.", createdAt: "2026-06-20T21:05:00Z" },
-  { _id: "comp-3", customerId: "cust-6", issue: "Wrong toppings delivered on order PVP-9085", status: "open", resolution: "Pending investigation by kitchen supervisor.", createdAt: "2026-06-25T13:20:00Z" }
+  {
+    _id: "comp-1",
+    storeId: "store-104",
+    customerId: "cust-1",
+    orderId: "ord-8",
+    complaintType: "missing_items",
+    priority: "low",
+    description: "Order PVP-8001 was missing extra seasoning packets and chili flakes.",
+    images: ["https://images.unsplash.com/photo-1544982503-9f984c14501a"],
+    status: "resolved",
+    resolution: {
+      actionTaken: "Refunded ₹50 seasoning charge and added 50 loyalty points to customer profile.",
+      resolvedBy: "Shubham Jamliya",
+      refundAmount: 50,
+      replacementOrderId: "",
+      couponIssued: "SORRY50",
+      resolvedAt: "2026-05-10T12:00:00Z"
+    },
+    resolvedBy: "Shubham Jamliya",
+    createdAt: "2026-05-10T11:30:00Z",
+    updatedAt: "2026-05-10T12:00:00Z"
+  },
+  {
+    _id: "comp-2",
+    storeId: "store-104",
+    customerId: "cust-4",
+    orderId: "ord-4",
+    complaintType: "late_delivery",
+    priority: "critical",
+    description: "Late delivery by 45 minutes and pizza was completely cold on order PVP-9084.",
+    images: ["https://images.unsplash.com/photo-1604382355076-af4b0eb60143"],
+    status: "resolved",
+    resolution: {
+      actionTaken: "Approved full refund of ₹750 immediately and apologized for the inconvenience.",
+      resolvedBy: "Shubham Jamliya",
+      refundAmount: 750,
+      replacementOrderId: "",
+      couponIssued: "FREEPIZZA",
+      resolvedAt: "2026-06-20T21:05:00Z"
+    },
+    resolvedBy: "Shubham Jamliya",
+    createdAt: "2026-06-20T20:45:00Z",
+    updatedAt: "2026-06-20T21:05:00Z"
+  },
+  {
+    _id: "comp-3",
+    storeId: "store-104",
+    customerId: "cust-6",
+    orderId: "ord-5",
+    complaintType: "wrong_order",
+    priority: "high",
+    description: "Wrong toppings delivered on order PVP-9085. Onion toppings were added instead of Paneer.",
+    images: ["https://images.unsplash.com/photo-1513104890138-7c749659a591"],
+    status: "investigating",
+    resolution: null,
+    resolvedBy: "",
+    createdAt: "2026-06-25T13:20:00Z",
+    updatedAt: "2026-06-25T13:20:00Z"
+  },
+  {
+    _id: "comp-4",
+    storeId: "store-104",
+    customerId: "cust-2",
+    orderId: "ord-2",
+    complaintType: "food_quality",
+    priority: "medium",
+    description: "Pizza crust was burnt and too hard to chew on PVP-9082. Please check kitchen temperature settings.",
+    images: [],
+    status: "pending",
+    resolution: null,
+    resolvedBy: "",
+    createdAt: "2026-06-25T11:30:00Z",
+    updatedAt: "2026-06-25T11:30:00Z"
+  },
+  {
+    _id: "comp-5",
+    storeId: "store-104",
+    customerId: "cust-7",
+    orderId: "ord-6",
+    complaintType: "rider_behavior",
+    priority: "low",
+    description: "Rider was rude during delivery and refused to come to the third floor for order PVP-9086.",
+    images: [],
+    status: "investigating",
+    resolution: null,
+    resolvedBy: "",
+    createdAt: "2026-06-22T21:30:00Z",
+    updatedAt: "2026-06-22T21:30:00Z"
+  },
+  {
+    _id: "comp-6",
+    storeId: "store-104",
+    customerId: "cust-8",
+    orderId: "ord-7",
+    complaintType: "late_delivery",
+    priority: "high",
+    description: "Order PVP-9087 was delayed by more than an hour. Delivery address induction issue.",
+    images: [],
+    status: "resolved",
+    resolution: {
+      actionTaken: "Delivered a fresh hot replacement order free of cost.",
+      resolvedBy: "Shubham Jamliya",
+      refundAmount: 0,
+      replacementOrderId: "ord-3",
+      couponIssued: "COMP100",
+      resolvedAt: "2026-06-25T15:30:00Z"
+    },
+    resolvedBy: "Shubham Jamliya",
+    createdAt: "2026-06-25T15:00:00Z",
+    updatedAt: "2026-06-25T15:30:00Z"
+  }
 ];
 
 export const mockReviews = [
-  { _id: "rev-1", customerId: "cust-1", rating: 5, comment: "Excellent paneer toppings and hot packaging!", productName: "Veg Supreme Pizza", createdAt: "2026-06-24T13:10:00Z" },
-  { _id: "rev-2", customerId: "cust-2", rating: 4, comment: "Garlic bread was outstanding. Pizza was slightly cold.", productName: "Farmhouse Delight Pizza", createdAt: "2026-06-25T12:00:00Z" },
-  { _id: "rev-3", customerId: "cust-4", rating: 1, comment: "Very bad delivery experience, took 1.5 hours and pizza was cold.", productName: "Double Cheese Margherita", createdAt: "2026-06-20T22:00:00Z" },
-  { _id: "rev-4", customerId: "cust-7", rating: 5, comment: "Best Veg Pizza franchise in town. Spicy paneer was great.", productName: "Tandoori Paneer Pizza", createdAt: "2026-06-22T22:00:00Z" }
+  {
+    _id: "rev-1",
+    storeId: "store-104",
+    customerId: "cust-1",
+    orderId: "ord-1",
+    rating: 5,
+    reviewText: "Excellent paneer toppings and hot packaging! Best Veg Pizza in Indore.",
+    images: ["https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=400"],
+    sentiment: "Positive",
+    reply: {
+      text: "Thank you Aarav! We take pride in our hot deliveries and premium paneer quality.",
+      repliedBy: "Store Manager (Shubham Jamliya)",
+      repliedAt: "2026-06-24T14:00:00Z"
+    },
+    createdAt: "2026-06-24T13:10:00Z"
+  },
+  {
+    _id: "rev-2",
+    storeId: "store-104",
+    customerId: "cust-2",
+    orderId: "ord-2",
+    rating: 4,
+    reviewText: "Garlic bread was outstanding. Pizza was slightly cold but toppings were fresh.",
+    images: [],
+    sentiment: "Neutral",
+    reply: null,
+    createdAt: "2026-06-25T12:00:00Z"
+  },
+  {
+    _id: "rev-3",
+    storeId: "store-104",
+    customerId: "cust-4",
+    orderId: "ord-4",
+    rating: 1,
+    reviewText: "Very bad delivery experience, took 1.5 hours and pizza was cold and soggy.",
+    images: ["https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&q=80&w=400"],
+    sentiment: "Negative",
+    reply: null,
+    createdAt: "2026-06-20T22:00:00Z"
+  },
+  {
+    _id: "rev-4",
+    storeId: "store-104",
+    customerId: "cust-7",
+    orderId: "ord-5",
+    rating: 5,
+    reviewText: "Best Veg Pizza franchise in town. Spicy paneer was great.",
+    images: [],
+    sentiment: "Positive",
+    reply: {
+      text: "Thanks for the 5-star rating! We are glad you enjoyed the Spicy Paneer Pizza.",
+      repliedBy: "Store Manager (Shubham Jamliya)",
+      repliedAt: "2026-06-23T10:00:00Z"
+    },
+    createdAt: "2026-06-22T22:00:00Z"
+  }
 ];
+
+export const mockOrderItems = [
+  { _id: "item-1", orderId: "ord-1", name: "Veg Supreme Pizza", price: 380, quantity: 1, customizations: "Extra cheese" },
+  { _id: "item-2", orderId: "ord-1", name: "Garlic Bread", price: 100, quantity: 1, customizations: "" },
+  { _id: "item-3", orderId: "ord-2", name: "Farmhouse Delight Pizza", price: 420, quantity: 1, customizations: "Thin Crust" },
+  { _id: "item-4", orderId: "ord-2", name: "Garlic Bread", price: 100, quantity: 1, customizations: "" },
+  { _id: "item-5", orderId: "ord-2", name: "Pepsi 500ml", price: 70, quantity: 1, customizations: "" },
+  { _id: "item-6", orderId: "ord-4", name: "Double Cheese Margherita", price: 320, quantity: 2, customizations: "" },
+  { _id: "item-7", orderId: "ord-4", name: "Choco Lava Cake", price: 110, quantity: 1, customizations: "" },
+  { _id: "item-8", orderId: "ord-5", name: "Tandoori Paneer Pizza", price: 450, quantity: 1, customizations: "Spicy" }
+];
+
+export const mockStaff = [
+  { _id: "staff-1", fullName: "Rohan Sharma", role: "Kitchen Supervisor" },
+  { _id: "staff-2", fullName: "Priya Patel", role: "Pizza Maker" },
+  { _id: "staff-3", fullName: "Amit Kumar", role: "Rider Leader" },
+  { _id: "staff-4", fullName: "Sandhya Roy", role: "Customer Support" }
+];
+
+
