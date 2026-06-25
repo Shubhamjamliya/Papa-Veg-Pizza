@@ -38,6 +38,7 @@ import {
   mockSuppliersSummary,
   initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
+import { mockDailySales } from "../../modules/Food/pages/store-manager/reports/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -719,6 +720,247 @@ export function handleMockRequest(config) {
   const successRes = (payload) => ({ success: true, status: 200, data: { success: true, data: payload } });
   const successMsg = (msg, payload = null) => ({ success: true, status: 200, data: { success: true, message: msg, data: payload } });
   const errorRes = (msg, status = 400) => ({ success: false, status, data: { success: false, message: msg } });
+
+  // --- DAILY SALES ENDPOINTS ---
+  if (url.includes("/reports/daily-sales")) {
+    const dateMatch = url.match(/\/reports\/daily-sales\/(\d{4}-\d{2}-\d{2})$/);
+    if (dateMatch && method === "get") {
+      const date = dateMatch[1];
+      const dayData = mockDailySales.find(d => d.date === date);
+      if (!dayData) {
+        return errorRes("Date details not found in mock data", 404);
+      }
+      const paymentBreakdown = [
+        { method: "Cash", transactions: dayData.paymentTransactions.cash, revenue: dayData.paymentDistribution.cash },
+        { method: "UPI", transactions: dayData.paymentTransactions.upi, revenue: dayData.paymentDistribution.upi },
+        { method: "Card", transactions: dayData.paymentTransactions.card, revenue: dayData.paymentDistribution.card },
+        { method: "Wallet", transactions: dayData.paymentTransactions.wallet, revenue: dayData.paymentDistribution.wallet }
+      ];
+      return successRes({
+        date: dayData.date,
+        totalRevenue: dayData.revenue,
+        completedOrders: dayData.completedOrders,
+        cancelledOrders: dayData.cancelledOrders,
+        refundAmount: dayData.refundAmount,
+        paymentBreakdown,
+        topSellingItems: dayData.topSellingItems,
+        topCustomers: dayData.topCustomers,
+        hourlySales: dayData.hourlySales
+      });
+    }
+
+    if (method === "get") {
+      const params = config.params || {};
+      const startDate = params.startDate || "";
+      const endDate = params.endDate || "";
+      const paymentMethod = params.paymentMethod || "All";
+      const orderType = params.orderType || "All";
+
+      let filtered = [...mockDailySales];
+
+      if (startDate && endDate) {
+        const start = new Date(startDate).getTime();
+        const end = new Date(endDate).getTime();
+        filtered = filtered.filter(item => {
+          const d = new Date(item.date).getTime();
+          return d >= start && d <= end;
+        });
+      }
+
+      if (filtered.length === 0) {
+        filtered = mockDailySales.slice(0, 7);
+      }
+
+      let revenue = 0;
+      let totalOrders = 0;
+      let cashSales = 0;
+      let onlineSales = 0;
+      let cancelledRevenue = 0;
+      let refundAmount = 0;
+      const paymentDistribution = { cash: 0, upi: 0, card: 0, wallet: 0 };
+      const orderStatusDistribution = { completed: 0, cancelled: 0, refunded: 0 };
+      
+      const hourlyMap = {};
+      for (let h = 10; h <= 22; h++) {
+        hourlyMap[`${h.toString().padStart(2, '0')}:00`] = 0;
+      }
+
+      filtered.forEach(day => {
+        let dayRevenue = day.revenue;
+        let dayCash = day.paymentDistribution.cash;
+        let dayUpi = day.paymentDistribution.upi;
+        let dayCard = day.paymentDistribution.card;
+        let dayWallet = day.paymentDistribution.wallet;
+        let dayOnline = day.onlineSales;
+        let dayDiscounts = day.discountAmount;
+        let dayTaxes = day.taxAmount;
+
+        if (paymentMethod !== "All") {
+          const pMethod = paymentMethod.toLowerCase();
+          if (pMethod === "cash") {
+            dayRevenue = dayCash;
+            dayUpi = 0;
+            dayCard = 0;
+            dayWallet = 0;
+            dayOnline = 0;
+            dayDiscounts = Math.floor(dayDiscounts * (dayCash / day.revenue));
+            dayTaxes = Math.floor(dayTaxes * (dayCash / day.revenue));
+          } else {
+            dayCash = 0;
+            if (pMethod === "upi") {
+              dayRevenue = dayUpi;
+              dayCard = 0;
+              dayWallet = 0;
+            } else if (pMethod === "card") {
+              dayRevenue = dayCard;
+              dayUpi = 0;
+              dayWallet = 0;
+            } else if (pMethod === "wallet") {
+              dayRevenue = dayWallet;
+              dayUpi = 0;
+              dayCard = 0;
+            }
+            dayOnline = dayRevenue;
+            dayDiscounts = Math.floor(dayDiscounts * (dayOnline / day.revenue));
+            dayTaxes = Math.floor(dayTaxes * (dayOnline / day.revenue));
+          }
+        }
+
+        if (orderType !== "All") {
+          let factor = 0.4;
+          if (orderType.toLowerCase() === "dine-in") factor = 0.3;
+          if (orderType.toLowerCase() === "takeaway") factor = 0.3;
+
+          dayRevenue = Math.floor(dayRevenue * factor);
+          dayCash = Math.floor(dayCash * factor);
+          dayUpi = Math.floor(dayUpi * factor);
+          dayCard = Math.floor(dayCard * factor);
+          dayWallet = Math.floor(dayWallet * factor);
+          dayOnline = dayUpi + dayCard + dayWallet;
+          dayDiscounts = Math.floor(dayDiscounts * factor);
+          dayTaxes = Math.floor(dayTaxes * factor);
+        }
+
+        revenue += dayRevenue;
+        totalOrders += orderType !== "All" ? Math.floor(day.totalOrders * 0.35) : day.totalOrders;
+        cashSales += dayCash;
+        onlineSales += dayOnline;
+        cancelledRevenue += orderType !== "All" ? Math.floor(day.cancelledRevenue * 0.35) : day.cancelledRevenue;
+        refundAmount += orderType !== "All" ? Math.floor(day.refundAmount * 0.35) : day.refundAmount;
+
+        paymentDistribution.cash += dayCash;
+        paymentDistribution.upi += dayUpi;
+        paymentDistribution.card += dayCard;
+        paymentDistribution.wallet += dayWallet;
+
+        orderStatusDistribution.completed += orderType !== "All" ? Math.floor(day.orderStatusDistribution.completed * 0.35) : day.orderStatusDistribution.completed;
+        orderStatusDistribution.cancelled += orderType !== "All" ? Math.floor(day.orderStatusDistribution.cancelled * 0.35) : day.orderStatusDistribution.cancelled;
+        orderStatusDistribution.refunded += orderType !== "All" ? Math.floor(day.orderStatusDistribution.refunded * 0.35) : day.orderStatusDistribution.refunded;
+
+        day.hourlySales.forEach(hItem => {
+          let hrRev = hItem.revenue;
+          if (paymentMethod !== "All") {
+            const pMethod = paymentMethod.toLowerCase();
+            const ratio = pMethod === "cash" ? (day.paymentDistribution.cash / day.revenue) : (day.onlineSales / day.revenue);
+            hrRev = Math.floor(hrRev * ratio);
+          }
+          if (orderType !== "All") {
+            let factor = 0.4;
+            if (orderType.toLowerCase() === "dine-in") factor = 0.3;
+            if (orderType.toLowerCase() === "takeaway") factor = 0.3;
+            hrRev = Math.floor(hrRev * factor);
+          }
+          hourlyMap[hItem.time] = (hourlyMap[hItem.time] || 0) + hrRev;
+        });
+      });
+
+      const avgOrderValue = totalOrders > 0 ? Math.round(revenue / totalOrders) : 0;
+      const salesGrowth = filtered.length > 0 ? filtered[0].salesGrowth : 0;
+
+      const revenueTrend = Object.keys(hourlyMap).map(time => ({
+        time,
+        revenue: Math.round(hourlyMap[time] / filtered.length)
+      }));
+
+      const salesSummary = filtered.map(day => {
+        let dayRevenue = day.revenue;
+        let dayCash = day.paymentDistribution.cash;
+        let dayUpi = day.paymentDistribution.upi;
+        let dayCard = day.paymentDistribution.card;
+        let dayWallet = day.paymentDistribution.wallet;
+        let dayDiscounts = day.discountAmount;
+        let dayTaxes = day.taxAmount;
+        let dayRefunds = day.refundAmount;
+        let dayOrders = day.totalOrders;
+
+        if (paymentMethod !== "All") {
+          const pMethod = paymentMethod.toLowerCase();
+          if (pMethod === "cash") {
+            dayRevenue = dayCash;
+            dayDiscounts = Math.floor(dayDiscounts * (dayCash / day.revenue));
+            dayTaxes = Math.floor(dayTaxes * (dayCash / day.revenue));
+            dayRefunds = Math.floor(dayRefunds * (dayCash / day.revenue));
+          } else {
+            dayRevenue = pMethod === "upi" ? dayUpi : pMethod === "card" ? dayCard : dayWallet;
+            dayDiscounts = Math.floor(dayDiscounts * (dayRevenue / day.revenue));
+            dayTaxes = Math.floor(dayTaxes * (dayRevenue / day.revenue));
+            dayRefunds = Math.floor(dayRefunds * (dayRevenue / day.revenue));
+          }
+        }
+
+        if (orderType !== "All") {
+          let factor = 0.4;
+          if (orderType.toLowerCase() === "dine-in") factor = 0.3;
+          if (orderType.toLowerCase() === "takeaway") factor = 0.3;
+
+          dayRevenue = Math.floor(dayRevenue * factor);
+          dayDiscounts = Math.floor(dayDiscounts * factor);
+          dayTaxes = Math.floor(dayTaxes * factor);
+          dayRefunds = Math.floor(dayRefunds * factor);
+          dayOrders = Math.floor(dayOrders * factor);
+        }
+
+        return {
+          date: day.date,
+          orders: dayOrders,
+          revenue: dayRevenue,
+          discounts: dayDiscounts,
+          taxes: dayTaxes,
+          refunds: dayRefunds,
+          netSales: dayRevenue - dayRefunds - dayDiscounts + dayTaxes,
+          growth: day.salesGrowth
+        };
+      });
+
+      return successRes({
+        revenue,
+        totalOrders,
+        avgOrderValue,
+        cashSales,
+        onlineSales,
+        cancelledRevenue,
+        refundAmount,
+        salesGrowth,
+        revenueTrend,
+        paymentDistribution,
+        orderStatusDistribution,
+        salesSummary
+      });
+    }
+  }
+
+  // --- EXPORT SALES REPORT ENDPOINT ---
+  if (url.includes("/reports/export-sales") && method === "post") {
+    return {
+      success: true,
+      status: 200,
+      headers: {
+        "content-type": "text/csv",
+        "content-disposition": "attachment; filename=\"DailySales_Report.csv\""
+      },
+      data: "Date,Revenue,Orders\n2026-06-25,48900,98"
+    };
+  }
 
   // --- ORDER REPORT ENDPOINTS ---
   if (url.includes("/reports/orders/dashboard") || url.includes("/reports/orders/summary")) {
