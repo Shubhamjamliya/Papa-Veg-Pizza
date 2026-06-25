@@ -29,6 +29,7 @@ import Attendance from "../staffManagement/Attendance"
 import ShiftManagement from "../staffManagement/ShiftManagement"
 import Performance from "../staffManagement/Performance"
 import CustomerOrders from "../customers/CustomerOrders"
+import Complaints from "../complaints/Complaints"
 
 
 
@@ -342,12 +343,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="customers/complaints" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Customer Complaints" 
-                  description="Handle active complaints and issue resolution codes" 
-                  allowedRoles={["store_manager"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "assistant_manager", "store_owner"]}>
+                <Complaints />
               </RoleProtectedRoute>
             } 
           />

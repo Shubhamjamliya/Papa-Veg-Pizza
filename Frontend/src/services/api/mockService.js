@@ -366,27 +366,114 @@ const initialMockRefunds = [
 const initialMockComplaints = [
   {
     _id: "comp-1",
+    storeId: "store-104",
     customerId: "cust-1",
-    issue: "Order PVP-8001 was missing extra seasoning packets",
+    orderId: "ord-8",
+    complaintType: "missing_items",
+    priority: "low",
+    description: "Order PVP-8001 was missing extra seasoning packets and chili flakes.",
+    images: ["https://images.unsplash.com/photo-1544982503-9f984c14501a"],
     status: "resolved",
-    resolution: "Refunded ₹50 seasoning charge and added 50 loyalty points.",
-    createdAt: "2026-05-10T12:00:00Z"
+    resolution: {
+      actionTaken: "Refunded ₹50 seasoning charge and added 50 loyalty points to customer profile.",
+      resolvedBy: "Shubham Jamliya",
+      refundAmount: 50,
+      replacementOrderId: "",
+      couponIssued: "SORRY50",
+      resolvedAt: "2026-05-10T12:00:00Z"
+    },
+    resolvedBy: "Shubham Jamliya",
+    createdAt: "2026-05-10T11:30:00Z",
+    updatedAt: "2026-05-10T12:00:00Z"
   },
   {
     _id: "comp-2",
+    storeId: "store-104",
     customerId: "cust-4",
-    issue: "Late delivery and cold pizza on order PVP-9084",
+    orderId: "ord-4",
+    complaintType: "late_delivery",
+    priority: "critical",
+    description: "Late delivery by 45 minutes and pizza was completely cold on order PVP-9084.",
+    images: ["https://images.unsplash.com/photo-1604382355076-af4b0eb60143"],
     status: "resolved",
-    resolution: "Approved full refund of ₹750 immediately.",
-    createdAt: "2026-06-20T21:05:00Z"
+    resolution: {
+      actionTaken: "Approved full refund of ₹750 immediately and apologized for the inconvenience.",
+      resolvedBy: "Shubham Jamliya",
+      refundAmount: 750,
+      replacementOrderId: "",
+      couponIssued: "FREEPIZZA",
+      resolvedAt: "2026-06-20T21:05:00Z"
+    },
+    resolvedBy: "Shubham Jamliya",
+    createdAt: "2026-06-20T20:45:00Z",
+    updatedAt: "2026-06-20T21:05:00Z"
   },
   {
     _id: "comp-3",
+    storeId: "store-104",
     customerId: "cust-6",
-    issue: "Wrong toppings delivered on order PVP-9085",
-    status: "open",
-    resolution: "Pending investigation by kitchen supervisor.",
-    createdAt: "2026-06-25T13:20:00Z"
+    orderId: "ord-5",
+    complaintType: "wrong_order",
+    priority: "high",
+    description: "Wrong toppings delivered on order PVP-9085. Onion toppings were added instead of Paneer.",
+    images: ["https://images.unsplash.com/photo-1513104890138-7c749659a591"],
+    status: "investigating",
+    resolution: null,
+    resolvedBy: "",
+    createdAt: "2026-06-25T13:20:00Z",
+    updatedAt: "2026-06-25T13:20:00Z"
+  },
+  {
+    _id: "comp-4",
+    storeId: "store-104",
+    customerId: "cust-2",
+    orderId: "ord-2",
+    complaintType: "food_quality",
+    priority: "medium",
+    description: "Pizza crust was burnt and too hard to chew on PVP-9082. Please check kitchen temperature settings.",
+    images: [],
+    status: "pending",
+    resolution: null,
+    resolvedBy: "",
+    createdAt: "2026-06-25T11:30:00Z",
+    updatedAt: "2026-06-25T11:30:00Z"
+  },
+  {
+    _id: "comp-5",
+    storeId: "store-104",
+    customerId: "cust-7",
+    orderId: "ord-6",
+    complaintType: "rider_behavior",
+    priority: "low",
+    description: "Rider was rude during delivery and refused to come to the third floor for order PVP-9086.",
+    images: [],
+    status: "investigating",
+    resolution: null,
+    resolvedBy: "",
+    createdAt: "2026-06-22T21:30:00Z",
+    updatedAt: "2026-06-22T21:30:00Z"
+  },
+  {
+    _id: "comp-6",
+    storeId: "store-104",
+    customerId: "cust-8",
+    orderId: "ord-7",
+    complaintType: "late_delivery",
+    priority: "high",
+    description: "Order PVP-9087 was delayed by more than an hour. Delivery address induction issue.",
+    images: [],
+    status: "resolved",
+    resolution: {
+      actionTaken: "Delivered a fresh hot replacement order free of cost.",
+      resolvedBy: "Shubham Jamliya",
+      refundAmount: 0,
+      replacementOrderId: "ord-3",
+      couponIssued: "COMP100",
+      resolvedAt: "2026-06-25T15:30:00Z"
+    },
+    resolvedBy: "Shubham Jamliya",
+    createdAt: "2026-06-25T15:00:00Z",
+    updatedAt: "2026-06-25T15:30:00Z"
   }
 ];
 
@@ -576,6 +663,11 @@ initialOperatingHours.forEach(oh => {
     db.operatingHours[existingIdx] = { ...oh, ...db.operatingHours[existingIdx] };
   }
 });
+
+// Validate/Migrate customer_complaints to ensure new fields (like priority) are populated
+if (db.customer_complaints && (db.customer_complaints.length === 0 || !db.customer_complaints.some(c => c.priority))) {
+  db.customer_complaints = [...initialMockComplaints];
+}
 
 const saveDB = () => {
   Object.keys(db).forEach((key) => {
@@ -4291,6 +4383,218 @@ export function handleMockRequest(config) {
     const orderId = timelineMatch[1];
     const timeline = db.delivery_timelines[orderId] || [];
     return successRes(timeline);
+  }
+
+  const cleanUrl = url.split("?")[0];
+
+  // GET /store/complaints
+  if (cleanUrl.endsWith("/store/complaints") && method === "get") {
+    const search = config.params?.search || "";
+    const complaintType = config.params?.complaintType || "";
+    const priority = config.params?.priority || "";
+    const status = config.params?.status || "";
+    const startDate = config.params?.startDate || "";
+    const endDate = config.params?.endDate || "";
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const sortBy = config.params?.sortBy || "createdAt";
+    const sortOrder = config.params?.sortOrder || "desc";
+
+    let filtered = [...db.customer_complaints];
+
+    // Filter by search (customer name, email, phone, order number, complaint description, or complaint ID)
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(c => {
+        const customer = db.customers.find(cust => cust._id === c.customerId);
+        const order = db.store_orders.find(ord => ord._id === c.orderId);
+        
+        return (
+          c._id.toLowerCase().includes(q) ||
+          c.description.toLowerCase().includes(q) ||
+          c.complaintType.toLowerCase().includes(q) ||
+          (customer && (
+            customer.name.toLowerCase().includes(q) ||
+            customer.email.toLowerCase().includes(q) ||
+            customer.mobile.includes(q)
+          )) ||
+          (order && order.orderNumber.toLowerCase().includes(q))
+        );
+      });
+    }
+
+    // Filter by type
+    if (complaintType && complaintType !== "All") {
+      filtered = filtered.filter(c => c.complaintType.toLowerCase() === complaintType.toLowerCase());
+    }
+
+    // Filter by priority
+    if (priority && priority !== "All") {
+      filtered = filtered.filter(c => c.priority.toLowerCase() === priority.toLowerCase());
+    }
+
+    // Filter by status
+    if (status && status !== "All") {
+      filtered = filtered.filter(c => c.status.toLowerCase() === status.toLowerCase());
+    }
+
+    // Date range filtering
+    if (startDate && endDate) {
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+      filtered = filtered.filter(c => {
+        const d = new Date(c.createdAt).getTime();
+        return d >= start && d <= end;
+      });
+    }
+
+    // Map each complaint to include customer profile summary and order number
+    const complaintsWithDetails = filtered.map(c => {
+      const customer = db.customers.find(cust => cust._id === c.customerId);
+      const order = db.store_orders.find(ord => ord._id === c.orderId);
+      return {
+        ...c,
+        customerName: customer ? customer.name : "Unknown",
+        customerMobile: customer ? customer.mobile : "",
+        customerEmail: customer ? customer.email : "",
+        orderNumber: order ? order.orderNumber : "N/A"
+      };
+    });
+
+    // Sorting
+    complaintsWithDetails.sort((a, b) => {
+      let valA, valB;
+      if (sortBy === "createdAt") {
+        valA = new Date(a.createdAt).getTime();
+        valB = new Date(b.createdAt).getTime();
+        return sortOrder === "asc" ? valA - valB : valB - valA;
+      } else if (sortBy === "priority") {
+        const priorityOrder = { low: 1, medium: 2, high: 3, critical: 4 };
+        valA = priorityOrder[a.priority.toLowerCase()] || 0;
+        valB = priorityOrder[b.priority.toLowerCase()] || 0;
+      } else if (sortBy === "status") {
+        valA = a.status;
+        valB = b.status;
+      } else if (sortBy === "complaintType") {
+        valA = a.complaintType;
+        valB = b.complaintType;
+      } else if (sortBy === "customerName") {
+        valA = a.customerName;
+        valB = b.customerName;
+      } else {
+        valA = new Date(a.createdAt).getTime();
+        valB = new Date(b.createdAt).getTime();
+        return sortOrder === "asc" ? valA - valB : valB - valA;
+      }
+
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+    });
+
+    const totalCount = complaintsWithDetails.length;
+    const pages = Math.ceil(totalCount / limit);
+    const start = (page - 1) * limit;
+    const paginated = complaintsWithDetails.slice(start, start + limit);
+
+    return successRes({
+      complaints: paginated,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        pages
+      }
+    });
+  }
+
+  // GET /store/complaints/:id
+  const complaintDetailMatch = cleanUrl.match(/\/store\/complaints\/([^/]+)$/);
+  if (complaintDetailMatch && !url.includes("/resolve") && method === "get") {
+    const id = complaintDetailMatch[1];
+    const complaint = db.customer_complaints.find(c => c._id === id);
+    if (!complaint) {
+      return errorRes("Complaint not found", 404);
+    }
+
+    const customer = db.customers.find(cust => cust._id === complaint.customerId);
+    const order = db.store_orders.find(ord => ord._id === complaint.orderId);
+    let orderItems = [];
+    if (order) {
+      orderItems = db.order_items.filter(it => it.orderId === order._id);
+    }
+
+    return successRes({
+      ...complaint,
+      customer: customer || null,
+      order: order ? {
+        ...order,
+        items: orderItems
+      } : null
+    });
+  }
+
+  // PUT /store/complaints/:id/resolve
+  const complaintResolveMatch = cleanUrl.match(/\/store\/complaints\/([^/]+)\/resolve$/);
+  if (complaintResolveMatch && method === "put") {
+    const id = complaintResolveMatch[1];
+    const complaintIdx = db.customer_complaints.findIndex(c => c._id === id);
+    if (complaintIdx === -1) {
+      return errorRes("Complaint not found", 404);
+    }
+
+    const complaint = db.customer_complaints[complaintIdx];
+    const refundAmount = Number(data?.refundAmount) || 0;
+    const replacementOrderId = data?.replacementOrderId || "";
+    const couponIssued = data?.couponIssued || "";
+    const actionTaken = data?.actionTaken || "Resolved by store supervisor";
+    const resolvedBy = data?.staff || data?.resolvedBy || "Store Manager";
+
+    const updated = {
+      ...complaint,
+      status: "resolved",
+      resolvedBy,
+      updatedAt: new Date().toISOString(),
+      resolution: {
+        actionTaken,
+        resolvedBy,
+        refundAmount,
+        replacementOrderId,
+        couponIssued,
+        evidenceImage: data?.evidenceImage || "",
+        resolvedAt: new Date().toISOString()
+      }
+    };
+
+    db.customer_complaints[complaintIdx] = updated;
+
+    // Handle refund simulation
+    if (refundAmount > 0 && complaint.orderId) {
+      const order = db.store_orders.find(o => o._id === complaint.orderId);
+      if (order) {
+        order.paymentStatus = "refunded";
+        order.orderStatus = "refunded";
+
+        // Add to refunds log
+        const refundExists = db.refunds.some(r => r.orderId === order._id);
+        if (!refundExists) {
+          db.refunds.unshift({
+            _id: `ref-${Math.floor(100 + Math.random() * 900)}`,
+            orderId: order._id,
+            orderNumber: order.orderNumber,
+            reason: complaint.description || "Customer Complaint / Quality Issues",
+            amount: refundAmount,
+            status: "approved",
+            approvedBy: resolvedBy,
+            createdAt: new Date().toISOString()
+          });
+        }
+      }
+    }
+
+    saveDB();
+    return successRes(updated);
   }
 
   // GET /store/customers/orders
