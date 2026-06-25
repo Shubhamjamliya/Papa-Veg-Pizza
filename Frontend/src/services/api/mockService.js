@@ -55,7 +55,7 @@ const getStorageItem = (key, defaultVal) => {
 const setStorageItem = (key, val) => {
   try {
     localStorage.setItem(`mock_db_${key}`, JSON.stringify(val));
-  } catch (_) {}
+  } catch (_) { }
 };
 
 // Initial Seed Data
@@ -480,37 +480,62 @@ const initialMockComplaints = [
 const initialMockReviews = [
   {
     _id: "rev-1",
+    storeId: "store-104",
     customerId: "cust-1",
+    orderId: "ord-1",
     rating: 5,
-    comment: "Excellent paneer toppings and hot packaging!",
-    productName: "Veg Supreme Pizza",
+    reviewText: "Excellent paneer toppings and hot packaging! Best Veg Pizza in Indore.",
+    images: ["https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=400"],
+    sentiment: "Positive",
+    reply: {
+      text: "Thank you Aarav! We take pride in our hot deliveries and premium paneer quality.",
+      repliedBy: "Store Manager (Shubham Jamliya)",
+      repliedAt: "2026-06-24T14:00:00Z"
+    },
     createdAt: "2026-06-24T13:10:00Z"
   },
   {
     _id: "rev-2",
+    storeId: "store-104",
     customerId: "cust-2",
+    orderId: "ord-2",
     rating: 4,
-    comment: "Garlic bread was outstanding. Pizza was slightly cold.",
-    productName: "Farmhouse Delight Pizza",
+    reviewText: "Garlic bread was outstanding. Pizza was slightly cold but toppings were fresh.",
+    images: [],
+    sentiment: "Neutral",
+    reply: null,
     createdAt: "2026-06-25T12:00:00Z"
   },
   {
     _id: "rev-3",
+    storeId: "store-104",
     customerId: "cust-4",
+    orderId: "ord-4",
     rating: 1,
-    comment: "Very bad delivery experience, took 1.5 hours and pizza was cold.",
-    productName: "Double Cheese Margherita",
+    reviewText: "Very bad delivery experience, took 1.5 hours and pizza was cold and soggy.",
+    images: ["https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&q=80&w=400"],
+    sentiment: "Negative",
+    reply: null,
     createdAt: "2026-06-20T22:00:00Z"
   },
   {
     _id: "rev-4",
+    storeId: "store-104",
     customerId: "cust-7",
+    orderId: "ord-5",
     rating: 5,
-    comment: "Best Veg Pizza franchise in town. Spicy paneer was great.",
-    productName: "Tandoori Paneer Pizza",
+    reviewText: "Best Veg Pizza franchise in town. Spicy paneer was great.",
+    images: [],
+    sentiment: "Positive",
+    reply: {
+      text: "Thanks for the 5-star rating! We are glad you enjoyed the Spicy Paneer Pizza.",
+      repliedBy: "Store Manager (Shubham Jamliya)",
+      repliedAt: "2026-06-23T10:00:00Z"
+    },
     createdAt: "2026-06-22T22:00:00Z"
   }
 ];
+
 
 const initialMockDeliveryTracking = [
   {
@@ -669,6 +694,11 @@ if (db.customer_complaints && (db.customer_complaints.length === 0 || !db.custom
   db.customer_complaints = [...initialMockComplaints];
 }
 
+// Validate/Migrate customer_reviews to ensure new fields (like sentiment) are populated
+if (db.customer_reviews && (db.customer_reviews.length === 0 || !db.customer_reviews.some(r => r.sentiment))) {
+  db.customer_reviews = [...initialMockReviews];
+}
+
 const saveDB = () => {
   Object.keys(db).forEach((key) => {
     setStorageItem(key, db[key]);
@@ -727,9 +757,9 @@ export function handleMockRequest(config) {
     let filtered = [...mockDetailedOrderReportsList];
     if (search) {
       const q = search.toLowerCase();
-      filtered = filtered.filter(o => 
-        o.orderNumber.toLowerCase().includes(q) || 
-        o.customerName.toLowerCase().includes(q) || 
+      filtered = filtered.filter(o =>
+        o.orderNumber.toLowerCase().includes(q) ||
+        o.customerName.toLowerCase().includes(q) ||
         o.storeName.toLowerCase().includes(q)
       );
     }
@@ -894,9 +924,9 @@ export function handleMockRequest(config) {
     let filtered = [...db.generated_reports];
     if (search) {
       const q = search.toLowerCase();
-      filtered = filtered.filter(r => 
-        r.id.toLowerCase().includes(q) || 
-        r.reportType.toLowerCase().includes(q) || 
+      filtered = filtered.filter(r =>
+        r.id.toLowerCase().includes(q) ||
+        r.reportType.toLowerCase().includes(q) ||
         r.generatedBy.toLowerCase().includes(q)
       );
     }
@@ -952,41 +982,41 @@ export function handleMockRequest(config) {
   }
   if (url.includes("/store/dashboard/hourly-sales")) {
     const filter = config.params?.filter || "daily";
-    const data = filter === "daily" 
+    const data = filter === "daily"
       ? [
-          { hour: "10 AM", sales: 3200 },
-          { hour: "11 AM", sales: 4800 },
-          { hour: "12 PM", sales: 8500 },
-          { hour: "01 PM", sales: 12000 },
-          { hour: "02 PM", sales: 9400 },
-          { hour: "03 PM", sales: 5500 },
-          { hour: "04 PM", sales: 4200 },
-          { hour: "05 PM", sales: 6800 },
-          { hour: "06 PM", sales: 11000 },
-          { hour: "07 PM", sales: 18500 },
-          { hour: "08 PM", sales: 24000 },
-          { hour: "09 PM", sales: 19000 },
-          { hour: "10 PM", sales: 12500 },
-          { hour: "11 PM", sales: 6200 }
-        ]
+        { hour: "10 AM", sales: 3200 },
+        { hour: "11 AM", sales: 4800 },
+        { hour: "12 PM", sales: 8500 },
+        { hour: "01 PM", sales: 12000 },
+        { hour: "02 PM", sales: 9400 },
+        { hour: "03 PM", sales: 5500 },
+        { hour: "04 PM", sales: 4200 },
+        { hour: "05 PM", sales: 6800 },
+        { hour: "06 PM", sales: 11000 },
+        { hour: "07 PM", sales: 18500 },
+        { hour: "08 PM", sales: 24000 },
+        { hour: "09 PM", sales: 19000 },
+        { hour: "10 PM", sales: 12500 },
+        { hour: "11 PM", sales: 6200 }
+      ]
       : filter === "weekly"
         ? [
-            { hour: "Mon", sales: 42000 },
-            { hour: "Tue", sales: 48000 },
-            { hour: "Wed", sales: 51000 },
-            { hour: "Thu", sales: 58000 },
-            { hour: "Fri", sales: 74000 },
-            { hour: "Sat", sales: 92000 },
-            { hour: "Sun", sales: 86000 }
-          ]
+          { hour: "Mon", sales: 42000 },
+          { hour: "Tue", sales: 48000 },
+          { hour: "Wed", sales: 51000 },
+          { hour: "Thu", sales: 58000 },
+          { hour: "Fri", sales: 74000 },
+          { hour: "Sat", sales: 92000 },
+          { hour: "Sun", sales: 86000 }
+        ]
         : [
-            { hour: "Jan", sales: 1420000 },
-            { hour: "Feb", sales: 1550000 },
-            { hour: "Mar", sales: 1680000 },
-            { hour: "Apr", sales: 1820000 },
-            { hour: "May", sales: 2010000 },
-            { hour: "Jun", sales: 1980000 }
-          ];
+          { hour: "Jan", sales: 1420000 },
+          { hour: "Feb", sales: 1550000 },
+          { hour: "Mar", sales: 1680000 },
+          { hour: "Apr", sales: 1820000 },
+          { hour: "May", sales: 2010000 },
+          { hour: "Jun", sales: 1980000 }
+        ];
     return successRes(data);
   }
   if (url.includes("/store/dashboard/top-products")) {
@@ -1314,18 +1344,18 @@ export function handleMockRequest(config) {
     }
 
     // Filter local entities based on search query
-    const filteredOrders = db.orders.filter(o => 
-      o.id.toLowerCase().includes(q) || 
+    const filteredOrders = db.orders.filter(o =>
+      o.id.toLowerCase().includes(q) ||
       o.orderNumber?.toLowerCase().includes(q) ||
       o.customer?.name?.toLowerCase().includes(q)
     );
 
-    const filteredStores = db.restaurants.filter(r => 
+    const filteredStores = db.restaurants.filter(r =>
       r.name.toLowerCase().includes(q) ||
       r.address.toLowerCase().includes(q)
     );
 
-    const filteredProducts = db.foods.filter(f => 
+    const filteredProducts = db.foods.filter(f =>
       f.name.toLowerCase().includes(q) ||
       f.description.toLowerCase().includes(q)
     );
@@ -1337,8 +1367,8 @@ export function handleMockRequest(config) {
       { name: "Rohan Malhotra", phone: "9826012345", email: "rohan@example.com" },
       { name: "Isha Sharma", phone: "9893054321", email: "isha@example.com" }
     ];
-    const filteredCustomers = allCustomers.filter(c => 
-      c.name.toLowerCase().includes(q) || 
+    const filteredCustomers = allCustomers.filter(c =>
+      c.name.toLowerCase().includes(q) ||
       c.phone.includes(q)
     );
 
@@ -1348,7 +1378,7 @@ export function handleMockRequest(config) {
       { name: "Rahul Dev", phone: "9840212903" },
       { name: "Karan Singh", phone: "9752098765" }
     ];
-    const filteredRiders = allRiders.filter(r => 
+    const filteredRiders = allRiders.filter(r =>
       r.name.toLowerCase().includes(q) ||
       r.phone.includes(q)
     );
@@ -1708,7 +1738,7 @@ export function handleMockRequest(config) {
     const closedStores = unarchived.filter(s => s.status === "Closed").length;
     const totalRating = unarchived.reduce((sum, s) => sum + (s.averageRating || 0), 0);
     const avgRating = unarchived.length > 0 ? (totalRating / unarchived.length).toFixed(1) : "0.0";
-    
+
     return successRes({
       totalStores: unarchived.length,
       activeStoresCount: activeStores.length,
@@ -1734,7 +1764,7 @@ export function handleMockRequest(config) {
       updatedAt: new Date().toISOString(),
       dailyBreakdown: []
     };
-    
+
     // Add calculated CTR & Conversion percentages
     const ctr = performance.impressions > 0 ? ((performance.clicks / performance.impressions) * 100).toFixed(2) : "0.00";
     const conversionRate = performance.clicks > 0 ? ((performance.conversions / performance.clicks) * 100).toFixed(2) : "0.00";
@@ -1770,7 +1800,7 @@ export function handleMockRequest(config) {
         createdAt: new Date().toISOString()
       };
       db.campaigns.unshift(newCamp);
-      
+
       // Create empty performance entry
       db.campaignPerformance[newCamp._id] = {
         _id: `perf-${Date.now()}`,
@@ -1784,7 +1814,7 @@ export function handleMockRequest(config) {
         updatedAt: new Date().toISOString(),
         dailyBreakdown: []
       };
-      
+
       saveDB();
       return successMsg("Campaign created successfully", newCamp);
     }
@@ -1825,19 +1855,19 @@ export function handleMockRequest(config) {
         if (banner) return successRes(banner);
         return errorRes("Banner not found", 404);
       }
-      
+
       let bannersList = [...db.banners];
       const params = config.params || {};
       const search = params.search || "";
       const status = params.status || "All";
       const redirectType = params.redirectType || "All";
       const storeId = params.storeId || "All";
-      
+
       if (search) {
         const q = search.toLowerCase();
         bannersList = bannersList.filter(b => b.title?.toLowerCase().includes(q) || b.subtitle?.toLowerCase().includes(q));
       }
-      
+
       if (status !== "All") {
         bannersList = bannersList.filter(b => {
           const now = new Date();
@@ -1855,18 +1885,18 @@ export function handleMockRequest(config) {
           return b.status === status.toLowerCase();
         });
       }
-      
+
       if (redirectType !== "All") {
         bannersList = bannersList.filter(b => b.redirectType === redirectType.toLowerCase());
       }
-      
+
       if (storeId !== "All" && storeId) {
         bannersList = bannersList.filter(b => !b.stores || b.stores.length === 0 || b.stores.includes(storeId));
       }
-      
+
       return successRes(bannersList);
     }
-    
+
     if (method === "post") {
       const newBanner = {
         ...data,
@@ -2029,14 +2059,14 @@ export function handleMockRequest(config) {
   if (storeIdMatch) {
     const id = storeIdMatch[1];
     const storeIdx = db.stores.findIndex(s => s._id === id);
-    
+
     if (method === "get") {
       if (storeIdx !== -1) {
         return successRes(db.stores[storeIdx]);
       }
       return errorRes("Store not found", 404);
     }
-    
+
     if (method === "patch") {
       if (storeIdx !== -1) {
         db.stores[storeIdx] = {
@@ -2086,7 +2116,7 @@ export function handleMockRequest(config) {
     const id = auditMatch[1];
     const app = db.storeApprovals.find(s => s._id === id);
     if (!app) return errorRes("Approval record not found", 404);
-    
+
     const logs = [
       { actor: app.submittedBy || "Franchise Manager", action: "Submitted", date: app.createdAt, remarks: app.remarks || "No remarks" }
     ];
@@ -2112,7 +2142,7 @@ export function handleMockRequest(config) {
       db.storeApprovals[appIdx].status = "Approved";
       db.storeApprovals[appIdx].approvedBy = "Super Admin";
       db.storeApprovals[appIdx].approvedAt = new Date().toISOString();
-      
+
       // Also ensure corresponding store in db.stores is set to Active and isOpen is true
       const storeId = db.storeApprovals[appIdx].storeId;
       const storeIdx = db.stores.findIndex(s => s._id === storeId);
@@ -2161,7 +2191,7 @@ export function handleMockRequest(config) {
       db.storeApprovals[appIdx].approvedBy = "Super Admin";
       db.storeApprovals[appIdx].approvedAt = new Date().toISOString();
       db.storeApprovals[appIdx].remarks = data.comments || "";
-      
+
       // Update corresponding store in db.stores to Inactive / Closed
       const storeId = db.storeApprovals[appIdx].storeId;
       const storeIdx = db.stores.findIndex(s => s._id === storeId);
@@ -2191,7 +2221,7 @@ export function handleMockRequest(config) {
 
       if (search) {
         const q = search.toLowerCase().trim();
-        filtered = filtered.filter(s => 
+        filtered = filtered.filter(s =>
           s.storeName.toLowerCase().includes(q) ||
           s._id.toLowerCase().includes(q) ||
           (s.managerName || "").toLowerCase().includes(q)
@@ -2279,7 +2309,7 @@ export function handleMockRequest(config) {
   if (url.includes("/stores")) {
     if (method === "get") {
       let filtered = db.stores.filter(s => s.isArchived !== true);
-      
+
       const search = config.params?.search || "";
       const status = config.params?.status || "";
       const type = config.params?.type || "";
@@ -2287,33 +2317,33 @@ export function handleMockRequest(config) {
       const manager = config.params?.manager || "";
       const sort = config.params?.sort || "";
       const order = config.params?.order || "asc";
-      
+
       if (search) {
         const q = search.toLowerCase().trim();
-        filtered = filtered.filter(s => 
+        filtered = filtered.filter(s =>
           s.storeName.toLowerCase().includes(q) ||
           s.storeCode.toLowerCase().includes(q) ||
           (s.address?.city || "").toLowerCase().includes(q)
         );
       }
-      
+
       if (status && status !== "All") {
         filtered = filtered.filter(s => s.status === status);
       }
-      
+
       if (type && type !== "All") {
         filtered = filtered.filter(s => s.storeType === type);
       }
-      
+
       if (isOpen) {
         const openBool = isOpen === "true" || isOpen === true;
         filtered = filtered.filter(s => s.isOpen === openBool);
       }
-      
+
       if (manager && manager !== "All") {
         filtered = filtered.filter(s => s.managerId === manager);
       }
-      
+
       // Sorting
       if (sort) {
         filtered.sort((a, b) => {
@@ -2329,14 +2359,14 @@ export function handleMockRequest(config) {
           return order === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
         });
       }
-      
+
       const page = parseInt(config.params?.page || "1", 10);
       const limit = parseInt(config.params?.limit || "10", 10);
       const totalCount = filtered.length;
-      
+
       const startIndex = (page - 1) * limit;
       const paginated = filtered.slice(startIndex, startIndex + limit);
-      
+
       return successRes({
         stores: paginated,
         totalCount,
@@ -2387,7 +2417,7 @@ export function handleMockRequest(config) {
     const avgPrep = activePerfs.length > 0 ? Math.round(activePerfs.reduce((sum, p) => sum + (p.avgPreparationTime || 0), 0) / activePerfs.length) : 14;
     const avgDel = activePerfs.length > 0 ? Math.round(activePerfs.reduce((sum, p) => sum + (p.avgDeliveryTime || 0), 0) / activePerfs.length) : 24;
     const avgRating = activePerfs.length > 0 ? (activePerfs.reduce((sum, p) => sum + (p.customerRating || 0), 0) / activePerfs.length).toFixed(1) : "4.8";
-    
+
     // Best store is the one with the highest performanceScore
     let bestStoreName = "Papa Veg Pizza - Indore Central";
     if (activePerfs.length > 0) {
@@ -2503,15 +2533,15 @@ export function handleMockRequest(config) {
       if (match) storeIdsStr = decodeURIComponent(match[1]);
     }
     const storeIds = storeIdsStr ? storeIdsStr.split(",") : [];
-    
+
     // Find matching performance records
     let perfs = db.storePerformance.filter(p => storeIds.includes(p.storeId) || storeIds.includes(p._id));
-    
+
     // Fallback to seed data if localStorage db is out of sync or missing these records
     if (perfs.length === 0 && initialStorePerformance) {
       perfs = initialStorePerformance.filter(p => storeIds.includes(p.storeId) || storeIds.includes(p._id));
     }
-    
+
     return successRes(perfs);
   }
 
@@ -2684,7 +2714,7 @@ export function handleMockRequest(config) {
   if (url.includes("/store-performance")) {
     if (method === "get") {
       let filtered = [...db.storePerformance];
-      
+
       const search = config.params?.search || "";
       const storeId = config.params?.storeId || "";
       const status = config.params?.status || "";
@@ -2695,7 +2725,7 @@ export function handleMockRequest(config) {
 
       if (search) {
         const q = search.toLowerCase().trim();
-        filtered = filtered.filter(p => 
+        filtered = filtered.filter(p =>
           p.storeName.toLowerCase().includes(q) ||
           p.storeId.toLowerCase().includes(q)
         );
@@ -2750,7 +2780,7 @@ export function handleMockRequest(config) {
     const activeStores = db.stores.filter(s => s.status === "Active" && s.isArchived !== true);
     const openNow = activeStores.filter(s => s.isOpen === true).length;
     const closedStores = db.stores.filter(s => s.isOpen === false || s.status === "Closed").length;
-    
+
     // Count 24x7 stores
     const count24x7 = db.operatingHours.filter(oh => {
       const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -2778,10 +2808,10 @@ export function handleMockRequest(config) {
   if (url.includes("/operating-hours/copy")) {
     const sourceStoreId = data?.sourceStoreId;
     const destStoreId = data?.destStoreId;
-    
+
     const sourceOh = db.operatingHours.find(oh => oh.storeId === sourceStoreId);
     const destIdx = db.operatingHours.findIndex(oh => oh.storeId === destStoreId);
-    
+
     if (sourceOh && destIdx !== -1) {
       db.operatingHours[destIdx] = {
         ...db.operatingHours[destIdx],
@@ -2844,15 +2874,15 @@ export function handleMockRequest(config) {
   if (storeStatusMatch && method === "patch") {
     const storeId = storeStatusMatch[1];
     const storeIdx = db.stores.findIndex(s => s._id === storeId);
-    
+
     if (storeIdx !== -1) {
       const newStatus = data?.status || "Closed";
       const newIsOpen = data?.isOpen !== undefined ? data.isOpen : false;
-      
+
       db.stores[storeIdx].status = newStatus;
       db.stores[storeIdx].isOpen = newIsOpen;
       db.stores[storeIdx].updatedAt = new Date().toISOString();
-      
+
       // Also add audit log
       const ohIdx = db.operatingHours.findIndex(oh => oh.storeId === storeId);
       if (ohIdx !== -1) {
@@ -2865,7 +2895,7 @@ export function handleMockRequest(config) {
         });
         db.operatingHours[ohIdx].updatedAt = new Date().toISOString();
       }
-      
+
       saveDB();
       return successMsg("Store status updated successfully.");
     }
@@ -2876,12 +2906,12 @@ export function handleMockRequest(config) {
   if (specificOhHolidaysMatch && method === "patch") {
     const storeId = specificOhHolidaysMatch[1];
     const ohIdx = db.operatingHours.findIndex(oh => oh.storeId === storeId);
-    
+
     if (ohIdx !== -1) {
       db.operatingHours[ohIdx].holidaySchedule = data?.holidaySchedule || [];
       db.operatingHours[ohIdx].updatedBy = "Super Admin";
       db.operatingHours[ohIdx].updatedAt = new Date().toISOString();
-      
+
       if (!db.operatingHours[ohIdx].auditLogs) db.operatingHours[ohIdx].auditLogs = [];
       db.operatingHours[ohIdx].auditLogs.unshift({
         updatedBy: "Super Admin",
@@ -2889,7 +2919,7 @@ export function handleMockRequest(config) {
         date: new Date().toISOString(),
         remarks: `Updated holidays. Total defined: ${data?.holidaySchedule?.length || 0}`
       });
-      
+
       saveDB();
       return successRes(db.operatingHours[ohIdx]);
     }
@@ -2900,12 +2930,12 @@ export function handleMockRequest(config) {
   if (specificOhMatch) {
     const storeId = specificOhMatch[1];
     const oh = db.operatingHours.find(o => o.storeId === storeId);
-    
+
     if (method === "get") {
       if (oh) return successRes(oh);
       return errorRes("Operating hours not found.", 404);
     }
-    
+
     if (method === "patch") {
       const ohIdx = db.operatingHours.findIndex(o => o.storeId === storeId);
       if (ohIdx !== -1) {
@@ -2922,7 +2952,7 @@ export function handleMockRequest(config) {
           date: new Date().toISOString(),
           remarks: "Modified days of week timings"
         });
-        
+
         saveDB();
         return successRes(db.operatingHours[ohIdx]);
       }
@@ -2957,7 +2987,7 @@ export function handleMockRequest(config) {
 
     if (search) {
       const q = search.toLowerCase().trim();
-      list = list.filter(item => 
+      list = list.filter(item =>
         item.storeName.toLowerCase().includes(q) ||
         item.storeCode.toLowerCase().includes(q)
       );
@@ -3053,7 +3083,7 @@ export function handleMockRequest(config) {
       const sentCount = logs.length;
       const openedCount = logs.filter(l => l.opened).length;
       const openRate = sentCount > 0 ? Math.round((openedCount / sentCount) * 100) : 0;
-      
+
       return {
         ...n,
         sentCount: n.status === "sent" ? (sentCount || 1200) : 0, // mock high reach for list if logs small
@@ -3082,7 +3112,7 @@ export function handleMockRequest(config) {
   // Helper to generate simulated logs
   const simulateLogs = (notificationId, targetAudience, channels, storeIds) => {
     const customerNames = [
-      "Rohan Malhotra", "Aarav Sharma", "Pooja Patel", "Rashi Kumar", "Amit Verma", 
+      "Rohan Malhotra", "Aarav Sharma", "Pooja Patel", "Rashi Kumar", "Amit Verma",
       "Siddharth Jain", "Neha Gupta", "Vikram Singh", "Preeti Mishra", "Deepak Rawat",
       "Priya Verma", "Aman Gupta", "Kunal Sen", "Kiran Joshi", "Aanchal Mehta",
       "Devendra Rajput", "Shalini Dwivedi", "Rajesh Tiwari", "Meera Nair", "Harsh Vardhan"
@@ -3097,7 +3127,7 @@ export function handleMockRequest(config) {
         const isOpened = isDelivered && Math.random() < 0.70;
         const isClicked = isOpened && Math.random() < 0.35;
         const storeId = storesList[Math.floor(Math.random() * storesList.length)];
-        
+
         generated.push({
           _id: `log-${notificationId}-${idx}-${chan}`,
           notificationId,
@@ -3137,9 +3167,9 @@ export function handleMockRequest(config) {
     // If immediate send
     if (newNotification.status === "sent") {
       const generatedLogs = simulateLogs(
-        newId, 
-        newNotification.targetAudience, 
-        newNotification.notificationType, 
+        newId,
+        newNotification.targetAudience,
+        newNotification.notificationType,
         newNotification.stores
       );
       db.notificationLogs.push(...generatedLogs);
@@ -3170,9 +3200,9 @@ export function handleMockRequest(config) {
         // Clear any existing logs first just in case
         db.notificationLogs = db.notificationLogs.filter(l => l.notificationId !== id);
         const generatedLogs = simulateLogs(
-          id, 
-          updated.targetAudience, 
-          updated.notificationType, 
+          id,
+          updated.targetAudience,
+          updated.notificationType,
           updated.stores
         );
         db.notificationLogs.push(...generatedLogs);
@@ -3202,7 +3232,7 @@ export function handleMockRequest(config) {
   if (specificLogsMatch && method === "get") {
     const notifId = specificLogsMatch[1];
     const notif = db.notifications.find(n => n._id === notifId);
-    
+
     if (!notif) {
       return errorRes("Notification not found.", 404);
     }
@@ -3221,8 +3251,8 @@ export function handleMockRequest(config) {
     let filteredLogs = [...logs];
     if (logSearch) {
       const q = logSearch.toLowerCase().trim();
-      filteredLogs = filteredLogs.filter(l => 
-        l.customerName.toLowerCase().includes(q) || 
+      filteredLogs = filteredLogs.filter(l =>
+        l.customerName.toLowerCase().includes(q) ||
         l.channel.toLowerCase().includes(q) ||
         l.sentStatus.toLowerCase().includes(q)
       );
@@ -3263,7 +3293,7 @@ export function handleMockRequest(config) {
     const storeData = storesList.map(storeId => {
       const storeName = db.stores.find(s => s._id === storeId)?.name || "Unknown Store";
       const storeLogs = logs.filter(l => l.storeId === storeId);
-      
+
       const sDelivered = storeLogs.filter(l => l.sentStatus === "delivered").length;
       const sOpened = storeLogs.filter(l => l.opened).length;
       const sClicked = storeLogs.filter(l => l.clicked).length;
@@ -3910,8 +3940,8 @@ export function handleMockRequest(config) {
 
     if (search) {
       const q = search.toLowerCase();
-      filtered = filtered.filter(s => 
-        s.name.toLowerCase().includes(q) || 
+      filtered = filtered.filter(s =>
+        s.name.toLowerCase().includes(q) ||
         s.role.toLowerCase().includes(q) ||
         s.store.toLowerCase().includes(q)
       );
@@ -3972,7 +4002,7 @@ export function handleMockRequest(config) {
   if (singleStaffMatch && method === "get" && !url.includes("/reports/")) {
     const id = singleStaffMatch[1];
     const staffBase = mockStaffDetailedList.find(s => s.id === id) || mockStaffDetailedList[0];
-    
+
     const staffDetail = {
       ...staffBase,
       phone: "+91 99887 76655",
@@ -4084,9 +4114,9 @@ export function handleMockRequest(config) {
 
     if (search) {
       const q = search.toLowerCase();
-      filtered = filtered.filter(i => 
+      filtered = filtered.filter(i =>
         i && (
-          (i.name || "").toLowerCase().includes(q) || 
+          (i.name || "").toLowerCase().includes(q) ||
           (i.category || "").toLowerCase().includes(q)
         )
       );
@@ -4177,7 +4207,7 @@ export function handleMockRequest(config) {
   if (singleInventoryReportMatch && method === "get" && !url.includes("/list") && !url.includes("/generate")) {
     const id = singleInventoryReportMatch[1];
     const reportBase = db.generated_inventory_reports.find(r => r.id === id) || db.generated_inventory_reports[0];
-    
+
     const reportDetail = {
       ...reportBase,
       openingStock: 1540,
@@ -4283,7 +4313,7 @@ export function handleMockRequest(config) {
       createdAt: new Date().toISOString()
     };
     db.delivery_issues.unshift(newIssue);
-    
+
     // Add a timeline node
     if (!db.delivery_timelines[data.orderId]) {
       db.delivery_timelines[data.orderId] = [];
@@ -4321,7 +4351,7 @@ export function handleMockRequest(config) {
         ...issue,
         ...data,
       };
-      
+
       if (data.reassignRiderId) {
         const newRider = db.store_riders.find(r => r._id === data.reassignRiderId);
         if (newRider) {
@@ -4408,7 +4438,7 @@ export function handleMockRequest(config) {
       filtered = filtered.filter(c => {
         const customer = db.customers.find(cust => cust._id === c.customerId);
         const order = db.store_orders.find(ord => ord._id === c.orderId);
-        
+
         return (
           c._id.toLowerCase().includes(q) ||
           c.description.toLowerCase().includes(q) ||
@@ -4597,6 +4627,185 @@ export function handleMockRequest(config) {
     return successRes(updated);
   }
 
+  // GET /store/reviews
+  if (cleanUrl.endsWith("/store/reviews") && method === "get") {
+    const search = config.params?.search || "";
+    const rating = config.params?.rating || "All";
+    const sentiment = config.params?.sentiment || "All";
+    const replyStatus = config.params?.replyStatus || "All";
+    const startDate = config.params?.startDate || "";
+    const endDate = config.params?.endDate || "";
+    const page = Number(config.params?.page) || 1;
+    const limit = Number(config.params?.limit) || 10;
+    const sortBy = config.params?.sortBy || "createdAt";
+    const sortOrder = config.params?.sortOrder || "desc";
+
+    let filtered = [...db.customer_reviews];
+
+    // Filter by search (customer name, email, mobile)
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(r => {
+        const customer = db.customers.find(cust => cust._id === r.customerId);
+        return customer && (
+          customer.name.toLowerCase().includes(q) ||
+          customer.email.toLowerCase().includes(q) ||
+          customer.mobile.includes(q)
+        );
+      });
+    }
+
+    // Filter by rating
+    if (rating && rating !== "All") {
+      const ratingNum = Number(rating.replace(/[^0-9]/g, ""));
+      if (!isNaN(ratingNum)) {
+        filtered = filtered.filter(r => r.rating === ratingNum);
+      }
+    }
+
+    // Filter by sentiment
+    if (sentiment && sentiment !== "All") {
+      filtered = filtered.filter(r => r.sentiment.toLowerCase() === sentiment.toLowerCase());
+    }
+
+    // Filter by reply status
+    if (replyStatus && replyStatus !== "All") {
+      if (replyStatus.toLowerCase() === "replied") {
+        filtered = filtered.filter(r => r.reply !== null && r.reply !== undefined);
+      } else if (replyStatus.toLowerCase() === "pending" || replyStatus.toLowerCase() === "pending_reply") {
+        filtered = filtered.filter(r => r.reply === null || r.reply === undefined);
+      }
+    }
+
+    // Date range
+    if (startDate && endDate) {
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+      filtered = filtered.filter(r => {
+        const d = new Date(r.createdAt).getTime();
+        return d >= start && d <= end;
+      });
+    }
+
+    // Join customer details and order number
+    const reviewsWithDetails = filtered.map(r => {
+      const customer = db.customers.find(cust => cust._id === r.customerId);
+      const order = db.store_orders.find(ord => ord._id === r.orderId);
+      return {
+        ...r,
+        customerName: customer ? customer.name : "Unknown",
+        customerMobile: customer ? customer.mobile : "",
+        customerEmail: customer ? customer.email : "",
+        orderNumber: order ? order.orderNumber : "N/A"
+      };
+    });
+
+    // Sorting
+    reviewsWithDetails.sort((a, b) => {
+      let valA, valB;
+      if (sortBy === "createdAt") {
+        valA = new Date(a.createdAt).getTime();
+        valB = new Date(b.createdAt).getTime();
+        return sortOrder === "asc" ? valA - valB : valB - valA;
+      } else if (sortBy === "rating") {
+        valA = a.rating;
+        valB = b.rating;
+      } else if (sortBy === "sentiment") {
+        valA = a.sentiment;
+        valB = b.sentiment;
+      } else if (sortBy === "customerName") {
+        valA = a.customerName;
+        valB = b.customerName;
+      } else {
+        valA = new Date(a.createdAt).getTime();
+        valB = new Date(b.createdAt).getTime();
+        return sortOrder === "asc" ? valA - valB : valB - valA;
+      }
+
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+    });
+
+    const totalCount = reviewsWithDetails.length;
+    const pages = Math.ceil(totalCount / limit);
+    const start = (page - 1) * limit;
+    const paginated = reviewsWithDetails.slice(start, start + limit);
+
+    return successRes({
+      reviews: paginated,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        pages
+      }
+    });
+  }
+
+  // GET /store/reviews/:id
+  const reviewDetailMatch = cleanUrl.match(/\/store\/reviews\/([^/]+)$/);
+  if (reviewDetailMatch && !url.includes("/reply") && method === "get") {
+    const reviewId = reviewDetailMatch[1];
+    const review = db.customer_reviews.find(r => r._id === reviewId);
+    if (!review) {
+      return errorRes("Review not found", 404);
+    }
+
+    const customer = db.customers.find(cust => cust._id === review.customerId);
+    const order = db.store_orders.find(ord => ord._id === review.orderId);
+    let orderItems = [];
+    if (order) {
+      orderItems = db.order_items.filter(it => it.orderId === order._id);
+    }
+
+    // Stats
+    let customerStatistics = { totalOrders: 0, totalSpent: 0, loyaltyPoints: 0, averageRatingGiven: 0 };
+    if (customer) {
+      const allCustReviews = db.customer_reviews.filter(r => r.customerId === customer._id);
+      const totalCustRating = allCustReviews.reduce((sum, r) => sum + r.rating, 0);
+      customerStatistics = {
+        totalOrders: customer.totalOrders,
+        totalSpent: customer.totalSpent,
+        loyaltyPoints: customer.loyaltyPoints,
+        averageRatingGiven: allCustReviews.length > 0 ? (totalCustRating / allCustReviews.length).toFixed(1) : 0
+      };
+    }
+
+    return successRes({
+      review,
+      customer: customer || null,
+      order: order || null,
+      orderItems,
+      customerStatistics
+    });
+  }
+
+  // POST /store/reviews/:id/reply
+  const reviewReplyMatch = cleanUrl.match(/\/store\/reviews\/([^/]+)\/reply$/);
+  if (reviewReplyMatch && method === "post") {
+    const reviewId = reviewReplyMatch[1];
+    const reviewIdx = db.customer_reviews.findIndex(r => r._id === reviewId);
+    if (reviewIdx === -1) {
+      return errorRes("Review not found", 404);
+    }
+
+    const review = db.customer_reviews[reviewIdx];
+    const updated = {
+      ...review,
+      reply: {
+        text: data?.text || "",
+        repliedBy: data?.repliedBy || "Store Manager",
+        repliedAt: new Date().toISOString()
+      }
+    };
+
+    db.customer_reviews[reviewIdx] = updated;
+    saveDB();
+    return successRes(updated);
+  }
+
   // GET /store/customers/orders
   if (url.includes("/store/customers/orders") && method === "get") {
     const search = config.params?.search || "";
@@ -4616,9 +4825,9 @@ export function handleMockRequest(config) {
     // Filter by search (name, email, mobile)
     if (search) {
       const q = search.toLowerCase();
-      filtered = filtered.filter(c => 
-        c.name.toLowerCase().includes(q) || 
-        c.email.toLowerCase().includes(q) || 
+      filtered = filtered.filter(c =>
+        c.name.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q) ||
         c.mobile.includes(q)
       );
     }
@@ -4665,14 +4874,14 @@ export function handleMockRequest(config) {
 
     // Apply Order Status filter
     if (status && status !== "All") {
-      customersWithOrders = customersWithOrders.filter(c => 
+      customersWithOrders = customersWithOrders.filter(c =>
         c.recentOrder && c.recentOrder.orderStatus.toLowerCase() === status.toLowerCase()
       );
     }
 
     // Apply Payment Status filter
     if (paymentStatus && paymentStatus !== "All") {
-      customersWithOrders = customersWithOrders.filter(c => 
+      customersWithOrders = customersWithOrders.filter(c =>
         c.recentOrder && c.recentOrder.paymentStatus.toLowerCase() === paymentStatus.toLowerCase()
       );
     }
@@ -4760,7 +4969,7 @@ export function handleMockRequest(config) {
     const customer = db.customers.find(c => c._id === order.customerId);
     const items = db.order_items.filter(it => it.orderId === orderId);
     const payments = db.payments.filter(p => p.orderId === orderId);
-    
+
     // Get delivery tracking nodes
     const trackingObj = db.delivery_tracking.find(t => t.orderId === orderId);
     const deliveryTracking = trackingObj ? trackingObj.stages : [];
@@ -4806,7 +5015,7 @@ export function handleMockRequest(config) {
     };
 
     db.refunds.unshift(newRefund);
-    
+
     // Update order paymentStatus and orderStatus
     order.paymentStatus = "refunded";
     order.orderStatus = "refunded";
