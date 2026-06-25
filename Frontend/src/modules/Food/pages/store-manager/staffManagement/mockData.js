@@ -394,3 +394,49 @@ export const initialMockAttendance = [
     createdAt: "2026-06-23T09:00:00.000Z"
   }
 ];
+
+export const initialMockShifts = [
+  {
+    _id: "Morning",
+    storeId: "store-indore-01",
+    shiftName: "Morning Shift",
+    startTime: "09:00 AM",
+    endTime: "05:00 PM",
+    breakMinutes: 30,
+    maxStaff: 10,
+    assignedStaff: ["staff-1", "staff-5"],
+    status: "active",
+    description: "Standard morning kitchen operations and ingredient prep shift.",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2024-03-15T09:00:00.000Z"
+  },
+  {
+    _id: "Afternoon",
+    storeId: "store-indore-01",
+    shiftName: "Afternoon Shift",
+    startTime: "04:00 PM",
+    endTime: "12:00 AM",
+    breakMinutes: 45,
+    maxStaff: 8,
+    assignedStaff: ["staff-2", "staff-4"],
+    status: "active",
+    description: "Afternoon and evening peak pizza production and baking shift.",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2024-03-15T09:00:00.000Z"
+  },
+  {
+    _id: "Night",
+    storeId: "store-indore-01",
+    shiftName: "Night Shift",
+    startTime: "11:00 PM",
+    endTime: "07:00 AM",
+    breakMinutes: 30,
+    maxStaff: 5,
+    assignedStaff: ["staff-3"],
+    status: "active",
+    description: "Late night operations, delivery dispatch, and kitchen sanitation.",
+    createdBy: "Shubham Jamliya",
+    createdAt: "2024-03-15T09:00:00.000Z"
+  }
+];
+

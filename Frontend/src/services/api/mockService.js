@@ -2,7 +2,7 @@ import { initialStores, initialManagers, initialStoreApprovals, initialStorePerf
 import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData, initialMockDeliveryIssues, initialMockNotifications, initialMockDeliveryTimelines } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
-import { initialMockStaff, initialMockAttendance } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
+import { initialMockStaff, initialMockAttendance, initialMockShifts } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
 import {
   mockStoresList,
   mockProductsPerformance,
@@ -124,7 +124,8 @@ let db = {
   delivery_notifications: getStorageItem("delivery_notifications", initialMockNotifications),
   delivery_timelines: getStorageItem("delivery_timelines", initialMockDeliveryTimelines),
   staff: getStorageItem("staff", initialMockStaff),
-  attendance: getStorageItem("attendance", initialMockAttendance)
+  attendance: getStorageItem("attendance", initialMockAttendance),
+  shifts: getStorageItem("shifts", initialMockShifts)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -3149,6 +3150,141 @@ export function handleMockRequest(config) {
       return successRes(deleted);
     }
     return errorRes("Attendance record not found", 404);
+  }
+
+  // --- KITCHEN SHIFTS ENDPOINTS ---
+  // GET /store/shifts/:id (Single record)
+  const storeShiftsDetailsMatch = url.match(/\/store\/shifts\/([^/]+)$/);
+  if (storeShiftsDetailsMatch && method === "get" && !url.includes("/assign")) {
+    const id = storeShiftsDetailsMatch[1];
+    const found = db.shifts.find((s) => s._id === id);
+    if (found) {
+      return successRes(found);
+    }
+    return errorRes("Shift not found", 404);
+  }
+
+  // GET /store/shifts
+  if (url.includes("/store/shifts") && method === "get" && !storeShiftsDetailsMatch) {
+    const filters = config.params || {};
+    let list = [...db.shifts];
+
+    if (filters.status && filters.status !== "All") {
+      list = list.filter((s) => s.status === filters.status);
+    }
+
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      list = list.filter((s) => s.shiftName.toLowerCase().includes(q));
+    }
+
+    return successRes(list);
+  }
+
+  // POST /store/shifts
+  if (url.includes("/store/shifts") && method === "post" && !url.includes("/assign")) {
+    const payload = data || {};
+    const newRecord = {
+      _id: payload.shiftName.replace(/ /g, "_") + "-" + Date.now(),
+      storeId: payload.storeId || "store-indore-01",
+      shiftName: payload.shiftName,
+      startTime: payload.startTime,
+      endTime: payload.endTime,
+      breakMinutes: Number(payload.breakMinutes) || 0,
+      maxStaff: Number(payload.maxStaff) || 5,
+      assignedStaff: [],
+      status: "active",
+      description: payload.description || "",
+      createdBy: "Shubham Jamliya",
+      createdAt: new Date().toISOString()
+    };
+
+    db.shifts = [...db.shifts, newRecord];
+    saveDB();
+    return successRes(newRecord);
+  }
+
+  // PUT /store/shifts/:id
+  const storeShiftsPutMatch = url.match(/\/store\/shifts\/([^/]+)$/);
+  if (storeShiftsPutMatch && method === "put") {
+    const id = storeShiftsPutMatch[1];
+    const payload = data || {};
+    const idx = db.shifts.findIndex((s) => s._id === id);
+    if (idx !== -1) {
+      db.shifts[idx] = {
+        ...db.shifts[idx],
+        shiftName: payload.shiftName ?? db.shifts[idx].shiftName,
+        startTime: payload.startTime ?? db.shifts[idx].startTime,
+        endTime: payload.endTime ?? db.shifts[idx].endTime,
+        breakMinutes: payload.breakMinutes !== undefined ? Number(payload.breakMinutes) : db.shifts[idx].breakMinutes,
+        maxStaff: payload.maxStaff !== undefined ? Number(payload.maxStaff) : db.shifts[idx].maxStaff,
+        status: payload.status ?? db.shifts[idx].status,
+        description: payload.description ?? db.shifts[idx].description
+      };
+      saveDB();
+      return successRes(db.shifts[idx]);
+    }
+    return errorRes("Shift not found", 404);
+  }
+
+  // DELETE /store/shifts/:id
+  const storeShiftsDeleteMatch = url.match(/\/store\/shifts\/([^/]+)$/);
+  if (storeShiftsDeleteMatch && method === "delete") {
+    const id = storeShiftsDeleteMatch[1];
+    const idx = db.shifts.findIndex((s) => s._id === id);
+    if (idx !== -1) {
+      const deleted = db.shifts[idx];
+      db.shifts = db.shifts.filter((s) => s._id !== id);
+
+      // Clean up staff shift references
+      db.staff = db.staff.map((s) => {
+        if (s.shiftId === id) {
+          return { ...s, shiftId: "" };
+        }
+        return s;
+      });
+
+      saveDB();
+      return successRes(deleted);
+    }
+    return errorRes("Shift not found", 404);
+  }
+
+  // POST /store/shifts/:id/assign
+  const storeShiftsAssignMatch = url.match(/\/store\/shifts\/([^/]+)\/assign$/);
+  if (storeShiftsAssignMatch && method === "post") {
+    const shiftId = storeShiftsAssignMatch[1];
+    const payload = data || {};
+    const staffIds = payload.staffIds || [];
+
+    const idx = db.shifts.findIndex((s) => s._id === shiftId);
+    if (idx !== -1) {
+      // Update shift assignedStaff array
+      db.shifts[idx].assignedStaff = staffIds;
+
+      // Remove these staff members from other shifts they might have been assigned to
+      db.shifts = db.shifts.map((s) => {
+        if (s._id !== shiftId) {
+          s.assignedStaff = s.assignedStaff.filter((id) => !staffIds.includes(id));
+        }
+        return s;
+      });
+
+      // Update staff shiftId references in db.staff
+      db.staff = db.staff.map((s) => {
+        if (staffIds.includes(s._id)) {
+          return { ...s, shiftId };
+        }
+        if (s.shiftId === shiftId && !staffIds.includes(s._id)) {
+          return { ...s, shiftId: "" };
+        }
+        return s;
+      });
+
+      saveDB();
+      return successRes(db.shifts[idx]);
+    }
+    return errorRes("Shift not found", 404);
   }
 
   // GET /staff (supervisors query)
