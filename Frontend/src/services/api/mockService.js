@@ -2,6 +2,7 @@ import { initialStores, initialManagers, initialStoreApprovals, initialStorePerf
 import { initialMockStoreRiders, initialMockLiveDeliveries, initialMockTrackingData, initialMockDeliveryIssues, initialMockNotifications, initialMockDeliveryTimelines } from "../../modules/Food/pages/store-manager/deliveryOperations/mockDeliveryData.js";
 import { storePricingService } from "../../modules/Food/pages/franchise-admin/products/services/storePricingService.js";
 import { mockCampaigns, mockCampaignPerformance, mockBanners, mockProducts, mockCoupons, mockNotifications, mockNotificationLogs } from "../../modules/Food/pages/franchise-admin/marketing/mockData.js";
+import { initialMockStaff } from "../../modules/Food/pages/store-manager/staffManagement/mockData.js";
 import {
   mockStoresList,
   mockProductsPerformance,
@@ -121,7 +122,8 @@ let db = {
   tracking_data: getStorageItem("tracking_data", initialMockTrackingData),
   delivery_issues: getStorageItem("delivery_issues", initialMockDeliveryIssues),
   delivery_notifications: getStorageItem("delivery_notifications", initialMockNotifications),
-  delivery_timelines: getStorageItem("delivery_timelines", initialMockDeliveryTimelines)
+  delivery_timelines: getStorageItem("delivery_timelines", initialMockDeliveryTimelines),
+  staff: getStorageItem("staff", initialMockStaff)
 };
 
 // Sync stores and managers to ensure new approvals data is available in existing localStorage
@@ -2789,6 +2791,216 @@ export function handleMockRequest(config) {
         limit
       }
     });
+  }
+
+  // --- STORE KITCHEN STAFF OPERATIONS ENDPOINTS ---
+  if (url.includes("/store/staff") && method === "get") {
+    // Check if single staff GET
+    const singleMatch = url.match(/\/store\/staff\/([^/]+)$/);
+    if (singleMatch) {
+      const id = singleMatch[1];
+      const found = db.staff.find(s => s._id === id);
+      if (found) return successRes(found);
+      return errorRes("Staff member not found", 404);
+    }
+
+    // List GET
+    const search = config.params?.search || "";
+    const role = config.params?.role || "All";
+    const shiftId = config.params?.shiftId || "All";
+    const status = config.params?.status || "All";
+
+    let list = [...db.staff];
+
+    if (search) {
+      const q = search.toLowerCase();
+      list = list.filter(
+        s =>
+          (s.fullName && s.fullName.toLowerCase().includes(q)) ||
+          (s.employeeCode && s.employeeCode.toLowerCase().includes(q)) ||
+          (s.email && s.email.toLowerCase().includes(q))
+      );
+    }
+
+    if (role && role !== "All") {
+      list = list.filter(s => s.role === role);
+    }
+
+    if (shiftId && shiftId !== "All") {
+      list = list.filter(s => s.shiftId === shiftId);
+    }
+
+    if (status && status !== "All") {
+      list = list.filter(s => s.status === status);
+    }
+
+    return successRes(list);
+  }
+
+  if (url.includes("/store/staff") && method === "post") {
+    const payload = data;
+    const nextCodeNum = db.staff.length + 1;
+    const codeMap = {
+      "Kitchen Supervisor": "KS",
+      "Pizza Maker": "PM",
+      "Baker": "BK",
+      "Packager": "PK"
+    };
+    const prefix = codeMap[payload.role] || "ST";
+    const employeeCode = `PVP-${prefix}-0${nextCodeNum}`;
+
+    const newStaff = {
+      _id: `staff-${Date.now()}`,
+      storeId: "store-indore-01",
+      userId: `user-${Date.now()}`,
+      fullName: payload.fullName,
+      email: payload.email,
+      phone: payload.phone,
+      profileImage: payload.profileImage || "",
+      role: payload.role,
+      employeeCode,
+      joiningDate: payload.joiningDate || new Date().toISOString().split("T")[0],
+      shiftId: payload.shiftId || "Morning",
+      salaryType: payload.salaryType || "Monthly",
+      salary: Number(payload.salary) || 0,
+      experience: Number(payload.experience) || 0,
+      skills: payload.skills || [],
+      emergencyContact: payload.emergencyContact || "",
+      status: "active",
+      todayStatus: "present",
+      performanceScore: 90,
+      createdAt: new Date().toISOString(),
+      stats: {
+        ordersCompleted: 0,
+        avgPrepTime: 15,
+        delayedOrders: 0,
+        attendance: 100
+      },
+      activities: [
+        { id: `act-${Date.now()}-1`, type: "Shift Changes", title: "Joined the store", time: "Just now", status: "completed" }
+      ]
+    };
+
+    db.staff.push(newStaff);
+    saveDB();
+    return successRes(newStaff);
+  }
+
+  // PUT /store/staff/:id
+  const storeStaffPutMatch = url.match(/\/store\/staff\/([^/]+)$/);
+  if (storeStaffPutMatch && method === "put") {
+    const id = storeStaffPutMatch[1];
+    const idx = db.staff.findIndex(s => s._id === id);
+    if (idx !== -1) {
+      db.staff[idx] = {
+        ...db.staff[idx],
+        fullName: data.fullName ?? db.staff[idx].fullName,
+        email: data.email ?? db.staff[idx].email,
+        phone: data.phone ?? db.staff[idx].phone,
+        profileImage: data.profileImage ?? db.staff[idx].profileImage,
+        role: data.role ?? db.staff[idx].role,
+        joiningDate: data.joiningDate ?? db.staff[idx].joiningDate,
+        salaryType: data.salaryType ?? db.staff[idx].salaryType,
+        salary: data.salary !== undefined ? Number(data.salary) : db.staff[idx].salary,
+        experience: data.experience !== undefined ? Number(data.experience) : db.staff[idx].experience,
+        skills: data.skills ?? db.staff[idx].skills,
+        emergencyContact: data.emergencyContact ?? db.staff[idx].emergencyContact,
+      };
+      saveDB();
+      return successRes(db.staff[idx]);
+    }
+    return errorRes("Staff member not found", 404);
+  }
+
+  // PATCH /store/staff/:id/status
+  const storeStaffStatusMatch = url.match(/\/store\/staff\/([^/]+)\/status$/);
+  if (storeStaffStatusMatch && method === "patch") {
+    const id = storeStaffStatusMatch[1];
+    const idx = db.staff.findIndex(s => s._id === id);
+    if (idx !== -1) {
+      const status = data.status;
+      const actId = `act-${Date.now()}-status`;
+      const label = status === "active" ? "activated" : status === "inactive" ? "deactivated" : "suspended";
+      const type = status === "active" ? "completed" : status === "inactive" ? "info" : "severe";
+      db.staff[idx].status = status;
+      db.staff[idx].activities = [
+        { id: actId, type: "Recent Performance Updates", title: `Staff profile ${label}`, time: "Just now", status: type },
+        ...db.staff[idx].activities
+      ];
+      saveDB();
+      return successRes(db.staff[idx]);
+    }
+    return errorRes("Staff member not found", 404);
+  }
+
+  // PATCH /store/staff/:id/shift
+  const storeStaffShiftMatch = url.match(/\/store\/staff\/([^/]+)\/shift$/);
+  if (storeStaffShiftMatch && method === "patch") {
+    const id = storeStaffShiftMatch[1];
+    const idx = db.staff.findIndex(s => s._id === id);
+    if (idx !== -1) {
+      const actId = `act-${Date.now()}-shift`;
+      db.staff[idx].shiftId = data.shiftId;
+      db.staff[idx].activities = [
+        { id: actId, type: "Shift Changes", title: `Assigned shift: ${data.shiftId} (Eff. ${data.effectiveDate || "Immediate"})`, time: "Just now", status: "completed" },
+        ...db.staff[idx].activities
+      ];
+      saveDB();
+      return successRes(db.staff[idx]);
+    }
+    return errorRes("Staff member not found", 404);
+  }
+
+  // PATCH /store/staff/:id/leave
+  const storeStaffLeaveMatch = url.match(/\/store\/staff\/([^/]+)\/leave$/);
+  if (storeStaffLeaveMatch && method === "patch") {
+    const id = storeStaffLeaveMatch[1];
+    const idx = db.staff.findIndex(s => s._id === id);
+    if (idx !== -1) {
+      const actId = `act-${Date.now()}-leave`;
+      db.staff[idx].todayStatus = "leave";
+      db.staff[idx].activities = [
+        { id: actId, type: "Attendance Logs", title: `Marked Leave: ${data.leaveType} (${data.startDate} to ${data.endDate})`, time: "Just now", status: "info" },
+        ...db.staff[idx].activities
+      ];
+      saveDB();
+      return successRes(db.staff[idx]);
+    }
+    return errorRes("Staff member not found", 404);
+  }
+
+  // DELETE /store/staff/:id
+  const storeStaffDeleteMatch = url.match(/\/store\/staff\/([^/]+)$/);
+  if (storeStaffDeleteMatch && method === "delete") {
+    const id = storeStaffDeleteMatch[1];
+    const idx = db.staff.findIndex(s => s._id === id);
+    if (idx !== -1) {
+      const deleted = db.staff[idx];
+      db.staff = db.staff.filter(s => s._id !== id);
+      saveDB();
+      return successRes(deleted);
+    }
+    return errorRes("Staff member not found", 404);
+  }
+
+  // GET /staff (supervisors query)
+  if (url.includes("/staff") && !url.includes("/store/staff") && !url.includes("/reports/") && method === "get") {
+    const role = config.params?.role || "";
+    const status = config.params?.status || "";
+    const searchQuery = config.params?.q || "";
+
+    let list = [...db.staff];
+    if (role) {
+      list = list.filter(s => s.role.toLowerCase() === role.toLowerCase() || s.role.replace(/ /g, "_").toLowerCase() === role.toLowerCase());
+    }
+    if (status) {
+      list = list.filter(s => s.status === status);
+    }
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(s => s.fullName.toLowerCase().includes(q) || s.employeeCode.toLowerCase().includes(q));
+    }
+    return successRes(list);
   }
 
   // --- STAFF REPORT ENDPOINTS ---

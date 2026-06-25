@@ -24,6 +24,7 @@ import StockRequests from "../inventory/StockRequests"
 import WasteManagement from "../inventory/WasteManagement"
 import LowStockAlerts from "../inventory/LowStockAlerts"
 import IngredientShortages from "../inventory/IngredientShortages"
+import KitchenStaff from "../staffManagement/KitchenStaff"
 
 
 
@@ -296,11 +297,7 @@ export default function StoreManagerRouter() {
             path="staff/list" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Kitchen Staff Directory" 
-                  description="Manage kitchen roles, cooks, and staff profiles" 
-                  allowedRoles={["store_manager"]}
-                />
+                <KitchenStaff />
               </RoleProtectedRoute>
             } 
           />
