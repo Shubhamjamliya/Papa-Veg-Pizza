@@ -161,3 +161,236 @@ export const initialMockStaff = [
     ]
   }
 ];
+
+export const initialMockAttendance = [
+  // Today's Attendance (2026-06-25)
+  {
+    _id: "att-today-1",
+    storeId: "store-indore-01",
+    staffId: "staff-1", // Rohan Sharma
+    shiftId: "Morning",
+    date: "2026-06-25",
+    checkIn: "08:52 AM",
+    checkOut: "06:15 PM",
+    totalHours: 9.38,
+    overtimeHours: 1.38,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "Completed prep work early",
+    createdAt: "2026-06-25T08:52:00.000Z"
+  },
+  {
+    _id: "att-today-2",
+    storeId: "store-indore-01",
+    staffId: "staff-2", // Priya Patel
+    shiftId: "Afternoon",
+    date: "2026-06-25",
+    checkIn: "03:58 PM",
+    checkOut: "", // Still working
+    totalHours: 0,
+    overtimeHours: 0,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-25T15:58:00.000Z"
+  },
+  {
+    _id: "att-today-3",
+    storeId: "store-indore-01",
+    staffId: "staff-3", // Amit Verma
+    shiftId: "Night",
+    date: "2026-06-25",
+    checkIn: "",
+    checkOut: "",
+    totalHours: 0,
+    overtimeHours: 0,
+    status: "leave",
+    markedBy: "Shubham Jamliya",
+    notes: "Applied for Casual Leave",
+    createdAt: "2026-06-25T09:00:00.000Z"
+  },
+  {
+    _id: "att-today-4",
+    storeId: "store-indore-01",
+    staffId: "staff-4", // Karan Singh
+    shiftId: "Afternoon",
+    date: "2026-06-25",
+    checkIn: "",
+    checkOut: "",
+    totalHours: 0,
+    overtimeHours: 0,
+    status: "absent",
+    markedBy: "Shubham Jamliya",
+    notes: "No show, no prior notice",
+    createdAt: "2026-06-25T17:00:00.000Z"
+  },
+  {
+    _id: "att-today-5",
+    storeId: "store-indore-01",
+    staffId: "staff-5", // Sunita Rao
+    shiftId: "Morning",
+    date: "2026-06-25",
+    checkIn: "",
+    checkOut: "",
+    totalHours: 0,
+    overtimeHours: 0,
+    status: "absent",
+    markedBy: "Shubham Jamliya",
+    notes: "Profile is inactive",
+    createdAt: "2026-06-25T09:00:00.000Z"
+  },
+
+  // Yesterday's Attendance (2026-06-24)
+  {
+    _id: "att-yest-1",
+    storeId: "store-indore-01",
+    staffId: "staff-1",
+    shiftId: "Morning",
+    date: "2026-06-24",
+    checkIn: "09:05 AM", // Late arrival
+    checkOut: "05:00 PM",
+    totalHours: 7.92,
+    overtimeHours: 0,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "Delayed by traffic",
+    createdAt: "2026-06-24T09:05:00.000Z"
+  },
+  {
+    _id: "att-yest-2",
+    storeId: "store-indore-01",
+    staffId: "staff-2",
+    shiftId: "Afternoon",
+    date: "2026-06-24",
+    checkIn: "03:55 PM",
+    checkOut: "12:10 AM",
+    totalHours: 8.25,
+    overtimeHours: 0.25,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "Helped close the oven line",
+    createdAt: "2026-06-24T15:55:00.000Z"
+  },
+  {
+    _id: "att-yest-3",
+    storeId: "store-indore-01",
+    staffId: "staff-3",
+    shiftId: "Night",
+    date: "2026-06-24",
+    checkIn: "11:00 PM",
+    checkOut: "07:00 AM",
+    totalHours: 8.0,
+    overtimeHours: 0,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-24T23:00:00.000Z"
+  },
+  {
+    _id: "att-yest-4",
+    storeId: "store-indore-01",
+    staffId: "staff-4",
+    shiftId: "Afternoon",
+    date: "2026-06-24",
+    checkIn: "04:00 PM",
+    checkOut: "08:00 PM",
+    totalHours: 4.0,
+    overtimeHours: 0,
+    status: "half_day",
+    markedBy: "Shubham Jamliya",
+    notes: "Left early due to doctor appointment",
+    createdAt: "2026-06-24T16:00:00.000Z"
+  },
+  {
+    _id: "att-yest-5",
+    storeId: "store-indore-01",
+    staffId: "staff-5",
+    shiftId: "Morning",
+    date: "2026-06-24",
+    checkIn: "",
+    checkOut: "",
+    totalHours: 0,
+    overtimeHours: 0,
+    status: "absent",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-24T09:00:00.000Z"
+  },
+
+  // 2026-06-23
+  {
+    _id: "att-23-1",
+    storeId: "store-indore-01",
+    staffId: "staff-1",
+    shiftId: "Morning",
+    date: "2026-06-23",
+    checkIn: "08:50 AM",
+    checkOut: "05:00 PM",
+    totalHours: 8.16,
+    overtimeHours: 0.16,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-23T08:50:00.000Z"
+  },
+  {
+    _id: "att-23-2",
+    storeId: "store-indore-01",
+    staffId: "staff-2",
+    shiftId: "Afternoon",
+    date: "2026-06-23",
+    checkIn: "03:57 PM",
+    checkOut: "01:30 AM",
+    totalHours: 9.55,
+    overtimeHours: 1.55,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "Overtime for cleanup operations",
+    createdAt: "2026-06-23T15:57:00.000Z"
+  },
+  {
+    _id: "att-23-3",
+    storeId: "store-indore-01",
+    staffId: "staff-3",
+    shiftId: "Night",
+    date: "2026-06-23",
+    checkIn: "10:55 PM",
+    checkOut: "07:05 AM",
+    totalHours: 8.16,
+    overtimeHours: 0.16,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-23T22:55:00.000Z"
+  },
+  {
+    _id: "att-23-4",
+    storeId: "store-indore-01",
+    staffId: "staff-4",
+    shiftId: "Afternoon",
+    date: "2026-06-23",
+    checkIn: "04:00 PM",
+    checkOut: "12:00 AM",
+    totalHours: 8.0,
+    overtimeHours: 0,
+    status: "present",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-23T16:00:00.000Z"
+  },
+  {
+    _id: "att-23-5",
+    storeId: "store-indore-01",
+    staffId: "staff-5",
+    shiftId: "Morning",
+    date: "2026-06-23",
+    checkIn: "",
+    checkOut: "",
+    totalHours: 0,
+    overtimeHours: 0,
+    status: "absent",
+    markedBy: "Shubham Jamliya",
+    notes: "",
+    createdAt: "2026-06-23T09:00:00.000Z"
+  }
+];
