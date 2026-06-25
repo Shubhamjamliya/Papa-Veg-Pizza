@@ -459,4 +459,183 @@ export const getMockWasteAnalysis = (wasteId) => {
   };
 };
 
+// Staff Performance Mock Data
+export const mockStaffPerformance = [
+  {
+    _id: "staff-1",
+    name: "Chef Sanjay Kumar",
+    role: "Chef",
+    station: "Pizza Station",
+    profileImage: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=120&h=120&q=80",
+    joiningDate: "2024-05-15",
+    status: "Active",
+    attendance: 96,
+    orders: 245,
+    avgPrepTime: 14.5,
+    complaints: 1,
+    efficiency: 98,
+    rating: 4.8
+  },
+  {
+    _id: "staff-2",
+    name: "Chef Anil Sharma",
+    role: "Chef",
+    station: "Baking Station",
+    profileImage: "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=120&h=120&q=80",
+    joiningDate: "2024-08-22",
+    status: "Active",
+    attendance: 94,
+    orders: 210,
+    avgPrepTime: 11.2,
+    complaints: 0,
+    efficiency: 95,
+    rating: 4.7
+  },
+  {
+    _id: "staff-3",
+    name: "Chef Priya Patel",
+    role: "Kitchen Staff",
+    station: "Packaging Station",
+    profileImage: "https://images.unsplash.com/photo-1581299894007-aaa50297cf16?auto=format&fit=crop&w=120&h=120&q=80",
+    joiningDate: "2025-01-10",
+    status: "Active",
+    attendance: 98,
+    orders: 280,
+    avgPrepTime: 4.8,
+    complaints: 2,
+    efficiency: 97,
+    rating: 4.9
+  },
+  {
+    _id: "staff-4",
+    name: "Rohan Verma",
+    role: "Cashier",
+    station: "N/A",
+    profileImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80",
+    joiningDate: "2025-03-01",
+    status: "Active",
+    attendance: 92,
+    orders: 185,
+    avgPrepTime: 2.1,
+    complaints: 0,
+    efficiency: 94,
+    rating: 4.5
+  },
+  {
+    _id: "staff-5",
+    name: "Vikram Rathore",
+    role: "Delivery Rider",
+    station: "N/A",
+    profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80",
+    joiningDate: "2025-04-12",
+    status: "Active",
+    attendance: 90,
+    orders: 160,
+    avgPrepTime: 24.5,
+    complaints: 3,
+    efficiency: 88,
+    rating: 4.2
+  },
+  {
+    _id: "staff-6",
+    name: "Pooja Patel",
+    role: "Store Manager",
+    station: "N/A",
+    profileImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80",
+    joiningDate: "2023-11-01",
+    status: "Active",
+    attendance: 99,
+    orders: 320,
+    avgPrepTime: 1.5,
+    complaints: 0,
+    efficiency: 99,
+    rating: 4.9
+  }
+];
+
+export const getMockStaffDetails = (staffId) => {
+  const staff = mockStaffPerformance.find(s => s._id === staffId) || mockStaffPerformance[0];
+  
+  return {
+    profile: {
+      photo: staff.profileImage,
+      name: staff.name,
+      role: staff.role,
+      station: staff.station,
+      joiningDate: staff.joiningDate,
+      status: staff.status,
+      employeeId: staff._id.toUpperCase()
+    },
+    attendanceHistory: [
+      { date: "2026-06-25", checkIn: "09:00 AM", checkOut: "05:30 PM", status: "Present" },
+      { date: "2026-06-24", checkIn: "08:55 AM", checkOut: "05:32 PM", status: "Present" },
+      { date: "2026-06-23", checkIn: "09:02 AM", checkOut: "05:30 PM", status: "Present" },
+      { date: "2026-06-22", checkIn: "09:00 AM", checkOut: "05:30 PM", status: "Present" },
+      { date: "2026-06-21", checkIn: "--", checkOut: "--", status: "Weekly Off" },
+      { date: "2026-06-20", checkIn: "09:15 AM", checkOut: "05:45 PM", status: "Late Checkin" },
+      { date: "2026-06-19", checkIn: "09:00 AM", checkOut: "05:30 PM", status: "Present" }
+    ],
+    attendancePercentage: staff.attendance,
+    ordersCompleted: {
+      total: staff.orders,
+      completed: Math.floor(staff.orders * 0.95),
+      delayed: Math.floor(staff.orders * 0.03),
+      cancelled: Math.floor(staff.orders * 0.02)
+    },
+    preparationStats: {
+      avgPrepTime: staff.avgPrepTime,
+      fastestTime: (staff.avgPrepTime * 0.6).toFixed(1),
+      slowestTime: (staff.avgPrepTime * 1.5).toFixed(1),
+      efficiency: staff.efficiency
+    },
+    complaints: [
+      { date: "2026-06-18", complaintType: "Incorrect toppings", description: "Customer complained that extra paneer was not added.", status: "Resolved" }
+    ],
+    achievements: [
+      { type: "Employee of the Month", description: "Recognized for highest efficiency and punctuality in May 2026." },
+      { type: "Fastest Prep Time", description: "Achieved record 12-minute paneer pizza bake time." }
+    ],
+    ratings: {
+      avgRating: staff.rating,
+      reviewCount: 42,
+      stars: staff.rating,
+      customerFeedback: [
+        { reviewer: "Aarav Sharma", stars: 5, comment: "Extremely fast service! Pizza was super hot." },
+        { reviewer: "Ananya Patel", stars: 4, comment: "Bake quality was excellent, cheese was bubbly." }
+      ]
+    }
+  };
+};
+
+export const getMockStaffComparison = (staffAId, staffBId) => {
+  const staffA = mockStaffPerformance.find(s => s._id === staffAId) || mockStaffPerformance[0];
+  const staffB = mockStaffPerformance.find(s => s._id === staffBId) || mockStaffPerformance[1];
+
+  return {
+    staffA: {
+      id: staffA._id,
+      name: staffA.name,
+      avatar: staffA.profileImage,
+      role: staffA.role,
+      station: staffA.station
+    },
+    staffB: {
+      id: staffB._id,
+      name: staffB.name,
+      avatar: staffB.profileImage,
+      role: staffB.role,
+      station: staffB.station
+    },
+    comparison: [
+      { metric: "Orders Handled", valA: staffA.orders, valB: staffB.orders, winner: staffA.orders > staffB.orders ? "staffA" : "staffB" },
+      { metric: "Avg Prep Time", valA: `${staffA.avgPrepTime}m`, valB: `${staffB.avgPrepTime}m`, winner: staffA.avgPrepTime < staffB.avgPrepTime ? "staffA" : "staffB" },
+      { metric: "Attendance", valA: `${staffA.attendance}%`, valB: `${staffB.attendance}%`, winner: staffA.attendance > staffB.attendance ? "staffA" : "staffB" },
+      { metric: "Complaints Received", valA: staffA.complaints, valB: staffB.complaints, winner: staffA.complaints < staffB.complaints ? "staffA" : "staffB" },
+      { metric: "Efficiency Score", valA: `${staffA.efficiency}%`, valB: `${staffB.efficiency}%`, winner: staffA.efficiency > staffB.efficiency ? "staffA" : "staffB" },
+      { metric: "Customer Rating", valA: `${staffA.rating} / 5.0`, valB: `${staffB.rating} / 5.0`, winner: staffA.rating > staffB.rating ? "staffA" : "staffB" }
+    ]
+  };
+};
+
+
 
