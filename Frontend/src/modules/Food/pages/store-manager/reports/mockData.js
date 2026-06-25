@@ -145,3 +145,198 @@ const generateMockSalesData = () => {
 };
 
 export const mockDailySales = generateMockSalesData();
+
+const generateMockOrders = () => {
+  const data = [];
+  const today = new Date();
+  
+  const indianNames = [
+    "Aarav Sharma", "Ananya Patel", "Rohan Verma", "Aditi Rao", "Vikram Singh",
+    "Pooja Hegde", "Kabir Mehta", "Diya Iyer", "Siddharth Malhotra", "Neha Gupta",
+    "Rahul Dev", "Vikram Rathore", "Karan Singh", "Rohan Malhotra", "Isha Sharma",
+    "Amit Verma", "Pooja Patel", "Deepak Rawat"
+  ];
+
+  const pizzaItems = [
+    { name: "Paneer Tikka Pizza", price: 499 },
+    { name: "Double Cheese Margherita", price: 399 },
+    { name: "Veg Supreme Pizza", price: 549 },
+    { name: "Farmhouse Delight Pizza", price: 449 },
+    { name: "Tandoori Paneer Pizza", price: 519 },
+    { name: "Garlic Breadsticks", price: 149 },
+    { name: "Choco Lava Cake", price: 129 },
+    { name: "Pepsi WebP Bottle", price: 60 }
+  ];
+
+  const statuses = ["completed", "completed", "completed", "completed", "cancelled", "refunded", "pending", "preparing", "delivered"];
+  const paymentMethods = ["UPI / PhonePe", "UPI / Paytm", "Card / HDFC", "Wallet / Amazon", "COD"];
+  const orderTypes = ["delivery", "takeaway", "dine-in"];
+  const chefs = ["Chef Vijay", "Chef Sanjay", "Chef Anil"];
+  const cashiers = ["Cashier Shubham", "Cashier Amit", "Cashier Pooja"];
+  const managers = ["Manager Rohan", "Manager Nilesh"];
+  const riders = ["Rider Ramesh Singh", "Rider Vikram Kumar", "Rider Satish Dev"];
+
+  for (let i = 1; i <= 100; i++) {
+    // Generate dates spread across the last 30 days
+    const d = new Date(today);
+    d.setDate(today.getDate() - (i % 30));
+    
+    // Set random hour
+    const hour = 10 + (i % 13);
+    const minute = 10 + (i % 50);
+    d.setHours(hour, minute, 0, 0);
+
+    const createdAt = d.toISOString();
+    
+    const seedRandom = (max, min = 0) => {
+      const val = Math.sin(i + 2.5) * 10000;
+      const rand = val - Math.floor(val);
+      return Math.floor(rand * (max - min)) + min;
+    };
+
+    const status = statuses[i % statuses.length];
+    const paymentMethod = paymentMethods[i % paymentMethods.length];
+    const orderType = orderTypes[i % orderTypes.length];
+    const totalItems = seedRandom(4, 1);
+    
+    const items = [];
+    let subtotal = 0;
+    for (let k = 0; k < totalItems; k++) {
+      const item = pizzaItems[(i + k) % pizzaItems.length];
+      const qty = seedRandom(3, 1);
+      items.push({
+        _id: `item-${i}-${k}`,
+        productId: `prod-${(i + k) % pizzaItems.length}`,
+        name: item.name,
+        quantity: qty,
+        price: item.price,
+        total: qty * item.price
+      });
+      subtotal += qty * item.price;
+    }
+
+    const hasCoupon = i % 4 === 0;
+    const coupon = hasCoupon ? {
+      _id: `coupon-${i}`,
+      code: i % 8 === 0 ? "PIZZA50" : "WELCOME100",
+      discountType: i % 8 === 0 ? "fixed" : "percentage",
+      discountValue: i % 8 === 0 ? 50 : 10,
+    } : null;
+
+    let discountAmount = 0;
+    if (coupon) {
+      if (coupon.discountType === "fixed") {
+        discountAmount = coupon.discountValue;
+      } else {
+        discountAmount = Math.floor(subtotal * (coupon.discountValue / 100));
+      }
+    }
+
+    const taxAmount = Math.floor((subtotal - discountAmount) * 0.05);
+    const deliveryCharge = orderType === "delivery" ? 40 : 0;
+    const totalAmount = subtotal - discountAmount + taxAmount + deliveryCharge;
+
+    const preparationTime = seedRandom(35, 12);
+    const deliveryTime = orderType === "delivery" ? seedRandom(40, 15) : 0;
+
+    const customerName = indianNames[i % indianNames.length];
+    const customerPhone = `98765${(10000 + i).toString().slice(1)}`;
+    const customerEmail = `${customerName.toLowerCase().replace(" ", ".")}@gmail.com`;
+
+    const chef = chefs[i % chefs.length];
+    const cashier = cashiers[i % cashiers.length];
+    const manager = managers[i % managers.length];
+    const rider = orderType === "delivery" ? riders[i % riders.length] : null;
+
+    // Timeline timestamps
+    const prepStart = new Date(d.getTime() + 5 * 60000).toISOString();
+    const readyTime = new Date(d.getTime() + (5 + preparationTime) * 60000).toISOString();
+    const completedTime = new Date(d.getTime() + (5 + preparationTime + 10) * 60000).toISOString();
+
+    const preparationTimeline = [
+      { event: "Order Received", timestamp: createdAt },
+      { event: "Preparation Started", timestamp: prepStart },
+      { event: "Ready For Pickup", timestamp: readyTime },
+      { event: "Completed", timestamp: completedTime }
+    ];
+
+    const delAssigned = new Date(d.getTime() + 7 * 60000).toISOString();
+    const delPicked = new Date(d.getTime() + (7 + 10) * 60000).toISOString();
+    const delOut = new Date(d.getTime() + (7 + 15) * 60000).toISOString();
+    const delDelivered = new Date(d.getTime() + (7 + 15 + deliveryTime) * 60000).toISOString();
+
+    const deliveryTimeline = orderType === "delivery" ? [
+      { event: "Assigned Rider", timestamp: delAssigned },
+      { event: "Picked Up", timestamp: delPicked },
+      { event: "Out For Delivery", timestamp: delOut },
+      { event: "Delivered", timestamp: delDelivered }
+    ] : [];
+
+    const reviews = [
+      "Extremely tasty pizza! Loved the hot cheese.",
+      "Delivery was on time. Good service.",
+      "The crust was a bit dry but paneer tikka was great.",
+      "Super fresh and loaded toppings! Ordered again.",
+      "Nice taste, highly recommended."
+    ];
+    const rating = i % 5 === 0 ? 3 : i % 3 === 0 ? 4 : 5;
+    const reviewText = status === "completed" || status === "delivered" ? reviews[i % reviews.length] : null;
+
+    const refund = status === "refunded" ? {
+      _id: `ref-${i}`,
+      orderId: `ord-${i}`,
+      amount: totalAmount,
+      reason: i % 2 === 0 ? "Wrong item delivered" : "Cold food complaints",
+      approvedBy: "Manager Rohan",
+      status: i % 3 === 0 ? "processed" : "approved",
+      createdAt: new Date(d.getTime() + 120 * 60000).toISOString()
+    } : null;
+
+    data.push({
+      _id: `ord-${i}`,
+      orderNumber: `PVP-${1000 + i}`,
+      storeId: "st-indore-01",
+      customerId: `cust-${i % 8}`,
+      customer: {
+        name: customerName,
+        phone: customerPhone,
+        email: customerEmail,
+        address: orderType === "delivery" ? "102, Vijay Nagar, Indore, MP" : "Store Pickup",
+        orderHistoryCount: seedRandom(25, 2)
+      },
+      orderType,
+      paymentMethod,
+      paymentStatus: status === "refunded" ? "refunded" : status === "cancelled" ? "failed" : "paid",
+      orderStatus: status,
+      totalAmount,
+      subtotal,
+      discountAmount,
+      taxAmount,
+      deliveryCharge,
+      couponId: coupon ? coupon._id : null,
+      coupon: coupon,
+      preparationTime,
+      deliveryTime,
+      createdAt,
+      items,
+      preparationTimeline,
+      deliveryTimeline,
+      staff: {
+        chef,
+        cashier,
+        manager,
+        rider
+      },
+      customerRating: reviewText ? {
+        stars: rating,
+        reviewText,
+        reviewDate: completedTime
+      } : null,
+      refund
+    });
+  }
+  return data;
+};
+
+export const mockDetailedOrders = generateMockOrders();
+

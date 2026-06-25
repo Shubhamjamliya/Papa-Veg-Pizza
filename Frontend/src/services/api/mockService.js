@@ -38,7 +38,7 @@ import {
   mockSuppliersSummary,
   initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
-import { mockDailySales } from "../../modules/Food/pages/store-manager/reports/mockData.js";
+import { mockDailySales, mockDetailedOrders } from "../../modules/Food/pages/store-manager/reports/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -720,6 +720,272 @@ export function handleMockRequest(config) {
   const successRes = (payload) => ({ success: true, status: 200, data: { success: true, data: payload } });
   const successMsg = (msg, payload = null) => ({ success: true, status: 200, data: { success: true, message: msg, data: payload } });
   const errorRes = (msg, status = 400) => ({ success: false, status, data: { success: false, message: msg } });
+
+  // --- ORDER REPORTS ENDPOINTS ---
+  if (url.includes("/reports/orders") && !url.includes("/reports/orders/dashboard") && !url.includes("/reports/orders/summary") && !url.includes("/reports/orders/status-distribution") && !url.includes("/reports/orders/hourly") && !url.includes("/reports/orders/order-type") && !url.includes("/reports/orders/store-performance") && !url.includes("/reports/orders/list")) {
+    if (method === "get") {
+      const params = config.params || {};
+      const startDate = params.startDate || "";
+      const endDate = params.endDate || "";
+      const status = params.status || "All";
+      const paymentMethod = params.paymentMethod || "All";
+      const orderType = params.orderType || "All";
+      const couponUsed = params.couponUsed || "All";
+      const search = params.search || "";
+      const page = Number(params.page) || 1;
+      const limit = Number(params.limit) || 10;
+
+      let filtered = [...mockDetailedOrders];
+
+      // Filter by Date Range
+      if (startDate && endDate) {
+        const start = new Date(startDate).getTime();
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        const endTime = end.getTime();
+        filtered = filtered.filter(o => {
+          const time = new Date(o.createdAt).getTime();
+          return time >= start && time <= endTime;
+        });
+      }
+
+      // Filter by Status
+      if (status !== "All") {
+        filtered = filtered.filter(o => o.orderStatus.toLowerCase() === status.toLowerCase());
+      }
+
+      // Filter by Payment Method
+      if (paymentMethod !== "All") {
+        filtered = filtered.filter(o => {
+          const pMethod = o.paymentMethod.toLowerCase();
+          const filterMethod = paymentMethod.toLowerCase();
+          if (filterMethod === "upi") return pMethod.includes("upi");
+          if (filterMethod === "card") return pMethod.includes("card") || pMethod.includes("netbanking");
+          if (filterMethod === "wallet") return pMethod.includes("wallet");
+          return pMethod.includes(filterMethod);
+        });
+      }
+
+      // Filter by Order Type
+      if (orderType !== "All") {
+        filtered = filtered.filter(o => o.orderType.toLowerCase() === orderType.toLowerCase());
+      }
+
+      // Filter by Coupon Used
+      if (couponUsed !== "All") {
+        if (couponUsed === "Coupon Applied") {
+          filtered = filtered.filter(o => o.couponId !== null);
+        } else if (couponUsed === "No Coupon") {
+          filtered = filtered.filter(o => o.couponId === null);
+        }
+      }
+
+      // Filter by Search Query
+      if (search) {
+        const q = search.toLowerCase();
+        filtered = filtered.filter(o => 
+          o.orderNumber.toLowerCase().includes(q) ||
+          o.customer.name.toLowerCase().includes(q)
+        );
+      }
+
+      // Calculate Dashboard Cards Metrics
+      const totalCount = filtered.length;
+      const completedCount = filtered.filter(o => o.orderStatus === "completed" || o.orderStatus === "delivered").length;
+      const cancelledCount = filtered.filter(o => o.orderStatus === "cancelled").length;
+      const refundCount = filtered.filter(o => o.orderStatus === "refunded").length;
+
+      const prepOrders = filtered.filter(o => o.preparationTime > 0);
+      const avgPrepTime = prepOrders.length > 0 
+        ? Math.round(prepOrders.reduce((sum, o) => sum + o.preparationTime, 0) / prepOrders.length) 
+        : 0;
+
+      const delOrders = filtered.filter(o => o.orderType === "delivery" && o.deliveryTime > 0);
+      const avgDeliveryTime = delOrders.length > 0 
+        ? Math.round(delOrders.reduce((sum, o) => sum + o.deliveryTime, 0) / delOrders.length) 
+        : 0;
+
+      const couponOrders = filtered.filter(o => o.couponId !== null);
+      const couponUsage = couponOrders.length;
+      const couponPercentage = totalCount > 0 ? Math.round((couponUsage / totalCount) * 100) : 0;
+
+      const dashboard = {
+        totalOrders: totalCount,
+        completedOrders: completedCount,
+        cancelledOrders: cancelledCount,
+        avgPreparationTime: avgPrepTime,
+        avgDeliveryTime,
+        refundOrders: refundCount,
+        couponUsageCount: couponUsage,
+        couponUsagePercentage: couponPercentage
+      };
+
+      // Charts: Orders By Status
+      const statusDistribution = {
+        completed: completedCount,
+        cancelled: cancelledCount,
+        refunded: refundCount,
+        pending: filtered.filter(o => o.orderStatus === "pending" || o.orderStatus === "preparing" || o.orderStatus === "ready").length
+      };
+
+      // Charts: Peak Hours Analysis
+      const hourlyMap = {};
+      for (let h = 10; h <= 22; h++) {
+        hourlyMap[`${h.toString().padStart(2, '0')}:00`] = 0;
+      }
+      filtered.forEach(o => {
+        const date = new Date(o.createdAt);
+        const hr = `${date.getHours().toString().padStart(2, '0')}:00`;
+        if (hourlyMap[hr] !== undefined) {
+          hourlyMap[hr] += 1;
+        }
+      });
+      const hourlyOrders = Object.keys(hourlyMap).map(hour => ({
+        hour,
+        orders: hourlyMap[hour]
+      }));
+
+      // Charts: Order Type Distribution
+      const typeDistribution = {
+        delivery: { count: 0, revenue: 0 },
+        takeaway: { count: 0, revenue: 0 },
+        "dine-in": { count: 0, revenue: 0 }
+      };
+      filtered.forEach(o => {
+        const type = o.orderType.toLowerCase();
+        if (typeDistribution[type]) {
+          typeDistribution[type].count += 1;
+          typeDistribution[type].revenue += o.totalAmount;
+        }
+      });
+      const orderTypeDistribution = Object.keys(typeDistribution).map(type => ({
+        type: type.charAt(0).toUpperCase() + type.slice(1),
+        count: typeDistribution[type].count,
+        revenue: typeDistribution[type].revenue,
+        percentage: totalCount > 0 ? Math.round((typeDistribution[type].count / totalCount) * 100) : 0
+      }));
+
+      // Order Analytics Table - Sorting
+      const sortBy = params.sortBy || "createdAt";
+      const sortOrder = params.sortOrder || "desc";
+      const sorted = [...filtered].sort((a, b) => {
+        let valA = a[sortBy];
+        let valB = b[sortBy];
+
+        if (sortBy === "createdAt") {
+          valA = new Date(a.createdAt).getTime();
+          valB = new Date(b.createdAt).getTime();
+        }
+
+        if (typeof valA === "string") {
+          return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return sortOrder === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+      });
+
+      // Pagination
+      const pages = Math.ceil(sorted.length / limit) || 1;
+      const startIdx = (page - 1) * limit;
+      const paginatedOrders = sorted.slice(startIdx, startIdx + limit);
+
+      const orderAnalytics = paginatedOrders.map(o => ({
+        _id: o._id,
+        orderNumber: o.orderNumber,
+        customerName: o.customer.name,
+        orderType: o.orderType,
+        itemsCount: o.items.reduce((sum, item) => sum + item.quantity, 0),
+        totalAmount: o.totalAmount,
+        preparationTime: o.preparationTime,
+        deliveryTime: o.deliveryTime,
+        orderStatus: o.orderStatus,
+        couponCode: o.coupon ? o.coupon.code : null,
+        createdAt: o.createdAt
+      }));
+
+      return successRes({
+        dashboard,
+        statusDistribution,
+        hourlyOrders,
+        orderTypeDistribution,
+        orderAnalytics,
+        pagination: {
+          total: totalCount,
+          page,
+          limit,
+          pages
+        }
+      });
+    }
+  }
+
+  // --- ORDER DETAIL ENDPOINT ---
+  const orderReportDetailMatch = url.match(/\/reports\/order\/([^/]+)$/);
+  if (orderReportDetailMatch && method === "get") {
+    const orderId = orderReportDetailMatch[1];
+    const order = mockDetailedOrders.find(o => o._id === orderId);
+    if (!order) {
+      return errorRes("Order details not found", 404);
+    }
+    return successRes({
+      orderInfo: {
+        _id: order._id,
+        orderNumber: order.orderNumber,
+        status: order.orderStatus,
+        orderType: order.orderType,
+        createdAt: order.createdAt,
+        totalAmount: order.totalAmount
+      },
+      customer: {
+        name: order.customer.name,
+        phone: order.customer.phone,
+        email: order.customer.email,
+        address: order.customer.address,
+        orderHistoryCount: order.customer.orderHistoryCount
+      },
+      items: order.items,
+      coupon: order.coupon,
+      payment: {
+        method: order.paymentMethod,
+        status: order.paymentStatus,
+        transactionId: `TXN${9000000000 + Math.floor(Math.random() * 999999999)}`,
+        amountPaid: order.totalAmount
+      },
+      preparationTimeline: order.preparationTimeline,
+      deliveryTimeline: order.deliveryTimeline,
+      staff: order.staff,
+      customerRating: order.customerRating
+    });
+  }
+
+  // --- REFUND DETAILS ENDPOINT ---
+  const refundDetailMatch = url.match(/\/reports\/refund\/([^/]+)$/);
+  if (refundDetailMatch && method === "get") {
+    const orderId = refundDetailMatch[1];
+    const order = mockDetailedOrders.find(o => o._id === orderId);
+    if (!order || !order.refund) {
+      return errorRes("Refund record not found for this order", 404);
+    }
+    return successRes({
+      refundAmount: order.refund.amount,
+      reason: order.refund.reason,
+      approvedBy: order.refund.approvedBy,
+      status: order.refund.status,
+      createdAt: order.refund.createdAt
+    });
+  }
+
+  // --- EXPORT ORDERS ENDPOINT ---
+  if (url.includes("/reports/export-orders") && method === "post") {
+    return {
+      success: true,
+      status: 200,
+      headers: {
+        "content-type": "text/csv",
+        "content-disposition": "attachment; filename=\"Orders_Report.csv\""
+      },
+      data: "Order ID,Number,Customer,Type,Amount,Status,Date\nord-1,PVP-1001,Aarav Sharma,delivery,₹549,completed,2026-06-25"
+    };
+  }
 
   // --- DAILY SALES ENDPOINTS ---
   if (url.includes("/reports/daily-sales")) {
