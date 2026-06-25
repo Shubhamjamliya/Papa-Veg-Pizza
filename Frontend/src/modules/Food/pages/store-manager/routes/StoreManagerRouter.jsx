@@ -32,6 +32,7 @@ import CustomerOrders from "../customers/CustomerOrders"
 import Complaints from "../customers/Complaints"
 import Reviews from "../customers/Reviews"
 import DailySales from "../reports/DailySales"
+import OrderReports from "../reports/OrderReports"
 
 
 
@@ -373,11 +374,7 @@ export default function StoreManagerRouter() {
             path="reports/orders" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Order Reports" 
-                  description="Total orders, cancel ratios, and average delivery times" 
-                  allowedRoles={["store_manager"]}
-                />
+                <OrderReports />
               </RoleProtectedRoute>
             } 
           />
