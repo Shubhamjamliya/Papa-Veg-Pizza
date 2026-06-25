@@ -340,3 +340,123 @@ const generateMockOrders = () => {
 
 export const mockDetailedOrders = generateMockOrders();
 
+// Dynamic Mock Data for Kitchen Performance
+const generateMockKitchenPerformance = () => {
+  const data = [];
+  const today = new Date();
+  
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    
+    const seedRandom = (max, min = 0) => {
+      const val = Math.sin(i + 4.5) * 10000;
+      const rand = val - Math.floor(val);
+      return Math.floor(rand * (max - min)) + min;
+    };
+
+    const orders = seedRandom(140, 50);
+    const avgPrepTime = seedRandom(28, 14); // in minutes
+    const delayedOrders = seedRandom(Math.max(2, Math.floor(orders * 0.12)), 2);
+    const wastePercentage = parseFloat((seedRandom(60, 15) / 10).toFixed(1)); // 1.5% to 6.0%
+    const efficiency = seedRandom(98, 82); // 82% to 98%
+    const shortages = seedRandom(4, 0);
+
+    data.push({
+      date: dateStr,
+      orders,
+      avgPrepTime,
+      delayedOrders,
+      wastePercentage,
+      efficiency,
+      shortages,
+      sampleOrderId: `PVP-${1000 + seedRandom(99, 1)}`,
+      sampleWasteId: `waste-${200 + seedRandom(99, 1)}`
+    });
+  }
+  return data;
+};
+
+export const mockStoreKitchenPerformance = generateMockKitchenPerformance();
+
+// Helper generators for details
+export const getMockKitchenDayDetails = (date) => {
+  // Stable random seed based on date string hash
+  let hash = 0;
+  for (let i = 0; i < date.length; i++) {
+    hash = date.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const seedRandom = (max, min = 0) => {
+    const val = Math.sin(hash) * 10000;
+    const rand = val - Math.floor(val);
+    return Math.floor(rand * (max - min)) + min;
+  };
+
+  const total = seedRandom(130, 60);
+  const delayed = seedRandom(Math.floor(total * 0.15), 1);
+  const cancelled = seedRandom(5, 1);
+  const completed = total - delayed - cancelled;
+
+  return {
+    ordersProcessed: {
+      total,
+      completed,
+      delayed,
+      cancelled
+    },
+    staffOnDuty: [
+      { name: "Chef Sanjay Kumar", role: "Pizza Assembly Specialist", ordersHandled: seedRandom(40, 20), avgPrepTime: seedRandom(22, 14) },
+      { name: "Chef Anil Sharma", role: "Oven & Baking Lead", ordersHandled: seedRandom(50, 30), avgPrepTime: seedRandom(15, 10) },
+      { name: "Chef Priya Patel", role: "Packaging Specialist", ordersHandled: seedRandom(60, 35), avgPrepTime: seedRandom(6, 3) }
+    ],
+    stationUtilization: {
+      pizza: seedRandom(85, 60),
+      baking: seedRandom(80, 55),
+      packaging: seedRandom(90, 70)
+    },
+    ingredientUsage: [
+      { name: "Mozzarella Cheese", usedQty: `${seedRandom(30, 15)} kg`, remainingQty: `${seedRandom(12, 3)} kg` },
+      { name: "Pizza Sauce", usedQty: `${seedRandom(25, 12)} L`, remainingQty: `${seedRandom(8, 2)} L` },
+      { name: "Tandoori Paneer", usedQty: `${seedRandom(15, 8)} kg`, remainingQty: `${seedRandom(6, 1)} kg` },
+      { name: "Sliced Veggies Mix", usedQty: `${seedRandom(12, 6)} kg`, remainingQty: `${seedRandom(5, 1)} kg` }
+    ],
+    delays: [
+      { orderId: `PVP-${1000 + seedRandom(100)}`, duration: seedRandom(25, 12), reason: "High order volume / Prep queue backlog" },
+      { orderId: `PVP-${1000 + seedRandom(100, 101)}`, duration: seedRandom(30, 15), reason: "Mozzarella stock replenishing delay" },
+      { orderId: `PVP-${1000 + seedRandom(100, 201)}`, duration: seedRandom(20, 10), reason: "Special instructions customization lag" }
+    ],
+    complaints: [
+      { type: "Delayed Delivery", orderId: `PVP-${1000 + seedRandom(100)}`, description: "Delivery delayed by over 20 minutes from promised time.", status: "Resolved (Coupon Shared)" },
+      { type: "Cold Pizza", orderId: `PVP-${1000 + seedRandom(100, 101)}`, description: "Pizza arrived cold, cheese was solidified.", status: "Resolved (Replacement Pizza Sent)" }
+    ],
+    wasteRecords: [
+      { id: `waste-${seedRandom(50, 1)}`, ingredient: "Mozzarella Cheese", quantity: "1.2 kg", cost: 600, reason: "Spill during prep", responsibleStaff: "Chef Sanjay Kumar" },
+      { id: `waste-${seedRandom(100, 51)}`, ingredient: "Paneer Cube Pack", quantity: "0.5 kg", cost: 220, reason: "Expired shelf life", responsibleStaff: "Chef Anil Sharma" }
+    ]
+  };
+};
+
+export const getMockDelayAnalysis = (orderId) => {
+  return {
+    orderId: orderId || "PVP-1024",
+    delayDuration: 18,
+    reason: "Equipment Failure (Pizza Oven heating element breakdown)",
+    responsibleStation: "Baking Station",
+    resolution: "Switched baking queue to deck 2 oven, notified maintenance team."
+  };
+};
+
+export const getMockWasteAnalysis = (wasteId) => {
+  return {
+    id: wasteId || "waste-105",
+    ingredient: "Mozzarella Cheese",
+    quantityWasted: "1.8 kg",
+    cost: 900,
+    reason: "Slicer machine jammed, cutting unevenly, making cheese unusable.",
+    responsibleStaff: "Chef Sanjay Kumar",
+    createdAt: "2026-06-25T14:30:00Z"
+  };
+};
+
+

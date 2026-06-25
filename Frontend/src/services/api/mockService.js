@@ -38,7 +38,7 @@ import {
   mockSuppliersSummary,
   initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
-import { mockDailySales, mockDetailedOrders } from "../../modules/Food/pages/store-manager/reports/mockData.js";
+import { mockDailySales, mockDetailedOrders, mockStoreKitchenPerformance, getMockKitchenDayDetails, getMockDelayAnalysis, getMockWasteAnalysis } from "../../modules/Food/pages/store-manager/reports/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -1227,6 +1227,172 @@ export function handleMockRequest(config) {
       data: "Date,Revenue,Orders\n2026-06-25,48900,98"
     };
   }
+
+  // --- KITCHEN PERFORMANCE DELAY ANALYSIS ENDPOINT ---
+  const kitchenDelayMatch = url.match(/\/reports\/kitchen\/delay\/([^/]+)$/);
+  if (kitchenDelayMatch && method === "get") {
+    const orderId = kitchenDelayMatch[1];
+    return successRes(getMockDelayAnalysis(orderId));
+  }
+
+  // --- KITCHEN PERFORMANCE WASTE ANALYSIS ENDPOINT ---
+  const kitchenWasteMatch = url.match(/\/reports\/kitchen\/waste\/([^/]+)$/);
+  if (kitchenWasteMatch && method === "get") {
+    const wasteId = kitchenWasteMatch[1];
+    return successRes(getMockWasteAnalysis(wasteId));
+  }
+
+  // --- KITCHEN PERFORMANCE DATE DETAILS ENDPOINT ---
+  const kitchenDateMatch = url.match(/\/reports\/kitchen\/(\d{4}-\d{2}-\d{2})$/);
+  if (kitchenDateMatch && method === "get") {
+    const date = kitchenDateMatch[1];
+    return successRes(getMockKitchenDayDetails(date));
+  }
+
+  // --- KITCHEN PERFORMANCE EXPORT ENDPOINT ---
+  if (url.includes("/reports/export-kitchen-performance") && method === "post") {
+    return {
+      success: true,
+      status: 200,
+      headers: {
+        "content-type": "text/csv",
+        "content-disposition": "attachment; filename=\"KitchenPerformance_Report.csv\""
+      },
+      data: "Date,Orders,Avg Prep Time,Delayed Orders,Waste %,Efficiency,Shortages\n2026-06-25,120,18,14,3.2,91,1"
+    };
+  }
+
+  // --- KITCHEN PERFORMANCE DASHBOARD ENDPOINT ---
+  if (url.includes("/reports/kitchen-performance") && method === "get") {
+    const params = config.params || {};
+    const startDate = params.startDate || "";
+    const endDate = params.endDate || "";
+    const station = params.station || "All";
+    const staffId = params.staffId || "All";
+    const page = Number(params.page) || 1;
+    const limit = Number(params.limit) || 10;
+    const sortBy = params.sortBy || "date";
+    const sortOrder = params.sortOrder || "desc";
+
+    let filtered = [...mockStoreKitchenPerformance];
+
+    // Date filtering
+    if (startDate && endDate) {
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+      filtered = filtered.filter(item => {
+        const d = new Date(item.date).getTime();
+        return d >= start && d <= end;
+      });
+    }
+
+    if (filtered.length === 0) {
+      filtered = mockStoreKitchenPerformance.slice(0, 7);
+    }
+
+    // Dynamic metrics calculation
+    let totalOrders = 0;
+    let totalPrepTime = 0;
+    let totalDelayed = 0;
+    let totalWaste = 0;
+    let totalEfficiency = 0;
+    let totalShortages = 0;
+
+    filtered.forEach(d => {
+      totalOrders += d.orders;
+      totalPrepTime += d.avgPrepTime;
+      totalDelayed += d.delayedOrders;
+      totalWaste += d.wastePercentage;
+      totalEfficiency += d.efficiency;
+      totalShortages += d.shortages;
+    });
+
+    const count = filtered.length;
+    const avgPrep = Math.round(totalPrepTime / count) || 20;
+    const avgWaste = parseFloat((totalWaste / count).toFixed(1)) || 3.5;
+    const avgEff = Math.round(totalEfficiency / count) || 90;
+
+    // Station completions adjustment based on filters
+    const basePizzaTime = station === "Pizza Station" ? 12 : 16;
+    const baseBakingTime = station === "Baking Station" ? 8 : 10;
+    const basePackagingTime = station === "Packaging Station" ? 3 : 5;
+
+    const stationPerformance = [
+      { name: "Pizza Station", avgCompletionTime: basePizzaTime },
+      { name: "Baking Station", avgCompletionTime: baseBakingTime },
+      { name: "Packaging Station", avgCompletionTime: basePackagingTime }
+    ];
+
+    // Delay Reasons Distribution
+    const delayReasons = [
+      { name: "Ingredient Shortage", value: Math.round(totalDelayed * 0.4) || 8, percentage: 40 },
+      { name: "Staff Shortage", value: Math.round(totalDelayed * 0.25) || 5, percentage: 25 },
+      { name: "Equipment Failure", value: Math.round(totalDelayed * 0.15) || 3, percentage: 15 },
+      { name: "High Order Volume", value: Math.round(totalDelayed * 0.2) || 4, percentage: 20 }
+    ];
+
+    // Preparation Trend Array
+    const preparationTrend = filtered.map(item => ({
+      date: item.date,
+      avgPrepTime: item.avgPrepTime
+    })).reverse();
+
+    // Dashboard object
+    const dashboard = {
+      avgPrepTime: avgPrep,
+      avgPrepTimeTrend: -4.5,
+      delayedOrders: totalDelayed,
+      delayedOrdersTrend: 1.2,
+      kitchenEfficiency: avgEff,
+      kitchenEfficiencyTrend: 3.8,
+      pizzaCompletionRate: 94.2,
+      pizzaCompletionRateTrend: 0.5,
+      ingredientShortages: totalShortages,
+      ingredientShortagesTrend: -2.0,
+      foodWastePercentage: avgWaste,
+      foodWastePercentageTrend: -1.2,
+      kitchenUtilization: 84.5,
+      kitchenUtilizationTrend: 1.5
+    };
+
+    // Sort table rows
+    const sorted = [...filtered].sort((a, b) => {
+      let valA = a[sortBy];
+      let valB = b[sortBy];
+
+      if (sortBy === "date") {
+        return sortOrder === "asc"
+          ? new Date(valA) - new Date(valB)
+          : new Date(valB) - new Date(valA);
+      }
+
+      if (typeof valA === "string") {
+        return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortOrder === "asc" ? (valA || 0) - (valB || 0) : (valB || 0) - (valA || 0);
+    });
+
+    // Pagination
+    const total = sorted.length;
+    const pages = Math.ceil(total / limit);
+    const startIdx = (page - 1) * limit;
+    const paginated = sorted.slice(startIdx, startIdx + limit);
+
+    return successRes({
+      dashboard,
+      preparationTrend,
+      stationPerformance,
+      delayReasons,
+      kitchenPerformance: paginated,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages
+      }
+    });
+  }
+
 
   // --- ORDER REPORT ENDPOINTS ---
   if (url.includes("/reports/orders/dashboard") || url.includes("/reports/orders/summary")) {
