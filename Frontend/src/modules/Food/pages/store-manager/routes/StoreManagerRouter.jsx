@@ -26,6 +26,7 @@ import LowStockAlerts from "../inventory/LowStockAlerts"
 import IngredientShortages from "../inventory/IngredientShortages"
 import KitchenStaff from "../staffManagement/KitchenStaff"
 import Attendance from "../staffManagement/Attendance"
+import ShiftManagement from "../staffManagement/ShiftManagement"
 
 
 
@@ -314,11 +315,7 @@ export default function StoreManagerRouter() {
             path="staff/shifts" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Shift Management" 
-                  description="Schedule weekly rotations, swap requests, and timecards" 
-                  allowedRoles={["store_manager"]}
-                />
+                <ShiftManagement />
               </RoleProtectedRoute>
             } 
           />
