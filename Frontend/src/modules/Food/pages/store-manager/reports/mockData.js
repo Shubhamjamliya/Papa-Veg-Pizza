@@ -637,5 +637,199 @@ export const getMockStaffComparison = (staffAId, staffBId) => {
   };
 };
 
+// --- Store Performance Mock Data ---
+
+export const generateStorePerformanceMock = (filters = {}) => {
+  const storeId = filters.storeId || "st-indore-01";
+  const period = filters.period || "monthly";
+  
+  // 12 months list
+  const months = [
+    "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025",
+    "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026"
+  ];
+
+  const revenues = [420000, 450000, 480000, 460000, 510000, 580000, 490000, 520000, 550000, 580000, 620000, 650000];
+  const expensesList = [280000, 290000, 310000, 300000, 320000, 350000, 310000, 330000, 340000, 350000, 370000, 380000];
+  const ordersList = [800, 850, 920, 880, 960, 1100, 930, 980, 1040, 1100, 1180, 1250];
+  const ratingsList = [4.4, 4.5, 4.5, 4.6, 4.6, 4.7, 4.5, 4.6, 4.7, 4.7, 4.8, 4.8];
+  const deliveryRates = [96.2, 96.5, 97.1, 97.4, 97.2, 96.8, 97.5, 97.8, 98.1, 98.3, 98.4, 98.6];
+  const wastePercentages = [4.2, 4.0, 3.8, 4.1, 3.9, 4.3, 3.7, 3.6, 3.5, 3.4, 3.2, 3.0];
+  const staffEfficiencies = [89.5, 90.2, 91.0, 91.5, 91.8, 92.2, 92.5, 92.8, 93.0, 93.5, 94.0, 94.5];
+
+  // Table rows
+  const storePerformance = months.map((month, index) => {
+    const rev = revenues[index];
+    const exp = expensesList[index];
+    const profit = rev - exp;
+    const prevRev = index > 0 ? revenues[index - 1] : 400000;
+    const growth = parseFloat(((rev - prevRev) / prevRev * 100).toFixed(1));
+
+    return {
+      month,
+      revenue: rev,
+      expenses: exp,
+      profit,
+      orders: ordersList[index],
+      rating: ratingsList[index],
+      deliveryRate: deliveryRates[index],
+      wastePercentage: wastePercentages[index],
+      growth
+    };
+  });
+
+  const currentMonthRevenue = revenues[revenues.length - 1];
+  const previousMonthRevenue = revenues[revenues.length - 2];
+  const storeGrowthPercentage = parseFloat(((currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue * 100).toFixed(1));
+
+  const dashboard = {
+    revenue: currentMonthRevenue,
+    expenses: expensesList[expensesList.length - 1],
+    profit: currentMonthRevenue - expensesList[expensesList.length - 1],
+    orderCount: ordersList[ordersList.length - 1],
+    avgOrderValue: Math.round(currentMonthRevenue / ordersList[ordersList.length - 1]),
+    customerRating: ratingsList[ratingsList.length - 1],
+    deliverySuccessRate: deliveryRates[deliveryRates.length - 1],
+    foodWastePercentage: wastePercentages[wastePercentages.length - 1],
+    staffEfficiency: staffEfficiencies[staffEfficiencies.length - 1],
+    storeGrowthPercentage
+  };
+
+  const revenueVsExpenses = months.map((month, idx) => ({
+    month,
+    revenue: revenues[idx],
+    expenses: expensesList[idx]
+  }));
+
+  const profitTrend = months.map((month, idx) => ({
+    month,
+    profit: revenues[idx] - expensesList[idx]
+  }));
+
+  const customerRatings = [
+    { name: "5 Star", value: 3850, percentage: 55 },
+    { name: "4 Star", value: 2100, percentage: 30 },
+    { name: "3 Star", value: 700, percentage: 10 },
+    { name: "2 Star", value: 210, percentage: 3 },
+    { name: "1 Star", value: 140, percentage: 2 }
+  ];
+
+  const wasteAnalysis = [
+    { ingredient: "Mozzarella Cheese", cost: 18400, qty: "32 kg" },
+    { ingredient: "Tandoori Paneer", cost: 12500, qty: "25 kg" },
+    { ingredient: "Fresh Veggies Mix", cost: 6200, qty: "45 kg" },
+    { ingredient: "Pizza Sauce Base", cost: 4800, qty: "60 L" },
+    { ingredient: "Wheat Dough Balls", cost: 3200, qty: "80 units" }
+  ];
+
+  return {
+    dashboard,
+    revenueVsExpenses,
+    profitTrend,
+    customerRatings,
+    wasteAnalysis,
+    storePerformance: period === "monthly" ? storePerformance : storePerformance.slice(-4),
+    pagination: {
+      total: storePerformance.length,
+      page: filters.page || 1,
+      limit: filters.limit || 10,
+      totalPages: Math.ceil(storePerformance.length / (filters.limit || 10))
+    }
+  };
+};
+
+export const getMockStoreMonthDetails = (month) => {
+  let hash = 0;
+  for (let i = 0; i < month.length; i++) {
+    hash = month.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const seedRandom = (max, min = 0) => {
+    const val = Math.sin(hash) * 10000;
+    const rand = val - Math.floor(val);
+    return Math.floor(rand * (max - min)) + min;
+  };
+
+  const revenue = seedRandom(680000, 480000);
+  const pizzaSales = Math.floor(revenue * 0.65);
+  const beverageSales = Math.floor(revenue * 0.12);
+  const comboSales = Math.floor(revenue * 0.15);
+  const addOns = Math.floor(revenue * 0.08);
+  const coupons = -seedRandom(30000, 15000);
+  const taxes = Math.floor((pizzaSales + beverageSales + comboSales + addOns + coupons) * 0.05);
+  const refunds = -seedRandom(8000, 2000);
+  
+  const ingredients = Math.floor(revenue * 0.35);
+  const staffSalaries = seedRandom(120000, 90000);
+  const deliveryCosts = seedRandom(45000, 30000);
+  const utilities = seedRandom(25000, 15000);
+  const maintenance = seedRandom(15000, 8000);
+  const otherExpenses = seedRandom(12000, 5000);
+
+  const expenses = ingredients + staffSalaries + deliveryCosts + utilities + maintenance + otherExpenses;
+
+  return {
+    revenueBreakdown: {
+      pizzaSales,
+      beverageSales,
+      comboSales,
+      addOns,
+      coupons,
+      taxes,
+      refunds,
+      grossRevenue: pizzaSales + beverageSales + comboSales + addOns + taxes,
+      netRevenue: pizzaSales + beverageSales + comboSales + addOns + coupons + taxes + refunds,
+      discountImpact: parseFloat((Math.abs(coupons) / (pizzaSales + beverageSales + comboSales + addOns) * 100).toFixed(1))
+    },
+    expensesBreakdown: {
+      ingredients,
+      staffSalaries,
+      deliveryCosts,
+      utilities,
+      maintenance,
+      otherExpenses,
+      totalExpenses: expenses
+    },
+    bestSellingProducts: [
+      { name: "Paneer Tikka Pizza", quantity: seedRandom(350, 200), revenue: seedRandom(170000, 100000) },
+      { name: "Double Cheese Margherita", quantity: seedRandom(300, 180), revenue: seedRandom(120000, 72000) },
+      { name: "Farmhouse Delight Pizza", quantity: seedRandom(280, 150), revenue: seedRandom(125000, 67000) },
+      { name: "Garlic Breadsticks", quantity: seedRandom(400, 250), revenue: seedRandom(60000, 37000) },
+      { name: "Choco Lava Cake", quantity: seedRandom(320, 200), revenue: seedRandom(41000, 25000) }
+    ],
+    topCustomers: [
+      { name: "Shubham Jamliya", orders: seedRandom(15, 8), totalSpent: seedRandom(7500, 4000) },
+      { name: "Rashid Khan", orders: seedRandom(12, 6), totalSpent: seedRandom(6000, 3000) },
+      { name: "Nilesh Patidar", orders: seedRandom(10, 5), totalSpent: seedRandom(5000, 2500) },
+      { name: "Amit Joshi", orders: seedRandom(9, 4), totalSpent: seedRandom(4500, 2000) },
+      { name: "Pooja Sharma", orders: seedRandom(8, 4), totalSpent: seedRandom(4000, 1800) }
+    ],
+    staffPerformance: [
+      { name: "Chef Sanjay Kumar", efficiency: seedRandom(98, 90), attendance: seedRandom(98, 92), rating: parseFloat((seedRandom(50, 42) / 10).toFixed(1)) },
+      { name: "Chef Anil Sharma", efficiency: seedRandom(96, 88), attendance: seedRandom(96, 90), rating: parseFloat((seedRandom(48, 40) / 10).toFixed(1)) },
+      { name: "Chef Priya Patel", efficiency: seedRandom(99, 92), attendance: seedRandom(99, 94), rating: parseFloat((seedRandom(50, 45) / 10).toFixed(1)) },
+      { name: "Rohan Verma", efficiency: seedRandom(95, 85), attendance: seedRandom(95, 88), rating: parseFloat((seedRandom(47, 38) / 10).toFixed(1)) }
+    ],
+    deliveryMetrics: {
+      successRate: parseFloat((seedRandom(1000, 960) / 10).toFixed(1)),
+      lateDeliveries: seedRandom(25, 5),
+      failedDeliveries: seedRandom(6, 1),
+      avgDeliveryTime: parseFloat((seedRandom(30, 20) + 0.5).toFixed(1))
+    },
+    customerFeedback: [
+      { reviewer: "Shubham Jamliya", stars: 5, reviewText: "The Paneer Tikka pizza was exceptionally delicious and loaded with fresh cheese!", sentiment: "Positive" },
+      { reviewer: "Rashid Khan", stars: 5, reviewText: "Super-fast delivery, the food was piping hot when it arrived. Exceptional service.", sentiment: "Positive" },
+      { reviewer: "Nilesh Patidar", stars: 4, reviewText: "Loved the Double Cheese Margherita. Garlic bread could be softer.", sentiment: "Positive" },
+      { reviewer: "Komal Gupta", stars: 3, reviewText: "The food tasted good, but delivery was delayed by 15 minutes.", sentiment: "Neutral" }
+    ],
+    inventoryUsage: [
+      { ingredient: "Mozzarella Cheese", usedQty: `${seedRandom(300, 200)} kg`, wasteQty: `${(seedRandom(120, 40) / 10).toFixed(1)} kg`, cost: seedRandom(150000, 100000) },
+      { ingredient: "Tandoori Paneer", usedQty: `${seedRandom(220, 140)} kg`, wasteQty: `${(seedRandom(80, 20) / 10).toFixed(1)} kg`, cost: seedRandom(95000, 60000) },
+      { ingredient: "Veggies Mix", usedQty: `${seedRandom(250, 150)} kg`, wasteQty: `${(seedRandom(150, 50) / 10).toFixed(1)} kg`, cost: seedRandom(25000, 15000) },
+      { ingredient: "Pizza Sauce Base", usedQty: `${seedRandom(280, 180)} L`, wasteQty: `${(seedRandom(60, 10) / 10).toFixed(1)} L`, cost: seedRandom(35000, 22000) }
+    ]
+  };
+};
+
+
 
 

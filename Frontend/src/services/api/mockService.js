@@ -38,7 +38,7 @@ import {
   mockSuppliersSummary,
   initialGeneratedInventoryReports
 } from "../../modules/Food/pages/franchise-admin/reports/mockData.js";
-import { mockDailySales, mockDetailedOrders, mockStoreKitchenPerformance, getMockKitchenDayDetails, getMockDelayAnalysis, getMockWasteAnalysis, mockStaffPerformance, getMockStaffDetails, getMockStaffComparison } from "../../modules/Food/pages/store-manager/reports/mockData.js";
+import { mockDailySales, mockDetailedOrders, mockStoreKitchenPerformance, getMockKitchenDayDetails, getMockDelayAnalysis, getMockWasteAnalysis, mockStaffPerformance, getMockStaffDetails, getMockStaffComparison, generateStorePerformanceMock, getMockStoreMonthDetails } from "../../modules/Food/pages/store-manager/reports/mockData.js";
 
 // Helper to load/save mock data from LocalStorage
 const getStorageItem = (key, defaultVal) => {
@@ -984,6 +984,52 @@ export function handleMockRequest(config) {
         "content-disposition": "attachment; filename=\"Orders_Report.csv\""
       },
       data: "Order ID,Number,Customer,Type,Amount,Status,Date\nord-1,PVP-1001,Aarav Sharma,delivery,₹549,completed,2026-06-25"
+    };
+  }
+
+  // --- STORE PERFORMANCE ENDPOINTS ---
+  if (url.includes("/reports/store/revenue/")) {
+    const revMatch = url.match(/\/reports\/store\/revenue\/([^/]+)$/);
+    if (revMatch && method === "get") {
+      const month = decodeURIComponent(revMatch[1]);
+      const details = getMockStoreMonthDetails(month);
+      return successRes(details.revenueBreakdown);
+    }
+  }
+
+  if (url.includes("/reports/store/expenses/")) {
+    const expMatch = url.match(/\/reports\/store\/expenses\/([^/]+)$/);
+    if (expMatch && method === "get") {
+      const month = decodeURIComponent(expMatch[1]);
+      const details = getMockStoreMonthDetails(month);
+      return successRes(details.expensesBreakdown);
+    }
+  }
+
+  if (url.includes("/reports/store") && method === "get") {
+    const monthMatch = url.match(/\/reports\/store\/([^/]+)$/);
+    if (monthMatch && !url.includes("revenue") && !url.includes("expenses")) {
+      const month = decodeURIComponent(monthMatch[1]);
+      return successRes(getMockStoreMonthDetails(month));
+    } else if (!monthMatch) {
+      const params = config.params || {};
+      return successRes(generateStorePerformanceMock(params));
+    }
+  }
+
+  if (url.includes("/reports/export-store") && method === "post") {
+    const payload = config.data || {};
+    const period = payload.period || "monthly";
+    const exportType = payload.exportType || "pdf";
+    let filename = `StorePerformance_Report_${period}.${exportType.toLowerCase()}`;
+    return {
+      success: true,
+      status: 200,
+      headers: {
+        "content-type": exportType === "csv" ? "text/csv" : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "content-disposition": `attachment; filename="${filename}"`
+      },
+      data: exportType === "csv" ? "Month,Revenue,Expenses,Profit\nJun 2026,650000,380000,270000" : "binary_data_placeholder"
     };
   }
 

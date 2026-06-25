@@ -35,6 +35,7 @@ import DailySales from "../reports/DailySales"
 import OrderReports from "../reports/OrderReports"
 import KitchenPerformance from "../reports/KitchenPerformance"
 import StaffPerformance from "../reports/StaffPerformance"
+import StorePerformance from "../reports/StorePerformance"
 
 
 
@@ -400,11 +401,7 @@ export default function StoreManagerRouter() {
             path="reports/store" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Store Performance Report" 
-                  description="Aggregate store KPIs, peak hour sales, and local operations score" 
-                  allowedRoles={["store_manager"]}
-                />
+                <StorePerformance />
               </RoleProtectedRoute>
             } 
           />
