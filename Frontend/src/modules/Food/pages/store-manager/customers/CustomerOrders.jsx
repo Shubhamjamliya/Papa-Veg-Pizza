@@ -222,7 +222,7 @@ export default function CustomerOrders() {
         </div>
         
         {/* Actions Button Grid */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleExportCSV}
             className="flex items-center gap-1.5 px-4.5 py-2.5 bg-neutral-50 dark:bg-zinc-850 hover:bg-neutral-100 dark:hover:bg-zinc-800 text-zinc-650 dark:text-zinc-300 font-bold rounded-2xl text-xs border border-zinc-200 dark:border-zinc-850 transition-all cursor-pointer shadow-sm"
