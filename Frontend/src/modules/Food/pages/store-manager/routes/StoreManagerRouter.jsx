@@ -22,6 +22,7 @@ import DeliveryIssue from "../deliveryOperations/DeliveryIssue"
 import IngredientStock from "../inventory/IngredientStock"
 import StockRequests from "../inventory/StockRequests"
 import WasteManagement from "../inventory/WasteManagement"
+import LowStockAlerts from "../inventory/LowStockAlerts"
 
 
 
@@ -276,11 +277,7 @@ export default function StoreManagerRouter() {
             path="inventory/low-stock" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
-                <PagePlaceholder 
-                  title="Low Stock Alerts" 
-                  description="Ingredients below optimal threshold" 
-                  allowedRoles={["store_manager", "kitchen_supervisor"]}
-                />
+                <LowStockAlerts />
               </RoleProtectedRoute>
             } 
           />

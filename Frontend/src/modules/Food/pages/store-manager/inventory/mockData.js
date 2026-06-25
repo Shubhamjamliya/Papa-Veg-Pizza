@@ -585,4 +585,143 @@ export const setLocalWasteLogs = (wasteLogs) => {
   localStorage.setItem(WASTE_LOGS_KEY, JSON.stringify(wasteLogs));
 };
 
+// ==========================================
+// Low Stock Alerts Mock Data & Local Storage DB
+// ==========================================
+
+export const initialMockAlerts = [
+  {
+    _id: "alert-001",
+    storeId: "st-indore-01",
+    ingredientId: "ing-004",
+    ingredientName: "Fresh Paneer Cubes (Tikka Size)",
+    alertType: "low_stock",
+    currentStock: 8.5,
+    minimumStock: 10.0,
+    severity: "medium",
+    status: "active",
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(), // 2 hours ago
+    resolvedBy: "",
+    resolvedAt: "",
+    resolutionNote: ""
+  },
+  {
+    _id: "alert-002",
+    storeId: "st-indore-01",
+    ingredientId: "ing-005",
+    ingredientName: "Sliced Jalapenos (Pickled)",
+    alertType: "low_stock",
+    currentStock: 0.0,
+    minimumStock: 5.0,
+    severity: "critical",
+    status: "active",
+    createdAt: new Date(Date.now() - 3605000 * 5).toISOString(), // 5 hours ago
+    resolvedBy: "",
+    resolvedAt: "",
+    resolutionNote: ""
+  },
+  {
+    _id: "alert-003",
+    storeId: "st-indore-01",
+    ingredientId: "ing-001",
+    ingredientName: "Premium Mozzarella Cheese",
+    alertType: "low_stock",
+    currentStock: 12.0,
+    minimumStock: 15.0,
+    severity: "high",
+    status: "resolved",
+    createdAt: new Date(Date.now() - 3600000 * 24).toISOString(), // 24 hours ago
+    resolvedBy: "Shubham Jamliya",
+    resolvedAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+    resolutionNote: "Replenished cheese stock via express delivery MMP Dairy."
+  }
+];
+
+const ALERTS_KEY = "pvp_inventory_alerts";
+
+export const getLocalInventoryAlerts = () => {
+  try {
+    let alerts = JSON.parse(localStorage.getItem(ALERTS_KEY));
+    if (!alerts || !Array.isArray(alerts)) {
+      alerts = initialMockAlerts;
+    }
+
+    // Auto-syncing engine: automatically create active alerts if stock is below minimumStock
+    const ingredients = getLocalIngredients();
+    let changed = false;
+
+    ingredients.forEach((ing) => {
+      if (ing.currentStock <= ing.minimumStock) {
+        // Check if there is already an active alert for this ingredient
+        const hasActiveAlert = alerts.some(a => a.ingredientId === ing._id && a.status === "active");
+        if (!hasActiveAlert) {
+          const ratio = ing.minimumStock > 0 ? (ing.currentStock / ing.minimumStock) * 100 : 0;
+          let severity = "low";
+          if (ratio < 40) severity = "critical";
+          else if (ratio >= 40 && ratio < 70) severity = "high";
+          else if (ratio >= 70 && ratio < 90) severity = "medium";
+
+          alerts.push({
+            _id: `alert-${Date.now()}-${ing._id}`,
+            storeId: ing.storeId || "st-indore-01",
+            ingredientId: ing._id,
+            ingredientName: ing.ingredientName,
+            alertType: "low_stock",
+            currentStock: ing.currentStock,
+            minimumStock: ing.minimumStock,
+            severity,
+            status: "active",
+            createdAt: new Date().toISOString(),
+            resolvedBy: "",
+            resolvedAt: "",
+            resolutionNote: ""
+          });
+          changed = true;
+        } else {
+          // Update the currentStock value in the active alert dynamically
+          const activeAlert = alerts.find(a => a.ingredientId === ing._id && a.status === "active");
+          const ratio = ing.minimumStock > 0 ? (ing.currentStock / ing.minimumStock) * 100 : 0;
+          let severity = "low";
+          if (ratio < 40) severity = "critical";
+          else if (ratio >= 40 && ratio < 70) severity = "high";
+          else if (ratio >= 70 && ratio < 90) severity = "medium";
+
+          if (activeAlert.currentStock !== ing.currentStock || activeAlert.severity !== severity) {
+            activeAlert.currentStock = ing.currentStock;
+            activeAlert.severity = severity;
+            changed = true;
+          }
+        }
+      } else {
+        // If stock goes back up, and we have an active alert, auto-resolve it
+        const activeAlertIndex = alerts.findIndex(a => a.ingredientId === ing._id && a.status === "active");
+        if (activeAlertIndex !== -1) {
+          alerts[activeAlertIndex] = {
+            ...alerts[activeAlertIndex],
+            status: "resolved",
+            resolvedBy: "System Auto-Sync",
+            resolvedAt: new Date().toISOString(),
+            resolutionNote: "Stock level replenished above minimum stock threshold."
+          };
+          changed = true;
+        }
+      }
+    });
+
+    if (changed || !localStorage.getItem(ALERTS_KEY)) {
+      localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
+    }
+
+    return alerts;
+  } catch (e) {
+    localStorage.setItem(ALERTS_KEY, JSON.stringify(initialMockAlerts));
+    return initialMockAlerts;
+  }
+};
+
+export const setLocalInventoryAlerts = (alerts) => {
+  localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
+};
+
+
 
