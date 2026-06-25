@@ -19,6 +19,7 @@ import AssignRider from "../deliveryOperations/AssignRider"
 import RiderAvailability from "../deliveryOperations/RiderAvailability"
 import DeliveryTracking from "../deliveryOperations/DeliveryTracking"
 import DeliveryIssue from "../deliveryOperations/DeliveryIssue"
+import IngredientStock from "../inventory/IngredientStock"
 
 
 
@@ -248,12 +249,8 @@ export default function StoreManagerRouter() {
           <Route 
             path="inventory/stock" 
             element={
-              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor"]}>
-                <PagePlaceholder 
-                  title="Ingredient Stock" 
-                  description="Stock levels for cheese, dough, toppings, sauces, and veggies" 
-                  allowedRoles={["store_manager", "kitchen_supervisor"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <IngredientStock />
               </RoleProtectedRoute>
             } 
           />
