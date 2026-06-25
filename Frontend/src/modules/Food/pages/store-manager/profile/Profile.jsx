@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { User, Briefcase, Shield, Award, Calendar, Bell, Activity, Key, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { profileApi } from "@food/api";
@@ -15,7 +16,9 @@ import NotificationsTab from "./tabs/NotificationsTab";
 import ActivityLogsTab from "./tabs/ActivityLogsTab";
 import SecurityTab from "./tabs/SecurityTab";
 
-export default function Profile() {
+export default function Profile({ forcedRole }) {
+  const { role: contextRole, onRoleChange } = useOutletContext() || {};
+
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState(null);
   const [activeTab, setActiveTab] = useState("personal");
@@ -24,9 +27,29 @@ export default function Profile() {
   const [triggerPersonalEdit, setTriggerPersonalEdit] = useState(false);
 
   // Demo state for role testing (Stored in localStorage to sync with mock service)
-  const [currentRole, setCurrentRole] = useState(
-    () => localStorage.getItem("demo_user_role") || "store_manager"
-  );
+  const [currentRole, setCurrentRole] = useState(() => {
+    if (forcedRole) return forcedRole;
+    return contextRole || localStorage.getItem("store_role") || "store_manager";
+  });
+
+  // Keep in sync with contextRole if not forced
+  useEffect(() => {
+    if (!forcedRole && contextRole) {
+      setCurrentRole(contextRole);
+    }
+  }, [contextRole, forcedRole]);
+
+  // Sync forcedRole to parent layout when test routes are loaded
+  useEffect(() => {
+    if (forcedRole && onRoleChange && contextRole !== forcedRole) {
+      onRoleChange(forcedRole);
+    }
+  }, [forcedRole, contextRole, onRoleChange]);
+
+  // Sync back to local storage so profileApi mock can read the correct role
+  useEffect(() => {
+    localStorage.setItem("demo_user_role", currentRole);
+  }, [currentRole]);
 
   const fetchProfile = async () => {
     try {
@@ -51,6 +74,9 @@ export default function Profile() {
   const handleRoleChange = (role) => {
     localStorage.setItem("demo_user_role", role);
     setCurrentRole(role);
+    if (onRoleChange) {
+      onRoleChange(role);
+    }
     toast.info(`Switched view to: ${role === "store_manager" ? "Store Manager" : role === "kitchen_supervisor" ? "Kitchen Supervisor" : "Kitchen Staff"}`);
     
     // Safety check: if active tab gets hidden for kitchen staff, reset to personal info
