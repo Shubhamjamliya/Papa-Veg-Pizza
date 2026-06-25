@@ -31,6 +31,8 @@ import Performance from "../staffManagement/Performance"
 import CustomerOrders from "../customers/CustomerOrders"
 import Complaints from "../customers/Complaints"
 import Reviews from "../customers/Reviews"
+import DailySales from "../reports/DailySales"
+
 
 
 
@@ -363,11 +365,7 @@ export default function StoreManagerRouter() {
             path="reports/sales" 
             element={
               <RoleProtectedRoute allowedRoles={["store_manager"]}>
-                <PagePlaceholder 
-                  title="Daily Sales Report" 
-                  description="Hourly sales logs, average cart value, and payment channel summary" 
-                  allowedRoles={["store_manager"]}
-                />
+                <DailySales />
               </RoleProtectedRoute>
             } 
           />
