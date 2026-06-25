@@ -1967,4 +1967,5 @@ export const publicAPI = {
 };
 
 export { profileApi } from "./profileApi.js";
+export { myTasksService } from "./myTasksService.js";
 

@@ -37,6 +37,7 @@ import KitchenPerformance from "../reports/KitchenPerformance"
 import StaffPerformance from "../reports/StaffPerformance"
 import StorePerformance from "../reports/StorePerformance"
 import Profile from "../profile/Profile"
+import MyTasks from "../myTasks/MyTasks"
 
 
 
@@ -412,12 +413,8 @@ export default function StoreManagerRouter() {
           <Route
             path="tasks"
             element={
-              <RoleProtectedRoute allowedRoles={["kitchen_supervisor", "kitchen_staff"]}>
-                <PagePlaceholder
-                  title="My Operations Tasks"
-                  description="Your checklist of items for the active shift"
-                  allowedRoles={["kitchen_supervisor", "kitchen_staff"]}
-                />
+              <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
+                <MyTasks />
               </RoleProtectedRoute>
             }
           />
@@ -429,6 +426,18 @@ export default function StoreManagerRouter() {
               <RoleProtectedRoute allowedRoles={["store_manager", "kitchen_supervisor", "kitchen_staff"]}>
                 <Profile />
               </RoleProtectedRoute>
+            }
+          />
+          <Route
+            path="profile/supervisor"
+            element={
+              <Profile forcedRole="kitchen_supervisor" />
+            }
+          />
+          <Route
+            path="profile/staff"
+            element={
+              <Profile forcedRole="kitchen_staff" />
             }
           />
 
