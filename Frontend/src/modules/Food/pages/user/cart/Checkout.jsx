@@ -232,7 +232,7 @@ export default function Checkout() {
                           </div>
                         )
                       })}
-                      <Link to="/user/profile/payments" className="block w-full">
+                      <Link to="/user/account/profile-details/payments" className="block w-full">
                         <Button variant="outline" className="w-full">
                           Manage Payment Methods
                         </Button>
@@ -241,7 +241,7 @@ export default function Checkout() {
                   ) : (
                     <div className="text-center py-8">
                       <p className="text-muted-foreground mb-4">No payment methods saved</p>
-                      <Link to="/user/profile/payments/new">
+                      <Link to="/user/account/profile-details/payments/new">
                         <Button>Add Payment Method</Button>
                       </Link>
                     </div>
