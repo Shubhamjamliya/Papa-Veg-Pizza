@@ -87,33 +87,33 @@ export default function Login() {
       />
 
       {/* Login Screen UX Content */}
-      <main className="flex-1 flex flex-col justify-start p-8 mt-20 max-w-md mx-auto w-full space-y-6">
+      <main className="flex-1 flex flex-col justify-start p-6 mt-14 max-w-sm mx-auto w-full space-y-4">
 
         {/* Title */}
-        <h2 className="font-headline-lg-mobile text-3xl font-black text-slate-900 dark:text-white text-left tracking-tight">
+        <h2 className="font-headline-lg-mobile text-2xl font-black text-black dark:text-white text-left tracking-tight">
           Login
         </h2>
 
         {/* Subtitle */}
-        <p className="text-sm opacity-70 text-left leading-relaxed text-slate-600 dark:text-[#e4beb9]">
+        <p className="text-xs text-left leading-relaxed text-black dark:text-slate-200">
           To complete your order, see prices and exclusive deals, you'll need to Log in or Sign up here
         </p>
 
         {/* Login Form */}
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4">
 
           {/* Phone Input Box Container */}
-          <div className="flex items-center border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 bg-white dark:bg-white/5 transition-all focus-within:border-primary">
-            {/* Country Flag Flag (India +91) */}
-            <div className="flex items-center gap-2 pr-3 border-r border-slate-300 dark:border-white/10 select-none">
+          <div className="flex items-center border border-slate-300 dark:border-white/10 rounded-xl px-3.5 py-2.5 bg-white dark:bg-white/5 transition-all focus-within:border-primary">
+            {/* Country Flag (India +91) */}
+            <div className="flex items-center gap-1.5 pr-2.5 border-r border-slate-300 dark:border-white/10 select-none">
               {/* SVG representation of Indian Flag */}
-              <svg className="w-6 h-4.5 rounded-sm object-cover" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-5 h-3.5 rounded-sm object-cover" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
                 <rect width="640" height="160" fill="#f4c430" />
                 <rect y="160" width="640" height="160" fill="#fff" />
                 <rect y="320" width="640" height="160" fill="#090" />
                 <circle cx="320" cy="240" r="40" fill="#008" />
               </svg>
-              <span className="text-sm font-semibold text-slate-800 dark:text-white">+91</span>
+              <span className="text-xs font-bold text-black dark:text-white">+91</span>
             </div>
 
             {/* Input field */}
@@ -123,14 +123,14 @@ export default function Login() {
               placeholder="Enter mobile number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-              className="flex-1 pl-3 bg-transparent text-sm font-semibold outline-none border-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-white/30"
+              className="flex-1 pl-2.5 bg-transparent text-xs font-semibold outline-none border-none text-black dark:text-white placeholder-slate-500 dark:placeholder-white/40"
             />
           </div>
 
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full h-12 bg-[#E53935] hover:bg-red-700 text-white font-bold rounded-xl text-xs tracking-wider uppercase cursor-pointer active:scale-95 transition-all shadow-[0_0_15px_rgba(229,57,53,0.3)] border-0"
+            className="w-full h-10 bg-[#E53935] hover:bg-red-700 text-white font-bold rounded-xl text-xs tracking-wider uppercase cursor-pointer active:scale-95 transition-all shadow-[0_0_15px_rgba(229,57,53,0.3)] border-0"
           >
             Login with OTP
           </button>
