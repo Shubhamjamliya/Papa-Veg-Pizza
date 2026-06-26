@@ -162,30 +162,92 @@ export default function OTP() {
     setIsLoading(true)
     setError("")
 
-    // Simulate OTP verification delay for frontend demo
     setTimeout(() => {
       try {
-        const dummyUser = {
-          id: "user_dummy_12345",
-          name: "Papa User",
-          phone: contactInfo,
-          email: "user@papavegpizza.com"
+        const storedAuth = sessionStorage.getItem("userAuthData")
+        const authDataParsed = storedAuth ? JSON.parse(storedAuth) : null
+        const verifiedPhone = authDataParsed?.phone || contactInfo
+
+        // Check localStorage for users list
+        const mobileNumber = verifiedPhone
+        const users = JSON.parse(localStorage.getItem("users")) || []
+        const completedProfiles = JSON.parse(localStorage.getItem("completed_profiles") || "{}")
+        const cleanMobile = mobileNumber.replace(/\D/g, "").slice(-10)
+        
+        let existingUser = users.find(
+            user => user.phone === mobileNumber
+        )
+        
+        // Also support fuzzy search to be robust against slight format mismatches
+        if (!existingUser) {
+          existingUser = users.find(user => {
+            const cleanUserPhone = String(user.phone || user.mobile || "").replace(/\D/g, "").slice(-10)
+            return cleanUserPhone === cleanMobile
+          })
         }
 
-        // Save mock auth state
-        setUserAuthData("user", "dummy_access_token", dummyUser, "dummy_refresh_token")
-        localStorage.setItem("user_authenticated", "true")
-        sessionStorage.removeItem("userAuthData")
+        // Backward compatibility: check completed_profiles dictionary
+        if (!existingUser) {
+          const profileByCleanPhone = completedProfiles[cleanMobile]
+          const profileByFullPhone = completedProfiles[mobileNumber]
+          existingUser = profileByCleanPhone || profileByFullPhone
 
-        // Dispatch auth change event
-        window.dispatchEvent(new Event("userAuthChanged"))
+          if (existingUser) {
+            // Migrate legacy profile to users array
+            users.push(existingUser)
+            localStorage.setItem("users", JSON.stringify(users))
+          }
+        }
 
-        setSuccess(true)
-        setIsLoading(false)
-        submittingRef.current = false
+        if (existingUser) {
+          // Save current user session
+          localStorage.setItem(
+              "currentUser",
+              JSON.stringify(existingUser)
+          )
+          
+          // Compatibility with existing app state
+          localStorage.setItem("user_user", JSON.stringify(existingUser))
+          localStorage.setItem("userProfile", JSON.stringify(existingUser))
+          setUserAuthData("user", "dummy_access_token", existingUser, "dummy_refresh_token")
+          localStorage.setItem("user_authenticated", "true")
+          sessionStorage.removeItem("userAuthData")
+          window.dispatchEvent(new Event("userAuthChanged"))
 
-        // Navigate to home page
-        navigate("/food/user")
+          setSuccess(true)
+          setIsLoading(false)
+          submittingRef.current = false
+
+          // Navigate to Home Page
+          navigate("/food/user")
+        } else {
+          // Save temporary phone number
+          localStorage.setItem(
+              "tempPhone",
+              mobileNumber
+          )
+          
+          // Compatibility with existing app state and allowing MyProfile access
+          localStorage.setItem("user_temp_phone", mobileNumber)
+          const dummyUser = {
+            id: "user_dummy_" + Date.now(),
+            name: "",
+            phone: mobileNumber,
+            email: "",
+            profileCompleted: false
+          }
+          setUserAuthData("user", "dummy_access_token", dummyUser, "dummy_refresh_token")
+          localStorage.setItem("user_authenticated", "true")
+          sessionStorage.removeItem("userAuthData")
+          window.dispatchEvent(new Event("userAuthChanged"))
+
+          setSuccess(true)
+          setIsLoading(false)
+          submittingRef.current = false
+
+          // Navigate to Create Profile Page
+          navigate("/user/profile/create", { state: { phone: mobileNumber } })
+        }
       } catch (err) {
         setError("Simulation failed. Please try again.")
         setIsLoading(false)

@@ -60,6 +60,14 @@ export default function Home() {
   const checkLocation = useLocationGuard()
 
   // App States
+  const [userName, setUserName] = useState(() => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem("currentUser") || localStorage.getItem("user_user") || "{}")
+      return storedUser.name || ""
+    } catch (e) {
+      return ""
+    }
+  })
   const [activeService, setActiveService] = useState(localStorage.getItem("activeService") || "delivery")
   const [hoveredService, setHoveredService] = useState(null)
   const [activeCategory, setActiveCategory] = useState("pizza")
@@ -118,11 +126,24 @@ export default function Home() {
     }
   }, [locationConfirmed])
 
-  // Redirect to welcome screen if not visited yet and guest
+  // Redirect to welcome screen if guest, or profile creation if profile is incomplete
   useEffect(() => {
     const welcomeShown = localStorage.getItem("papa_veg_welcome_shown")
     const isAuthenticated = localStorage.getItem("user_authenticated") === "true" || !!localStorage.getItem("user_accessToken")
-    if (!welcomeShown && !isAuthenticated) {
+    if (isAuthenticated) {
+      try {
+        const storedUser = JSON.parse(localStorage.getItem("currentUser") || localStorage.getItem("user_user") || "{}")
+        if (storedUser.name) {
+          setUserName(storedUser.name)
+        }
+        if (!storedUser.profileCompleted) {
+          navigate("/user/profile/create", { replace: true })
+          return
+        }
+      } catch (e) {
+        console.error("Failed to parse user profile status", e)
+      }
+    } else if (!welcomeShown) {
       navigate("/welcome")
     }
   }, [navigate])
@@ -488,6 +509,18 @@ export default function Home() {
               <div className={`h-1 rounded-full transition-all duration-300 ${activeSlide === 1 ? "w-8 bg-primary" : "w-2 bg-white/30"}`}></div>
             </div>
           </motion.section>
+
+          {/* Welcome Greeting */}
+          {userName && (
+            <div className="px-margin-mobile pt-2 pb-1 space-y-1">
+              <h2 className={`font-headline-lg-mobile text-2xl font-black tracking-tight leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
+                Welcome back {userName.trim().split(/\s+/)[0]}! 🍕
+              </h2>
+              <p className={`text-xs font-semibold leading-normal ${isDarkMode ? "text-zinc-400" : "text-zinc-600"}`}>
+                Select Delivery or Takeaway to see local deals
+              </p>
+            </div>
+          )}
 
           {/* Order Details Flow (Confirmation Bar) */}
           {locationConfirmed && activeService === "delivery" && (

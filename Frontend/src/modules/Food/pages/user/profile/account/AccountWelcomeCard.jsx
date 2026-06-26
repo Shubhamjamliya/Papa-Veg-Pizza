@@ -1,6 +1,14 @@
 import React from "react"
 
-export default function AccountWelcomeCard({ onSignIn }) {
+export default function AccountWelcomeCard({ onSignIn, isLoggedIn }) {
+  if (isLoggedIn) {
+    return (
+      <h2 className="font-headline-lg-mobile text-headline-lg-mobile font-black mb-4 text-slate-900 dark:text-white text-left px-1">
+        Account & Settings 👋
+      </h2>
+    )
+  }
+
   return (
     <section className="glass-card rounded-2xl p-margin-mobile shadow-lg mb-md text-left transition-all duration-300">
       {/* Title */}

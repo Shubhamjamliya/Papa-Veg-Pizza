@@ -2010,22 +2010,104 @@ export function handleMockRequest(config) {
     }
     return errorRes("Invalid email or password");
   }
-
   if (url.includes("/food/auth/me") || url.includes("/auth/me")) {
+    const isUser = config.contextModule === "user" || localStorage.getItem("user_accessToken") === "dummy_access_token";
+    if (isUser) {
+      let userData = {
+        id: "user_dummy_12345",
+        name: "",
+        phone: "8770552411",
+        email: "",
+        profileCompleted: false
+      };
+      try {
+        const stored = localStorage.getItem("currentUser") || localStorage.getItem("user_user");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.role !== "superadmin" && parsed.id !== "admin-1") {
+            userData = parsed;
+          }
+        }
+      } catch (e) {}
+      return {
+        success: true,
+        status: 200,
+        data: {
+          success: true,
+          data: {
+            user: userData
+          }
+        }
+      };
+    }
+
     return {
       success: true,
       status: 200,
       data: {
         success: true,
         data: {
-          id: "admin-1",
-          name: "Papa Veg Admin",
-          email: "admin@papavegpizza.com",
-          role: "superadmin",
-          profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
+          user: {
+            id: "admin-1",
+            name: "Papa Veg Admin",
+            email: "admin@papavegpizza.com",
+            role: "superadmin",
+            profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
+          }
         }
       }
     };
+  }
+
+  if (url.includes("/food/user/profile/profile-image") && method === "post") {
+    const defaultUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde";
+    return successRes({ profileImage: defaultUrl });
+  }
+
+  if (url.includes("/food/user/profile") && method === "patch") {
+    let userData = {};
+    try {
+      const stored = localStorage.getItem("currentUser") || localStorage.getItem("user_user");
+      if (stored) {
+        userData = JSON.parse(stored);
+      }
+    } catch (e) {}
+
+    const updatedUser = {
+      ...userData,
+      ...data,
+      phone: data.mobile || data.phone || userData.phone,
+      mobile: data.mobile || data.phone || userData.mobile
+    };
+
+    try {
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      localStorage.setItem("user_user", JSON.stringify(updatedUser));
+      localStorage.setItem("userProfile", JSON.stringify(updatedUser));
+      
+      const phone = updatedUser.phone || updatedUser.mobile;
+      if (phone) {
+        const completedProfiles = JSON.parse(localStorage.getItem("completed_profiles") || "{}");
+        completedProfiles[phone] = updatedUser;
+        localStorage.setItem("completed_profiles", JSON.stringify(completedProfiles));
+
+        // Sync inside the users array in local storage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const index = users.findIndex(u => {
+          const cleanU = String(u.phone || u.mobile || "").replace(/\D/g, "").slice(-10);
+          const cleanPhone = String(phone).replace(/\D/g, "").slice(-10);
+          return cleanU === cleanPhone;
+        });
+        if (index > -1) {
+          users[index] = { ...users[index], ...updatedUser };
+        } else {
+          users.push(updatedUser);
+        }
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+    } catch (e) {}
+
+    return successRes({ user: updatedUser });
   }
 
   if (url.includes("/food/auth/logout") || url.includes("/auth/logout")) {

@@ -48,7 +48,7 @@ const genderOptions = [
 // Load profile data from localStorage (legacy + current keys)
 const loadProfileFromStorage = () => {
   try {
-    const candidates = ["user_user", "userProfile", "appzeto_user_profile"]
+    const candidates = ["currentUser", "user_user", "userProfile", "appzeto_user_profile"]
     for (const key of candidates) {
       const stored = localStorage.getItem(key)
       if (stored) return JSON.parse(stored)
@@ -62,8 +62,31 @@ const loadProfileFromStorage = () => {
 // Save profile data to localStorage (keep keys used by ProfileContext)
 const saveProfileToStorage = (data) => {
   try {
+    localStorage.setItem('currentUser', JSON.stringify(data))
     localStorage.setItem('user_user', JSON.stringify(data))
     localStorage.setItem('userProfile', JSON.stringify(data))
+
+    // Save to completed profiles dictionary too
+    const phone = data.phone || data.mobile
+    if (phone) {
+      const completedProfiles = JSON.parse(localStorage.getItem("completed_profiles") || "{}")
+      completedProfiles[phone] = data
+      localStorage.setItem("completed_profiles", JSON.stringify(completedProfiles))
+
+      // Sync inside the users array in local storage
+      const users = JSON.parse(localStorage.getItem("users")) || []
+      const index = users.findIndex(u => {
+        const cleanU = String(u.phone || u.mobile || "").replace(/\D/g, "").slice(-10)
+        const cleanPhone = String(phone).replace(/\D/g, "").slice(-10)
+        return cleanU === cleanPhone
+      })
+      if (index > -1) {
+        users[index] = { ...users[index], ...data }
+      } else {
+        users.push(data)
+      }
+      localStorage.setItem("users", JSON.stringify(users))
+    }
   } catch (error) {
     debugError('Error saving profile to localStorage:', error)
   }

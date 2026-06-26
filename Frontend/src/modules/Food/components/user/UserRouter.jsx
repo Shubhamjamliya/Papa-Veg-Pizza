@@ -64,6 +64,7 @@ const Profile = lazy(() => import("@food/pages/user/profile/Profile"))
 const AccountSettings = lazy(() => import("@food/pages/user/AccountSettings"))
 const TrackOrder = lazy(() => import("@food/pages/user/profile/TrackOrder"))
 const EditProfile = lazy(() => import("@food/pages/user/profile/EditProfile"))
+const MyProfile = lazy(() => import("@food/pages/user/profile/MyProfile"))
 const Payments = lazy(() => import("@food/pages/user/profile/Payments"))
 const AddPayment = lazy(() => import("@food/pages/user/profile/AddPayment"))
 const EditPayment = lazy(() => import("@food/pages/user/profile/EditPayment"))
@@ -212,6 +213,10 @@ export default function UserRouter() {
                 <EditProfile />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path="profile/create"
+            element={<MyProfile />}
           />
           <Route
             path="profile/payments"

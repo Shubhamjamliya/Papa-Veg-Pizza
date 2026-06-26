@@ -25,6 +25,15 @@ export default function WelcomeScreen() {
 
   const handleContinueAsGuest = () => {
     localStorage.setItem("papa_veg_welcome_shown", "true")
+    localStorage.removeItem("user_authenticated")
+    localStorage.removeItem("currentUser")
+    localStorage.removeItem("user_user")
+    localStorage.removeItem("userProfile")
+    localStorage.removeItem("appzeto_user_profile")
+    localStorage.removeItem("user_accessToken")
+    localStorage.removeItem("user_refreshToken")
+    localStorage.removeItem("tempPhone")
+    localStorage.removeItem("user_temp_phone")
     clearLocation()
     navigate("/food/user")
   }
