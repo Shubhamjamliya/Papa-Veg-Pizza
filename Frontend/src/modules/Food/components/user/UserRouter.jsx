@@ -60,11 +60,11 @@ const CollectionDetail = lazy(() => import("@food/pages/user/CollectionDetail"))
 
 
 // Profile
-const Profile = lazy(() => import("@food/pages/user/profile/Profile"))
 const AccountSettings = lazy(() => import("@food/pages/user/AccountSettings"))
 const TrackOrder = lazy(() => import("@food/pages/user/profile/TrackOrder"))
 const EditProfile = lazy(() => import("@food/pages/user/profile/EditProfile"))
 const MyProfile = lazy(() => import("@food/pages/user/profile/MyProfile"))
+const ProfileDetails = lazy(() => import("@food/pages/user/profile/ProfileDetails"))
 const Payments = lazy(() => import("@food/pages/user/profile/Payments"))
 const AddPayment = lazy(() => import("@food/pages/user/profile/AddPayment"))
 const EditPayment = lazy(() => import("@food/pages/user/profile/EditPayment"))
@@ -199,15 +199,15 @@ export default function UserRouter() {
           <Route path="account" element={<AccountSettings />} />
           <Route path="account/track-order" element={<TrackOrder />} />
           <Route
-            path="profile"
+            path="account/profile-details"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
-                <Profile />
+                <ProfileDetails />
               </ProtectedRoute>
             }
           />
           <Route
-            path="profile/edit"
+            path="account/profile-details/edit"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
                 <EditProfile />
@@ -219,7 +219,7 @@ export default function UserRouter() {
             element={<MyProfile />}
           />
           <Route
-            path="profile/payments"
+            path="account/profile-details/payments"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
                 <Payments />
@@ -227,7 +227,7 @@ export default function UserRouter() {
             }
           />
           <Route
-            path="profile/payments/new"
+            path="account/profile-details/payments/new"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
                 <AddPayment />
@@ -235,7 +235,7 @@ export default function UserRouter() {
             }
           />
           <Route
-            path="profile/payments/:id/edit"
+            path="account/profile-details/payments/:id/edit"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
                 <EditPayment />

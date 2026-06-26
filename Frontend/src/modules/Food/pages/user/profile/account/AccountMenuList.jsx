@@ -1,9 +1,25 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import AccountMenuCard from "./AccountMenuCard"
 
 export default function AccountMenuList() {
   const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    try {
+      const isAuthenticated = localStorage.getItem("user_authenticated") === "true"
+      const stored = localStorage.getItem("currentUser") || localStorage.getItem("user_user")
+      if (isAuthenticated && stored) {
+        const userObj = JSON.parse(stored)
+        if (userObj.profileCompleted) {
+          setIsLoggedIn(true)
+        }
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [])
 
   const MENU_ITEMS = [
     {
@@ -11,6 +27,15 @@ export default function AccountMenuList() {
       icon: "local_offer",
       route: "/user/auth/login",
     },
+    ...(isLoggedIn
+      ? [
+          {
+            title: "My Profile",
+            icon: "person",
+            route: "/user/account/profile-details",
+          },
+        ]
+      : []),
     {
       title: "Track Order",
       icon: "local_shipping",

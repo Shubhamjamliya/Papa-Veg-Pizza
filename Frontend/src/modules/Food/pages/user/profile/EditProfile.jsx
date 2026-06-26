@@ -1,677 +1,349 @@
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowLeft, X, Pencil, Loader2, Camera, Upload } from "lucide-react"
-import { Button } from "@food/components/ui/button"
-import { Input } from "@food/components/ui/input"
-import { Label } from "@food/components/ui/label"
-import { Card, CardContent } from "@food/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@food/components/ui/select"
-import { Avatar, AvatarFallback, AvatarImage } from "@food/components/ui/avatar"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@food/components/ui/dialog"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useProfile } from "@food/context/ProfileContext"
-import { userAPI } from "@food/api"
+import { userAPI, authAPI } from "@food/api"
+import { clearModuleAuth } from "@food/utils/auth"
 import { toast } from "sonner"
-import useAppBackNavigation from "@food/hooks/useAppBackNavigation"
-import { ImageSourcePicker } from "@food/components/ImageSourcePicker"
-import { isFlutterBridgeAvailable } from "@food/utils/imageUploadUtils"
-import { EMAIL_REGEX } from "@/shared/utils/emailValidation"
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import dayjs from 'dayjs'
-const debugLog = (...args) => { }
-const debugWarn = (...args) => { }
-const debugError = (...args) => { }
-const EDIT_PROFILE_DRAFT_KEY = "user_edit_profile_draft"
-
-
-// Gender options
-const genderOptions = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "other", label: "Other" },
-  { value: "prefer-not-to-say", label: "Prefer not to say" },
-]
-
-// Load profile data from localStorage (legacy + current keys)
-const loadProfileFromStorage = () => {
-  try {
-    const candidates = ["currentUser", "user_user", "userProfile", "appzeto_user_profile"]
-    for (const key of candidates) {
-      const stored = localStorage.getItem(key)
-      if (stored) return JSON.parse(stored)
-    }
-  } catch (error) {
-    debugError('Error loading profile from localStorage:', error)
-  }
-  return null
-}
-
-// Save profile data to localStorage (keep keys used by ProfileContext)
-const saveProfileToStorage = (data) => {
-  try {
-    localStorage.setItem('currentUser', JSON.stringify(data))
-    localStorage.setItem('user_user', JSON.stringify(data))
-    localStorage.setItem('userProfile', JSON.stringify(data))
-
-    // Save to completed profiles dictionary too
-    const phone = data.phone || data.mobile
-    if (phone) {
-      const completedProfiles = JSON.parse(localStorage.getItem("completed_profiles") || "{}")
-      completedProfiles[phone] = data
-      localStorage.setItem("completed_profiles", JSON.stringify(completedProfiles))
-
-      // Sync inside the users array in local storage
-      const users = JSON.parse(localStorage.getItem("users")) || []
-      const index = users.findIndex(u => {
-        const cleanU = String(u.phone || u.mobile || "").replace(/\D/g, "").slice(-10)
-        const cleanPhone = String(phone).replace(/\D/g, "").slice(-10)
-        return cleanU === cleanPhone
-      })
-      if (index > -1) {
-        users[index] = { ...users[index], ...data }
-      } else {
-        users.push(data)
-      }
-      localStorage.setItem("users", JSON.stringify(users))
-    }
-  } catch (error) {
-    debugError('Error saving profile to localStorage:', error)
-  }
-}
-
-const normalizePhoneToTenDigits = (value) =>
-  String(value || "").replace(/\D/g, "").slice(-10)
-
-const buildFormDataFromProfile = (profile = {}) => ({
-  name: profile.name || "",
-  mobile: normalizePhoneToTenDigits(profile.mobile || profile.phone || ""),
-  email: profile.email || "",
-  dateOfBirth: profile.dateOfBirth
-    ? (typeof profile.dateOfBirth === 'string'
-      ? dayjs(profile.dateOfBirth)
-      : dayjs(profile.dateOfBirth))
-    : null,
-  anniversary: profile.anniversary
-    ? (typeof profile.anniversary === 'string'
-      ? dayjs(profile.anniversary)
-      : dayjs(profile.anniversary))
-    : null,
-  gender: profile.gender || "",
-})
-
-const loadEditProfileDraft = () => {
-  try {
-    const saved = localStorage.getItem(EDIT_PROFILE_DRAFT_KEY)
-    return saved ? JSON.parse(saved) : null
-  } catch (error) {
-    debugError('Error loading edit profile draft from localStorage:', error)
-    return null
-  }
-}
-
-const saveEditProfileDraft = (data) => {
-  try {
-    localStorage.setItem(EDIT_PROFILE_DRAFT_KEY, JSON.stringify(data))
-  } catch (error) {
-    debugError('Error saving edit profile draft to localStorage:', error)
-  }
-}
-
-const clearEditProfileDraft = () => {
-  try {
-    localStorage.removeItem(EDIT_PROFILE_DRAFT_KEY)
-  } catch (error) {
-    debugError('Error clearing edit profile draft from localStorage:', error)
-  }
-}
+import AnimatedPage from "@food/components/user/AnimatedPage"
 
 export default function EditProfile() {
   const navigate = useNavigate()
-  const goBack = useAppBackNavigation()
   const { userProfile, updateUserProfile } = useProfile()
 
-  // Load from localStorage or use context
-  const storedProfile = loadProfileFromStorage()
-  const draftProfile = loadEditProfileDraft()
-  const initialProfile = draftProfile || storedProfile || userProfile || {}
-
-  const initialFormData = buildFormDataFromProfile(initialProfile)
-
-  const [formData, setFormData] = useState(initialFormData)
-  const [initialData] = useState(initialFormData)
-  const [hasChanges, setHasChanges] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [isUploadingImage, setIsUploadingImage] = useState(false)
-  const [profileImage, setProfileImage] = useState(initialProfile?.profileImage || "")
-  const [imagePreview, setImagePreview] = useState(initialProfile?.profileImage || "")
-  const [photoPickerOpen, setPhotoPickerOpen] = useState(false)
-  const [fieldErrors, setFieldErrors] = useState({
-    mobile: "",
-    email: "",
-    dateOfBirth: "",
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
   })
-  const fileInputRef = useRef(null)
-  const hydratedFromDraftRef = useRef(Boolean(draftProfile))
 
-  // Update form data when profile changes
-  useEffect(() => {
-    if (hydratedFromDraftRef.current) return
+  // Load from localStorage or use context
+  const storedUser = JSON.parse(localStorage.getItem("currentUser") || localStorage.getItem("user_user") || "{}")
+  const initialName = userProfile?.name || storedUser?.name || ""
+  const initialPhone = userProfile?.phone || storedUser?.phone || ""
+  const initialEmail = userProfile?.email || storedUser?.email || ""
+  const initialGender = userProfile?.gender || storedUser?.gender || "Rather not say"
+  const initialBirthday = userProfile?.birthday || userProfile?.dateOfBirth || storedUser?.birthday || storedUser?.dateOfBirth || ""
+  const initialSubscribe = userProfile?.subscribeOffers !== undefined ? userProfile?.subscribeOffers : (storedUser?.subscribeOffers || false)
 
-    const storedProfile = loadProfileFromStorage()
-    const profile = storedProfile || userProfile || {}
-    const newFormData = buildFormDataFromProfile(profile)
-    setFormData(newFormData)
+  // Split name
+  const nameParts = initialName.trim().split(/\s+/)
+  const [firstName, setFirstName] = useState(nameParts[0] || "")
+  const [lastName, setLastName] = useState(nameParts.slice(1).join(" ") || "")
+  
+  const [email, setEmail] = useState(initialEmail)
+  const [phone, setPhone] = useState(() => {
+    const cleaned = String(initialPhone).replace(/\D/g, "")
+    return cleaned.slice(-10)
+  })
+  const [gender, setGender] = useState(initialGender)
+  const [birthday, setBirthday] = useState(initialBirthday)
+  const [subscribeOffers, setSubscribeOffers] = useState(initialSubscribe)
 
-    // Update profile image
-    if (profile.profileImage) {
-      setProfileImage(profile.profileImage)
-      setImagePreview(profile.profileImage)
-    }
-  }, [userProfile])
-
-  useEffect(() => {
-    saveEditProfileDraft({
-      name: formData.name,
-      phone: formData.mobile,
-      mobile: formData.mobile,
-      email: formData.email,
-      profileImage,
-      dateOfBirth: formData.dateOfBirth ? formData.dateOfBirth.format('YYYY-MM-DD') : null,
-      anniversary: formData.anniversary ? formData.anniversary.format('YYYY-MM-DD') : null,
-      gender: formData.gender || "",
-    })
-  }, [formData, profileImage])
-
-  // Get avatar initial
-  const avatarInitial = formData.name?.charAt(0).toUpperCase() || 'A'
-
-  // Check if form has changes
-  useEffect(() => {
-    const currentData = JSON.stringify(formData)
-    const savedData = JSON.stringify(initialData)
-    setHasChanges(currentData !== savedData)
-  }, [formData, initialData])
-
-  const validateEmail = (value) => {
-    if (!value) return ""
-    return EMAIL_REGEX.test(value) ? "" : "Please enter a valid email"
-  }
-
-  const validateMobile = (value) => {
-    if (!value) return ""
-    return /^\d{10}$/.test(value) ? "" : "Mobile number must be 10 digits"
-  }
-
-  const validateDateOfBirth = (value) => {
-    if (!value) return ""
-    const dob = dayjs(value)
-    if (!dob.isValid()) return "Please select a valid date of birth"
-    return dob.isAfter(dayjs(), "day") ? "Date of birth cannot be in the future" : ""
-  }
-
-  const handleChange = (field, value) => {
-    let normalizedValue = value
-    let errorMessage = ""
-
-    if (field === "mobile") {
-      normalizedValue = String(value || "").replace(/\D/g, "").slice(0, 10)
-      errorMessage = validateMobile(normalizedValue)
-    } else if (field === "email") {
-      normalizedValue = String(value || "").trim()
-      errorMessage = validateEmail(normalizedValue)
-    } else if (field === "dateOfBirth") {
-      errorMessage = validateDateOfBirth(normalizedValue)
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      [field]: normalizedValue
-    }))
-
-    if (field === "mobile" || field === "email" || field === "dateOfBirth") {
-      setFieldErrors((prev) => ({
-        ...prev,
-        [field]: errorMessage
-      }))
-    }
-  }
-
-  const handleClear = (field) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: ""
-    }))
-  }
-
-  const processProfileImageFile = async (file) => {
-    if (!file) return
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select a valid image file')
-      return
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size should be less than 5MB')
-      return
-    }
-
-    // Show preview
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setImagePreview(reader.result)
-    }
-    reader.readAsDataURL(file)
-
-    // Upload to server
+  const handleUpdate = () => {
     try {
-      setIsUploadingImage(true)
-      const response = await userAPI.uploadProfileImage(file)
-      const imageUrl = response?.data?.data?.profileImage || response?.data?.profileImage
+      const combinedName = `${firstName.trim()} ${lastName.trim()}`.trim()
+      if (!combinedName) {
+        toast.error("Name is required.")
+        return
+      }
 
-      if (imageUrl) {
-        setProfileImage(imageUrl)
-        setImagePreview(imageUrl)
-        toast.success('Profile image uploaded successfully')
+      const updatedUser = {
+        ...storedUser,
+        name: combinedName,
+        email: email.trim(),
+        gender: gender,
+        birthday: birthday,
+        dateOfBirth: birthday,
+        subscribeOffers: subscribeOffers,
+        profileCompleted: true
+      }
 
-        const mergedProfile = {
-          ...(userProfile || {}),
-          name: formData.name,
-          phone: formData.mobile,
-          mobile: formData.mobile,
-          email: formData.email,
-          dateOfBirth: formData.dateOfBirth ? formData.dateOfBirth.format('YYYY-MM-DD') : null,
-          anniversary: formData.anniversary ? formData.anniversary.format('YYYY-MM-DD') : null,
-          gender: formData.gender || "",
-          profileImage: imageUrl,
-        }
+      // Save back to localStorage
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser))
+      localStorage.setItem("user_user", JSON.stringify(updatedUser))
+      localStorage.setItem("userProfile", JSON.stringify(updatedUser))
+      localStorage.setItem("appzeto_user_profile", JSON.stringify(updatedUser))
 
-        // Update context + local persistence with current form values so refresh keeps all fields
-        updateUserProfile(mergedProfile)
-        saveProfileToStorage(mergedProfile)
-        saveEditProfileDraft(mergedProfile)
+      // Save to completed profiles list
+      const completedProfiles = JSON.parse(localStorage.getItem("completed_profiles") || "{}")
+      if (updatedUser.phone) {
+        completedProfiles[updatedUser.phone] = updatedUser
+      }
+      localStorage.setItem("completed_profiles", JSON.stringify(completedProfiles))
 
-        // Dispatch event to refresh profile
+      // Save to global users array
+      const users = JSON.parse(localStorage.getItem("users")) || []
+      const index = users.findIndex(u => {
+        const cleanU = String(u.phone || u.mobile || "").replace(/\D/g, "").slice(-10)
+        const cleanPhone = String(updatedUser.phone || updatedUser.mobile || "").replace(/\D/g, "").slice(-10)
+        return cleanU === cleanPhone
+      })
+      if (index > -1) {
+        users[index] = { ...users[index], ...updatedUser }
+      } else {
+        users.push(updatedUser)
+      }
+      localStorage.setItem("users", JSON.stringify(users))
+
+      // Update React context state
+      updateUserProfile(updatedUser)
+
+      // Dispatch event to refresh profile from API/context
+      window.dispatchEvent(new Event("userAuthChanged"))
+
+      toast.success("Profile updated successfully")
+      navigate("/user/account/profile-details")
+    } catch (e) {
+      console.error(e)
+      toast.error("Failed to update profile.")
+    }
+  }
+
+  const handleLogout = async () => {
+    if (window.confirm("Are you sure you want to log out?")) {
+      try {
+        await authAPI.logout()
+      } catch (err) {
+        console.error("API logout failed, clearing local session anyway", err)
+      }
+      
+      // Clear credentials
+      clearModuleAuth("user")
+      localStorage.removeItem("accessToken")
+      localStorage.removeItem("user_authenticated")
+      localStorage.removeItem("currentUser")
+      localStorage.removeItem("user_user")
+      localStorage.removeItem("user")
+      localStorage.removeItem("cart")
+      
+      const USER_SESSION_PREFERENCE_KEYS = ["userVegMode", "userVegModeOption", "food-under-250-filters"]
+      USER_SESSION_PREFERENCE_KEYS.forEach((key) => localStorage.removeItem(key))
+      window.dispatchEvent(new Event("userAuthChanged"))
+      navigate("/user/auth/login", { replace: true })
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      try {
+        await userAPI.deleteAccount()
+        toast.success("Account deleted successfully")
+        
+        // Clear all local data
+        clearModuleAuth("user")
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("user_authenticated")
+        localStorage.removeItem("currentUser")
+        localStorage.removeItem("user_user")
+        localStorage.removeItem("user")
+        localStorage.removeItem("cart")
+        
+        const USER_SESSION_PREFERENCE_KEYS = ["userVegMode", "userVegModeOption", "food-under-250-filters"]
+        USER_SESSION_PREFERENCE_KEYS.forEach((key) => localStorage.removeItem(key))
         window.dispatchEvent(new Event("userAuthChanged"))
+        navigate("/user/auth/login", { replace: true })
+      } catch (err) {
+        toast.error(err?.response?.data?.message || "Failed to delete account. Please try again.")
       }
-    } catch (error) {
-      debugError('Error uploading image:', error)
-      toast.error(error?.response?.data?.message || 'Failed to upload image')
-      // Revert preview
-      setImagePreview(profileImage)
-    } finally {
-      setIsUploadingImage(false)
     }
-  }
-
-  const handleImageSelect = async (e) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      await processProfileImageFile(file)
-    }
-    e.target.value = ""
-  }
-
-  const handleProfileImageAction = () => {
-    if (isFlutterBridgeAvailable()) {
-      setPhotoPickerOpen(true)
-      return
-    }
-
-    fileInputRef.current?.click()
-  }
-
-  const validateForm = () => {
-    const nextErrors = {
-      mobile: validateMobile(formData.mobile),
-      email: validateEmail(formData.email),
-      dateOfBirth: validateDateOfBirth(formData.dateOfBirth),
-    }
-    setFieldErrors(nextErrors)
-    return !Object.values(nextErrors).some(Boolean)
-  }
-
-  const handleUpdate = async () => {
-    if (isSaving) return
-    if (!validateForm()) {
-      toast.error("Please fix the highlighted fields")
-      return
-    }
-
-    try {
-      setIsSaving(true)
-
-      // Prepare data for API
-      const updateData = {
-        name: formData.name,
-        email: formData.email || undefined,
-        dateOfBirth: formData.dateOfBirth ? formData.dateOfBirth.format('YYYY-MM-DD') : undefined,
-        anniversary: formData.anniversary ? formData.anniversary.format('YYYY-MM-DD') : undefined,
-        gender: formData.gender || undefined,
-        profileImage: profileImage || undefined, // Include profileImage in update
-      }
-
-      // Call API to update profile
-      const response = await userAPI.updateProfile(updateData)
-      const updatedUser = response?.data?.data?.user || response?.data?.user
-
-      if (updatedUser) {
-        // Update context with all fields including profileImage
-        updateUserProfile({
-          ...updatedUser,
-          phone: updatedUser.phone || formData.mobile,
-          profileImage: updatedUser.profileImage || profileImage,
-        })
-
-        // Save to localStorage with complete data
-        saveProfileToStorage({
-          name: updatedUser.name || formData.name,
-          phone: updatedUser.phone || formData.mobile,
-          mobile: updatedUser.phone || formData.mobile,
-          email: updatedUser.email || formData.email,
-          profileImage: updatedUser.profileImage || profileImage,
-          dateOfBirth: updatedUser.dateOfBirth || formData.dateOfBirth?.format('YYYY-MM-DD'),
-          anniversary: updatedUser.anniversary || formData.anniversary?.format('YYYY-MM-DD'),
-          gender: updatedUser.gender || formData.gender,
-        })
-        clearEditProfileDraft()
-
-        // Dispatch event to refresh profile from API
-        window.dispatchEvent(new Event("userAuthChanged"))
-
-        toast.success('Profile updated successfully')
-
-        // Navigate back
-        navigate("/user/profile")
-      }
-    } catch (error) {
-      debugError('Error updating profile:', error)
-      toast.error(error?.response?.data?.message || 'Failed to update profile')
-    } finally {
-      setIsSaving(false)
-    }
-  }
-
-  const handleMobileChange = () => {
-    // Navigate to mobile change page or show modal
-    debugLog('Change mobile clicked')
-  }
-
-  const handleEmailChange = () => {
-    // Navigate to email change page or show modal
-    debugLog('Change email clicked')
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a]">
+    <AnimatedPage className={`min-h-screen pb-32 flex flex-col transition-colors duration-300 ${isDarkMode ? "dark bg-[#111111]" : "bg-[#ffffff]"}`}>
+      
       {/* Header */}
-      <div className="bg-white dark:bg-[#1a1a1a] sticky top-0 z-10 border-b border-gray-100 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto flex items-center gap-3 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-4 md:py-5 lg:py-6">
-          <button
-            onClick={goBack}
-            className="w-9 h-9 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors flex-shrink-0"
-          >
-            <ArrowLeft className="h-5 w-5 text-gray-700 dark:text-white" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Your Profile</h1>
-        </div>
-      </div>
+      <header className={`fixed top-0 left-0 w-full z-50 h-16 flex items-center px-4 justify-between border-b ${
+        isDarkMode ? "bg-[#111111] border-white/10 text-white" : "bg-[#ffffff] border-zinc-200 text-zinc-950"
+      }`}>
+        <button
+          onClick={() => navigate(-1)}
+          className={`flex items-center justify-center p-2 rounded-full cursor-pointer transition-all active:scale-95 bg-transparent border-0 outline-none ${
+            isDarkMode ? "text-white hover:bg-white/10" : "text-zinc-950 hover:bg-zinc-100"
+          }`}
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        
+        <h1 className="text-lg font-bold text-center flex-1 font-headline-lg-mobile pl-6">
+          My Profile
+        </h1>
 
-      {/* Content */}
-      <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-6 sm:py-8 md:py-10 lg:py-12 pb-28 md:pb-12 space-y-6 md:space-y-8 lg:space-y-10">
-        {/* Avatar Section */}
-        <div className="flex justify-center">
-          <div className="relative">
-            <Avatar className="h-24 w-24 bg-primary border-0">
-              {imagePreview && (
-                <AvatarImage
-                  src={imagePreview}
-                  alt={formData.name || 'User'}
-                />
-              )}
-              <AvatarFallback className="bg-primary text-white text-3xl font-semibold">
-                {avatarInitial}
-              </AvatarFallback>
-            </Avatar>
-            {/* Edit Icon */}
-            <button
-              onClick={handleProfileImageAction}
-              disabled={isUploadingImage}
-              className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 border-white hover:bg-[#55254b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isUploadingImage ? (
-                <Loader2 className="h-4 w-4 text-white animate-spin" />
-              ) : (
-                <Pencil className="h-4 w-4 text-white" />
-              )}
-            </button>
+        <button
+          onClick={handleUpdate}
+          className="text-[#E53935] hover:text-red-700 font-bold text-sm px-3 py-1.5 rounded-lg active:scale-95 cursor-pointer bg-transparent border-0 outline-none transition-all font-sans"
+        >
+          Save
+        </button>
+      </header>
+
+      {/* Content Form */}
+      <main className="mt-20 px-5 flex-1 flex flex-col max-w-md mx-auto w-full select-none text-left gap-6">
+        
+        <div className="space-y-4">
+          <h2 className={`text-xl font-extrabold font-headline-lg-mobile ${
+            isDarkMode ? "text-white" : "text-zinc-900"
+          }`}>
+            My Profile
+          </h2>
+
+          {/* Name fields */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400">First name</label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className={`h-12 px-4 border rounded-xl text-sm focus:outline-none focus:border-red-500 transition-colors font-sans ${
+                  isDarkMode ? "bg-white/5 border-white/10 text-white" : "bg-white border-zinc-200 text-zinc-900"
+                }`}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Last name</label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className={`h-12 px-4 border rounded-xl text-sm focus:outline-none focus:border-red-500 transition-colors font-sans ${
+                  isDarkMode ? "bg-white/5 border-white/10 text-white" : "bg-white border-zinc-200 text-zinc-900"
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Email address */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Email address</label>
             <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageSelect}
-              className="hidden"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`h-12 px-4 border rounded-xl text-sm focus:outline-none focus:border-red-500 transition-colors font-sans ${
+                isDarkMode ? "bg-white/5 border-white/10 text-white" : "bg-white border-zinc-200 text-zinc-900"
+              }`}
             />
+          </div>
+
+          {/* Phone field (Read-only) */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Phone number</label>
+            <div className="flex gap-3">
+              {/* Flag container */}
+              <div className={`flex items-center gap-2 px-3 border rounded-xl h-12 select-none shrink-0 ${
+                isDarkMode ? "bg-white/5 border-white/10" : "bg-zinc-50 border-zinc-200"
+              }`}>
+                {/* CSS Indian Flag */}
+                <div className="flex flex-col gap-[2px] w-5 h-3 border border-zinc-250/60 rounded-[1px] overflow-hidden shrink-0">
+                  <div className="bg-[#FF9933] h-1/3 w-full"></div>
+                  <div className="bg-white h-1/3 w-full flex items-center justify-center relative">
+                    <div className="w-1.5 h-1.5 rounded-full border border-[#000080] flex items-center justify-center">
+                      <div className="w-0.5 h-0.5 rounded-full bg-[#000080]"></div>
+                    </div>
+                  </div>
+                  <div className="bg-[#138808] h-1/3 w-full"></div>
+                </div>
+                <span className={`text-sm font-bold ${isDarkMode ? "text-zinc-300" : "text-zinc-700"}`}>+91</span>
+              </div>
+              {/* Phone input */}
+              <input
+                type="text"
+                readOnly
+                value={phone}
+                className={`flex-1 h-12 px-4 border rounded-xl text-sm cursor-not-allowed font-sans font-medium ${
+                  isDarkMode ? "bg-white/5 border-white/10 text-zinc-400" : "bg-zinc-50/70 border-zinc-200 text-zinc-550"
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* Gender */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Gender (Optional)</label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className={`h-12 px-4 border rounded-xl text-sm focus:outline-none focus:border-red-500 transition-colors font-sans ${
+                isDarkMode ? "bg-[#1f1f1f] border-white/10 text-white" : "bg-white border-zinc-200 text-zinc-900"
+              }`}
+            >
+              <option value="Rather not say">Rather not say</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          {/* Birthday */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-zinc-500 dark:text-zinc-400">Birthday (optional)</label>
+            <input
+              type="date"
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
+              className={`h-12 px-4 border rounded-xl text-sm focus:outline-none focus:border-red-500 transition-colors font-sans ${
+                isDarkMode ? "bg-[#1f1f1f] border-white/10 text-white" : "bg-white border-zinc-200 text-zinc-900"
+              }`}
+            />
+          </div>
+
+          {/* Subscription Offer Checkbox */}
+          <label className="flex items-start gap-3 cursor-pointer group pt-2 select-none">
+            <input
+              type="checkbox"
+              checked={subscribeOffers}
+              onChange={(e) => setSubscribeOffers(e.target.checked)}
+              className="mt-0.5 w-5 h-5 rounded-md border border-zinc-300 text-emerald-500 focus:ring-emerald-500 cursor-pointer"
+            />
+            <span className={`text-xs leading-normal font-sans font-medium transition-colors ${
+              isDarkMode ? "text-zinc-400 group-hover:text-zinc-200" : "text-zinc-550 group-hover:text-zinc-800"
+            }`}>
+              I want to receive the latest discounts and offers from Papa Veg Pizza.
+            </span>
+          </label>
+        </div>
+
+        {/* Account management */}
+        <div className="space-y-3 pt-4 border-t border-zinc-150 dark:border-white/10">
+          <h3 className={`text-sm font-bold uppercase tracking-wider ${
+            isDarkMode ? "text-zinc-400" : "text-zinc-600"
+          }`}>
+            Account management
+          </h3>
+
+          {/* Logout button */}
+          <div
+            onClick={handleLogout}
+            className={`flex items-center justify-between p-4 rounded-xl cursor-pointer border transition-colors ${
+              isDarkMode 
+                ? "bg-white/5 border-white/10 hover:bg-white/[0.08]" 
+                : "bg-white border-zinc-200 hover:bg-zinc-50"
+            }`}
+          >
+            <span className={`text-sm font-semibold font-sans ${isDarkMode ? "text-white" : "text-zinc-800"}`}>
+              Logout
+            </span>
+            <ChevronRight className="w-5 h-5 text-[#E53935]" />
+          </div>
+
+          {/* Delete Account button */}
+          <div
+            onClick={handleDeleteAccount}
+            className={`flex items-center justify-between p-4 rounded-xl cursor-pointer border transition-colors ${
+              isDarkMode 
+                ? "bg-white/5 border-white/10 hover:bg-white/[0.08]" 
+                : "bg-white border-zinc-200 hover:bg-zinc-50"
+            }`}
+          >
+            <span className={`text-sm font-semibold font-sans ${isDarkMode ? "text-white" : "text-zinc-800"}`}>
+              Delete Account
+            </span>
+            <ChevronRight className="w-5 h-5 text-[#E53935]" />
           </div>
         </div>
 
-        {/* Form Card */}
-        <Card className="bg-white dark:bg-[#1a1a1a] rounded-xl shadow-sm border-0 dark:border-gray-800">
-          <CardContent className="p-4 sm:p-5 md:p-6 lg:p-8 space-y-4 md:space-y-5 lg:space-y-6">
-            {/* Name Field */}
-            <div className="space-y-1.5">
-              <Label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-white">
-                Name
-              </Label>
-              <div className="relative">
-                <Input
-                  id="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => handleChange('name', e.target.value)}
-                  className="pr-10 h-12 text-base border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white"
-                  placeholder="Name"
-                />
-                {formData.name && (
-                  <button
-                    type="button"
-                    onClick={() => handleClear('name')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-            </div>
+      </main>
 
-            {/* Mobile Field */}
-            <div className="space-y-1.5">
-              <Label htmlFor="mobile" className="text-sm font-medium text-gray-700 dark:text-white">
-                Mobile
-              </Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  id="mobile"
-                  type="tel"
-                  value={formData.mobile}
-                  onChange={(e) => handleChange('mobile', e.target.value)}
-                  className="flex-1 h-12 text-base  border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white"
-                  placeholder="Mobile"
-                />
-              </div>
-              {fieldErrors.mobile && (
-                <p className="text-xs text-red-600">{fieldErrors.mobile}</p>
-              )}
-            </div>
-
-            {/* Email Field */}
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-white">
-                Email
-              </Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleChange('email', e.target.value)}
-                  className="flex-1 h-12 text-base border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white"
-                  placeholder="Email"
-                />
-              </div>
-              {fieldErrors.email && (
-                <p className="text-xs text-red-600">{fieldErrors.email}</p>
-              )}
-            </div>
-
-            {/* Date of Birth Field */}
-            <div className="space-y-1.5">
-              <Label htmlFor="dateOfBirth" className="text-sm font-medium text-gray-700 dark:text-white">
-                Date of birth
-              </Label>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  value={formData.dateOfBirth}
-                  onChange={(newValue) => handleChange('dateOfBirth', newValue)}
-                  maxDate={dayjs()}
-                  slotProps={{
-                    textField: {
-                      className: "w-full",
-                      sx: {
-                        '& .MuiOutlinedInput-root': {
-                          height: '48px',
-                          borderRadius: '8px',
-                          '& fieldset': {
-                            borderColor: '#d1d5db',
-                          },
-                          '&:hover fieldset': {
-                            borderColor: '#9ca3af',
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#7e3866',
-                            borderWidth: '1px',
-                          },
-                        },
-                        '& .MuiInputBase-input': {
-                          padding: '12px 14px',
-                          fontSize: '16px',
-                        },
-                      },
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-              {fieldErrors.dateOfBirth && (
-                <p className="text-xs text-red-600">{fieldErrors.dateOfBirth}</p>
-              )}
-            </div>
-
-            {/* Anniversary Field */}
-            <div className="space-y-1.5">
-              <Label htmlFor="anniversary" className="text-sm font-medium text-gray-700 dark:text-white">
-                Anniversary <span className="text-gray-400 dark:text-gray-500 font-normal">(Optional)</span>
-              </Label>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  value={formData.anniversary}
-                  onChange={(newValue) => handleChange('anniversary', newValue)}
-                  slotProps={{
-                    textField: {
-                      className: "w-full",
-                      sx: {
-                        '& .MuiOutlinedInput-root': {
-                          height: '48px',
-                          borderRadius: '8px',
-                          '& fieldset': {
-                            borderColor: '#d1d5db',
-                          },
-                          '&:hover fieldset': {
-                            borderColor: '#9ca3af',
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#7e3866',
-                            borderWidth: '1px',
-                          },
-                        },
-                        '& .MuiInputBase-input': {
-                          padding: '12px 14px',
-                          fontSize: '16px',
-                        },
-                      },
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </div>
-
-            {/* Gender Field */}
-            <div className="space-y-1.5">
-              <Label htmlFor="gender" className="text-sm font-medium text-gray-700 dark:text-white">
-                Gender
-              </Label>
-              <Select
-                value={formData.gender || ""}
-                onValueChange={(value) => handleChange('gender', value)}
-              >
-                <SelectTrigger className="h-12 text-base border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white">
-                  <SelectValue placeholder="Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  {genderOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Update Profile Button */}
-        <Button
-          onClick={handleUpdate}
-          disabled={!hasChanges || isSaving || isUploadingImage}
-          className={`w-full h-14 rounded-xl font-semibold text-base transition-all mb-2 ${hasChanges && !isSaving && !isUploadingImage
-            ? 'bg-primary hover:bg-[#55254b] text-white'
-            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
-        >
-          {isSaving ? (
-            <>
-              <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            'Update profile'
-          )}
-        </Button>
-
-        <ImageSourcePicker
-          isOpen={photoPickerOpen}
-          onClose={() => setPhotoPickerOpen(false)}
-          onFileSelect={processProfileImageFile}
-          title="Update profile photo"
-          description="Choose how you want to upload your profile photo."
-          fileNamePrefix="profile-photo"
-          galleryInputRef={fileInputRef}
-        />
-      </div>
-    </div>
+    </AnimatedPage>
   )
 }

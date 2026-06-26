@@ -1,159 +1,219 @@
-import { Link } from "react-router-dom"
-import { CreditCard, Trash2, Edit, Check, Plus } from "lucide-react"
+import React, { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { ChevronLeft, Send, CreditCard, Wallet, Landmark, Banknote } from "lucide-react"
+import { toast } from "sonner"
 import AnimatedPage from "@food/components/user/AnimatedPage"
-import { Card, CardHeader, CardTitle, CardContent } from "@food/components/ui/card"
-import { Button } from "@food/components/ui/button"
-import { Badge } from "@food/components/ui/badge"
-import { useProfile } from "@food/context/ProfileContext"
 
 export default function Payments() {
-  const { paymentMethods, deletePaymentMethod, setDefaultPaymentMethod } = useProfile()
+  const navigate = useNavigate()
 
-  const formatCardNumber = (cardNumber) => {
-    if (!cardNumber) return "****"
-    return `**** **** **** ${cardNumber}`
-  }
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
 
-  const formatExpiry = (month, year) => {
-    if (!month || !year) return ""
-    return `${month.padStart(2, "0")}/${year.slice(-2)}`
-  }
+  // Load selection from localStorage, defaulting to 'upi'
+  const [selectedMethod, setSelectedMethod] = useState(() => {
+    return localStorage.getItem("preferred_payment_method") || "upi"
+  })
 
-  const getCardTypeIcon = (type) => {
-    if (type === "visa") return "??"
-    if (type === "mastercard") return "??"
-    return "??"
-  }
-
-  const getCardTypeName = (type) => {
-    if (type === "visa") return "Visa"
-    if (type === "mastercard") return "Mastercard"
-    return "Card"
-  }
-
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this payment method?")) {
-      deletePaymentMethod(id)
+  const handleSave = () => {
+    try {
+      localStorage.setItem("preferred_payment_method", selectedMethod)
+      toast.success("Preferred payment method saved successfully!")
+      navigate(-1)
+    } catch (e) {
+      toast.error("Failed to save preferred payment method.")
     }
   }
 
-  const handleSetDefault = (id) => {
-    setDefaultPaymentMethod(id)
-  }
+  const paymentOptions = [
+    {
+      id: "upi",
+      title: "UPI",
+      icon: <Send className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />,
+      subLogos: (
+        <div className="flex items-center gap-4 mt-2.5 flex-wrap">
+          {/* G Pay */}
+          <span className="flex items-center font-sans font-extrabold text-sm select-none tracking-tight">
+            <span className="text-[#4285F4]">G</span>
+            <span className="text-[#EA4335]">P</span>
+            <span className="text-[#FBBC05]">a</span>
+            <span className="text-[#34A853]">y</span>
+          </span>
+          {/* PhonePe */}
+          <span className="inline-flex items-center justify-center px-2 py-0.5 bg-[#5f259f] text-white rounded text-[10px] font-extrabold select-none">
+            PhonePe
+          </span>
+          {/* Amazon Pay */}
+          <span className="flex items-center gap-0.5 text-[#FF9900] font-sans font-bold text-[11px] select-none">
+            amazon<span className="text-zinc-900 dark:text-zinc-100 font-black">pay</span>
+          </span>
+          {/* Paytm */}
+          <span className="font-sans font-black text-xs select-none">
+            <span className="text-[#00B9F5]">pay</span>
+            <span className="text-[#002E6E] dark:text-[#80ccff]">tm</span>
+          </span>
+        </div>
+      )
+    },
+    {
+      id: "cards",
+      title: "Cards",
+      icon: <CreditCard className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />,
+      subLogos: (
+        <div className="flex items-center gap-4 mt-2.5 flex-wrap">
+          {/* Visa */}
+          <span className="font-serif italic font-black text-sm text-[#1A1F71] dark:text-[#4d86ff] select-none tracking-wider">
+            VISA
+          </span>
+          {/* Mastercard */}
+          <span className="flex items-center select-none shrink-0">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#EB001B] z-10"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F00] -ml-1"></span>
+          </span>
+          {/* RuPay */}
+          <span className="font-sans font-black italic text-xs text-[#0A2240] dark:text-zinc-100 select-none">
+            RuPay<span className="text-[#F26722]">▸</span>
+          </span>
+        </div>
+      )
+    },
+    {
+      id: "wallet",
+      title: "Wallet",
+      icon: <Wallet className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />,
+      subLogos: (
+        <div className="flex items-center gap-4 mt-2.5 flex-wrap">
+          {/* Freecharge */}
+          <span className="inline-flex items-center justify-center px-2 py-0.5 bg-[#FF5A5F] text-white rounded text-[9px] font-extrabold select-none uppercase tracking-tight">
+            freecharge
+          </span>
+          {/* Mobikwik */}
+          <span className="font-sans font-black text-[10px] text-[#005CA9] dark:text-[#3894e6] select-none">
+            MobiKwik
+          </span>
+          {/* PhonePe Wallet */}
+          <span className="inline-flex items-center justify-center px-2 py-0.5 bg-[#5f259f] text-white rounded text-[9px] font-extrabold select-none">
+            PhonePe
+          </span>
+          {/* Ola Money */}
+          <span className="font-sans font-black text-[9px] bg-black text-white dark:bg-zinc-800 dark:border dark:border-white/10 px-2 py-0.5 rounded select-none">
+            OLA
+          </span>
+          {/* Amazon Pay Wallet */}
+          <span className="flex items-center gap-0.5 text-[#FF9900] font-sans font-bold text-[10px] select-none">
+            amazon<span className="text-zinc-900 dark:text-zinc-100 font-extrabold">pay</span>
+          </span>
+        </div>
+      )
+    },
+    {
+      id: "net_banking",
+      title: "Net banking",
+      icon: <Landmark className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />,
+      subLogos: (
+        <div className="flex items-center gap-4 mt-2.5 flex-wrap">
+          {/* SBI */}
+          <span className="flex items-center gap-1 select-none">
+            <span className="w-3.5 h-3.5 rounded-full border border-[#00BFFF] bg-transparent flex items-center justify-center relative shrink-0">
+              <span className="w-1.5 h-1.5 bg-white dark:bg-[#111] rounded-full"></span>
+              <span className="absolute bottom-0 w-0.5 h-1.5 bg-[#00BFFF]"></span>
+            </span>
+            <span className="text-[10px] font-black text-[#002E6E] dark:text-[#66ccff]">SBI</span>
+          </span>
+          {/* HDFC */}
+          <span className="inline-block px-1.5 py-0.5 bg-[#1d3557] text-white font-sans font-black text-[8px] rounded select-none">
+            HDFC
+          </span>
+          {/* ICICI */}
+          <span className="font-sans font-black italic text-[10px] text-[#b22222] dark:text-red-400 select-none">
+            ICICI
+          </span>
+        </div>
+      )
+    },
+    {
+      id: "cash",
+      title: "Cash",
+      icon: <Banknote className="w-5 h-5 text-zinc-400 dark:text-zinc-500" />,
+      subLogos: null
+    }
+  ]
 
   return (
-    <AnimatedPage className="min-h-screen bg-gradient-to-b from-yellow-50/30 via-white to-orange-50/20 p-4 sm:p-6 md:p-8 lg:p-10">
-      <div className="max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
-          <div>
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Payment Methods</h1>
-            <p className="text-muted-foreground mt-1 text-sm sm:text-base">
-              Manage your payment methods
-            </p>
+    <AnimatedPage className={`min-h-screen pb-32 flex flex-col transition-colors duration-300 ${isDarkMode ? "dark bg-[#111111]" : "bg-[#ffffff]"}`}>
+      
+      {/* Header */}
+      <header className={`fixed top-0 left-0 w-full z-50 h-16 flex items-center px-4 justify-between border-b ${
+        isDarkMode ? "bg-[#111111] border-white/10 text-white" : "bg-[#ffffff] border-zinc-200 text-zinc-950"
+      }`}>
+        <button
+          onClick={() => navigate(-1)}
+          className={`flex items-center justify-center p-2 rounded-full cursor-pointer transition-all active:scale-95 bg-transparent border-0 outline-none ${
+            isDarkMode ? "text-white hover:bg-white/10" : "text-zinc-950 hover:bg-zinc-100"
+          }`}
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        
+        <h1 className="text-lg font-bold text-center flex-1 font-headline-lg-mobile pl-6">
+          Preferred payment
+        </h1>
+
+        <button
+          onClick={handleSave}
+          className="text-[#E53935] hover:text-red-700 font-bold text-sm px-3 py-1.5 rounded-lg active:scale-95 cursor-pointer bg-transparent border-0 outline-none transition-all font-sans"
+        >
+          Save
+        </button>
+      </header>
+
+      {/* Main Options List */}
+      <main className="mt-20 flex-1 flex flex-col max-w-md mx-auto w-full select-none">
+        {paymentOptions.map((option) => (
+          <div
+            key={option.id}
+            onClick={() => setSelectedMethod(option.id)}
+            className={`flex items-start justify-between px-6 py-5 cursor-pointer border-b transition-colors ${
+              isDarkMode 
+                ? "border-white/5 hover:bg-white/[0.02]" 
+                : "border-zinc-100 hover:bg-zinc-50/50"
+            }`}
+          >
+            {/* Left part: Icon + Text */}
+            <div className="flex gap-4 items-start text-left">
+              <div className="mt-0.5 shrink-0">
+                {option.icon}
+              </div>
+              <div className="flex flex-col">
+                <span className={`text-base font-bold font-headline-lg-mobile ${
+                  isDarkMode ? "text-white" : "text-zinc-800"
+                }`}>
+                  {option.title}
+                </span>
+                {option.subLogos}
+              </div>
+            </div>
+
+            {/* Right part: Radio button */}
+            <div className="flex items-center h-full pt-1.5">
+              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                selectedMethod === option.id
+                  ? "border-[#E53935] bg-[#E53935]"
+                  : isDarkMode
+                    ? "border-zinc-700"
+                    : "border-zinc-300"
+              }`}>
+                {selectedMethod === option.id && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                )}
+              </div>
+            </div>
           </div>
-          <Link to="/user/profile/payments/new" className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-[#7e3866] hover:from-yellow-600 hover:to-#55254b text-white text-sm sm:text-base">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Payment Method
-            </Button>
-          </Link>
-        </div>
-        {paymentMethods.length === 0 ? (
-          <Card className="shadow-lg">
-            <CardContent className="py-12 text-center">
-              <CreditCard className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No payment methods saved yet</h3>
-              <p className="text-muted-foreground mb-6">
-                Add your first payment method to get started with orders
-              </p>
-              <Link to="/user/profile/payments/new">
-                <Button className="bg-gradient-to-r from-yellow-500 to-[#7e3866] hover:from-yellow-600 hover:to-#55254b text-white">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Payment Method
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-5 lg:gap-6 md:space-y-0">
-            {paymentMethods.map((payment) => (
-              <Card
-                key={payment.id}
-                className={`shadow-lg ${
-                  payment.isDefault ? "border-yellow-500 border-2 bg-yellow-50/50" : ""
-                }`}
-              >
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <CreditCard className={`h-5 w-5 ${payment.isDefault ? "text-yellow-600" : "text-muted-foreground"}`} />
-                      {getCardTypeName(payment.type)} Card
-                    </CardTitle>
-                    {payment.isDefault && (
-                      <Badge className="bg-yellow-500 text-white">Default</Badge>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <span className="text-3xl">{getCardTypeIcon(payment.type)}</span>
-                        <div>
-                          <p className="font-bold text-xl">{formatCardNumber(payment.cardNumber)}</p>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {payment.cardHolder}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-6 text-sm pt-3 border-t border-yellow-200">
-                      <div>
-                        <span className="text-muted-foreground">Expires: </span>
-                        <span className="font-semibold">
-                          {formatExpiry(payment.expiryMonth, payment.expiryYear)}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Type: </span>
-                        <span className="font-semibold capitalize">{getCardTypeName(payment.type)}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 flex-wrap pt-2 border-t">
-                    {!payment.isDefault && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleSetDefault(payment.id)}
-                        className="flex items-center gap-1"
-                      >
-                        <Check className="h-4 w-4" />
-                        Set as Default
-                      </Button>
-                    )}
-                    <Link to={`/user/profile/payments/${payment.id}/edit`}>
-                      <Button variant="outline" size="sm" className="flex items-center gap-1">
-                        <Edit className="h-4 w-4" />
-                        Edit
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDelete(payment.id)}
-                      className="flex items-center gap-1 text-red-600 hover:text-red-700 hover:border-red-300"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      Delete
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
+        ))}
+      </main>
+
     </AnimatedPage>
   )
 }

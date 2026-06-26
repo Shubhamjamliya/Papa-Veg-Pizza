@@ -25,18 +25,18 @@ const resolveBackPath = ({ pathname, search, state }) => {
   const searchParams = new URLSearchParams(search || "")
 
   if (
-    normalizedPath === "/user/profile/payments/new" ||
-    /^\/user\/profile\/payments\/[^/]+\/edit$/.test(normalizedPath)
+    normalizedPath === "/user/account/profile-details/payments/new" ||
+    /^\/user\/account\/profile-details\/payments\/[^/]+\/edit$/.test(normalizedPath)
   ) {
-    return explicitBackPath || "/food/user/profile/payments"
+    return explicitBackPath || "/food/user/account/profile-details/payments"
   }
 
   if (
-    /^\/user\/profile\/(edit|favorites|support|coupons|about|report-safety-emergency|accessibility|logout|refer-earn|payments)$/.test(
+    /^\/user\/(profile\/(favorites|support|coupons|about|report-safety-emergency|accessibility|logout|refer-earn)|account\/profile-details\/(edit|payments))$/.test(
       normalizedPath,
     )
   ) {
-    return explicitBackPath || "/food/user/profile"
+    return explicitBackPath || "/food/user/account/profile-details"
   }
 
   if (
