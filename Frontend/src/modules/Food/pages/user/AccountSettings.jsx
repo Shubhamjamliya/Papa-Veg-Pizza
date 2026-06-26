@@ -16,6 +16,7 @@ export default function AccountSettings() {
   // Loading skeleton support state
   const [isLoading, setIsLoading] = useState(true)
   const [toast, setToast] = useState({ visible: false, message: "" })
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const triggerToast = (message) => {
     setToast({ visible: true, message })
@@ -35,6 +36,20 @@ export default function AccountSettings() {
     linkIcons.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     linkIcons.rel = "stylesheet"
     document.head.appendChild(linkIcons)
+
+    // Check if user is logged in with completed profile
+    try {
+      const isAuthenticated = localStorage.getItem("user_authenticated") === "true"
+      const stored = localStorage.getItem("currentUser") || localStorage.getItem("user_user")
+      if (isAuthenticated && stored) {
+        const userObj = JSON.parse(stored)
+        if (userObj.profileCompleted) {
+          setIsLoggedIn(true)
+        }
+      }
+    } catch (e) {
+      console.error(e)
+    }
 
     // Simulate skeleton loading
     const timer = setTimeout(() => {
@@ -177,7 +192,10 @@ export default function AccountSettings() {
           /* Page content when loaded */
           <div className="flex flex-col gap-sm w-full">
             {/* Welcome card */}
-            <AccountWelcomeCard onSignIn={() => navigate("/user/auth/login", { state: { from: "/account" } })} />
+            <AccountWelcomeCard 
+              isLoggedIn={isLoggedIn} 
+              onSignIn={() => navigate("/user/auth/login", { state: { from: "/account" } })} 
+            />
 
             {/* Menu List of cards */}
             <AccountMenuList />

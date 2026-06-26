@@ -18,6 +18,11 @@ export default function Login() {
     
     // Clear previous sessions to prevent immediate home redirection when opening the login/OTP page
     clearModuleAuth("user")
+    localStorage.removeItem("tempPhone")
+    localStorage.removeItem("currentUser")
+    localStorage.removeItem("userProfile")
+    localStorage.removeItem("appzeto_user_profile")
+    localStorage.removeItem("user_temp_phone")
   }, [])
 
   const handleLogin = (e) => {

@@ -20,5 +20,17 @@ export default function ProtectedRoute({ children, requiredRole, loginPath = "/u
     return <Navigate to={loginPath} state={{ from: location.pathname }} replace />;
   }
 
+  // If user has not completed profile onboarding, force redirect to creation page
+  if (requiredRole === "user" && !location.pathname.includes("/profile/create")) {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem("user_user") || "{}");
+      if (storedUser && !storedUser.profileCompleted) {
+        return <Navigate to="/user/profile/create" replace />;
+      }
+    } catch (e) {
+      console.error("[ProtectedRoute] Error reading profile completion", e);
+    }
+  }
+
   return children;
 }
