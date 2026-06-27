@@ -50,7 +50,7 @@ export default function AddGiftCard({ show, onClose, onApply }) {
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
               placeholder="100714 0123456789"
-              className="w-full h-12 bg-white border border-zinc-200 rounded-xl px-4 text-sm font-semibold text-zinc-800 focus:outline-none focus:border-emerald-600 transition-colors placeholder:text-zinc-400"
+              className="w-full h-12 bg-white border border-zinc-200 rounded-xl px-4 text-sm font-semibold text-zinc-800 focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400"
             />
           </div>
 
@@ -63,7 +63,7 @@ export default function AddGiftCard({ show, onClose, onApply }) {
               onChange={(e) => setCardPin(e.target.value)}
               placeholder="******"
               maxLength={8}
-              className="w-full h-12 bg-white border border-zinc-200 rounded-xl px-4 text-sm font-semibold text-zinc-800 focus:outline-none focus:border-emerald-600 transition-colors placeholder:text-zinc-400 tracking-widest"
+              className="w-full h-12 bg-white border border-zinc-200 rounded-xl px-4 text-sm font-semibold text-zinc-800 focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400 tracking-widest"
             />
           </div>
 
@@ -78,7 +78,7 @@ export default function AddGiftCard({ show, onClose, onApply }) {
             disabled={!isFormValid}
             className={`w-full h-12 rounded-xl text-sm font-bold transition-all active:scale-98 ${
               isFormValid 
-                ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md" 
+                ? "bg-primary hover:opacity-90 text-on-primary shadow-md" 
                 : "bg-zinc-100 text-zinc-400 cursor-not-allowed border border-zinc-200"
             }`}
           >

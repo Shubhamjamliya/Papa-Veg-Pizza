@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { ArrowLeft, Clock, Tag, ChevronRight, Gift } from "lucide-react"
+import { ArrowLeft, Clock, Tag, ChevronRight, Gift, ChevronDown, ChevronUp } from "lucide-react"
 import { useCart } from "@food/context/CartContext"
 import ApplyCoupon from "./ApplyCoupon"
 import AddGiftCard from "./AddGiftCard"
@@ -131,6 +131,7 @@ export default function Cart() {
   const [showGiftCardModal, setShowGiftCardModal] = useState(false)
   const [appliedCoupon, setAppliedCoupon] = useState(null)
   const [appliedGiftCard, setAppliedGiftCard] = useState(null)
+  const [showTaxDetails, setShowTaxDetails] = useState(false)
   const [isDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("appTheme")
     return savedTheme ? savedTheme === "dark" : true
@@ -225,12 +226,17 @@ export default function Cart() {
     }
   }
 
+  const handlingCharge = subtotal > 0 ? 35 : 0
+  const cgst = subtotal > 0 ? Number(((subtotal - discount + handlingCharge) * 0.025).toFixed(2)) : 0
+  const sgst = subtotal > 0 ? Number(((subtotal - discount + handlingCharge) * 0.025).toFixed(2)) : 0
+  const taxesAndCharges = subtotal > 0 ? Number((handlingCharge + cgst + sgst).toFixed(2)) : 0
+
   let giftCardValue = 0
   if (appliedGiftCard) {
-    giftCardValue = Math.min(appliedGiftCard.value, subtotal - discount)
+    giftCardValue = Math.min(appliedGiftCard.value, subtotal - discount + taxesAndCharges)
   }
 
-  const total = Math.max(0, subtotal - discount - giftCardValue)
+  const total = subtotal > 0 ? Number((subtotal - discount + taxesAndCharges - giftCardValue).toFixed(2)) : 0
 
   return (
     <div className={`min-h-screen flex justify-center transition-colors duration-300 ${isDarkMode ? "bg-[#0a0a0a]" : "bg-gray-100"}`}>
@@ -332,6 +338,12 @@ export default function Cart() {
         }
         .bg-primary {
           background-color: #E53935 !important;
+        }
+        .border-primary {
+          border-color: #E53935 !important;
+        }
+        .focus\\:border-primary:focus {
+          border-color: #E53935 !important;
         }
         .text-secondary {
           color: #FF6B35 !important;
@@ -458,6 +470,19 @@ export default function Cart() {
         )}
       </div>
 
+      {/* Promo Banner */}
+      {cartItems.length > 0 && (
+        <div className="mt-4 px-margin-mobile">
+          <div className="rounded-xl overflow-hidden shadow-sm hover:scale-[1.01] transition-transform duration-200 cursor-pointer">
+            <img 
+              src="/free_gift_banner.png" 
+              alt="Claim Your Free Gift" 
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Promos & Discounts Section */}
       <div className="mt-6 px-margin-mobile space-y-sm">
         {/* Coupon Apply Row */}
@@ -534,6 +559,144 @@ export default function Cart() {
           )}
         </div>
       </div>
+
+      {/* Hungry for more? Section */}
+      {cartItems.length > 0 && (
+        <div className="mt-6 text-left">
+          <h3 className={`font-headline-lg-mobile text-base font-extrabold px-margin-mobile mb-3 ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
+            Hungry for more?
+          </h3>
+          <div className="flex overflow-x-auto gap-4 px-margin-mobile pb-4 hide-scrollbar">
+            {[
+              {
+                id: "cheese-garlic-bread",
+                name: "Cheese Garlic Bread",
+                price: 149,
+                image: "/food/cheese_garlic_bread.jpg"
+              },
+              {
+                id: "garlic-bread-stix",
+                name: "Garlic Bread Stix",
+                price: 119,
+                image: "https://images.unsplash.com/photo-1619535860434-ba1d8fa12536?w=500&auto=format&fit=crop&q=80"
+              },
+              {
+                id: "choco-volcano",
+                name: "Choco Volcano Cake",
+                price: 139,
+                image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop&q=80"
+              },
+              {
+                id: "pepsi-cola",
+                name: "Pepsi Cola (500ml)",
+                price: 60,
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=80"
+              }
+            ].map((item) => (
+              <div 
+                key={item.id}
+                className="glass-card rounded-xl p-3 flex items-center justify-between min-w-[280px] max-w-[280px] shrink-0 gap-3"
+              >
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
+                  <div className="text-left space-y-0.5">
+                    <h4 className={`font-headline-lg-mobile text-xs font-semibold leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
+                      {item.name}
+                    </h4>
+                    <p className={`font-price-xl text-xs font-bold ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
+                      ₹{item.price}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => updateItemQty(item.id, 1)}
+                  className="text-primary font-bold text-xs hover:opacity-85 active:scale-95 transition-all bg-transparent border-0 cursor-pointer px-2 py-1 outline-none"
+                >
+                  Add
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Bill Details Section */}
+      {cartItems.length > 0 && (
+        <div className="mt-4 px-margin-mobile text-left pb-16">
+          <div className="glass-card rounded-xl p-md space-y-3">
+            {/* Subtotal Row */}
+            <div className="flex justify-between items-center text-sm">
+              <span className="opacity-75 font-semibold">Subtotal</span>
+              <span className={`font-bold ${isDarkMode ? "text-white" : "text-[#131313]"}`}>₹{subtotal}</span>
+            </div>
+
+            {/* Discounts Row */}
+            {discount > 0 && (
+              <div className="flex justify-between items-center text-sm text-primary">
+                <span className="font-semibold">Discount Applied</span>
+                <span className="font-bold">-₹{discount}</span>
+              </div>
+            )}
+
+            {/* Gift Card Row */}
+            {giftCardValue > 0 && (
+              <div className="flex justify-between items-center text-sm text-primary">
+                <span className="font-semibold">Gift Card Balance Used</span>
+                <span className="font-bold">-₹{giftCardValue}</span>
+              </div>
+            )}
+
+            {/* Taxes & Charges Row */}
+            <div className="space-y-2">
+              <div 
+                onClick={() => setShowTaxDetails(!showTaxDetails)}
+                className="flex justify-between items-center text-sm cursor-pointer select-none"
+              >
+                <div className="flex items-center gap-1">
+                  <span className="opacity-75 font-semibold">Taxes and Charges</span>
+                  {showTaxDetails ? (
+                    <ChevronUp size={16} className="text-primary" />
+                  ) : (
+                    <ChevronDown size={16} className="text-primary" />
+                  )}
+                </div>
+                <span className={`font-bold ${isDarkMode ? "text-white" : "text-[#131313]"}`}>₹{taxesAndCharges}</span>
+              </div>
+
+              {/* Tax Details Dropdown */}
+              {showTaxDetails && (
+                <div className="pl-4 pr-1 py-1 space-y-1.5 border-l border-white/10 dark:border-white/10 text-xs opacity-80">
+                  <div className="flex justify-between items-center">
+                    <span>Restaurant Handling Charges</span>
+                    <span>₹{handlingCharge}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>CGST (2.5%)</span>
+                    <span>₹{cgst}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>SGST (2.5%)</span>
+                    <span>₹{sgst}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Separator line */}
+            <div className="border-t border-white/10 dark:border-white/10 my-2" />
+
+            {/* Total Row */}
+            <div className="flex justify-between items-center text-base font-extrabold">
+              <span>Total</span>
+              <span className={`font-extrabold ${isDarkMode ? "text-white" : "text-[#131313]"}`}>₹{total}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Sticky Bottom Bar */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-surface/90 backdrop-blur-xl border-t border-white/10 px-margin-mobile pt-4 pb-8 z-30 flex flex-col gap-3 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
