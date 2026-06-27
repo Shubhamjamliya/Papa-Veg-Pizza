@@ -93,14 +93,14 @@ export default function ApplyCoupon({ show, onClose, onApply, cartTotal }) {
                 value={couponInput}
                 onChange={(e) => setCouponInput(e.target.value)}
                 placeholder="e.g. ABC1234"
-                className="flex-1 h-12 bg-white border border-zinc-200 rounded-xl px-4 text-sm font-semibold text-zinc-800 focus:outline-none focus:border-emerald-600 transition-colors placeholder:text-zinc-400"
+                className="flex-1 h-12 bg-white border border-zinc-200 rounded-xl px-4 text-sm font-semibold text-zinc-800 focus:outline-none focus:border-primary transition-colors placeholder:text-zinc-400"
               />
               <button
                 onClick={handleManualApply}
                 disabled={!couponInput.trim()}
                 className={`px-6 h-12 rounded-xl text-sm font-bold transition-all ${
                   couponInput.trim() 
-                    ? "bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95" 
+                    ? "bg-primary text-on-primary hover:opacity-90 active:scale-95" 
                     : "bg-zinc-100 text-zinc-400 cursor-not-allowed"
                 }`}
               >
@@ -152,7 +152,7 @@ export default function ApplyCoupon({ show, onClose, onApply, cartTotal }) {
                       onClick={() => handleCardApply(coupon)}
                       className={`w-full h-10 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-98 ${
                         isEligible 
-                          ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
+                          ? "bg-primary hover:opacity-90 text-on-primary" 
                           : "bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed"
                       }`}
                     >
