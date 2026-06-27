@@ -25,7 +25,7 @@ export default function AccountMenuList() {
     {
       title: "Exclusive Offers",
       icon: "local_offer",
-      route: "/user/auth/login",
+      route: "/user/account/coupons",
     },
     ...(isLoggedIn
       ? [
@@ -41,6 +41,15 @@ export default function AccountMenuList() {
       icon: "local_shipping",
       route: "/user/account/track-order",
     },
+    ...(isLoggedIn
+      ? [
+          {
+            title: "Notification Center",
+            icon: "notifications",
+            route: "/user/notifications",
+          },
+        ]
+      : []),
     {
       title: "Terms & Conditions",
       icon: "gavel",

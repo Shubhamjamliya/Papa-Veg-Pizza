@@ -1,14 +1,42 @@
-import { Link } from "react-router-dom"
-import { useEffect, useMemo, useState } from "react"
-import { ArrowLeft, Copy, MapPin, TicketPercent } from "lucide-react"
+import React, { useEffect, useState, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion"
+import { 
+  ArrowLeft, 
+  Search, 
+  ChevronRight, 
+  Tag, 
+  Pizza, 
+  Smartphone, 
+  CreditCard, 
+  Copy, 
+  Check, 
+  AlertCircle,
+  MapPin,
+  Megaphone,
+  Receipt,
+  CircleDollarSign,
+  ChefHat,
+  Ticket
+} from "lucide-react"
 import AnimatedPage from "@food/components/user/AnimatedPage"
-import { Button } from "@food/components/ui/button"
 import { restaurantAPI } from "@food/api"
 import { toast } from "sonner"
 
 export default function Coupons() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [offers, setOffers] = useState([])
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedFilter, setSelectedFilter] = useState("") // "", "online", "instore", "expiring"
+  const [showAllCoupons, setShowAllCoupons] = useState(false)
+  const [activeTab, setActiveTab] = useState("online") // "online", "instore"
+  const [copiedCode, setCopiedCode] = useState("")
+
+  const [isDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
 
   useEffect(() => {
     let cancelled = false
@@ -18,7 +46,6 @@ export default function Coupons() {
         const res = await restaurantAPI.getPublicOffers()
         const list = res?.data?.data?.allOffers || res?.data?.allOffers || []
         if (!cancelled) {
-          // Only show offers meant to be visible to users (default true)
           const visible = Array.isArray(list) ? list.filter((o) => o?.showInCart !== false) : []
           setOffers(visible)
         }
@@ -34,235 +61,325 @@ export default function Coupons() {
     }
   }, [])
 
-  const sortedOffers = useMemo(() => {
-    if (!Array.isArray(offers)) return []
-    return [...offers].sort((a, b) => String(a?.couponCode || "").localeCompare(String(b?.couponCode || "")))
-  }, [offers])
+  const filteredOffers = useMemo(() => {
+    let result = [...offers]
+
+    // Apply Search Query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      result = result.filter(
+        (o) =>
+          String(o?.couponCode || "").toLowerCase().includes(q) ||
+          String(o?.title || "").toLowerCase().includes(q)
+      )
+    }
+
+    // Apply Filter Pills
+    if (selectedFilter === "online") {
+      result = result.filter(
+        (o) => o?.offerType?.toLowerCase() !== "instore" && o?.isInstore !== true
+      )
+    } else if (selectedFilter === "instore") {
+      result = result.filter(
+        (o) => o?.offerType?.toLowerCase() === "instore" || o?.isInstore === true
+      )
+    } else if (selectedFilter === "expiring") {
+      const now = new Date().getTime()
+      result = result.filter((o) => {
+        if (!o?.endDate) return false
+        const end = new Date(o.endDate).getTime()
+        const diff = end - now
+        return diff > 0 && diff < 7 * 24 * 60 * 60 * 1000 // Expiring within 7 days
+      })
+    }
+
+    return result.sort((a, b) =>
+      String(a?.couponCode || "").localeCompare(String(b?.couponCode || ""))
+    )
+  }, [offers, searchQuery, selectedFilter])
 
   const handleCopy = async (code) => {
     const value = String(code || "").trim()
     if (!value) return
     try {
       await navigator.clipboard.writeText(value)
-      toast.success("Coupon copied")
+      setCopiedCode(value)
+      toast.success("Coupon copied successfully!")
+      setTimeout(() => setCopiedCode(""), 2000)
     } catch {
-      toast.error("Failed to copy")
+      toast.error("Failed to copy coupon code")
     }
   }
 
+  const handleFilterToggle = (filterType) => {
+    if (selectedFilter === filterType) {
+      setSelectedFilter("") // De-select if clicked again
+    } else {
+      setSelectedFilter(filterType)
+      // Auto expand coupons list if a filter is chosen
+      setShowAllCoupons(true)
+    }
+  }
+
+  // Steps definition based on user's screenshots
+  const onlineSteps = [
+    {
+      step: "Step 1",
+      desc: "Click Apply on the coupon",
+      icon: <Tag className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 2",
+      desc: "Select your favorites from the Papa Veg Pizza App!",
+      icon: <Pizza className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 3",
+      desc: "Check whether offer is applied while making the payment",
+      icon: <Smartphone className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 4",
+      desc: "Place the order",
+      icon: <CreditCard className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 5",
+      desc: "Enjoy your meal!",
+      icon: <ChefHat className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    }
+  ]
+
+  const instoreSteps = [
+    {
+      step: "Step 1",
+      desc: "Visit any nearby Papa Veg Pizza outlet",
+      icon: <MapPin className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 2",
+      desc: "Tell the billing counter executive your selected coupon code",
+      icon: <Megaphone className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 3",
+      desc: "Ensure the discount is applied to your print or digital bill",
+      icon: <Receipt className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 4",
+      desc: "Complete the remaining payment at the counter",
+      icon: <CircleDollarSign className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    },
+    {
+      step: "Step 5",
+      desc: "Relish your freshly prepared delicious pizza!",
+      icon: <Pizza className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+    }
+  ]
+
+  const currentSteps = activeTab === "online" ? onlineSteps : instoreSteps
+
   return (
-    <AnimatedPage className="min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a]">
-      <div className="max-w-md mx-auto px-4 py-4">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <Link to="/user/profile">
-            <Button variant="ghost" size="icon" className="h-8 w-8 p-0">
-              <ArrowLeft className="h-5 w-5 text-black dark:text-white" />
-            </Button>
-          </Link>
-          <h1 className="text-xl font-bold text-black dark:text-white">Your coupons</h1>
+    <AnimatedPage className={`min-h-screen pb-20 select-none transition-colors duration-300 ${
+      isDarkMode ? "dark bg-[#111111] text-white" : "bg-[#f8f9fa] text-zinc-900"
+    }`}>
+      
+      {/* Header */}
+      <header className={`sticky top-0 left-0 w-full z-50 h-16 flex items-center px-4 justify-between border-b transition-colors ${
+        isDarkMode ? "bg-[#111111]/90 backdrop-blur-md border-white/10 text-white" : "bg-white/90 backdrop-blur-md border-zinc-200 text-zinc-950"
+      }`}>
+        <button
+          onClick={() => navigate("/user/account")}
+          className={`flex items-center justify-center p-2 rounded-full cursor-pointer transition-all active:scale-95 bg-transparent border-0 outline-none ${
+            isDarkMode ? "text-white hover:bg-white/10" : "text-zinc-950 hover:bg-zinc-100"
+          }`}
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+        
+        <h1 className="text-lg font-bold text-center flex-1 font-headline-lg-mobile pr-8">
+          Exclusive Offers for you
+        </h1>
+      </header>
+
+      {/* Content Body */}
+      <main className="max-w-md mx-auto px-5 mt-5 flex flex-col gap-5">
+        
+        {/* Search Coupon Code */}
+        <div className={`relative flex items-center h-12 px-4 rounded-xl border transition-all ${
+          isDarkMode 
+            ? "bg-[#1e1e20] border-white/10 focus-within:border-[#E53935]" 
+            : "bg-white border-zinc-200 focus-within:border-[#E53935]"
+        }`}>
+          <Search className="w-5 h-5 text-zinc-400 mr-3 shrink-0" />
+          <input
+            type="text"
+            placeholder="Search coupon code here"
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value)
+              if (e.target.value.trim() !== "") {
+                setShowAllCoupons(true)
+              }
+            }}
+            className="w-full h-full bg-transparent border-0 outline-none text-sm font-sans placeholder-zinc-400 font-medium"
+          />
         </div>
 
-        {loading ? (
-          <div className="flex items-center justify-center min-h-[60vh] text-sm text-gray-600 dark:text-gray-400">
-            Loading coupons...
+        {/* Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <button
+            onClick={() => handleFilterToggle("online")}
+            className={`px-4 py-2 border rounded-full text-xs font-bold transition-all active:scale-95 cursor-pointer shrink-0 font-sans outline-none ${
+              selectedFilter === "online"
+                ? "bg-[#E53935] border-[#E53935] text-white"
+                : isDarkMode
+                  ? "bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10"
+                  : "bg-white border-zinc-200 text-zinc-650 hover:bg-zinc-50"
+            }`}
+          >
+            Online {selectedFilter === "online" ? "✓" : "+"}
+          </button>
+          
+          <button
+            onClick={() => handleFilterToggle("instore")}
+            className={`px-4 py-2 border rounded-full text-xs font-bold transition-all active:scale-95 cursor-pointer shrink-0 font-sans outline-none ${
+              selectedFilter === "instore"
+                ? "bg-[#E53935] border-[#E53935] text-white"
+                : isDarkMode
+                  ? "bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10"
+                  : "bg-white border-zinc-200 text-zinc-650 hover:bg-zinc-50"
+            }`}
+          >
+            In-store {selectedFilter === "instore" ? "✓" : "+"}
+          </button>
+
+          <button
+            onClick={() => handleFilterToggle("expiring")}
+            className={`px-4 py-2 border rounded-full text-xs font-bold transition-all active:scale-95 cursor-pointer shrink-0 font-sans outline-none ${
+              selectedFilter === "expiring"
+                ? "bg-[#E53935] border-[#E53935] text-white"
+                : isDarkMode
+                  ? "bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10"
+                  : "bg-white border-zinc-200 text-zinc-650 hover:bg-zinc-50"
+            }`}
+          >
+            Expiring soon {selectedFilter === "expiring" ? "✓" : "+"}
+          </button>
+        </div>
+
+        {/* Check All Your Coupons Card */}
+        <div
+          onClick={() => navigate("/user/account/coupons/all")}
+          className={`flex items-center justify-between p-4 rounded-2xl cursor-pointer border transition-all active:scale-[0.99] ${
+            isDarkMode 
+              ? "bg-[#1e1e20] border-white/10 hover:bg-[#252528]" 
+              : "bg-white border-zinc-200 hover:bg-zinc-50"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#E53935]/15 border border-[#E53935]/20 flex items-center justify-center text-[#E53935] shrink-0">
+              <Ticket className="w-5 h-5 fill-current" />
+            </div>
+            <span className={`text-sm font-bold font-sans ${isDarkMode ? "text-white" : "text-zinc-800"}`}>
+              Check All Your Coupons
+            </span>
           </div>
-        ) : sortedOffers.length > 0 ? (
-          <div className="space-y-3 pb-6">
-            {sortedOffers.map((offer) => {
-              const code = offer?.couponCode || ""
-              const title = offer?.title || ""
-              const restaurantName = offer?.restaurantName || "All Restaurants"
-              const endDate = offer?.endDate ? new Date(offer.endDate) : null
-              const expiryText =
-                endDate && !Number.isNaN(endDate.getTime())
-                  ? `Valid till ${endDate.toLocaleDateString()}`
-                  : "No expiry"
+          <ChevronRight className="w-5 h-5 text-zinc-400" />
+        </div>
 
-              return (
-                <div
-                  key={offer?.id || offer?.offerId || code}
-                  className="bg-white dark:bg-[#1a1a1a] rounded-2xl border border-gray-200 dark:border-gray-800 p-4"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3 min-w-0">
-                      <div className="h-10 w-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center shrink-0">
-                        <TicketPercent className="h-5 w-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                            {code}
-                          </span>
-                          {title && (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200">
-                              {title}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">
-                          {restaurantName}
-                        </p>
-                        <p className="text-[11px] text-gray-500 dark:text-gray-500 mt-1">
-                          {expiryText}
-                        </p>
-                      </div>
-                    </div>
+        {/* How To Redeem Section */}
+        <div className="space-y-4">
+          <h2 className={`text-lg font-extrabold font-headline-lg-mobile text-left ${
+            isDarkMode ? "text-white" : "text-zinc-900"
+          }`}>
+            How To Redeem
+          </h2>
 
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="h-9 px-3 rounded-xl"
-                      onClick={() => handleCopy(code)}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy
-                    </Button>
+          {/* Custom Tabs */}
+          <div className={`flex p-1 rounded-xl border transition-colors ${
+            isDarkMode ? "bg-[#18181b]/50 border-white/10" : "bg-zinc-100 border-zinc-200"
+          }`}>
+            <button
+              onClick={() => setActiveTab("online")}
+              className={`flex-1 py-2 text-center text-xs font-extrabold rounded-lg transition-all cursor-pointer outline-none border-0 ${
+                activeTab === "online"
+                  ? "bg-[#E53935] text-white shadow-md shadow-[#E53935]/25"
+                  : isDarkMode
+                    ? "text-zinc-400 hover:text-white bg-transparent"
+                    : "text-zinc-650 hover:text-zinc-900 bg-transparent"
+              }`}
+            >
+              Online
+            </button>
+            <button
+              onClick={() => setActiveTab("instore")}
+              className={`flex-1 py-2 text-center text-xs font-extrabold rounded-lg transition-all cursor-pointer outline-none border-0 ${
+                activeTab === "instore"
+                  ? "bg-[#E53935] text-white shadow-md shadow-[#E53935]/25"
+                  : isDarkMode
+                    ? "text-zinc-400 hover:text-white bg-transparent"
+                    : "text-zinc-650 hover:text-zinc-900 bg-transparent"
+              }`}
+            >
+              In-Store
+            </button>
+          </div>
+
+          {/* Steps Container */}
+          <div className={`p-5 rounded-[28px] border transition-colors ${
+            isDarkMode ? "bg-[#18181b] border-white/5 text-white" : "bg-white border-zinc-150 text-zinc-900"
+          }`}>
+            <div className="flex flex-col gap-5">
+              {currentSteps.map((s, idx) => (
+                <div key={idx} className="flex items-center gap-4">
+                  {/* Step Icon Box */}
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-colors border ${
+                    isDarkMode 
+                      ? "bg-white/5 border-white/5 text-white" 
+                      : "bg-zinc-50 border-zinc-100 text-zinc-700"
+                  }`}>
+                    {s.icon}
+                  </div>
+
+                  {/* Step Description */}
+                  <div className="text-left leading-normal">
+                    <p className={`text-[10px] font-black uppercase ${
+                      isDarkMode ? "text-zinc-500" : "text-zinc-400"
+                    }`}>
+                      {s.step}
+                    </p>
+                    <p className={`text-xs font-extrabold mt-0.5 ${
+                      isDarkMode ? "text-zinc-200" : "text-zinc-800"
+                    }`}>
+                      {s.desc}
+                    </p>
                   </div>
                 </div>
-              )
-            })}
-          </div>
-        ) : (
-          /* Empty State */
-          <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-          {/* Circular Map Illustration */}
-          <div className="relative mb-8">
-            {/* Circular Background */}
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto bg-gray-200 rounded-full flex items-center justify-center overflow-hidden shadow-inner">
-              {/* Map Pattern Background - More detailed */}
-              <svg
-                className="absolute inset-0 w-full h-full opacity-70"
-                viewBox="0 0 200 200"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Main horizontal road */}
-                <path
-                  d="M 20 100 Q 50 80, 80 100 T 140 100"
-                  stroke="#a1a1aa"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                {/* Main vertical road */}
-                <path
-                  d="M 100 20 Q 100 50, 100 80 T 100 140"
-                  stroke="#a1a1aa"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                {/* Diagonal roads */}
-                <path
-                  d="M 40 40 Q 60 60, 80 80 T 120 120"
-                  stroke="#b4b4b8"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 160 40 Q 140 60, 120 80 T 80 120"
-                  stroke="#b4b4b8"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 30 170 Q 50 150, 70 130 T 110 90"
-                  stroke="#b4b4b8"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 170 170 Q 150 150, 130 130 T 90 90"
-                  stroke="#b4b4b8"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                {/* Additional connecting paths */}
-                <path
-                  d="M 50 50 L 70 70"
-                  stroke="#c4c4c7"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 150 50 L 130 70"
-                  stroke="#c4c4c7"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 50 150 L 70 130"
-                  stroke="#c4c4c7"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 150 150 L 130 130"
-                  stroke="#c4c4c7"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-
-              {/* Map Pins */}
-              <div className="absolute left-12 top-16 z-20">
-                <MapPin className="h-7 w-7 text-red-500 drop-shadow-lg" fill="currentColor" />
-              </div>
-              <div className="absolute right-12 top-20 z-20">
-                <MapPin className="h-7 w-7 text-red-500 drop-shadow-lg" fill="currentColor" />
-              </div>
-
-              {/* Treasure Chest and Coins */}
-              <div className="relative z-10 flex flex-col items-center">
-                {/* Gold Coins Stack (Left) */}
-                <div className="absolute -left-10 top-2 flex flex-col gap-0.5">
-                  <div className="w-7 h-7 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full border-2 border-yellow-600 shadow-lg"></div>
-                  <div className="w-7 h-7 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full border-2 border-yellow-600 shadow-lg -ml-1"></div>
-                  <div className="w-7 h-7 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full border-2 border-yellow-600 shadow-lg -ml-2"></div>
-                </div>
-
-                {/* Treasure Chest */}
-                <div className="relative mt-4">
-                  {/* Chest Body */}
-                  <div className="w-24 h-20 bg-gradient-to-b from-amber-800 to-amber-900 rounded-lg shadow-xl relative">
-                    {/* Chest Top/Lid */}
-                    <div className="absolute -top-3 left-0 right-0 h-5 bg-gradient-to-b from-amber-900 to-amber-950 rounded-t-lg shadow-md"></div>
-                    
-                    {/* Chest Lock */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                      <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full border-2 border-yellow-700 shadow-lg flex items-center justify-center">
-                        <div className="w-4 h-4 bg-yellow-700 rounded-full shadow-inner"></div>
-                      </div>
-                    </div>
-
-                    {/* Chest Straps */}
-                    <div className="absolute top-3 left-3 w-16 h-1.5 bg-amber-950 rounded-full shadow-sm"></div>
-                    <div className="absolute bottom-3 left-3 w-16 h-1.5 bg-amber-950 rounded-full shadow-sm"></div>
-                    
-                    {/* Chest Details */}
-                    <div className="absolute top-1 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-amber-700"></div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
+        </div>
 
-          {/* Text Content */}
-          <div className="text-center space-y-3 max-w-sm">
-            <h2 className="text-xl font-bold text-black">No coupons found</h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Discover hidden coupons on your map screen after placing an order
-            </p>
+        {/* Need Help Section */}
+        <div className={`flex items-start gap-4 p-5 rounded-[28px] border transition-colors ${
+          isDarkMode ? "bg-[#18181b]/50 border-white/5 text-white" : "bg-white border-zinc-150 text-zinc-900"
+        }`}>
+          <AlertCircle className="w-5 h-5 text-zinc-400 mt-0.5 shrink-0" />
+          <div className="text-left">
+            <h3 className="text-sm font-extrabold font-sans">Need Help?</h3>
+            <span
+              onClick={() => navigate("/user/account/coupons/support")}
+              className="text-xs font-extrabold text-[#E53935] hover:underline cursor-pointer inline-block mt-1 font-sans"
+            >
+              Report an issue
+            </span>
           </div>
         </div>
-        )}
-      </div>
+
+      </main>
+
     </AnimatedPage>
   )
 }
-
