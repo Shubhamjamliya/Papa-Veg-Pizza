@@ -257,6 +257,12 @@ export default function MenuList() {
   const totalCartCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0)
   const totalCartPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
+  const modalTextPrimary = isDarkMode ? "text-white" : "text-zinc-900"
+  const modalTextSecondary = isDarkMode ? "text-zinc-400" : "text-zinc-500"
+  const modalLabelMuted = isDarkMode ? "text-white/50" : "text-zinc-400 font-bold"
+  const modalCheckboxText = isDarkMode ? "text-white/80" : "text-zinc-750 font-semibold"
+  const modalBorder = isDarkMode ? "border-white/10" : "border-zinc-200"
+
   return (
     <div className={`min-h-screen flex justify-center transition-colors duration-300 ${isDarkMode ? "bg-[#0a0a0a]" : "bg-gray-100"}`}>
       <div className={`w-full max-w-md min-h-screen pb-32 font-body-md overflow-x-hidden relative shadow-2xl border-x ${
@@ -266,10 +272,16 @@ export default function MenuList() {
       <style dangerouslySetInnerHTML={{
         __html: `
         .glass-card {
-          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.92)"} !important;
           backdrop-filter: blur(20px) !important;
-          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
-          box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(229, 57, 53, 0.16)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 10px 30px -5px rgba(229, 57, 53, 0.08), 0 4px 16px -4px rgba(0, 0, 0, 0.06)"} !important;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .glass-card:hover {
+          box-shadow: ${isDarkMode ? "none" : "0 20px 40px -8px rgba(229, 57, 53, 0.16), 0 10px 20px -6px rgba(0, 0, 0, 0.08)"} !important;
+          border-color: ${isDarkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(229, 57, 53, 0.3)"} !important;
+          transform: translateY(-2px) !important;
         }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
@@ -399,9 +411,11 @@ export default function MenuList() {
                   setActiveTab(tab.id)
                 }
               }}
-              className={`px-5 py-2 rounded-lg font-label-sm text-xs uppercase font-extrabold cursor-pointer border transition-all ${isSelected
-                ? "bg-[#E53935] border-[#E53935] text-white shadow-[0_0_12px_rgba(229,57,53,0.3)]"
-                : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+              className={`px-5 py-2 rounded-lg font-label-sm text-xs uppercase font-extrabold cursor-pointer border transition-all active:scale-95 duration-200 ${isSelected
+                ? "bg-primary border-primary text-white shadow-[0_4px_12px_rgba(229,57,53,0.3)]"
+                : isDarkMode
+                  ? "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                  : "bg-zinc-100 border-zinc-200 text-zinc-600 hover:bg-zinc-200/70 shadow-sm"
                 }`}
             >
               {tab.label}
@@ -431,20 +445,24 @@ export default function MenuList() {
         {/* Localized deals & location alert indicator */}
         <section
           onClick={() => setShowServiceSelector(true)}
-          className="bg-white text-slate-800 rounded-2xl p-4 flex items-center justify-between cursor-pointer active:opacity-90 shadow-lg border border-emerald-500/10"
+          className={`rounded-2xl p-4 flex items-center justify-between cursor-pointer active:opacity-90 transition-all border ${
+            isDarkMode 
+              ? "bg-white/5 border-white/10 text-white shadow-none" 
+              : "bg-white border-primary/20 text-slate-800 shadow-[0_8px_20px_-4px_rgba(229,57,53,0.06)]"
+          }`}
         >
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-[#E53935] text-2xl font-bold">local_pizza</span>
+            <span className="material-symbols-outlined text-primary text-2xl font-bold">local_pizza</span>
             <div className="text-left">
-              <h4 className="text-xs font-black uppercase text-slate-900 tracking-wide">
+              <h4 className={`text-xs font-black uppercase tracking-wide ${isDarkMode ? "text-white" : "text-slate-900"}`}>
                 {locationName ? "Delivering to:" : "Add your location"}
               </h4>
-              <p className="text-[11px] text-slate-500 line-clamp-1 max-w-[200px] leading-tight">
+              <p className={`text-[11px] line-clamp-1 max-w-[200px] leading-tight ${isDarkMode ? "text-white/60" : "text-slate-500"}`}>
                 {locationName || "See your local deals and pizzas"}
               </p>
             </div>
           </div>
-          <span className="material-symbols-outlined text-[#E53935] text-lg font-bold">arrow_forward_ios</span>
+          <span className="material-symbols-outlined text-primary text-lg font-bold">arrow_forward_ios</span>
         </section>
 
         {/* Section Header */}
@@ -453,74 +471,84 @@ export default function MenuList() {
           <span className="text-xs opacity-50 font-bold">{MENU_ITEMS[activeTab]?.length || 0} Items</span>
         </div>
 
-        {/* Menu list grid */}
-        <section className="space-y-6">
+         {/* Menu list grid */}
+        <section className="space-y-4">
           {MENU_ITEMS[activeTab] && MENU_ITEMS[activeTab].map((item) => (
-            <div key={item.id} className="glass-card rounded-2xl overflow-hidden flex flex-col border border-white/12">
-              {/* Product Image */}
-              <div className="relative h-48 bg-zinc-950">
-                <img
-                  className="w-full h-full object-cover"
-                  alt={item.title}
-                  src={item.image}
-                />
-                {item.badge && (
-                  <span className="absolute top-4 left-4 bg-[#E53935] text-white text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-widest">
-                    {item.badge}
-                  </span>
-                )}
-                <span className="absolute top-4 right-4 bg-black/40 backdrop-blur-md rounded-full p-2.5 flex items-center justify-center">
-                  <span className="veg-box"><span className="veg-circle"></span></span>
-                </span>
-              </div>
-
-              {/* Card Details */}
-              <div className="p-4 space-y-3">
-                <div className="flex justify-between items-start">
-                  <h3 className={`font-headline-md-mobile text-lg leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{item.title}</h3>
-                  <span className="text-[#E53935] font-black text-lg">₹{item.price}</span>
+            <div key={item.id} className="glass-card rounded-2xl overflow-hidden flex flex-row p-4 gap-4 border border-white/12 hover-glow transition-all duration-300">
+              
+              {/* Left Details: Title, Price, Description, Size Selector */}
+              <div className="flex-1 flex flex-col justify-between h-full min-w-0 text-left">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="veg-box scale-75 shrink-0"><span className="veg-circle"></span></span>
+                    {item.badge && (
+                      <span className="bg-[#E53935]/10 text-[#E53935] text-[8px] font-black uppercase px-1.5 py-0.5 rounded tracking-wide">
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className={`font-headline-md-mobile text-sm leading-snug font-extrabold truncate ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
+                    {item.title}
+                  </h3>
+                  <p className={`text-[10px] leading-normal line-clamp-2 ${isDarkMode ? "text-white/60" : "text-zinc-500"}`}>
+                    {item.description}
+                  </p>
                 </div>
-                <p className="text-xs opacity-60 leading-relaxed">{item.description}</p>
 
-                {/* Size Selection dropdown for pizzas */}
-                {item.sizes && (
-                  <div className="space-y-1">
-                    <span className="text-[10px] uppercase opacity-50 font-bold tracking-wider">Select size & crust</span>
-                    <div className="relative w-full">
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <span className="text-primary font-black text-sm">₹{item.price}</span>
+                  
+                  {/* Size Selector as a clean, rounded pill */}
+                  {item.sizes && (
+                    <div className="relative">
                       <select
                         defaultValue={item.sizes[0]}
                         onChange={(e) => setSelectedSize(e.target.value)}
-                        className={`w-full h-11 bg-white/5 border border-white/10 rounded-xl px-3 text-xs font-bold select-none outline-none appearance-none cursor-pointer ${isDarkMode ? "text-white" : "text-[#131313]"}`}
+                        className={`h-6 max-w-[90px] bg-[#131313]/5 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-full pl-2.5 pr-5 text-[9px] font-extrabold select-none outline-none appearance-none cursor-pointer truncate ${isDarkMode ? "text-white" : "text-[#131313]"}`}
                       >
                         {item.sizes.map((s) => (
-                          <option key={s} value={s} className={`font-bold ${isDarkMode ? "bg-[#131313] text-white" : "bg-white text-[#131313]"}`}>{s}</option>
+                          <option key={s} value={s} className={`font-bold text-[9px] ${isDarkMode ? "bg-[#131313] text-white" : "bg-white text-[#131313]"}`}>{s}</option>
                         ))}
                       </select>
-                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-white/50 text-sm pointer-events-none">
+                      <span className="material-symbols-outlined absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-white/50 text-[10px] pointer-events-none">
                         keyboard_arrow_down
                       </span>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+              </div>
 
-                {/* Card CTA Actions */}
-                <div className={`flex items-center pt-2 ${activeTab === "drinks" ? "justify-end" : "justify-between"}`}>
+              {/* Right Side: Product Image & ADD Button Stack */}
+              <div className="relative flex flex-col items-center shrink-0 pb-3">
+                <div className="w-24 h-24 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/10 shadow-sm">
+                  <img
+                    className="w-full h-full object-cover"
+                    alt={item.title}
+                    src={item.image}
+                  />
+                </div>
+                
+                {/* ADD Button overlapping bottom of image */}
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                  <button
+                    onClick={() => checkLocation(() => addToCart(item, selectedSize))}
+                    className="h-7 px-5 bg-[#E53935] hover:bg-red-700 text-white rounded-full font-label-sm text-[10px] uppercase font-black cursor-pointer border-0 active:scale-95 transition-all shadow-md shadow-[#E53935]/20 flex items-center justify-center whitespace-nowrap min-w-[65px]"
+                  >
+                    Add
+                  </button>
+                  
+                  {/* Small customise hint below add button */}
                   {(activeTab === "pizzas" || activeTab === "breads") && (
                     <button
                       onClick={() => checkLocation(() => setCustomizeItem(item))}
-                      className="text-[#E53935] font-label-sm text-xs uppercase font-extrabold flex items-center cursor-pointer bg-transparent border-0 outline-none hover:opacity-80"
+                      className="mt-1 text-[#E53935] hover:text-red-700 text-[8px] font-extrabold uppercase bg-transparent border-0 outline-none cursor-pointer tracking-wider whitespace-nowrap"
                     >
                       Customise
                     </button>
                   )}
-                  <button
-                    onClick={() => checkLocation(() => addToCart(item, selectedSize))}
-                    className="h-10 px-6 bg-[#E53935] hover:bg-red-700 text-white rounded-full font-label-sm text-xs uppercase font-extrabold cursor-pointer border-0 active:scale-95 transition-all shadow-[0_0_12px_rgba(229,57,53,0.3)]"
-                  >
-                    Add
-                  </button>
                 </div>
               </div>
+
             </div>
           ))}
 
@@ -535,22 +563,24 @@ export default function MenuList() {
 
       {/* Floating Customize Overlay Modal */}
       {customizeItem && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm dark">
-          <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4">
-            <h3 className="font-headline-lg-mobile text-lg text-white">Customize {customizeItem.title}</h3>
-            <p className="text-xs opacity-60">Personalize your toppings and selection details for {customizeItem.title}:</p>
+        <div className={`fixed inset-0 z-55 flex items-center justify-center p-5 bg-black/60 backdrop-blur-sm ${isDarkMode ? "dark" : ""}`}>
+          <div className="w-full max-w-sm glass-card rounded-3xl p-6 space-y-4 shadow-2xl">
+            <h3 className={`font-headline-lg-mobile text-lg ${modalTextPrimary}`}>Customize {customizeItem.title}</h3>
+            <p className={`text-xs ${modalTextSecondary}`}>Personalize your toppings and selection details for {customizeItem.title}:</p>
 
             {customizeItem.sizes && (
               <div className="space-y-1.5">
-                <span className="text-[10px] uppercase opacity-50 font-bold tracking-wider">Choose Crust size</span>
+                <span className={`text-[10px] uppercase font-bold tracking-wider ${modalLabelMuted}`}>Choose Crust size</span>
                 <div className="flex flex-wrap gap-2">
                   {customizeItem.sizes.map((s) => (
                     <button
                       key={s}
                       onClick={() => setSelectedSize(s)}
-                      className={`px-3 py-2 rounded-lg font-label-sm text-[10px] uppercase font-bold cursor-pointer border ${selectedSize === s
-                        ? "bg-[#E53935] border-[#E53935] text-white"
-                        : "bg-white/5 border-white/10 text-white/70"
+                      className={`px-3 py-2 rounded-lg font-label-sm text-[10px] uppercase font-bold cursor-pointer border transition-all ${selectedSize === s
+                        ? "bg-primary border-primary text-white"
+                        : isDarkMode
+                          ? "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                          : "bg-zinc-100 border-zinc-200 text-zinc-700 hover:bg-zinc-200/60"
                         }`}
                     >
                       {s}
@@ -565,7 +595,7 @@ export default function MenuList() {
                 <>
                   {/* TOPPINGS */}
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase opacity-50 font-bold tracking-wider">TOPPINGS</span>
+                    <span className={`text-[10px] uppercase font-bold tracking-wider ${modalLabelMuted}`}>TOPPINGS</span>
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         "Fresh Tomatoes",
@@ -579,7 +609,7 @@ export default function MenuList() {
                         "Capsicum",
                         "Onions"
                       ].map(opt => (
-                        <label key={opt} className="flex items-center space-x-2 text-xs text-white/80">
+                        <label key={opt} className={`flex items-center space-x-2 text-xs cursor-pointer ${modalCheckboxText}`}>
                           <input type="checkbox" className="accent-[#E53935]" checked={selectedToppings.includes(opt)} onChange={() => {
                             setSelectedToppings(prev => prev.includes(opt) ? prev.filter(i => i !== opt) : [...prev, opt]);
                           }} />
@@ -590,7 +620,7 @@ export default function MenuList() {
                   </div>
                   {/* Cheese & Dip */}
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase opacity-50 font-bold tracking-wider">Cheese & Dip</span>
+                    <span className={`text-[10px] uppercase font-bold tracking-wider ${modalLabelMuted}`}>Cheese & Dip</span>
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         "Extra Cheese",
@@ -601,7 +631,7 @@ export default function MenuList() {
                         "Peri Peri Dip",
                         "Korma Dip"
                       ].map(opt => (
-                        <label key={opt} className="flex items-center space-x-2 text-xs text-white/80">
+                        <label key={opt} className={`flex items-center space-x-2 text-xs cursor-pointer ${modalCheckboxText}`}>
                           <input type="checkbox" className="accent-[#E53935]" checked={selectedCheeseDip.includes(opt)} onChange={() => {
                             setSelectedCheeseDip(prev => prev.includes(opt) ? prev.filter(i => i !== opt) : [...prev, opt]);
                           }} />
@@ -612,8 +642,8 @@ export default function MenuList() {
                   </div>
                   {/* Choose Your ketchup */}
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase opacity-50 font-bold tracking-wider">Choose Your ketchup</span>
-                    <label className="flex items-center space-x-2 text-xs text-white/80">
+                    <span className={`text-[10px] uppercase font-bold tracking-wider ${modalLabelMuted}`}>Choose Your ketchup</span>
+                    <label className={`flex items-center space-x-2 text-xs cursor-pointer ${modalCheckboxText}`}>
                       <input type="checkbox" className="accent-[#E53935]" checked={selectedKetchup.includes("Ketchup")} onChange={() => {
                         setSelectedKetchup(prev => prev.includes("Ketchup") ? [] : ["Ketchup"]);
                       }} />
@@ -624,14 +654,14 @@ export default function MenuList() {
               )}
               {activeTab === "breads" && (
                 <div className="space-y-1">
-                  <span className="text-[10px] uppercase opacity-50 font-bold tracking-wider">DIPS</span>
+                  <span className={`text-[10px] uppercase font-bold tracking-wider ${modalLabelMuted}`}>DIPS</span>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       "Jalapeno Dip",
                       "Peri Peri Dip",
                       "Cheese Dip"
                     ].map(opt => (
-                      <label key={opt} className="flex items-center space-x-2 text-xs text-white/80">
+                      <label key={opt} className={`flex items-center space-x-2 text-xs cursor-pointer ${modalCheckboxText}`}>
                         <input type="checkbox" className="accent-[#E53935]" checked={selectedBreadDips.includes(opt)} onChange={() => {
                           setSelectedBreadDips(prev => prev.includes(opt) ? prev.filter(i => i !== opt) : [...prev, opt]);
                         }} />
@@ -643,10 +673,14 @@ export default function MenuList() {
               )}
             </div>
 
-            <div className="flex gap-3 pt-4 border-t border-white/10">
+            <div className={`flex gap-3 pt-4 border-t ${modalBorder}`}>
               <button
                 onClick={() => setCustomizeItem(null)}
-                className="flex-1 h-11 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl text-xs uppercase cursor-pointer"
+                className={`flex-1 h-11 font-bold rounded-xl text-xs uppercase cursor-pointer border transition-all ${
+                  isDarkMode 
+                    ? "bg-white/5 hover:bg-white/10 border-white/10 text-white" 
+                    : "bg-zinc-100 hover:bg-zinc-200 border-zinc-200 text-zinc-700"
+                }`}
               >
                 Cancel
               </button>
@@ -655,7 +689,7 @@ export default function MenuList() {
                   addToCart(customizeItem, selectedSize)
                   setCustomizeItem(null)
                 }}
-                className="flex-1 h-11 bg-[#E53935] hover:bg-red-700 text-white font-bold rounded-xl text-xs uppercase cursor-pointer border-0"
+                className="flex-1 h-11 bg-primary hover:bg-red-700 text-white font-bold rounded-xl text-xs uppercase cursor-pointer border-0 shadow-[0_4px_12px_rgba(229,57,53,0.25)] active:scale-95 transition-all"
               >
                 Confirm Add
               </button>
