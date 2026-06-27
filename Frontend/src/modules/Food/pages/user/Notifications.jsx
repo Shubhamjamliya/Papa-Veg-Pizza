@@ -1,10 +1,7 @@
-import { useState, useEffect, useMemo } from "react"
-import { Link } from "react-router-dom"
-import { ArrowLeft, Bell, CheckCircle2, Clock, Tag, Gift, AlertCircle, Trash2, X } from "lucide-react"
+import React, { useState, useEffect, useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 import AnimatedPage from "@food/components/user/AnimatedPage"
-import { Button } from "@food/components/ui/button"
-import { Card, CardContent } from "@food/components/ui/card"
-import { Badge } from "@food/components/ui/badge"
+import Header from "@food/components/user/Header"
 import useNotificationInbox from "@food/hooks/useNotificationInbox"
 
 // Initial mock notification data (fallback if localStorage is empty)
@@ -18,7 +15,7 @@ const DEFAULT_NOTIFICATIONS = [
     timestamp: Date.now() - 120000,
     read: false,
     icon: "CheckCircle2",
-    iconColor: "text-[#7e3866]"
+    iconColor: "text-green-500"
   },
   {
     id: "2",
@@ -29,23 +26,48 @@ const DEFAULT_NOTIFICATIONS = [
     timestamp: Date.now() - 3600000,
     read: false,
     icon: "Tag",
-    iconColor: "text-[#7e3866]"
+    iconColor: "text-orange-500"
   }
 ]
 
-// Icon mapping for dynamic icons
-const ICON_MAP = {
-  CheckCircle2,
-  Tag,
-  Gift,
-  AlertCircle
+// Mappings from Lucide / mock data names to Google Material Symbols
+const getMaterialIcon = (iconName) => {
+  switch (iconName) {
+    case "CheckCircle2":
+    case "check_circle":
+      return "check_circle"
+    case "Tag":
+    case "local_offer":
+      return "local_offer"
+    case "Gift":
+    case "redeem":
+      return "redeem"
+    case "AlertCircle":
+    case "warning":
+    case "error":
+      return "warning"
+    case "Bell":
+    case "notifications":
+      return "notifications"
+    default:
+      return "notifications"
+  }
 }
 
 export default function Notifications() {
+  const navigate = useNavigate()
+
+  // Theme state: defaults to dark mode like Home.jsx
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem("appTheme")
+    return savedTheme ? savedTheme === "dark" : true
+  })
+
   const [notificationsList, setNotificationsList] = useState(() => {
     const saved = localStorage.getItem('food_user_notifications')
     return saved ? JSON.parse(saved) : DEFAULT_NOTIFICATIONS
   })
+
   const {
     items: broadcastNotifications,
     unreadCount: broadcastUnreadCount,
@@ -54,14 +76,47 @@ export default function Notifications() {
     dismissAll: dismissAllBroadcastNotifications,
   } = useNotificationInbox("user", { limit: 100 })
 
+  // Load Google Fonts and Material Icons dynamically
+  useEffect(() => {
+    const linkFonts = document.createElement("link")
+    linkFonts.href = "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap"
+    linkFonts.rel = "stylesheet"
+    document.head.appendChild(linkFonts)
+
+    const linkIcons = document.createElement("link")
+    linkIcons.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    linkIcons.rel = "stylesheet"
+    document.head.appendChild(linkIcons)
+
+    return () => {
+      document.head.removeChild(linkFonts)
+      document.head.removeChild(linkIcons)
+    }
+  }, [])
+
+  // Sync theme with localStorage and documentElement class
+  useEffect(() => {
+    const root = document.documentElement
+    if (isDarkMode) {
+      root.classList.add("dark")
+      localStorage.setItem("appTheme", "dark")
+    } else {
+      root.classList.remove("dark")
+      localStorage.setItem("appTheme", "light")
+    }
+  }, [isDarkMode])
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode)
+  }
+
   // Persistence: Save to localStorage whenever list updates
   useEffect(() => {
     localStorage.setItem('food_user_notifications', JSON.stringify(notificationsList))
-    // Also dispatch an event to update other components (like navbar badge)
     window.dispatchEvent(new CustomEvent('notificationsUpdated', { detail: { count: notificationsList.filter(n => !n.read).length } }))
   }, [notificationsList])
 
-  // Real-time: Listen for status updates from useUserNotifications hook
+  // Real-time: Listen for status updates
   useEffect(() => {
     const handleOrderUpdate = (event) => {
       const { orderId, status, message, title } = event.detail
@@ -76,7 +131,7 @@ export default function Notifications() {
         timestamp: Date.now(),
         read: false,
         icon: isCancelled ? "AlertCircle" : "CheckCircle2",
-        iconColor: isCancelled ? "text-red-600" : "text-[#7e3866]"
+        iconColor: "text-red-500"
       }
       setNotificationsList(prev => [newNotification, ...prev])
     }
@@ -92,7 +147,7 @@ export default function Notifications() {
         timestamp: Date.now(),
         read: false,
         icon: "AlertCircle",
-        iconColor: "text-#55254b"
+        iconColor: "text-red-555"
       }
       setNotificationsList(prev => [newNotification, ...prev])
     }
@@ -126,7 +181,7 @@ export default function Notifications() {
         : "Just now",
       timestamp: item.createdAt || Date.now(),
       icon: "Bell",
-      iconColor: "text-blue-600",
+      iconColor: "text-blue-500",
     }))
 
     return [...broadcastItems, ...localItems].sort(
@@ -161,109 +216,190 @@ export default function Notifications() {
     setNotificationsList((prev) => prev.filter((notification) => notification.id !== id))
   }
 
+  const getNotificationColors = (type) => {
+    switch (type) {
+      case "order":
+        return {
+          bg: "bg-green-500/10 dark:bg-green-500/15",
+          text: "text-green-600 dark:text-green-400",
+          icon: "check_circle"
+        }
+      case "offer":
+      case "promotion":
+        return {
+          bg: "bg-orange-500/10 dark:bg-orange-500/15",
+          text: "text-orange-600 dark:text-orange-400",
+          icon: "local_offer"
+        }
+      case "alert":
+        return {
+          bg: "bg-red-500/10 dark:bg-red-500/15",
+          text: "text-red-600 dark:text-red-400",
+          icon: "warning"
+        }
+      case "broadcast":
+        return {
+          bg: "bg-blue-500/10 dark:bg-blue-500/15",
+          text: "text-blue-600 dark:text-blue-400",
+          icon: "notifications"
+        }
+      default:
+        return {
+          bg: "bg-primary/10 dark:bg-primary/15",
+          text: "text-primary",
+          icon: "notifications"
+        }
+    }
+  }
+
   return (
-    <AnimatedPage className="min-h-screen bg-white dark:bg-[#0a0a0a]">
-      <div className="max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
-        {/* Header */}
-        <div className="flex items-center gap-3 sm:gap-4 mb-4 md:mb-6 lg:mb-8">
-          <Link to="/user">
-            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 sm:h-10 sm:w-10">
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Button>
-          </Link>
-          <div className="flex items-center gap-2 sm:gap-3 flex-1">
-            <Bell className="h-5 w-5 sm:h-6 sm:w-6 text-[#7e3866] fill-[#7e3866]" />
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">Notifications</h1>
-            {unreadCount > 0 && (
-              <Badge className="bg-[#7e3866] text-white text-xs md:text-sm">
-                {unreadCount}
-              </Badge>
-            )}
-          </div>
+    <AnimatedPage>
+      <div
+        className={`font-body-md text-body-md min-h-screen pb-32 overflow-x-hidden flex flex-col transition-colors duration-300 ${isDarkMode ? "dark" : ""}`}
+        style={{
+          backgroundColor: isDarkMode ? "#111111" : "#fbf9f8",
+          color: isDarkMode ? "#e5e2e1" : "#1c1b1b",
+        }}
+      >
+        {/* Dynamic CSS Styling Injector */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+          .glass-card {
+            background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.9)"} !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
+          }
+          .font-headline-lg-mobile {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+          }
+          .font-body-md {
+            font-family: 'Inter', sans-serif !important;
+          }
+          .text-primary {
+            color: #E53935 !important;
+          }
+          .bg-primary {
+            background-color: #E53935 !important;
+          }
+          .border-l-primary {
+            border-left: 4px solid #E53935 !important;
+          }
+          .text-on-primary {
+            color: #ffffff !important;
+          }
+          .px-margin-mobile {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+          .gap-sm {
+            gap: 12px !important;
+          }
+        ` }} />
+
+        {/* Global Header */}
+        <Header 
+          title="Notifications" 
+          showBack={true} 
+          isDarkMode={isDarkMode} 
+          onThemeToggle={toggleTheme} 
+          showCart={true} 
+        />
+
+        {/* Main Notifications Layout Container */}
+        <main className="mt-20 px-margin-mobile flex-1 flex flex-col gap-sm max-w-md mx-auto w-full">
           {mergedNotifications.length > 0 && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleClearAll}
-              className="text-gray-500 hover:text-red-500 transition-colors flex items-center gap-1.5 px-2 md:px-3"
-            >
-              <Trash2 className="h-4 w-4" />
-              <span className="text-xs md:text-sm font-medium">Clear All</span>
-            </Button>
-          )}
-        </div>
-
-        {/* Notifications List */}
-        <div className="space-y-3 md:space-y-4">
-          {mergedNotifications.map((notification) => {
-            const Icon = ICON_MAP[notification.icon] || Bell
-            return (
-              <Card
-                key={notification.id}
-                onClick={() => handleMarkAsRead(notification.id, notification.source)}
-                className={`relative cursor-pointer transition-all duration-200 py-1 hover:shadow-md ${!notification.read ? "bg-red-50/50 dark:bg-red-900/20 border-red-200 dark:border-red-800" : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                  }`}
+            /* Sub-header Controls */
+            <div className="flex items-center justify-between mb-2 px-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#e4beb9] opacity-75">
+                  {unreadCount > 0 ? `${unreadCount} Unread` : 'All read'}
+                </span>
+              </div>
+              <button
+                onClick={handleClearAll}
+                className="flex items-center gap-1.5 text-xs font-bold text-primary hover:opacity-85 active:scale-95 transition-all bg-transparent border-0 cursor-pointer outline-none"
               >
-                {/* Unread Dot - Top Right */}
-                {!notification.read && (
-                  <div className="absolute top-2 right-2 w-2.5 h-2.5 md:w-3 md:h-3 bg-[#7e3866] rounded-full" />
-                )}
+                <span className="material-symbols-outlined text-[16px] select-none">delete</span>
+                Clear All
+              </button>
+            </div>
+          )}
 
-                <CardContent className="p-3 md:p-4 lg:p-5">
-                  <div className="flex items-start gap-3 sm:gap-4 md:gap-5">
-                    {/* Icon */}
-                    <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center ${notification.type === "order" ? "bg-green-100 dark:bg-green-900/40" :
-                        notification.type === "offer" ? "bg-red-100 dark:bg-red-900/40" :
-                          notification.type === "promotion" ? "bg-blue-100 dark:bg-blue-900/40" :
-                            "bg-orange-100 dark:bg-orange-900/40"
-                      }`}>
-                      <Icon className={`h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 ${notification.iconColor}`} />
-                    </div>
+          {/* Notifications List */}
+          <div className="flex flex-col gap-sm w-full">
+            {mergedNotifications.map((notification) => {
+              const config = getNotificationColors(notification.type)
+              const iconName = getMaterialIcon(notification.icon) || config.icon
+              return (
+                <div
+                  key={notification.id}
+                  onClick={() => handleMarkAsRead(notification.id, notification.source)}
+                  className={`glass-card rounded-2xl p-4 flex items-start gap-3.5 cursor-pointer transition-all duration-300 active:scale-[0.99] relative ${
+                    !notification.read 
+                      ? "border-l-primary shadow-md bg-white/[0.08] dark:bg-white/[0.08]" 
+                      : "opacity-75 hover:opacity-100"
+                  }`}
+                >
+                  {/* Unread Dot indicator */}
+                  {!notification.read && (
+                    <span className="absolute top-4 right-4 w-2 h-2 bg-primary rounded-full" />
+                  )}
 
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-1 md:mb-2">
-                        <h3 className={`text-sm sm:text-base md:text-lg font-semibold ${!notification.read ? "text-gray-900 dark:text-white" : "text-gray-700 dark:text-gray-300"
-                          }`}>
-                          {notification.title}
-                        </h3>
-                        <button
-                          type="button"
-                          aria-label="Delete notification"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleDeleteOne(notification.id, notification.source)
-                          }}
-                          className="flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <p className="text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400 mb-2 md:mb-3 line-clamp-2">
-                        {notification.message}
-                      </p>
-                      <div className="flex items-center gap-1 text-xs md:text-sm text-gray-500 dark:text-gray-400">
-                        <Clock className="h-3 w-3 md:h-4 md:w-4" />
-                        <span>{notification.time}</span>
-                      </div>
+                  {/* Icon Badge */}
+                  <div className={`w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 ${config.bg} ${config.text}`}>
+                    <span className="material-symbols-outlined text-[22px] select-none">
+                      {iconName}
+                    </span>
+                  </div>
+
+                  {/* Description Details */}
+                  <div className="flex-1 min-w-0 pr-4">
+                    <h3 className={`font-bold text-sm mb-1 ${!notification.read ? "text-slate-900 dark:text-white" : "text-slate-700 dark:text-slate-300"}`}>
+                      {notification.title}
+                    </h3>
+                    <p className="text-xs opacity-75 leading-relaxed mb-2 text-slate-600 dark:text-[#e4beb9] line-clamp-2">
+                      {notification.message}
+                    </p>
+                    <div className="flex items-center gap-1 text-[10px] text-slate-400 dark:text-[#e4beb9]/60">
+                      <span className="material-symbols-outlined text-[12px] select-none">schedule</span>
+                      <span>{notification.time}</span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
 
-        {/* Empty State (if no notifications) */}
-        {mergedNotifications.length === 0 && (
-          <div className="text-center py-12 md:py-16 lg:py-20">
-            <Bell className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 text-gray-300 dark:text-gray-600 mx-auto mb-4 md:mb-5 lg:mb-6" />
-            <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-2 md:mb-3">No notifications</h3>
-            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">You're all caught up!</p>
+                  {/* Delete Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDeleteOne(notification.id, notification.source)
+                    }}
+                    className="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-primary hover:bg-slate-100 dark:hover:bg-white/10 transition-colors bg-transparent border-0 cursor-pointer absolute bottom-2 right-2 outline-none"
+                    title="Delete notification"
+                  >
+                    <span className="material-symbols-outlined text-[18px] select-none">close</span>
+                  </button>
+                </div>
+              )
+            })}
           </div>
-        )}
+
+          {/* Empty State Screen */}
+          {mergedNotifications.length === 0 && (
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4 my-auto">
+              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                <span className="material-symbols-outlined text-primary text-[44px] select-none">
+                  notifications_off
+                </span>
+              </div>
+              <h3 className="font-headline-lg-mobile text-lg font-black text-slate-900 dark:text-white">
+                No Notifications
+              </h3>
+              <p className="text-xs opacity-65 leading-relaxed text-slate-600 dark:text-[#e4beb9] max-w-xs">
+                You are all caught up! There are no new announcements or order status updates.
+              </p>
+            </div>
+          )}
+        </main>
       </div>
     </AnimatedPage>
   )
 }
-

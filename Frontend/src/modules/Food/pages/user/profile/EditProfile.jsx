@@ -6,6 +6,7 @@ import { userAPI, authAPI } from "@food/api"
 import { clearModuleAuth } from "@food/utils/auth"
 import { toast } from "sonner"
 import AnimatedPage from "@food/components/user/AnimatedPage"
+import DeleteAccountModal from "./DeleteAccountModal"
 
 export default function EditProfile() {
   const navigate = useNavigate()
@@ -15,6 +16,9 @@ export default function EditProfile() {
     const savedTheme = localStorage.getItem("appTheme")
     return savedTheme ? savedTheme === "dark" : true
   })
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // Load from localStorage or use context
   const storedUser = JSON.parse(localStorage.getItem("currentUser") || localStorage.getItem("user_user") || "{}")
@@ -123,28 +127,34 @@ export default function EditProfile() {
     }
   }
 
-  const handleDeleteAccount = async () => {
-    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
-      try {
-        await userAPI.deleteAccount()
-        toast.success("Account deleted successfully")
-        
-        // Clear all local data
-        clearModuleAuth("user")
-        localStorage.removeItem("accessToken")
-        localStorage.removeItem("user_authenticated")
-        localStorage.removeItem("currentUser")
-        localStorage.removeItem("user_user")
-        localStorage.removeItem("user")
-        localStorage.removeItem("cart")
-        
-        const USER_SESSION_PREFERENCE_KEYS = ["userVegMode", "userVegModeOption", "food-under-250-filters"]
-        USER_SESSION_PREFERENCE_KEYS.forEach((key) => localStorage.removeItem(key))
-        window.dispatchEvent(new Event("userAuthChanged"))
-        navigate("/user/auth/login", { replace: true })
-      } catch (err) {
-        toast.error(err?.response?.data?.message || "Failed to delete account. Please try again.")
-      }
+  const handleDeleteAccount = () => {
+    setIsDeleteModalOpen(true)
+  }
+
+  const confirmDeleteAccount = async () => {
+    try {
+      setIsDeleting(true)
+      await userAPI.deleteAccount()
+      toast.success("Account deleted successfully")
+      
+      // Clear all local data
+      clearModuleAuth("user")
+      localStorage.removeItem("accessToken")
+      localStorage.removeItem("user_authenticated")
+      localStorage.removeItem("currentUser")
+      localStorage.removeItem("user_user")
+      localStorage.removeItem("user")
+      localStorage.removeItem("cart")
+      
+      const USER_SESSION_PREFERENCE_KEYS = ["userVegMode", "userVegModeOption", "food-under-250-filters"]
+      USER_SESSION_PREFERENCE_KEYS.forEach((key) => localStorage.removeItem(key))
+      window.dispatchEvent(new Event("userAuthChanged"))
+      navigate("/user/auth/login", { replace: true })
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to delete account. Please try again.")
+    } finally {
+      setIsDeleting(false)
+      setIsDeleteModalOpen(false)
     }
   }
 
@@ -343,6 +353,14 @@ export default function EditProfile() {
         </div>
 
       </main>
+
+      <DeleteAccountModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDeleteAccount}
+        loading={isDeleting}
+        isDarkMode={isDarkMode}
+      />
 
     </AnimatedPage>
   )

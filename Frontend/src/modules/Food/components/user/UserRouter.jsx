@@ -71,6 +71,7 @@ const EditPayment = lazy(() => import("@food/pages/user/profile/EditPayment"))
 const Favorites = lazy(() => import("@food/pages/user/profile/Favorites"))
 const Support = lazy(() => import("@food/pages/user/profile/Support"))
 const Coupons = lazy(() => import("@food/pages/user/profile/Coupons"))
+const AllCoupons = lazy(() => import("@food/pages/user/profile/AllCoupons"))
 const About = lazy(() => import("@food/pages/user/profile/About"))
 const Terms = lazy(() => import("@food/pages/user/profile/Terms"))
 const Privacy = lazy(() => import("@food/pages/user/profile/Privacy"))
@@ -251,7 +252,7 @@ export default function UserRouter() {
             }
           />
           <Route
-            path="profile/support"
+            path="account/coupons/support"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
                 <Support />
@@ -259,10 +260,18 @@ export default function UserRouter() {
             }
           />
           <Route
-            path="profile/coupons"
+            path="account/coupons"
             element={
               <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
                 <Coupons />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="account/coupons/all"
+            element={
+              <ProtectedRoute requiredRole="user" loginPath="/user/auth/login">
+                <AllCoupons />
               </ProtectedRoute>
             }
           />
