@@ -179,7 +179,7 @@ export default function OrderDetailsFlow({
   return (
     <>
       {/* 1. Delivering ASAP Confirmation Bar */}
-      <div className={`mx-margin-mobile my-3 p-4 rounded-2xl shadow-sm border flex items-center justify-between transition-colors ${
+      <div className={`mx-5 my-3 p-4 rounded-2xl shadow-sm border flex items-center justify-between transition-colors ${
         isDarkMode ? "bg-white/5 border-white/10" : "bg-white border-zinc-100"
       }`}>
         <div className="flex items-center gap-3">

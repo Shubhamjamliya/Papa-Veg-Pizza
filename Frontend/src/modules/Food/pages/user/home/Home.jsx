@@ -440,10 +440,22 @@ export default function Home() {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .hover-glow:hover {
-          box-shadow: ${isDarkMode 
-            ? "0 8px 24px -4px rgba(229, 57, 53, 0.15), 0 4px 10px -2px rgba(229, 57, 53, 0.08)" 
-            : "0 12px 25px -4px rgba(229, 57, 53, 0.08), 0 8px 12px -2px rgba(0, 0, 0, 0.02)"} !important;
+          box-shadow: ${isDarkMode
+              ? "0 8px 24px -4px rgba(229, 57, 53, 0.15), 0 4px 10px -2px rgba(229, 57, 53, 0.08)"
+              : "0 12px 25px -4px rgba(229, 57, 53, 0.08), 0 8px 12px -2px rgba(0, 0, 0, 0.02)"} !important;
           border-color: ${isDarkMode ? "rgba(229, 57, 53, 0.2)" : "rgba(229, 57, 53, 0.1)"} !important;
+        }
+        .service-card {
+          border-bottom: 4px solid ${isDarkMode ? "#27272a" : "#e4e4e7"} !important;
+          box-shadow: ${isDarkMode 
+            ? "none" 
+            : "0 8px 16px -4px rgba(0, 0, 0, 0.06), 0 4px 8px -2px rgba(0, 0, 0, 0.02)"} !important;
+        }
+        .service-card.active-service-card {
+          border-bottom: 4px solid #b71c1c !important;
+          box-shadow: ${isDarkMode 
+            ? "0 12px 25px rgba(229, 57, 53, 0.2)" 
+            : "0 12px 25px -4px rgba(229, 57, 53, 0.22), 0 6px 12px -2px rgba(229, 57, 53, 0.1)"} !important;
         }
         `
         }} />
@@ -479,7 +491,7 @@ export default function Home() {
         {/* Main Content */}
         <main className="mt-16 space-y-lg">
           {/* Hero Banner Carousel */}
-          <motion.section 
+          <motion.section
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -576,54 +588,49 @@ export default function Home() {
                   >
                     {/* Front Side */}
                     <div
-                      className={`absolute inset-0 backface-hidden rounded-xl p-2.5 flex flex-col items-center justify-center gap-1 border transition-all duration-300 ${
-                        isSelected
-                          ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/5"
+                      className={`absolute inset-0 backface-hidden rounded-xl p-2.5 flex flex-col items-center justify-center gap-1 border transition-all duration-300 ${isSelected
+                          ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/5 active-service-card"
                           : "border-black/5 dark:border-white/5"
-                      } glass-card`}
+                        } glass-card service-card`}
                       style={{ backfaceVisibility: "hidden" }}
                     >
-                      <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                        isSelected
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${isSelected
                           ? "bg-[#E53935] text-white shadow-md shadow-[#E53935]/20"
                           : "bg-[#131313]/5 dark:bg-white/5 text-on-surface-variant"
-                      }`}>
+                        }`}>
                         <span className="material-symbols-outlined text-[20px]">{service.icon}</span>
                       </div>
-                      <span className={`font-label-sm uppercase tracking-wider text-[9px] ${
-                        isSelected ? "text-[#E53935] font-extrabold" : "opacity-75 font-semibold"
-                      }`}>
+                      <span className={`font-label-sm uppercase tracking-wider text-[9px] ${isSelected ? "text-[#E53935] font-extrabold" : "opacity-75 font-semibold"
+                        }`}>
                         {service.label}
                       </span>
                     </div>
 
                     {/* Back Side (Flipped) */}
                     <div
-                      className={`absolute inset-0 backface-hidden rounded-xl p-2 flex flex-col items-center justify-center gap-1 border text-center transition-all duration-300 ${
-                        isSelected
-                          ? "bg-[#E53935] border-transparent text-white"
+                      className={`absolute inset-0 backface-hidden rounded-xl p-2 flex flex-col items-center justify-center gap-1 border text-center transition-all duration-300 ${isSelected
+                          ? "bg-[#E53935] border-transparent text-white active-service-card"
                           : isDarkMode
-                          ? "bg-zinc-800 border-zinc-700 text-white"
-                          : "bg-gray-100 border-gray-200 text-gray-800"
-                      }`}
+                            ? "bg-zinc-800 border-zinc-700 text-white"
+                            : "bg-gray-100 border-gray-200 text-gray-800"
+                        } service-card`}
                       style={{
                         backfaceVisibility: "hidden",
                         transform: "rotateY(180deg)",
                       }}
                     >
-                      <span className={`text-[8px] font-black uppercase tracking-widest ${
-                        isSelected ? "text-white" : "text-[#E53935]"
-                      }`}>
+                      <span className={`text-[8px] font-black uppercase tracking-widest ${isSelected ? "text-white" : "text-[#E53935]"
+                        }`}>
                         {isSelected ? "Active" : "Select"}
                       </span>
                       <span className="text-[9px] opacity-90 line-clamp-2 max-w-[125px] font-medium leading-tight">
                         {service.id === "delivery"
                           ? (locationConfirmed ? (deliveryAddress || "Tap to set") : "Tap to set")
                           : service.id === "takeaway"
-                          ? (takeawayHut || "Tap to select")
-                          : service.id === "incar"
-                          ? (carNumber || "Tap to enter")
-                          : "Tap to enter"}
+                            ? (takeawayHut || "Tap to select")
+                            : service.id === "incar"
+                              ? (carNumber || "Tap to enter")
+                              : "Tap to enter"}
                       </span>
                     </div>
                   </motion.div>
@@ -634,7 +641,7 @@ export default function Home() {
 
           {/* Hot Deals Section */}
           <section>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.05 }}
@@ -657,12 +664,12 @@ export default function Home() {
             <div className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin-mobile pb-2">
               {DEALS.map((deal, index) => {
                 const isLeft = index % 2 === 0
-                const badgeColorClass = 
-                  deal.badge === "Bestseller" 
+                const badgeColorClass =
+                  deal.badge === "Bestseller"
                     ? "bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20"
                     : deal.badge === "Value"
-                    ? "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20"
-                    : "bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20"
+                      ? "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20"
+                      : "bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20"
                 return (
                   <motion.div
                     key={deal.id}
@@ -700,7 +707,7 @@ export default function Home() {
 
           {/* Menu Categories */}
           <section>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.05 }}
@@ -743,12 +750,12 @@ export default function Home() {
                     whileHover={{ scale: 1.08 }}
                     className="flex flex-col items-center gap-xs min-w-[70px] cursor-pointer group"
                   >
-                    <motion.div 
+                    <motion.div
                       whileHover={{ rotate: 5 }}
                       className={`w-16 h-16 rounded-full glass-card flex items-center justify-center transition-all duration-300 ${isSelected
                         ? "bg-primary text-white shadow-lg shadow-primary/30 scale-105 border-transparent"
                         : "text-on-surface-variant hover:border-primary/30 hover:scale-105"
-                      }`}
+                        }`}
                     >
                       <span className="material-symbols-outlined">{cat.icon}</span>
                     </motion.div>
@@ -761,7 +768,7 @@ export default function Home() {
 
           {/* Most Loved Pizzas */}
           <section>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.05 }}
@@ -775,8 +782,8 @@ export default function Home() {
                 const isFav = favorites.includes(product.id)
                 const isLeft = index % 2 === 0
                 return (
-                  <motion.div 
-                    key={product.id} 
+                  <motion.div
+                    key={product.id}
                     initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.05 }}
@@ -827,7 +834,7 @@ export default function Home() {
           </section>
 
           {/* Fresh Ingredients */}
-          <motion.section 
+          <motion.section
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.05 }}
