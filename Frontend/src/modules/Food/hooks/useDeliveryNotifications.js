@@ -683,6 +683,13 @@ export const useDeliveryNotifications = () => {
       return;
     }
 
+    const token = localStorage.getItem('delivery_accessToken') || localStorage.getItem('accessToken');
+    if (!token || token === "dummy_access_token" || token === "null" || token === "undefined") {
+      debugLog('Socket connection skipped: no valid authentication token found');
+      setIsConnected(false);
+      return;
+    }
+
     // IMPORTANT: Socket.IO server is on the origin (not /api/v1).
     // Our API baseURL is typically like: http://localhost:5000/api/v1
     // So for sockets we always connect to: http://localhost:5000
@@ -742,7 +749,6 @@ export const useDeliveryNotifications = () => {
       return; // Don't try to connect with invalid URL
     }
 
-    const token = localStorage.getItem('delivery_accessToken') || localStorage.getItem('accessToken');
     const tokenPreview = token ? `${String(token).slice(0, 12)}...` : null;
     debugLog('Preparing socket auth payload', {
       tokenPresent: Boolean(token),
@@ -829,7 +835,11 @@ export const useDeliveryNotifications = () => {
       joinedDeliveryRoomRef.current = null;
       
       if (reason === 'io server disconnect') {
-        socketRef.current.connect();
+        const currentToken = localStorage.getItem('delivery_accessToken') || localStorage.getItem('accessToken');
+        if (currentToken && currentToken !== 'dummy_access_token' && currentToken !== 'null' && currentToken !== 'undefined') {
+          debugLog('Server disconnected socket, retrying with token');
+          socketRef.current.connect();
+        }
       }
     });
 

@@ -2010,6 +2010,78 @@ export function handleMockRequest(config) {
     }
     return errorRes("Invalid email or password");
   }
+
+  // Delivery Partner Login Mock
+  if (url.includes("/food/auth/delivery/request-otp") || url.includes("/auth/delivery/request-otp")) {
+    return successRes({ otp: "1234" });
+  }
+
+  if (url.includes("/food/auth/delivery/verify-otp") || url.includes("/auth/delivery/verify-otp")) {
+    const phone = data?.phone || "";
+    const otp = data?.otp || "";
+    
+    if (otp === "1234") {
+      return {
+        success: true,
+        status: 200,
+        data: {
+          success: true,
+          data: {
+            accessToken: "mockHeader.eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJkZWxpdmVyeSIsInVzZXJJZCI6InJpZGVyLTEifQ==.mockSignature",
+            refreshToken: "mock-rider-refresh-token-12345",
+            user: {
+              id: "rider-1",
+              _id: "rider-1",
+              name: "Rider V2 Mock",
+              phone: phone || "6797980889",
+              email: "rider@papavegpizza.com",
+              status: "approved",
+              profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde",
+              walletAmount: 1500,
+              refCode: "RIDER123"
+            },
+            needsRegistration: false
+          }
+        }
+      };
+    }
+    return errorRes("Invalid OTP code", 400);
+  }
+
+  // Customer User Login Mock
+  if (url.includes("/food/auth/user/request-otp") || url.includes("/auth/user/request-otp")) {
+    return successRes({ otp: "1234" });
+  }
+
+  if (url.includes("/food/auth/user/verify-otp") || url.includes("/auth/user/verify-otp")) {
+    const phone = data?.phone || "";
+    const otp = data?.otp || "";
+    
+    if (otp === "1234") {
+      return {
+        success: true,
+        status: 200,
+        data: {
+          success: true,
+          data: {
+            accessToken: "mockHeader.eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJ1c2VyIiwidXNlcklkIjoidXNlci0xIn0=.mockSignature",
+            refreshToken: "mock-user-refresh-token-12345",
+            user: {
+              id: "cust-1",
+              _id: "cust-1",
+              name: "Rashi Kumar",
+              phone: phone || "9988776655",
+              email: "rashi@example.com",
+              role: "USER"
+            },
+            needsRegistration: false
+          }
+        }
+      };
+    }
+    return errorRes("Invalid OTP code", 400);
+  }
+
   if (url.includes("/food/auth/me") || url.includes("/auth/me")) {
     const isUser = config.contextModule === "user" || localStorage.getItem("user_accessToken") === "dummy_access_token";
     if (isUser) {

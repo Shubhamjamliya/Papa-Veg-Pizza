@@ -8,6 +8,7 @@ const NATIVE_LAST_ROUTE_KEY = 'native_last_route'
 // Lazy load the Food service module (Quick-spicy app)
 const FoodApp = lazy(() => import('../modules/Food/routes'))
 const AuthApp = lazy(() => import('../modules/auth/routes'))
+const DeliveryV2App = lazy(() => import('../modules/DeliveryV2'))
 import ProtectedRoute from '@food/components/ProtectedRoute'
 
 const PageLoader = () => <AppShellSkeleton />
@@ -69,6 +70,10 @@ const AppRoutes = () => {
       {/* Auth Module */}
       <Route path="/delivery/auth/*" element={<AuthApp />} />
       <Route path="/restaurant/auth/*" element={<AuthApp />} />
+
+      {/* Delivery V2 Module */}
+      <Route path="/delivery/*" element={<Navigate to="/food/delivery" replace />} />
+      <Route path="/food/delivery/*" element={<Suspense fallback={<PageLoader />}><DeliveryV2App /></Suspense>} />
 
       {/* Food Module - Handle both /food and root / for the user app */}
       <Route path="/food/*" element={<FoodAppWrapper />} />
