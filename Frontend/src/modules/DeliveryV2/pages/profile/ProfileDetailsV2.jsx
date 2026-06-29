@@ -400,9 +400,9 @@ export const ProfileDetailsV2 = () => {
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center font-poppins">
          <div className="flex flex-col items-center gap-4">
             <div className="relative">
-               <div className="w-16 h-16 border-4 border-orange-100 border-t-orange-500 rounded-full animate-spin" />
+               <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
                <div className="absolute inset-0 flex items-center justify-center">
-                  <User className="w-6 h-6 text-orange-500" />
+                  <User className="w-6 h-6 text-primary" />
                </div>
             </div>
             <p className="text-gray-400 text-sm font-bold uppercase tracking-widest">Initializing Profile...</p>
@@ -411,10 +411,10 @@ export const ProfileDetailsV2 = () => {
     )
   }
 
-  const InfoCard = ({ icon: Icon, label, value, color = "blue", badge = null, onEdit = null }) => (
+  const InfoCard = ({ icon: Icon, label, value, badge = null, onEdit = null }) => (
     <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100/80 flex items-center justify-between group">
       <div className="flex items-center gap-4">
-        <div className={`w-12 h-12 rounded-xl bg-${color}-50 flex items-center justify-center text-${color}-600 border border-${color}-100 transition-transform group-hover:scale-105`}>
+        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 transition-transform group-hover:scale-105">
           <Icon className="w-6 h-6" />
         </div>
         <div>
@@ -426,7 +426,7 @@ export const ProfileDetailsV2 = () => {
         </div>
       </div>
       {onEdit && (
-        <button onClick={onEdit} className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 hover:text-orange-500 transition-all active:scale-90">
+        <button onClick={onEdit} className="p-2 hover:bg-gray-50 rounded-lg text-gray-400 hover:text-primary transition-all active:scale-90">
           <Edit2 className="w-4 h-4" />
         </button>
       )}
@@ -443,7 +443,7 @@ export const ProfileDetailsV2 = () => {
           </button>
           <h1 className="text-lg font-black text-black uppercase tracking-tight leading-none">Profile</h1>
         </div>
-        <div className="bg-blue-600 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20">
+        <div className="bg-primary text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20">
           ID: {profile?.deliveryId || "..."}
         </div>
       </div>
@@ -475,7 +475,7 @@ export const ProfileDetailsV2 = () => {
               
               <button 
                 onClick={() => handlePickFromGallery('profilePhoto', fileInputRef)}
-                className="bg-blue-600 text-white p-3 rounded-2xl shadow-xl hover:bg-blue-700 transition-all active:scale-95 border-4 border-white flex items-center justify-center"
+                className="bg-secondary text-white p-3 rounded-2xl shadow-xl hover:bg-secondary-hover transition-all active:scale-95 border-4 border-white flex items-center justify-center"
                 title="Gallery"
               >
                 <ImageIcon className="w-5 h-5" />
@@ -498,10 +498,10 @@ export const ProfileDetailsV2 = () => {
            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2 mb-4">Delivery Partner • {profile?.location?.city}</p>
            
            <div className="flex items-center justify-center gap-2">
-              <div className={`${isAdminApproved ? 'bg-blue-600 text-white' : 'bg-orange-500/10 text-orange-500'} px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border ${isAdminApproved ? 'border-blue-700 shadow-lg' : 'border-orange-500/20'} flex items-center gap-2`}>
+              <div className={`${isAdminApproved ? 'bg-primary text-white' : 'bg-secondary/10 text-secondary'} px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border ${isAdminApproved ? 'border-primary shadow-lg' : 'border-secondary/20'} flex items-center gap-2`}>
                  <CheckCircle className="w-4 h-4" /> {isAdminApproved ? "Approved" : (profile?.status || "Pending")}
               </div>
-              <div className="bg-blue-50 text-blue-600 px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border border-blue-100 flex items-center gap-2">
+              <div className="bg-primary/10 text-primary px-4 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border border-primary/20 flex items-center gap-2">
                  <Smartphone className="w-4 h-4" /> {profile?.phone}
               </div>
            </div>
@@ -573,7 +573,7 @@ export const ProfileDetailsV2 = () => {
                   setUpiQrPreview(null)
                   setShowBankDetailsPopup(true)
                 }} 
-                className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline"
+                className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline"
               >
                 Edit Details
               </button>
@@ -588,7 +588,7 @@ export const ProfileDetailsV2 = () => {
                           <p className="text-white/40 text-[9px] font-black uppercase tracking-[0.2em] mb-1">Bank Account</p>
                           <h4 className="text-lg font-bold tracking-tight">{bankDetails.bankName || "Link Account"}</h4>
                        </div>
-                       <Banknote className="w-8 h-8 text-blue-500/50" />
+                       <Banknote className="w-8 h-8 text-primary/50" />
                     </div>
                     <div className="flex justify-between items-end">
                        <div>
@@ -608,7 +608,7 @@ export const ProfileDetailsV2 = () => {
               {/* UPI Section */}
               <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between group">
                  <div className="flex items-center gap-5">
-                    <div className="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 border border-purple-100 group-hover:scale-105 transition-transform">
+                    <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary border border-primary/20 group-hover:scale-105 transition-transform">
                        <Smartphone className="w-7 h-7" />
                     </div>
                     <div>
@@ -619,7 +619,7 @@ export const ProfileDetailsV2 = () => {
                  {bankDetails.upiQrCode && (
                     <button 
                       onClick={() => { setSelectedDocument({ name: "UPI Scanner", url: bankDetails.upiQrCode }); setShowDocumentModal(true); }}
-                      className="w-14 h-14 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-gray-400 hover:text-black hover:border-black/20 transition-all"
+                      className="w-14 h-14 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary/20 transition-all"
                     >
                        <QrCode className="w-6 h-6" />
                     </button>
@@ -656,7 +656,7 @@ export const ProfileDetailsV2 = () => {
                   {item.doc?.document && (
                     <button 
                       onClick={() => { setSelectedDocument({ name: item.label, url: item.doc.document }); setShowDocumentModal(true); }}
-                      className="p-2 bg-gray-50 text-gray-400 rounded-lg hover:text-black transition-colors"
+                      className="p-2 bg-gray-50 text-gray-400 rounded-lg hover:text-primary transition-colors"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
@@ -728,9 +728,9 @@ export const ProfileDetailsV2 = () => {
                     <div className="w-8 h-8 flex items-center justify-center">
                         {(() => {
                            const t = String(vehicleInput.type || "").toLowerCase();
-                           if (t.includes("car")) return <Car className="w-5 h-5 text-blue-600" />;
-                           if (t.includes("bicycle")) return <Bike className="w-5 h-5 text-blue-600" />;
-                           return <Truck className="w-5 h-5 text-blue-600" />;
+                           if (t.includes("car")) return <Car className="w-5 h-5 text-primary" />;
+                           if (t.includes("bicycle")) return <Bike className="w-5 h-5 text-primary" />;
+                           return <Truck className="w-5 h-5 text-primary" />;
                         })()}
                     </div>
                     <div className="flex-1">
@@ -738,7 +738,7 @@ export const ProfileDetailsV2 = () => {
                         <select 
                             value={vehicleInput.type} 
                             onChange={(e) => setVehicleInput({...vehicleInput, type: e.target.value})} 
-                            className="w-full bg-transparent text-lg font-black text-black outline-none border-b-2 border-transparent focus:border-blue-600 cursor-pointer"
+                            className="w-full bg-transparent text-lg font-black text-black outline-none border-b-2 border-transparent focus:border-primary cursor-pointer"
                         >
                             <option value="bike">Bike</option>
                             <option value="scooter">Scooter</option>
@@ -752,7 +752,7 @@ export const ProfileDetailsV2 = () => {
 
                 {/* Name/Brand Input */}
                 <div className="flex items-center gap-4 w-full">
-                    <div className="w-8 h-8 flex items-center justify-center"><Plus className="w-4 h-4 text-blue-600/50" /></div>
+                    <div className="w-8 h-8 flex items-center justify-center"><Plus className="w-4 h-4 text-primary/50" /></div>
                     <div className="flex-1">
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Vehicle Name/Brand</p>
                         <input 
@@ -760,7 +760,7 @@ export const ProfileDetailsV2 = () => {
                             value={vehicleInput.brand} 
                             onChange={(e) => setVehicleInput({...vehicleInput, brand: e.target.value})} 
                             placeholder="E.g. Honda Splendor"
-                            className="w-full bg-transparent text-lg font-black text-black outline-none border-b-2 border-transparent focus:border-blue-600 placeholder:text-gray-200"
+                            className="w-full bg-transparent text-lg font-black text-black outline-none border-b-2 border-transparent focus:border-primary placeholder:text-gray-200"
                         />
                     </div>
                 </div>
@@ -769,7 +769,7 @@ export const ProfileDetailsV2 = () => {
 
                 {/* Number Input */}
                 <div className="flex items-center gap-4 w-full">
-                    <div className="w-8 h-8 flex items-center justify-center"><QrCode className="w-4 h-4 text-blue-600/50" /></div>
+                    <div className="w-8 h-8 flex items-center justify-center"><QrCode className="w-4 h-4 text-primary/50" /></div>
                     <div className="flex-1">
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Vehicle Number</p>
                         <input 
@@ -777,7 +777,7 @@ export const ProfileDetailsV2 = () => {
                             value={vehicleInput.number} 
                             onChange={(e) => setVehicleInput({...vehicleInput, number: e.target.value.toUpperCase()})} 
                             placeholder="E.g. UP 80 AB 1234"
-                            className="w-full bg-transparent text-lg font-black text-black outline-none border-b-2 border-transparent focus:border-blue-600 placeholder:text-gray-200"
+                            className="w-full bg-transparent text-lg font-black text-black outline-none border-b-2 border-transparent focus:border-primary placeholder:text-gray-200"
                         />
                     </div>
                 </div>
@@ -815,7 +815,7 @@ export const ProfileDetailsV2 = () => {
                      await refreshProfile()
                    } catch (e) { toast.error("Cloud storage sync failed") }
                }}
-               className="w-full bg-black text-white py-5 rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-gray-900 transition-all active:scale-95"
+               className="w-full bg-primary text-white py-5 rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-primary-hover transition-all active:scale-95"
             >
                Save Changes
             </button>
@@ -841,7 +841,7 @@ export const ProfileDetailsV2 = () => {
                { label: "PAN Number", key: "panNumber", icon: FileText, format: (v) => v.toUpperCase(), maxLength: 10 },
                { label: "UPI ID", key: "upiId", icon: Smartphone, maxLength: 60 }
              ].map((field) => (
-               <div key={field.key} className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 group focus-within:border-orange-500/50 transition-all">
+               <div key={field.key} className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 group focus-within:border-primary/50 transition-all">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-2">
                      <field.icon className="w-3.5 h-3.5" /> {field.label}
                   </label>
@@ -902,7 +902,7 @@ export const ProfileDetailsV2 = () => {
           <button 
             onClick={submitBankDetails} 
             disabled={isUpdatingBankDetails} 
-            className="w-full bg-blue-600 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50"
+            className="w-full bg-primary text-white py-5 rounded-[1.5rem] font-black uppercase tracking-[0.2em] shadow-xl hover:bg-primary-hover transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50"
           >
             {isUpdatingBankDetails ? <><Loader2 className="w-5 h-5 animate-spin" /> saving...</> : "Update Systems"}
           </button>

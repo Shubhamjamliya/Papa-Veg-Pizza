@@ -410,7 +410,7 @@ export default function FeedNavbar({ className = "" }) {
     <>
     <div 
       className={`px-4 py-3 flex items-center justify-between sticky top-0 z-50 border-b border-gray-200 ${className}`}
-      style={{ background: 'linear-gradient(33deg, #E53935 0%, #000000 100%)' }}
+      style={{ background: 'linear-gradient(33deg, var(--dv-primary) 0%, #000000 100%)' }}
     >
         {/* Logo and Online/Offline Toggle */}
       <div className="flex items-center gap-3">

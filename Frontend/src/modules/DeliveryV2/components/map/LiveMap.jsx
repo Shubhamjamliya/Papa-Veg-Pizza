@@ -10,6 +10,7 @@ import {
 } from '@react-google-maps/api';
 import { useDeliveryStore } from '@/modules/DeliveryV2/store/useDeliveryStore';
 import { zoneAPI } from '@food/api';
+import { useSystemTheme } from '@/shared/utils/themeSync';
 
 const mapContainerStyle = {
   width: '100%',
@@ -42,6 +43,7 @@ const LIBRARIES = ['places', 'geometry'];
 
 export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineReceived, zoom = 12 }) => {
   const { riderLocation, activeOrder, tripStatus } = useDeliveryStore();
+  const { primaryColor } = useSystemTheme();
   
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -301,7 +303,7 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
           <Polyline 
             path={remainingPath} 
             options={{ 
-              strokeColor: '#3b82f6', 
+              strokeColor: primaryColor || '#3b82f6', 
               strokeOpacity: 0.9, 
               strokeWeight: 8, 
               zIndex: 12 

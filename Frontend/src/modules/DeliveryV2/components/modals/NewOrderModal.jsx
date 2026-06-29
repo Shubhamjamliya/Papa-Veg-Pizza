@@ -126,7 +126,7 @@ export const NewOrderModal = ({ order, onAccept, onReject, onMinimize }) => {
         {/* Header Ribbon (Old Green Style) */}
         <div 
           className="p-4 sm:p-8 flex justify-between items-center text-white border-b border-white/10"
-          style={{ background: 'linear-gradient(33deg, #E53935 0%, #000000 100%)' }}
+          style={{ background: 'linear-gradient(33deg, var(--dv-primary) 0%, #000000 100%)' }}
         >
           <div>
             <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest mb-1">Incoming Request</p>

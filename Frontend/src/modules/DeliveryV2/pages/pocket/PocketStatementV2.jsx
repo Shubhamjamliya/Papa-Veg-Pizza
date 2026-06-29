@@ -158,7 +158,7 @@ export const PocketStatementV2 = () => {
                 </div>
                 <div className="text-right">
                    <p className="text-[10px] text-gray-400 font-bold uppercase mb-1">Total</p>
-                   <p className="text-base font-bold text-[#ff8100] leading-none">
+                   <p className="text-base font-bold text-primary leading-none">
                       ₹{summary.grandTotal.toFixed(0)}
                    </p>
                 </div>
@@ -168,7 +168,7 @@ export const PocketStatementV2 = () => {
           {/* Orders List */}
           {loading ? (
              <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">Loading Statement...</p>
              </div>
           ) : orders.length === 0 ? (
@@ -233,7 +233,7 @@ export const PocketStatementV2 = () => {
                                )}
                                <div className="pt-2 border-t border-gray-50">
                                   <p className="text-[10px] text-gray-800 font-bold uppercase">Total</p>
-                                  <p className="text-base font-bold text-[#ff8100]">
+                                  <p className="text-base font-bold text-primary">
                                      ₹{amounts.total}
                                   </p>
                                </div>
