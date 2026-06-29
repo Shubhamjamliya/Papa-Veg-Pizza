@@ -1,5 +1,6 @@
 import { Suspense, useEffect } from "react"
 import { Routes, Route, Navigate, useLocation, useOutletContext } from "react-router-dom"
+import { useSystemTheme } from "@/shared/utils/themeSync"
 import * as Icons from "lucide-react"
 import StoreOperationsLayout from "../layouts/StoreOperationsLayout"
 import Loader from "@food/components/Loader"
@@ -116,14 +117,7 @@ export default function StoreManagerRouter() {
   const location = useLocation()
 
   // Make sure theme and styles are applied properly
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("appTheme") || "light"
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [location.pathname])
+  useSystemTheme()
 
   return (
     <Suspense fallback={<Loader />}>

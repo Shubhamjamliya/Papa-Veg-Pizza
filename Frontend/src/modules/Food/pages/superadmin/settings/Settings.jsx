@@ -31,6 +31,7 @@ import {
   Laptop
 } from 'lucide-react';
 import UpdateCompanyModal from './UpdateCompanyModal';
+import { applySystemTheme } from '@/shared/utils/themeSync';
 import UpdateTaxModal from './UpdateTaxModal';
 import MaintenanceModeModal from './MaintenanceModeModal';
 
@@ -68,43 +69,48 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState('company');
 
   // Main Controlled State matching MongoDB 'system_settings' collection
-  const [settings, setSettings] = useState({
-    companyName: 'Papa Veg Pizza India Ltd.',
-    supportEmail: 'care@papavegpizza.in',
-    supportPhone: '+91 98765 43210',
-    website: 'https://papavegpizza.in',
-    logo: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=150', // Mock WebP logo
-    favicon: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=40',
-    currency: 'INR',
-    currencySymbol: '₹',
-    timezone: 'Asia/Kolkata',
-    language: 'English (IN)',
-    gstPercent: 5,
-    serviceTaxPercent: 2.5,
-    packagingCharge: 30,
-    taxIncluded: false,
-    orderCancellationTime: 5, // minutes
-    refundWindowHours: 24, // hours
-    maxDeliveryRadius: 15, // km
-    minimumOrderAmount: 299, // ₹
-    invoicePrefix: 'PVP-IND-',
-    invoiceFooter: 'Thank you for choosing Papa Veg Pizza! Visit again.',
-    maintenanceMode: false,
-    maintenanceReason: '',
-    maintenanceStart: '',
-    maintenanceEnd: '',
-    maintenanceAffectedModules: [],
-    passwordExpiryDays: 90,
-    sessionTimeoutMinutes: 30,
-    otpExpirySeconds: 60,
-    loginAttemptsLimit: 5,
-    require2FA: true,
-    updatedBy: 'Rohan Sharma (Super Admin)',
-    updatedAt: '2026-06-19T16:51:00Z'
+  const [settings, setSettings] = useState(() => {
+    const defaultLogo = 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=150';
+    const defaultFavicon = 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=40';
+    
+    return {
+      companyName: localStorage.getItem("sa_companyName") || 'Papa Veg Pizza India Ltd.',
+      supportEmail: 'care@papavegpizza.in',
+      supportPhone: '+91 98765 43210',
+      website: 'https://papavegpizza.in',
+      logo: localStorage.getItem("sa_logo") || defaultLogo,
+      favicon: localStorage.getItem("sa_favicon") || defaultFavicon,
+      currency: 'INR',
+      currencySymbol: '₹',
+      timezone: 'Asia/Kolkata',
+      language: 'English (IN)',
+      gstPercent: 5,
+      serviceTaxPercent: 2.5,
+      packagingCharge: 30,
+      taxIncluded: false,
+      orderCancellationTime: 5, // minutes
+      refundWindowHours: 24, // hours
+      maxDeliveryRadius: 15, // km
+      minimumOrderAmount: 299, // ₹
+      invoicePrefix: 'PVP-IND-',
+      invoiceFooter: 'Thank you for choosing Papa Veg Pizza! Visit again.',
+      maintenanceMode: false,
+      maintenanceReason: '',
+      maintenanceStart: '',
+      maintenanceEnd: '',
+      maintenanceAffectedModules: [],
+      passwordExpiryDays: 90,
+      sessionTimeoutMinutes: 30,
+      otpExpirySeconds: 60,
+      loginAttemptsLimit: 5,
+      require2FA: true,
+      updatedBy: 'Rohan Sharma (Super Admin)',
+      updatedAt: '2026-06-19T16:51:00Z'
+    };
   });
 
   // Keep a tracking state for unsaved edits alert
-  const [originalSettings, setOriginalSettings] = useState({ ...settings });
+  const [originalSettings, setOriginalSettings] = useState(() => ({ ...settings }));
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Debouncing Search Query
@@ -229,6 +235,13 @@ export default function Settings() {
     try {
       await updateSettingsHook.mutateAsync(settings);
       setOriginalSettings({ ...settings });
+      if (tabName === 'company') {
+        localStorage.setItem("sa_logo", settings.logo);
+        localStorage.setItem("sa_favicon", settings.favicon);
+        localStorage.setItem("sa_companyName", settings.companyName);
+        applySystemTheme();
+        window.dispatchEvent(new Event("systemThemeChanged"));
+      }
       addToast(`Updated ${tabName} configuration successfully!`, 'success');
     } catch (e) {
       addToast('Failed to save settings. Please try again.', 'error');
@@ -244,6 +257,11 @@ export default function Settings() {
     try {
       await updateSettingsHook.mutateAsync(settings);
       setOriginalSettings({ ...settings });
+      localStorage.setItem("sa_logo", settings.logo);
+      localStorage.setItem("sa_favicon", settings.favicon);
+      localStorage.setItem("sa_companyName", settings.companyName);
+      applySystemTheme();
+      window.dispatchEvent(new Event("systemThemeChanged"));
       addToast('All configurations updated successfully!', 'success');
     } catch (e) {
       addToast('Failed to update configurations.', 'error');

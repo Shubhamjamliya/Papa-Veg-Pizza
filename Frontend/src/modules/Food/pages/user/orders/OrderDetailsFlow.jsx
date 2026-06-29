@@ -85,7 +85,7 @@ export default function OrderDetailsFlow({
   // Styling helpers
   const textPrimary = isDarkMode ? "text-white" : "text-zinc-900"
   const textSecondary = isDarkMode ? "text-slate-400" : "text-slate-500"
-  const modalBg = isDarkMode ? "bg-[#151515] border border-white/5" : "bg-white border border-zinc-100"
+  const modalBg = isDarkMode ? "bg-[#151515] border border-white/5" : "bg-[#FAF9F6] border border-zinc-100"
   const divider = isDarkMode ? "border-white/10" : "border-zinc-100"
 
   const daysList = ["Today", "Tomorrow"]
@@ -180,7 +180,7 @@ export default function OrderDetailsFlow({
     <>
       {/* 1. Delivering ASAP Confirmation Bar */}
       <div className={`mx-5 my-3 p-4 rounded-2xl shadow-sm border flex items-center justify-between transition-colors ${
-        isDarkMode ? "bg-white/5 border-white/10" : "bg-white border-zinc-100"
+        isDarkMode ? "bg-white/5 border-white/10" : "bg-[#FAF9F6] border-zinc-100"
       }`}>
         <div className="flex items-center gap-3">
           {/* Red circle icon */}

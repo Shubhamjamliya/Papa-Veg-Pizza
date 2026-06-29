@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from "react"
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom"
+import { useSystemTheme } from "@/shared/utils/themeSync"
 import Sidebar from "../layouts/Sidebar"
 import Navbar from "../layouts/Navbar"
 
@@ -60,27 +61,7 @@ function SuperAdminLayout() {
   const location = useLocation()
   
   // Enforce Superadmin Theme settings
-  useEffect(() => {
-    // Apply Light/Dark mode
-    const themeMode = localStorage.getItem("sa_themeMode") || "light";
-    if (themeMode === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-    // Apply primary & secondary colors
-    const primaryColor = localStorage.getItem("sa_primary") || "#a43c12";
-    const secondaryColor = localStorage.getItem("sa_secondary") || "#ff7f50";
-    document.documentElement.style.setProperty("--sa-primary", primaryColor);
-    document.documentElement.style.setProperty("--sa-primary-hover", `${primaryColor}cc`);
-    document.documentElement.style.setProperty("--sa-secondary", secondaryColor);
-    document.documentElement.style.setProperty("--sa-secondary-hover", `${secondaryColor}cc`);
-    document.documentElement.style.setProperty("--primary", primaryColor);
-    document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`);
-    document.documentElement.style.setProperty("--secondary", secondaryColor);
-    document.documentElement.style.setProperty("--secondary-hover", `${secondaryColor}cc`);
-  }, [location.pathname])
+  useSystemTheme()
 
   // Sync active sidebar state based on route path
   let activeItem = "Dashboard"
@@ -175,17 +156,26 @@ function SuperAdminLayout() {
     activeItem = "Feedback & Reviews"
   }
 
+  const [isCollapsed, setIsCollapsed] = useState(() => localStorage.getItem("sa_sidebar_collapsed") === "true")
+  const handleToggleCollapse = () => {
+    const next = !isCollapsed
+    setIsCollapsed(next)
+    localStorage.setItem("sa_sidebar_collapsed", next ? "true" : "false")
+  }
+
   return (
     <div className="superadmin-theme min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-100 transition-all duration-300">
-      <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} isCollapsed={isCollapsed} />
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         activeItem={activeItem}
         setActiveItem={() => { }}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={handleToggleCollapse}
       />
-      {/* 280px left padding on desktop to clear fixed Sidebar */}
-      <div className="lg:pl-[280px] pt-16 min-h-screen">
+      {/* 280px left padding on desktop to clear fixed Sidebar (dynamic when collapsed) */}
+      <div className={`pt-16 min-h-screen transition-all duration-300 ${isCollapsed ? "lg:pl-[72px]" : "lg:pl-[280px]"}`}>
         <Outlet />
       </div>
     </div>

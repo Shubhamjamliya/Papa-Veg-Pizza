@@ -44,7 +44,7 @@ export default function TakeawayMapModal({
   const blockColor = isDarkMode ? "#243342" : "#e3f2fd"
   const textPrimary = isDarkMode ? "text-white" : "text-zinc-900"
   const textSecondary = isDarkMode ? "text-slate-400" : "text-slate-500"
-  const sheetBg = isDarkMode ? "bg-[#131313] border-t border-white/10" : "bg-white"
+  const sheetBg = isDarkMode ? "bg-[#131313] border-t border-white/10" : "bg-[#FAF9F6]"
   const cardBg = isDarkMode ? "bg-white/5 border-white/10 hover:bg-white/10" : "bg-zinc-50 border-zinc-100 hover:bg-zinc-100"
 
   return (
@@ -106,16 +106,16 @@ export default function TakeawayMapModal({
             >
               <div className="relative">
                 {/* Store Pin Head */}
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md relative z-10 border ${isStoreSelected ? "bg-primary border-white text-white" : "bg-white dark:bg-[#181818] border-primary text-primary"}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md relative z-10 border ${isStoreSelected ? "bg-primary border-[#FAF9F6] text-white" : "bg-[#FAF9F6] dark:bg-[#181818] border-primary text-primary"}`}>
                   <span className="material-symbols-outlined text-sm fill" style={{ fontVariationSettings: "'FILL' 1" }}>store</span>
                 </div>
-                <div className={`w-2 h-2 rotate-45 -mt-1 mx-auto relative z-0 border-r border-b ${isStoreSelected ? "bg-primary border-white" : "bg-white dark:bg-[#181818] border-primary"}`} />
+                <div className={`w-2 h-2 rotate-45 -mt-1 mx-auto relative z-0 border-r border-b ${isStoreSelected ? "bg-primary border-[#FAF9F6]" : "bg-[#FAF9F6] dark:bg-[#181818] border-primary"}`} />
                 {/* Pulsing effect for the nearest store */}
                 {store.nearest && (
                   <div className="absolute -inset-1 rounded-full bg-primary/30 animate-ping -z-10" />
                 )}
               </div>
-              <div className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded shadow mt-1 max-w-[100px] truncate ${isStoreSelected ? "bg-primary text-white" : "bg-white dark:bg-[#181818] text-slate-800 dark:text-slate-200"}`}>
+              <div className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded shadow mt-1 max-w-[100px] truncate ${isStoreSelected ? "bg-primary text-white" : "bg-[#FAF9F6] dark:bg-[#181818] text-slate-800 dark:text-slate-200"}`}>
                 {store.name.replace("Pizza Veg Hut - ", "")}
               </div>
             </button>
@@ -125,7 +125,7 @@ export default function TakeawayMapModal({
         {/* Floating Back Button (top-left) */}
         <button
           onClick={onClose}
-          className={`absolute top-4 left-4 z-30 w-11 h-11 rounded-full shadow-[0_3px_10px_rgba(0,0,0,0.15)] flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0 outline-none ${isDarkMode ? "bg-[#181818] text-white" : "bg-white text-zinc-800"}`}
+          className={`absolute top-4 left-4 z-30 w-11 h-11 rounded-full shadow-[0_3px_10px_rgba(0,0,0,0.15)] flex items-center justify-center active:scale-90 transition-transform cursor-pointer border-0 outline-none ${isDarkMode ? "bg-[#181818] text-white" : "bg-[#FAF9F6] text-zinc-800"}`}
         >
           <span className="material-symbols-outlined text-lg font-bold">arrow_back</span>
         </button>

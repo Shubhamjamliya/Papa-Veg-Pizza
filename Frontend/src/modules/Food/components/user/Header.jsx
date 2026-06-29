@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import { useLocationStore } from "@food/store/locationStore"
+import logoNew from "@/assets/logo1.png"
 
 export default function Header({
   title = "Papa Veg Pizza",
@@ -10,7 +11,8 @@ export default function Header({
   showThemeToggle = true,
   isDarkMode = true,
   onThemeToggle,
-  showCart = true
+  showCart = true,
+  showLogo = false
 }) {
   const navigate = useNavigate()
   const { locationConfirmed } = useLocationStore()
@@ -55,9 +57,19 @@ export default function Header({
       )}
 
       {/* Centered Brand Title / Page Title */}
-      <h1 className="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary dark:text-primary text-center flex-1 truncate px-2">
-        {title}
-      </h1>
+      {showLogo ? (
+        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center">
+          <img
+            src={logoNew}
+            alt="Papa Veg Pizza Logo"
+            className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
+          />
+        </div>
+      ) : (
+        <h1 className="font-headline-lg-mobile text-headline-lg-mobile font-black text-primary dark:text-primary text-center flex-1 truncate px-2">
+          {title}
+        </h1>
+      )}
 
       {/* Right Section: Theme switcher and/or Cart button */}
       <div className="flex items-center gap-1">

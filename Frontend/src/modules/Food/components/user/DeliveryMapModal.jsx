@@ -69,8 +69,8 @@ export default function DeliveryMapModal({
   const blockColor = isDarkMode ? "#243342" : "#e3f2fd"
   const textPrimary = isDarkMode ? "text-white" : "text-zinc-900"
   const textSecondary = isDarkMode ? "text-slate-400" : "text-slate-500"
-  const sheetBg = isDarkMode ? "bg-[#131313] border-t border-white/10" : "bg-white"
-  const inputBg = isDarkMode ? "bg-white/5 border-white/10 text-white" : "bg-white border-zinc-200 text-zinc-800"
+  const sheetBg = isDarkMode ? "bg-[#131313] border-t border-white/10" : "bg-[#FAF9F6]"
+  const inputBg = isDarkMode ? "bg-white/5 border-white/10 text-white" : "bg-[#FAF9F6] border-zinc-200 text-zinc-800"
 
   return (
     <div className="fixed inset-0 z-55 overflow-hidden animate-fadeIn" style={{ backgroundColor: mapBg }}>

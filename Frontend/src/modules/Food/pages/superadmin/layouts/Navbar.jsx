@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Menu, Bell, Store, ChevronDown, User, LogOut, Settings as SettingsIcon, AlertCircle } from "lucide-react"
 
-export default function Navbar({ onToggleSidebar }) {
+export default function Navbar({ onToggleSidebar, isCollapsed }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [selectedStore, setSelectedStore] = useState("All Stores")
@@ -16,10 +16,10 @@ export default function Navbar({ onToggleSidebar }) {
   ]
 
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-center px-4 md:px-6 h-13 bg-white dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800 z-40 shadow-sm transition-all duration-300">
+    <header className={`fixed top-0 left-0 w-full flex justify-between items-center px-4 md:px-6 h-13 bg-white dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-805 z-40 shadow-sm transition-all duration-300 ${isCollapsed ? "lg:pl-[88px]" : "lg:pl-[296px]"}`}>
       
       {/* Left side: Brand + Toggle */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 lg:hidden">
         <button
           onClick={onToggleSidebar}
           className="p-1.5 -ml-1.5 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-all duration-200"

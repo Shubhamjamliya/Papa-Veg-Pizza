@@ -5,21 +5,20 @@ import { adminAPI } from "@food/api"
 import { setAuthData } from "@food/utils/auth"
 import { ShieldCheck, UserCog, Star, Heart, ArrowRight, Loader2, Mail, Lock, Eye, EyeOff, ShieldQuestion } from "lucide-react"
 import { Button } from "@food/components/ui/button"
+import { useSystemTheme } from "@/shared/utils/themeSync"
 import logoNew from "@/assets/logo1.png"
 import { toast } from "sonner"
 
 export default function AdminLogin() {
   const navigate = useNavigate()
+  const { logo, themeMode } = useSystemTheme()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const submitting = useRef(false)
 
-  const [isDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem("appTheme")
-    return savedTheme ? savedTheme === "dark" : true
-  })
+  const isDarkMode = themeMode === "dark"
 
   useEffect(() => {
     const linkFonts = document.createElement("link")
@@ -87,14 +86,14 @@ export default function AdminLogin() {
       }} />
 
       {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#E53935]/10 via-[#E53935]/5 to-transparent pointer-events-none" />
-      <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-[#E53935]/5 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[#E53935]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[var(--primary)]/10 via-[var(--primary)]/5 to-transparent pointer-events-none" />
+      <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px] pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] bg-[var(--primary)]/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Main Content */}
       <div className="absolute top-6 right-6 z-20">
         <Link to="/user/auth/support">
-          <Button variant="ghost" className="text-gray-500 hover:text-[#E53935] font-semibold flex items-center gap-2">
+          <Button variant="ghost" className="text-gray-500 hover:text-[var(--primary)] font-semibold flex items-center gap-2">
             <ShieldQuestion className="w-5 h-5" />
             Support
           </Button>
@@ -117,7 +116,7 @@ export default function AdminLogin() {
               className="relative inline-block mb-4"
             >
               <img
-                src={logoNew}
+                src={logo || logoNew}
                 alt="Papa Veg Pizza Logo"
                 className="w-32 h-32 md:w-36 md:h-36 object-contain mx-auto transition-transform duration-300 hover:scale-105"
               />
@@ -135,25 +134,10 @@ export default function AdminLogin() {
 
           {/* Login Card */}
           <div className="glass-card rounded-[3rem] p-8 sm:p-12 shadow-[0_40px_80px_-20px_rgba(229,57,53,0.15)] dark:shadow-none relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#E53935]/20 to-transparent" />
-
-            <div className="mb-10 text-center sm:text-left">
-              <h2
-                className={`text-3xl font-black mb-2 tracking-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                Admin Entry
-              </h2>
-              <div className="h-1 w-10 bg-[#E53935] rounded-full mb-3 hidden sm:block" />
-              <p className={`text-base font-medium ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
-                Authorized access only. Please sign in to continue.
-              </p>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-6">
+             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-[#E53935] uppercase tracking-[0.2em] ml-1">Email Address</label>
+                  <label className="text-[10px] font-black text-[var(--primary)] uppercase tracking-[0.2em] ml-1">Email Address</label>
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
@@ -162,7 +146,7 @@ export default function AdminLogin() {
                       autoFocus
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full pl-12 pr-6 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[#E53935]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
+                      className="block w-full pl-12 pr-6 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[var(--primary)]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
                       placeholder="admin@papavegpizza.com"
                     />
                   </div>
@@ -170,8 +154,8 @@ export default function AdminLogin() {
 
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center px-1">
-                    <label className="text-[10px] font-black text-[#E53935] uppercase tracking-[0.2em]">Password</label>
-                    <Link to="/franchise-admin/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 hover:text-[#E53935] uppercase tracking-wider transition-colors">Forgot?</Link>
+                    <label className="text-[10px] font-black text-[var(--primary)] uppercase tracking-[0.2em]">Password</label>
+                    <Link to="/franchise-admin/forgot-password" size="sm" className="text-[10px] font-bold text-gray-400 hover:text-[var(--primary)] uppercase tracking-wider transition-colors">Forgot?</Link>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -180,7 +164,7 @@ export default function AdminLogin() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full pl-12 pr-12 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[#E53935]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
+                      className="block w-full pl-12 pr-12 py-4 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-2 border-transparent focus:border-[var(--primary)]/50 rounded-2xl outline-none transition-all placeholder:text-gray-300 font-bold"
                       placeholder="••••••••"
                     />
                     <button
@@ -197,7 +181,7 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4.5 bg-[#E53935] hover:bg-[#b71c1c] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white rounded-2xl font-bold text-lg shadow-xl shadow-[#E53935]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group overflow-hidden relative border-0 cursor-pointer"
+                className="w-full py-4.5 bg-[var(--primary)] hover:bg-[var(--sa-primary-hover)] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white rounded-2xl font-bold text-lg shadow-xl shadow-[var(--primary)]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group overflow-hidden relative border-0 cursor-pointer"
               >
                 {loading ? (
                   <Loader2 className="w-6 h-6 animate-spin" />

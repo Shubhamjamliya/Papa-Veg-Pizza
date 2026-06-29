@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useSystemTheme } from "@/shared/utils/themeSync";
 import ProtectedRoute from "@food/components/ProtectedRoute";
 import FranchiseAdminLayout from "../layout/FranchiseAdminLayout";
 import Loader from "@food/components/Loader";
@@ -64,27 +65,7 @@ export default function FranchiseAdminRouter() {
   const location = useLocation();
   
   // Enforce Superadmin Theme settings
-  useEffect(() => {
-    // Apply Light/Dark mode
-    const themeMode = localStorage.getItem("sa_themeMode") || "light";
-    if (themeMode === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
-    // Apply primary & secondary colors
-    const primaryColor = localStorage.getItem("sa_primary") || "#a43c12";
-    const secondaryColor = localStorage.getItem("sa_secondary") || "#ff7f50";
-    document.documentElement.style.setProperty("--sa-primary", primaryColor);
-    document.documentElement.style.setProperty("--sa-primary-hover", `${primaryColor}cc`);
-    document.documentElement.style.setProperty("--sa-secondary", secondaryColor);
-    document.documentElement.style.setProperty("--sa-secondary-hover", `${secondaryColor}cc`);
-    document.documentElement.style.setProperty("--primary", primaryColor);
-    document.documentElement.style.setProperty("--primary-hover", `${primaryColor}cc`);
-    document.documentElement.style.setProperty("--secondary", secondaryColor);
-    document.documentElement.style.setProperty("--secondary-hover", `${secondaryColor}cc`);
-  }, [location.pathname]);
+  useSystemTheme();
 
   return (
     <Suspense fallback={<Loader />}>

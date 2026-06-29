@@ -43,15 +43,15 @@ export default function BottomNavigation() {
 
   return (
     <div
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1a1a1a] border-t border-gray-200 dark:border-gray-800 z-50 shadow-lg"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-[#FAF9F6] dark:bg-[#1a1a1a] border-t border-gray-200 dark:border-gray-800 z-50 shadow-lg"
     >
       <div className="flex items-center justify-around h-auto px-2 sm:px-4">
         {/* Delivery Tab */}
         <Link
           to="/"
           className={`flex flex-1 flex-col items-center gap-1.5 px-2 sm:px-3 py-2 transition-all duration-200 relative ${isDelivery
-              ? "text-[#7e3866]"
-              : "text-gray-600 dark:text-gray-400"
+            ? "text-[#7e3866]"
+            : "text-gray-600 dark:text-gray-400"
             }`}
         >
           < Truck className={`h-5 w-5 ${isDelivery ? "text-[#7e3866] fill-[#7e3866]/10" : "text-gray-600 dark:text-gray-400"}`} strokeWidth={2} />
@@ -70,8 +70,8 @@ export default function BottomNavigation() {
         <Link
           to="/food/user/dining"
           className={`flex flex-1 flex-col items-center gap-1.5 px-2 sm:px-3 py-2 transition-all duration-200 relative ${isDining
-              ? "text-[#7e3866]"
-              : "text-gray-600 dark:text-gray-400"
+            ? "text-[#7e3866]"
+            : "text-gray-600 dark:text-gray-400"
             }`}
         >
           <UtensilsCrossed className={`h-5 w-5 ${isDining ? "text-[#7e3866]" : "text-gray-600 dark:text-gray-400"}`} strokeWidth={2} />
@@ -90,8 +90,8 @@ export default function BottomNavigation() {
         <Link
           to="/food/user/under-250"
           className={`flex flex-1 flex-col items-center gap-1.5 px-2 sm:px-3 py-2 transition-all duration-200 relative ${isUnder250
-              ? "text-[#7e3866]"
-              : "text-gray-600 dark:text-gray-400"
+            ? "text-[#7e3866]"
+            : "text-gray-600 dark:text-gray-400"
             }`}
         >
           <Tag className={`h-5 w-5 ${isUnder250 ? "text-[#7e3866] fill-[#7e3866]/10" : "text-gray-600 dark:text-gray-400"}`} strokeWidth={2} />
@@ -110,8 +110,8 @@ export default function BottomNavigation() {
         <Link
           to="/food/user/profile"
           className={`flex flex-1 flex-col items-center gap-1.5 px-2 sm:px-3 py-2 transition-all duration-200 relative ${isProfile
-              ? "text-[#7e3866]"
-              : "text-gray-600 dark:text-gray-400"
+            ? "text-[#7e3866]"
+            : "text-gray-600 dark:text-gray-400"
             }`}
         >
           <User className={`h-5 w-5 ${isProfile ? "text-[#7e3866] fill-[#7e3866]/10" : "text-gray-600 dark:text-gray-400"}`} />

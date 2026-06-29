@@ -19,7 +19,7 @@ export default function DeliveryOrCollectionModal({
   
   const cardBg = isDarkMode
     ? "bg-white/5 hover:bg-white/10 border-white/10 text-white"
-    : "bg-white hover:bg-zinc-50 border-zinc-200 text-zinc-900"
+    : "bg-[#FAF9F6] hover:bg-zinc-50 border-zinc-200 text-zinc-900"
   
   const textSecondary = isDarkMode ? "text-zinc-400" : "text-zinc-500"
   const iconBorder = isDarkMode ? "border-[#E53935]/40 bg-[#E53935]/10" : "border-[#E53935]/30 bg-[#E53935]/5"

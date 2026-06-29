@@ -245,7 +245,7 @@ export default function DeliverOnTrainModal({ show, onClose }) {
                       : pnr.length === 10 
                         ? "border-green-500 focus:border-green-500" 
                         : "border-white/10 focus:border-[#E53935]/50"
-                  } ${isDarkMode ? "text-white" : "text-zinc-900 bg-white"}`}
+                  } ${isDarkMode ? "text-white" : "text-zinc-900 bg-[#FAF9F6]"}`}
                 />
                 {pnr.length > 0 && (
                   <button

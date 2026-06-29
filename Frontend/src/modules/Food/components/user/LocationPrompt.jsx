@@ -153,13 +153,13 @@ export default function LocationPrompt() {
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
       <Card
-        className="w-full max-w-sm border-none shadow-2xl mx-auto my-auto overflow-hidden rounded-[2rem] bg-white"
+        className="w-full max-w-sm border-none shadow-2xl mx-auto my-auto overflow-hidden rounded-[2rem] bg-[#FAF9F6]"
       >
         {view === "prompt" ? (
           <div className="p-10 flex flex-col items-center text-center">
             {/* Circular Icon */}
             <div className="h-24 w-24 rounded-full bg-[#f8f0f1] flex items-center justify-center mb-8">
-              <div className="h-14 w-14 rounded-full bg-white shadow-sm flex items-center justify-center">
+              <div className="h-14 w-14 rounded-full bg-[#FAF9F6] shadow-sm flex items-center justify-center">
                 <MapPin className="h-8 w-8 text-[#a03a42]" strokeWidth={2.5} />
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function LocationPrompt() {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col bg-white">
+          <div className="flex flex-col bg-[#FAF9F6]">
             {/* Header with Icon */}
             <div className="p-8 text-center border-b border-gray-50">
                <div className="h-20 w-20 rounded-full bg-[#f8f0f1] flex items-center justify-center mx-auto mb-4">
@@ -225,7 +225,7 @@ export default function LocationPrompt() {
 
                 {/* Suggestions List */}
                 {suggestions.length > 0 && (
-                   <div className="mt-2 border border-gray-100 rounded-2xl overflow-hidden shadow-xl bg-white max-h-60 overflow-y-auto">
+                   <div className="mt-2 border border-gray-100 rounded-2xl overflow-hidden shadow-xl bg-[#FAF9F6] max-h-60 overflow-y-auto">
                       {suggestions.map(s => (
                          <button
                             key={s.id}

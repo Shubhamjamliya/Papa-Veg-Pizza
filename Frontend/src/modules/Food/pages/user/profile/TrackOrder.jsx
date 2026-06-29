@@ -104,7 +104,7 @@ export default function TrackOrder() {
         showBack={true} 
         onBack={() => navigate(-1)} 
         isDarkMode={isDarkMode} 
-        onThemeToggle={toggleTheme} 
+        showThemeToggle={false} 
         showCart={false} 
       />
 

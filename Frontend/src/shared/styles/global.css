@@ -8,6 +8,7 @@
   font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-poppins: 'Poppins', sans-serif;
   --font-outfit: 'Outfit', sans-serif;
+  --font-inter: 'Inter', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -85,6 +86,7 @@
   --color-secondary-hover: var(--secondary-hover);
   --font-poppins: var(--font-poppins);
   --font-outfit: var(--font-outfit);
+  --font-inter: var(--font-inter);
 }
 
 .dark {
@@ -132,6 +134,7 @@
 
   body {
     @apply bg-background text-foreground m-0 min-h-screen;
+    font-family: var(--font-poppins);
   }
 }
 
@@ -267,31 +270,31 @@
   /* Premium card styling override for Light Mode */
   .glass-card:not(.bg-primary) {
     background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(229, 57, 53, 0.16) !important;
-    box-shadow: 0 10px 30px -5px rgba(229, 57, 53, 0.08),
+    border: 1px solid color-mix(in srgb, var(--primary) 16%, transparent) !important;
+    box-shadow: 0 10px 30px -5px color-mix(in srgb, var(--primary) 8%, transparent),
       0 4px 16px -4px rgba(0, 0, 0, 0.06),
       0 1px 3px rgba(0, 0, 0, 0.02) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
   .glass-card:not(.bg-primary):hover {
-    box-shadow: 0 20px 40px -8px rgba(229, 57, 53, 0.16),
+    box-shadow: 0 20px 40px -8px color-mix(in srgb, var(--primary) 16%, transparent),
       0 10px 20px -6px rgba(0, 0, 0, 0.08),
       0 2px 6px rgba(0, 0, 0, 0.03) !important;
-    border-color: rgba(229, 57, 53, 0.3) !important;
+    border-color: color-mix(in srgb, var(--primary) 30%, transparent) !important;
   }
 
   /* Service Card 3D Bevel effect in Light Mode */
   .service-card {
-    border-bottom: 4px solid rgba(229, 57, 53, 0.15) !important;
-    box-shadow: 0 8px 24px -4px rgba(229, 57, 53, 0.08), 
+    border-bottom: 4px solid color-mix(in srgb, var(--primary) 15%, transparent) !important;
+    box-shadow: 0 8px 24px -4px color-mix(in srgb, var(--primary) 8%, transparent), 
                 0 4px 10px -2px rgba(0, 0, 0, 0.02) !important;
   }
   .service-card.border-\[\#E53935\]\/40,
   .service-card.bg-\[\#E53935\] {
-    border-bottom: 4px solid #b71c1c !important;
-    box-shadow: 0 12px 25px -4px rgba(229, 57, 53, 0.22), 
-                0 6px 12px -2px rgba(229, 57, 53, 0.1) !important;
+    border-bottom: 4px solid color-mix(in srgb, var(--primary) 80%, black) !important;
+    box-shadow: 0 12px 25px -4px color-mix(in srgb, var(--primary) 22%, transparent), 
+                0 6px 12px -2px color-mix(in srgb, var(--primary) 10%, transparent) !important;
   }
 
   /* Hover effects & Premium Shadows for primary buttons */
@@ -299,14 +302,14 @@
   .bg-primary,
   button.bg-primary {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 14px 0 rgba(229, 57, 53, 0.35) !important;
+    box-shadow: 0 4px 14px 0 color-mix(in srgb, var(--primary) 35%, transparent) !important;
   }
 
   .btn-3d-primary:hover,
   .bg-primary:hover,
   button.bg-primary:hover {
-    background-color: #d32f2f !important;
-    box-shadow: 0 6px 20px 0 rgba(229, 57, 53, 0.5) !important;
+    background-color: var(--primary-hover) !important;
+    box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--primary) 50%, transparent) !important;
     transform: translateY(-1px) !important;
   }
 
@@ -314,24 +317,24 @@
   .bg-primary:active,
   button.bg-primary:active {
     transform: translateY(1px) !important;
-    box-shadow: 0 2px 4px 0 rgba(229, 57, 53, 0.2) !important;
+    box-shadow: 0 2px 4px 0 color-mix(in srgb, var(--primary) 20%, transparent) !important;
   }
 
   /* Additional UI elements shadow & borders */
   .hover-glow:hover {
-    box-shadow: 0 16px 32px -4px rgba(229, 57, 53, 0.18),
-      0 8px 16px -2px rgba(229, 57, 53, 0.08) !important;
-    border-color: rgba(229, 57, 53, 0.32) !important;
+    box-shadow: 0 16px 32px -4px color-mix(in srgb, var(--primary) 18%, transparent),
+      0 8px 16px -2px color-mix(in srgb, var(--primary) 8%, transparent) !important;
+    border-color: color-mix(in srgb, var(--primary) 32%, transparent) !important;
   }
 
   /* Premium Header & Navbar shadow overrides in Light Mode */
   header {
-    border-bottom: 1px solid rgba(229, 57, 53, 0.12) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--primary) 12%, transparent) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05), 
                 0 1px 3px rgba(0, 0, 0, 0.02) !important;
   }
   nav {
-    border-top: 1px solid rgba(229, 57, 53, 0.12) !important;
+    border-top: 1px solid color-mix(in srgb, var(--primary) 12%, transparent) !important;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05), 
                 0 -1px 3px rgba(0, 0, 0, 0.02) !important;
   }
