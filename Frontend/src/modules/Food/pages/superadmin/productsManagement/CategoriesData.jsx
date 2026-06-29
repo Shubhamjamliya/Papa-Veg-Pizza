@@ -57,106 +57,135 @@ export default function CategoriesData({
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Mock Categories mapped to MongoDB categories collection structure
-  const [categories, setCategories] = useState([
-    {
-      id: "CAT-001",
-      name: "Signature Pizzas",
-      slug: "signature-pizzas",
-      parent: "—",
-      parentId: null,
-      productsCount: 42,
-      displayOrder: 1,
-      isVisible: true,
-      status: "Active",
-      lastUpdated: "14 Jun 2026",
-      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=60&h=60&q=80"
-    },
-    {
-      id: "CAT-002",
-      name: "Classic Pizzas",
-      slug: "classic-pizzas",
-      parent: "—",
-      parentId: null,
-      productsCount: 38,
-      displayOrder: 2,
-      isVisible: true,
-      status: "Active",
-      lastUpdated: "12 Jun 2026",
-      image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=60&h=60&q=80"
-    },
-    {
-      id: "CAT-003",
-      name: "Veg Sides",
-      slug: "veg-sides",
-      parent: "Sides & Bread",
-      parentId: "CAT-006",
-      productsCount: 15,
-      displayOrder: 3,
-      isVisible: true,
-      status: "Active",
-      lastUpdated: "15 Jun 2026",
-      image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=60&h=60&q=80"
-    },
-    {
-      id: "CAT-004",
-      name: "Beverages",
-      slug: "beverages",
-      parent: "—",
-      parentId: null,
-      productsCount: 22,
-      displayOrder: 4,
-      isVisible: true,
-      status: "Active",
-      lastUpdated: "11 Jun 2026",
-      image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?fm=webp&fit=crop&w=60&h=60&q=80"
-    },
-    {
-      id: "CAT-005",
-      name: "Desserts & Sweets",
-      slug: "desserts-sweets",
-      parent: "—",
-      parentId: null,
-      productsCount: 18,
-      displayOrder: 5,
-      isVisible: false,
-      status: "Active",
-      lastUpdated: "10 Jun 2026",
-      image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?fm=webp&fit=crop&w=60&h=60&q=80"
-    },
-    {
-      id: "CAT-006",
-      name: "Sides & Bread",
-      slug: "sides-bread",
-      parent: "—",
-      parentId: null,
-      productsCount: 12,
-      displayOrder: 6,
-      isVisible: true,
-      status: "Active",
-      lastUpdated: "08 Jun 2026",
-      image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=60&h=60&q=80"
-    },
-    {
-      id: "CAT-007",
-      name: "Gluten Free Pizzas",
-      slug: "gluten-free-pizzas",
-      parent: "Signature Pizzas",
-      parentId: "CAT-001",
-      productsCount: 0,
-      displayOrder: 7,
-      isVisible: true,
-      status: "Inactive",
-      lastUpdated: "05 Jun 2026",
-      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=120&q=80",
-      icon: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=60&h=60&q=80"
+  const getStoredCategories = () => {
+    const data = localStorage.getItem("pvp_categories");
+    const defaultCats = [
+      {
+        id: "CAT-001",
+        name: "Signature Pizzas",
+        slug: "signature-pizzas",
+        parent: "—",
+        parentId: null,
+        productsCount: 42,
+        displayOrder: 1,
+        isVisible: true,
+        status: "Active",
+        lastUpdated: "14 Jun 2026",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=60&h=60&q=80"
+      },
+      {
+        id: "CAT-002",
+        name: "Classic Pizzas",
+        slug: "classic-pizzas",
+        parent: "—",
+        parentId: null,
+        productsCount: 38,
+        displayOrder: 2,
+        isVisible: true,
+        status: "Active",
+        lastUpdated: "12 Jun 2026",
+        image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=60&h=60&q=80"
+      },
+      {
+        id: "CAT-003",
+        name: "Veg Sides",
+        slug: "veg-sides",
+        parent: "Sides & Bread",
+        parentId: "CAT-006",
+        productsCount: 15,
+        displayOrder: 3,
+        isVisible: true,
+        status: "Active",
+        lastUpdated: "15 Jun 2026",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=60&h=60&q=80"
+      },
+      {
+        id: "CAT-004",
+        name: "Beverages",
+        slug: "beverages",
+        parent: "—",
+        parentId: null,
+        productsCount: 22,
+        displayOrder: 4,
+        isVisible: true,
+        status: "Active",
+        lastUpdated: "11 Jun 2026",
+        image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?fm=webp&fit=crop&w=60&h=60&q=80"
+      },
+      {
+        id: "CAT-005",
+        name: "Desserts & Sweets",
+        slug: "desserts-sweets",
+        parent: "—",
+        parentId: null,
+        productsCount: 18,
+        displayOrder: 5,
+        isVisible: false,
+        status: "Active",
+        lastUpdated: "10 Jun 2026",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?fm=webp&fit=crop&w=60&h=60&q=80"
+      },
+      {
+        id: "CAT-006",
+        name: "Sides & Bread",
+        slug: "sides-bread",
+        parent: "—",
+        parentId: null,
+        productsCount: 12,
+        displayOrder: 6,
+        isVisible: true,
+        status: "Active",
+        lastUpdated: "08 Jun 2026",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=60&h=60&q=80"
+      },
+      {
+        id: "CAT-007",
+        name: "Gluten Free Pizzas",
+        slug: "gluten-free-pizzas",
+        parent: "Signature Pizzas",
+        parentId: "CAT-001",
+        productsCount: 0,
+        displayOrder: 7,
+        isVisible: true,
+        status: "Inactive",
+        lastUpdated: "05 Jun 2026",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=120&q=80",
+        icon: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=60&h=60&q=80"
+      }
+    ];
+    if (!data) {
+      localStorage.setItem("pvp_categories", JSON.stringify(defaultCats));
+      return defaultCats;
     }
-  ]);
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      return defaultCats;
+    }
+  };
+
+  const [categories, setCategories] = useState(getStoredCategories);
+
+  // Sync state whenever localStorage changes outside this component
+  useEffect(() => {
+    const handleSync = () => {
+      setCategories(getStoredCategories());
+    };
+    window.addEventListener("pvp_categories_changed", handleSync);
+    return () => window.removeEventListener("pvp_categories_changed", handleSync);
+  }, []);
+
+  // Write changes to localStorage and dispatch event
+  useEffect(() => {
+    localStorage.setItem("pvp_categories", JSON.stringify(categories));
+    window.dispatchEvent(new Event("pvp_categories_changed"));
+  }, [categories]);
 
   // Debouncing search term inputs (500ms delay)
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLocationStore } from "@food/store/locationStore"
 import logoNew from "@/assets/logo1.png"
@@ -7,14 +7,23 @@ export default function WelcomeScreen() {
   const navigate = useNavigate()
   const { clearLocation } = useLocationStore()
 
+  const [logoUrl, setLogoUrl] = useState(() => localStorage.getItem("sa_logo") || logoNew)
+
   // Load Google Fonts dynamically on mount
   useEffect(() => {
     const linkFonts = document.createElement("link")
     linkFonts.href = "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap"
     linkFonts.rel = "stylesheet"
     document.head.appendChild(linkFonts)
+
+    const handleBrandingSync = () => {
+      setLogoUrl(localStorage.getItem("sa_logo") || logoNew)
+    }
+    window.addEventListener("systemThemeChanged", handleBrandingSync)
+
     return () => {
       document.head.removeChild(linkFonts)
+      window.removeEventListener("systemThemeChanged", handleBrandingSync)
     }
   }, [])
 
@@ -76,7 +85,7 @@ export default function WelcomeScreen() {
           <div className="absolute top-8 left-0 right-0 flex justify-center z-10">
             <div className="flex items-center gap-2.5 bg-black/45 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 shadow-lg">
               <img
-                src={logoNew}
+                src={logoUrl}
                 alt="Papa Veg Pizza Logo"
                 className="w-9 h-9 object-contain"
               />

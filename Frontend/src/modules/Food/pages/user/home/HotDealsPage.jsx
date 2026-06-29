@@ -52,6 +52,102 @@ export default function HotDealsPage() {
   })
   const { isModalOpen, closeLocationModal, confirmLocation, locationConfirmed } = useLocationStore()
   const checkLocation = useLocationGuard()
+
+  // Dynamic Deals State
+  const [deals, setDeals] = useState(() => {
+    try {
+      const local = localStorage.getItem("franchise_admin_coupons")
+      if (local) {
+        const parsed = JSON.parse(local).filter(c => c.status === "active")
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            id: c._id,
+            badge: c.discountType === "percentage" ? "Save" : "Flat",
+            title: c.title,
+            description: c.description || `Get ${c.discountValue}% discount.`,
+            badgeColor: "bg-[#E53935]",
+            coupon: c.couponCode,
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80"
+          }))
+        }
+      }
+    } catch (e) {}
+
+    try {
+      const superadmin = localStorage.getItem("pvp_coupons")
+      if (superadmin) {
+        const parsed = JSON.parse(superadmin).filter(c => c.status === "active")
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            id: c._id,
+            badge: c.couponType === "Percentage" ? "Save" : "Flat",
+            title: c.title,
+            description: c.description || `Get ${c.value}% discount.`,
+            badgeColor: "bg-[#E53935]",
+            coupon: c.code,
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80"
+          }))
+        }
+      }
+    } catch (e) {}
+
+    return DETAILED_DEALS;
+  })
+
+  useEffect(() => {
+    const handleDealsSync = () => {
+      let list = []
+      try {
+        const local = localStorage.getItem("franchise_admin_coupons")
+        if (local) {
+          const parsed = JSON.parse(local).filter(c => c.status === "active")
+          if (parsed.length > 0) {
+            list = parsed.map(c => ({
+              id: c._id,
+              badge: c.discountType === "percentage" ? "Save" : "Flat",
+              title: c.title,
+              description: c.description || `Get ${c.discountValue}% discount.`,
+              badgeColor: "bg-[#E53935]",
+              coupon: c.couponCode,
+              image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80"
+            }))
+          }
+        }
+      } catch (e) {}
+
+      if (list.length === 0) {
+        try {
+          const superadmin = localStorage.getItem("pvp_coupons")
+          if (superadmin) {
+            const parsed = JSON.parse(superadmin).filter(c => c.status === "active")
+            if (parsed.length > 0) {
+              list = parsed.map(c => ({
+                id: c._id,
+                badge: c.couponType === "Percentage" ? "Save" : "Flat",
+                title: c.title,
+                description: c.description || `Get ${c.value}% discount.`,
+                badgeColor: "bg-[#E53935]",
+                coupon: c.code,
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80"
+              }))
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (list.length > 0) {
+        setDeals(list)
+      }
+    }
+
+    window.addEventListener("franchise_coupons_changed", handleDealsSync)
+    window.addEventListener("pvp_coupons_changed", handleDealsSync)
+    return () => {
+      window.removeEventListener("franchise_coupons_changed", handleDealsSync)
+      window.removeEventListener("pvp_coupons_changed", handleDealsSync)
+    }
+  }, [])
+
   const [toast, setToast] = useState({ visible: false, message: "" })
   const [showServiceSelector, setShowServiceSelector] = useState(false)
   const [showMapModal, setShowMapModal] = useState(false)
@@ -250,8 +346,8 @@ export default function HotDealsPage() {
         </div>
 
         <section className="space-y-6">
-          {DETAILED_DEALS.map((deal) => (
-            <div key={deal.id} className="glass-card rounded-3xl overflow-hidden flex flex-col border border-white/12">
+          {deals.map((deal) => (
+            <div key={deal.id || deal.coupon} className="glass-card rounded-3xl overflow-hidden flex flex-col border border-white/12">
 
               {/* Deal Card Header Banner image */}
               <div className="relative h-44 bg-zinc-950">

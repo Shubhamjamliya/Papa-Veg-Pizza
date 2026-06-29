@@ -109,6 +109,20 @@ export default function Settings() {
     };
   });
 
+  const [orderMethods, setOrderMethods] = useState(() => {
+    const defaultMethods = [
+      { id: "delivery", label: "Delivery", icon: "moped", enabled: true },
+      { id: "takeaway", label: "Takeaway", icon: "store", enabled: true },
+      { id: "incar", label: "In-Car", icon: "directions_car", enabled: true },
+      { id: "train", label: "Delivery on Train", icon: "train", enabled: true }
+    ];
+    try {
+      const stored = localStorage.getItem("pvp_order_methods");
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    return defaultMethods;
+  });
+
   // Keep a tracking state for unsaved edits alert
   const [originalSettings, setOriginalSettings] = useState(() => ({ ...settings }));
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -242,6 +256,10 @@ export default function Settings() {
         applySystemTheme();
         window.dispatchEvent(new Event("systemThemeChanged"));
       }
+      if (tabName === 'Orders' || tabName === 'orders') {
+        localStorage.setItem("pvp_order_methods", JSON.stringify(orderMethods));
+        window.dispatchEvent(new Event("pvp_order_methods_changed"));
+      }
       addToast(`Updated ${tabName} configuration successfully!`, 'success');
     } catch (e) {
       addToast('Failed to save settings. Please try again.', 'error');
@@ -260,6 +278,8 @@ export default function Settings() {
       localStorage.setItem("sa_logo", settings.logo);
       localStorage.setItem("sa_favicon", settings.favicon);
       localStorage.setItem("sa_companyName", settings.companyName);
+      localStorage.setItem("pvp_order_methods", JSON.stringify(orderMethods));
+      window.dispatchEvent(new Event("pvp_order_methods_changed"));
       applySystemTheme();
       window.dispatchEvent(new Event("systemThemeChanged"));
       addToast('All configurations updated successfully!', 'success');
@@ -851,6 +871,63 @@ export default function Settings() {
                         <div className="absolute inset-y-0 right-3 flex items-center text-black dark:text-zinc-100 text-[10px] font-semibold">mins</div>
                       </div>
                     </div>
+                    
+                    {/* Order Methods section */}
+                    <div className="md:col-span-2 border-t border-zinc-200 dark:border-zinc-800 pt-4 mt-2">
+                      <h3 className="text-xs font-black uppercase text-black dark:text-zinc-100 tracking-wider mb-2">Order Methods & Dynamic Channels</h3>
+                      <p className="text-[10px] text-zinc-500 mb-4">Toggle order options and customize user app buttons dynamically.</p>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {orderMethods.map((method, idx) => (
+                          <div key={method.id} className="p-3 bg-zinc-50 dark:bg-zinc-850 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-bold text-black dark:text-zinc-100 uppercase tracking-wider block">{method.id} channel</span>
+                              <label className="relative inline-flex items-center cursor-pointer">
+                                <input 
+                                  type="checkbox" 
+                                  checked={method.enabled} 
+                                  onChange={(e) => {
+                                    const updated = [...orderMethods];
+                                    updated[idx].enabled = e.target.checked;
+                                    setOrderMethods(updated);
+                                  }}
+                                  className="sr-only peer" 
+                                />
+                                <div className="w-9 h-5 bg-zinc-200 dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--primary)]"></div>
+                              </label>
+                            </div>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">Custom Label</label>
+                              <input 
+                                type="text"
+                                value={method.label}
+                                onChange={(e) => {
+                                  const updated = [...orderMethods];
+                                  updated[idx].label = e.target.value;
+                                  setOrderMethods(updated);
+                                }}
+                                className="w-full h-8 px-2.5 border border-zinc-300 dark:border-zinc-700 rounded bg-white dark:bg-zinc-800 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
+                              />
+                            </div>
+
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">Material Symbol Icon Name</label>
+                              <input 
+                                type="text"
+                                value={method.icon}
+                                onChange={(e) => {
+                                  const updated = [...orderMethods];
+                                  updated[idx].icon = e.target.value;
+                                  setOrderMethods(updated);
+                                }}
+                                className="w-full h-8 px-2.5 border border-zinc-300 dark:border-zinc-700 rounded bg-white dark:bg-zinc-800 text-xs focus:ring-1 focus:ring-[var(--primary)] outline-none text-zinc-850 dark:text-zinc-150"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
                   <div className="pt-3 border-t border-zinc-200 dark:border-zinc-800 flex justify-end gap-2">
@@ -861,7 +938,7 @@ export default function Settings() {
                       Reset
                     </button>
                     <button 
-                      onClick={() => handleSaveTabChanges('Order')}
+                      onClick={() => handleSaveTabChanges('Orders')}
                       className="px-3 py-1.5 bg-[var(--primary)] text-white text-[10px] font-bold rounded-lg hover:opacity-90"
                     >
                       Save Order Settings

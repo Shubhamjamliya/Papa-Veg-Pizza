@@ -57,144 +57,173 @@ export default function ProductsData({
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Mock Products list mapped to MongoDB collection schema
-  const [products, setProducts] = useState([
-    {
-      id: "PP-V-001",
-      name: "Paneer Tikka Supreme",
-      category: "Signature Pizzas",
-      price: "₹399",
-      stock: 45,
-      vegType: "veg",
-      productType: "variants",
-      preparationTime: 15,
-      calories: 340,
-      sizes: ["Regular", "Medium", "Large"],
-      availability: "In Stock",
-      status: "Active",
-      lastUpdated: "14 Jun 2026",
-      createdBy: "Admin Shubh",
-      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-002",
-      name: "Veg Supreme Delight",
-      category: "Classic Pizzas",
-      price: "₹299",
-      stock: 120,
-      vegType: "veg",
-      productType: "variants",
-      preparationTime: 12,
-      calories: 310,
-      sizes: ["Regular", "Medium", "Large"],
-      availability: "In Stock",
-      status: "Active",
-      lastUpdated: "12 Jun 2026",
-      createdBy: "Admin Shubh",
-      image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-003",
-      name: "Tandoori Veggie Blast",
-      category: "Signature Pizzas",
-      price: "₹449",
-      stock: 5,
-      vegType: "veg",
-      productType: "variants",
-      preparationTime: 18,
-      calories: 380,
-      sizes: ["Regular", "Medium", "Large"],
-      availability: "Low Stock",
-      status: "Active",
-      lastUpdated: "15 Jun 2026",
-      createdBy: "Manager Amit",
-      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-004",
-      name: "Cheese Burst Margherita",
-      category: "Classic Pizzas",
-      price: "₹349",
-      stock: 65,
-      vegType: "veg",
-      productType: "variants",
-      preparationTime: 10,
-      calories: 410,
-      sizes: ["Regular", "Medium", "Large"],
-      availability: "In Stock",
-      status: "Active",
-      lastUpdated: "11 Jun 2026",
-      createdBy: "Admin Shubh",
-      image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-005",
-      name: "Spicy Capsicum & Corn",
-      category: "Classic Pizzas",
-      price: "₹249",
-      stock: 0,
-      vegType: "veg",
-      productType: "simple",
-      preparationTime: 12,
-      calories: 280,
-      sizes: ["Regular"],
-      availability: "Out of Stock",
-      status: "Draft",
-      lastUpdated: "10 Jun 2026",
-      createdBy: "Admin Shubh",
-      image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-006",
-      name: "Garlic Breadsticks",
-      category: "Sides & Bread",
-      price: "₹149",
-      stock: 140,
-      vegType: "veg",
-      productType: "simple",
-      preparationTime: 8,
-      calories: 220,
-      sizes: ["Regular"],
-      availability: "In Stock",
-      status: "Active",
-      lastUpdated: "08 Jun 2026",
-      createdBy: "Admin Shubh",
-      image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-007",
-      name: "Chocolate Lava Cake",
-      category: "Desserts & Sweets",
-      price: "₹99",
-      stock: 180,
-      vegType: "vegan",
-      productType: "simple",
-      preparationTime: 5,
-      calories: 290,
-      sizes: ["Regular"],
-      availability: "In Stock",
-      status: "Active",
-      lastUpdated: "05 Jun 2026",
-      createdBy: "Manager Amit",
-      image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?fm=webp&fit=crop&w=100&q=80"
-    },
-    {
-      id: "PP-V-008",
-      name: "Cold Pepsi 500ml",
-      category: "Beverages",
-      price: "₹60",
-      stock: 22,
-      vegType: "vegan",
-      productType: "simple",
-      preparationTime: 2,
-      calories: 150,
-      sizes: ["500ml"],
-      availability: "In Stock",
-      status: "Archived",
-      lastUpdated: "01 Jun 2026",
-      createdBy: "Admin Shubh",
-      image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?fm=webp&fit=crop&w=100&q=80"
+  const getStoredProducts = () => {
+    const data = localStorage.getItem("pvp_products");
+    const defaultProds = [
+      {
+        id: "PP-V-001",
+        name: "Paneer Tikka Supreme",
+        category: "Signature Pizzas",
+        price: "₹399",
+        stock: 45,
+        vegType: "veg",
+        productType: "variants",
+        preparationTime: 15,
+        calories: 340,
+        sizes: ["Regular", "Medium", "Large"],
+        availability: "In Stock",
+        status: "Active",
+        lastUpdated: "14 Jun 2026",
+        createdBy: "Admin Shubh",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-002",
+        name: "Veg Supreme Delight",
+        category: "Classic Pizzas",
+        price: "₹299",
+        stock: 120,
+        vegType: "veg",
+        productType: "variants",
+        preparationTime: 12,
+        calories: 310,
+        sizes: ["Regular", "Medium", "Large"],
+        availability: "In Stock",
+        status: "Active",
+        lastUpdated: "12 Jun 2026",
+        createdBy: "Admin Shubh",
+        image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-003",
+        name: "Tandoori Veggie Blast",
+        category: "Signature Pizzas",
+        price: "₹449",
+        stock: 5,
+        vegType: "veg",
+        productType: "variants",
+        preparationTime: 18,
+        calories: 380,
+        sizes: ["Regular", "Medium", "Large"],
+        availability: "Low Stock",
+        status: "Active",
+        lastUpdated: "15 Jun 2026",
+        createdBy: "Manager Amit",
+        image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-004",
+        name: "Cheese Burst Margherita",
+        category: "Classic Pizzas",
+        price: "₹349",
+        stock: 65,
+        vegType: "veg",
+        productType: "variants",
+        preparationTime: 10,
+        calories: 410,
+        sizes: ["Regular", "Medium", "Large"],
+        availability: "In Stock",
+        status: "Active",
+        lastUpdated: "11 Jun 2026",
+        createdBy: "Admin Shubh",
+        image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-005",
+        name: "Spicy Capsicum & Corn",
+        category: "Classic Pizzas",
+        price: "₹249",
+        stock: 0,
+        vegType: "veg",
+        productType: "simple",
+        preparationTime: 12,
+        calories: 280,
+        sizes: ["Regular"],
+        availability: "Out of Stock",
+        status: "Draft",
+        lastUpdated: "10 Jun 2026",
+        createdBy: "Admin Shubh",
+        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-006",
+        name: "Garlic Breadsticks",
+        category: "Sides & Bread",
+        price: "₹149",
+        stock: 140,
+        vegType: "veg",
+        productType: "simple",
+        preparationTime: 8,
+        calories: 220,
+        sizes: ["Regular"],
+        availability: "In Stock",
+        status: "Active",
+        lastUpdated: "08 Jun 2026",
+        createdBy: "Admin Shubh",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-007",
+        name: "Chocolate Lava Cake",
+        category: "Desserts & Sweets",
+        price: "₹99",
+        stock: 180,
+        vegType: "vegan",
+        productType: "simple",
+        preparationTime: 5,
+        calories: 290,
+        sizes: ["Regular"],
+        availability: "In Stock",
+        status: "Active",
+        lastUpdated: "05 Jun 2026",
+        createdBy: "Manager Amit",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?fm=webp&fit=crop&w=100&q=80"
+      },
+      {
+        id: "PP-V-008",
+        name: "Cold Pepsi 500ml",
+        category: "Beverages",
+        price: "₹60",
+        stock: 22,
+        vegType: "vegan",
+        productType: "simple",
+        preparationTime: 2,
+        calories: 150,
+        sizes: ["500ml"],
+        availability: "In Stock",
+        status: "Archived",
+        lastUpdated: "01 Jun 2026",
+        createdBy: "Admin Shubh",
+        image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?fm=webp&fit=crop&w=100&q=80"
+      }
+    ];
+    if (!data) {
+      localStorage.setItem("pvp_products", JSON.stringify(defaultProds));
+      return defaultProds;
     }
-  ]);
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      return defaultProds;
+    }
+  };
+
+  const [products, setProducts] = useState(getStoredProducts);
+
+  // Sync state whenever localStorage changes outside this component
+  useEffect(() => {
+    const handleSync = () => {
+      setProducts(getStoredProducts());
+    };
+    window.addEventListener("pvp_products_changed", handleSync);
+    return () => window.removeEventListener("pvp_products_changed", handleSync);
+  }, []);
+
+  // Write changes to localStorage and dispatch event
+  useEffect(() => {
+    localStorage.setItem("pvp_products", JSON.stringify(products));
+    window.dispatchEvent(new Event("pvp_products_changed"));
+  }, [products]);
 
   // Debouncing search term inputs (500ms delay)
   useEffect(() => {

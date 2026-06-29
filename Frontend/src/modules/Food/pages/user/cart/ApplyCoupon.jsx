@@ -6,28 +6,70 @@ export default function ApplyCoupon({ show, onClose, onApply, cartTotal }) {
 
   if (!show) return null
 
-  const coupons = [
-    {
-      code: "HUT125",
-      discount: 125,
-      minOrder: 500,
-      title: "Rs. 125 Off on bill value above Rs.500",
-      subtitle: "Valid on Ala carte orders, not applicable on deals",
-      bannerText: "FLAT ₹125 OFF",
-      bannerSub: "ON MINIMUM ORDER OF ₹500",
-      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80"
-    },
-    {
-      code: "HUT100",
-      discount: 100,
-      minOrder: 400,
-      title: "Rs. 100 Off on bill value above Rs.400",
-      subtitle: "Valid on Ala carte orders, not applicable on deals",
-      bannerText: "FLAT ₹100 OFF",
-      bannerSub: "ON MINIMUM ORDER OF ₹400",
-      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&auto=format&fit=crop&q=80"
-    }
-  ]
+  const getDynamicCoupons = () => {
+    try {
+      const local = localStorage.getItem("franchise_admin_coupons")
+      if (local) {
+        const parsed = JSON.parse(local).filter(c => c.status === "active")
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            code: c.couponCode,
+            discount: c.discountValue || 50,
+            minOrder: c.minimumOrderAmount || 0,
+            title: c.title,
+            subtitle: c.description || "Valid on all orders",
+            bannerText: c.discountType === "percentage" ? `FLAT ${c.discountValue}% OFF` : `FLAT ₹${c.discountValue} OFF`,
+            bannerSub: c.minimumOrderAmount ? `ON MINIMUM ORDER OF ₹${c.minimumOrderAmount}` : "NO MINIMUM ORDER REQUIRED",
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80"
+          }))
+        }
+      }
+    } catch (e) {}
+
+    try {
+      const superadmin = localStorage.getItem("pvp_coupons")
+      if (superadmin) {
+        const parsed = JSON.parse(superadmin).filter(c => c.status === "active")
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            code: c.code,
+            discount: c.value || 50,
+            minOrder: c.minimumOrderAmount || 0,
+            title: c.title,
+            subtitle: c.description || "Valid on all orders",
+            bannerText: c.couponType === "Percentage" ? `FLAT ${c.value}% OFF` : `FLAT ₹${c.value} OFF`,
+            bannerSub: c.minimumOrderAmount ? `ON MINIMUM ORDER OF ₹${c.minimumOrderAmount}` : "NO MINIMUM ORDER REQUIRED",
+            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80"
+          }))
+        }
+      }
+    } catch (e) {}
+
+    return [
+      {
+        code: "HUT125",
+        discount: 125,
+        minOrder: 500,
+        title: "Rs. 125 Off on bill value above Rs.500",
+        subtitle: "Valid on Ala carte orders, not applicable on deals",
+        bannerText: "FLAT ₹125 OFF",
+        bannerSub: "ON MINIMUM ORDER OF ₹500",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80"
+      },
+      {
+        code: "HUT100",
+        discount: 100,
+        minOrder: 400,
+        title: "Rs. 100 Off on bill value above Rs.400",
+        subtitle: "Valid on Ala carte orders, not applicable on deals",
+        bannerText: "FLAT ₹100 OFF",
+        bannerSub: "ON MINIMUM ORDER OF ₹400",
+        image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&auto=format&fit=crop&q=80"
+      }
+    ];
+  };
+
+  const coupons = getDynamicCoupons();
 
   const handleManualApply = () => {
     const cleanCode = couponInput.trim().toUpperCase()
