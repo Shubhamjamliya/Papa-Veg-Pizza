@@ -152,6 +152,24 @@ export default function MenuList() {
     return locationConfirmed ? (localStorage.getItem("carNumber") || "") : ""
   })
 
+  const [searchQuery, setSearchQuery] = useState("")
+  const [debouncedQuery, setDebouncedQuery] = useState("")
+
+  // Debouncing logic for search query
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery)
+    }, 300)
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [searchQuery])
+
+  // Reset search query when active category tab changes
+  useEffect(() => {
+    setSearchQuery("")
+  }, [activeTab])
+
   // Sync local location state with global location confirmation changes
   useEffect(() => {
     if (locationConfirmed) {
@@ -256,6 +274,13 @@ export default function MenuList() {
 
   const totalCartCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0)
   const totalCartPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0)
+
+  // Filter menu items by debounced search query (case-insensitive, match title or description)
+  const filteredItems = (MENU_ITEMS[activeTab] || []).filter((item) => {
+    const titleMatch = item.title?.toLowerCase().includes(debouncedQuery.toLowerCase())
+    const descMatch = item.description?.toLowerCase().includes(debouncedQuery.toLowerCase())
+    return titleMatch || descMatch
+  })
 
   const modalTextPrimary = isDarkMode ? "text-white" : "text-zinc-900"
   const modalTextSecondary = isDarkMode ? "text-zinc-400" : "text-zinc-500"
@@ -466,14 +491,42 @@ export default function MenuList() {
         </section>
 
         {/* Section Header */}
-        <div className="flex items-center justify-between border-b border-white/5 pb-2">
-          <h2 className={`font-headline-lg-mobile capitalize ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{activeTab}</h2>
-          <span className="text-xs opacity-50 font-bold">{MENU_ITEMS[activeTab]?.length || 0} Items</span>
+        <div className="flex flex-col gap-3 pb-2 border-b border-white/5">
+          <div className="flex items-center justify-between">
+            <h2 className={`font-headline-lg-mobile capitalize ${isDarkMode ? "text-white" : "text-[#131313]"}`}>{activeTab}</h2>
+            <span className="text-xs opacity-50 font-bold">{filteredItems.length} {filteredItems.length === 1 ? 'Item' : 'Items'}</span>
+          </div>
+          
+          {/* Debounced Search Bar */}
+          <div className="relative w-full">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-sm opacity-50 pointer-events-none">
+              search
+            </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={`Search in ${activeTab}...`}
+              className={`w-full h-9 pl-9 pr-8 rounded-full text-xs font-semibold outline-none transition-all duration-300 border ${
+                isDarkMode
+                  ? "bg-white/5 border-white/10 text-white placeholder-white/30 focus:bg-white/10 focus:border-white/20 focus:ring-1 focus:ring-white/20"
+                  : "bg-zinc-100 border-zinc-200 text-zinc-800 placeholder-zinc-400 focus:bg-white focus:border-zinc-350 focus:ring-1 focus:ring-zinc-250"
+              }`}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-0 outline-none cursor-pointer flex items-center justify-center p-0 hover:opacity-85 text-zinc-400"
+              >
+                <span className="material-symbols-outlined text-xs">close</span>
+              </button>
+            )}
+          </div>
         </div>
 
          {/* Menu list grid */}
         <section className="space-y-4">
-          {MENU_ITEMS[activeTab] && MENU_ITEMS[activeTab].map((item) => (
+          {filteredItems.map((item) => (
             <div key={item.id} className="glass-card rounded-2xl overflow-hidden flex flex-row p-4 gap-4 border border-white/12 hover-glow transition-all duration-300">
               
               {/* Left Details: Title, Price, Description, Size Selector */}
@@ -552,10 +605,14 @@ export default function MenuList() {
             </div>
           ))}
 
-          {(!MENU_ITEMS[activeTab] || MENU_ITEMS[activeTab].length === 0) && (
+          {filteredItems.length === 0 && (
             <div className="text-center py-16 opacity-50 space-y-3">
-              <span className="material-symbols-outlined text-4xl">local_pizza</span>
-              <p className="font-bold text-xs uppercase tracking-wider">No items available in this category</p>
+              <span className="material-symbols-outlined text-4xl">
+                {searchQuery ? "search_off" : "local_pizza"}
+              </span>
+              <p className="font-bold text-xs uppercase tracking-wider">
+                {searchQuery ? "No items match your search" : "No items available in this category"}
+              </p>
             </div>
           )}
         </section>
