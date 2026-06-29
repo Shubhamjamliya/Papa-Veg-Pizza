@@ -64,6 +64,7 @@ export default function SuperAdminDashboard() {
   // Navigation drawer and theme state
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeItem, setActiveItem] = useState("Dashboard")
+  const [isCollapsed, setIsCollapsed] = useState(() => localStorage.getItem("sa_sidebar_collapsed") === "true")
 
   // Real-time Dynamic Color Theme Settings
   const [primaryColor, setPrimaryColor] = useState(() => localStorage.getItem("sa_primary") || "#a43c12")
@@ -92,6 +93,7 @@ export default function SuperAdminDashboard() {
     document.documentElement.style.setProperty("--secondary-hover", `${secondaryColor}cc`)
     localStorage.setItem("sa_primary", primaryColor)
     localStorage.setItem("sa_secondary", secondaryColor)
+    window.dispatchEvent(new Event("systemThemeChanged"))
   }, [primaryColor, secondaryColor])
 
   // Handle dark mode toggle
@@ -102,6 +104,7 @@ export default function SuperAdminDashboard() {
       document.documentElement.classList.remove("dark")
     }
     localStorage.setItem("sa_themeMode", themeMode)
+    window.dispatchEvent(new Event("systemThemeChanged"))
   }, [themeMode])
 
   // KPI Bento stats state
@@ -248,10 +251,16 @@ export default function SuperAdminDashboard() {
         onClose={() => setSidebarOpen(false)}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
+        isCollapsed={isCollapsed}
+        onToggleCollapse={() => {
+          const next = !isCollapsed
+          setIsCollapsed(next)
+          localStorage.setItem("sa_sidebar_collapsed", next ? "true" : "false")
+        }}
       />
 
       {/* Main Container Area */}
-      <main className="lg:ml-[280px] pt-16 pb-12 px-3 md:px-4 transition-all duration-300">
+      <main className={`pt-16 pb-12 px-3 md:px-4 transition-all duration-300 ${isCollapsed ? "lg:ml-[72px]" : "lg:ml-[280px]"}`}>
 
         {/* Dynamic Navigation Header */}
         <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">

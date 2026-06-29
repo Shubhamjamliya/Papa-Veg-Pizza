@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import AccountMenuCard from "./AccountMenuCard"
 
-export default function AccountMenuList() {
+export default function AccountMenuList({ isDarkMode, onToggleTheme }) {
   const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -71,6 +71,11 @@ export default function AccountMenuList() {
       route: "/user/account/nutrition",
     },
     {
+      title: `Theme: ${isDarkMode ? "Dark Mode" : "Light Mode"}`,
+      icon: isDarkMode ? "dark_mode" : "light_mode",
+      isThemeToggle: true,
+    },
+    {
       title: "Give Feedback",
       icon: "rate_review",
       route: "/user/account/feedback",
@@ -90,8 +95,12 @@ export default function AccountMenuList() {
           title={item.title}
           iconName={item.icon}
           onClick={() => {
-            const state = item.route === "/user/auth/login" ? { from: "/account" } : undefined
-            navigate(item.route, { state })
+            if (item.isThemeToggle) {
+              onToggleTheme()
+            } else {
+              const state = item.route === "/user/auth/login" ? { from: "/account" } : undefined
+              navigate(item.route, { state })
+            }
           }}
         />
       ))}

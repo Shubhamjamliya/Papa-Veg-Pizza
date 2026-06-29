@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useInView } from "framer-motion"
 import DeliveryMapModal from "@food/components/user/DeliveryMapModal"
 import DeliveryOrCollectionModal from "@food/components/user/DeliveryOrCollectionModal"
 import TakeawayMapModal from "@food/components/user/TakeawayMapModal"
@@ -54,10 +54,44 @@ const DEALS = [
   }
 ]
 
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    clipPath: "inset(100% 0% 0% 0% round 12px)",
+    scale: 1.0
+  },
+  visible: (index) => ({
+    opacity: 1,
+    y: 0,
+    clipPath: "inset(-30px -30px -30px -30px round 12px)",
+    scale: 1.0,
+    transition: {
+      default: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 },
+      scale: { duration: 0.25, ease: "easeOut" }
+    }
+  }),
+  selected: (index) => ({
+    opacity: 1,
+    y: 0,
+    clipPath: "inset(-30px -30px -30px -30px round 12px)",
+    scale: 1.08,
+    transition: {
+      default: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 },
+      scale: { duration: 0.25, ease: "easeOut", delay: 0 }
+    }
+  })
+}
+
 export default function Home() {
   const navigate = useNavigate()
   const { isModalOpen, closeLocationModal, confirmLocation, locationConfirmed } = useLocationStore()
   const checkLocation = useLocationGuard()
+  const cardsRef = useRef(null)
+  const isCardsInView = useInView(cardsRef, { once: false, amount: 0.05 })
+  const dealsRef = useRef(null)
+  const isDealsInView = useInView(dealsRef, { once: false, amount: 0.05 })
+  const [activeDeal, setActiveDeal] = useState(null)
 
   // App States
   const [userName, setUserName] = useState(() => {
@@ -252,11 +286,11 @@ export default function Home() {
         <style dangerouslySetInnerHTML={{
           __html: `
         .page-wrapper {
-          background: ${isDarkMode ? "#111111" : "radial-gradient(circle at top left, #FFF4F3 0%, #FFFDFD 40%, #FFF9F7 80%, #FFFFFF 100%)"} !important;
+          background: ${isDarkMode ? "#111111" : "radial-gradient(circle at top left, #FFF4F3 0%, #FAF9F6 40%, #F5F5F7 80%, #FAF9F6 100%)"} !important;
           color: ${isDarkMode ? "#e5e2e1" : "#1c1b1b"} !important;
         }
         .glass-card {
-          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.75)"} !important;
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(250, 249, 246, 0.75)"} !important;
           backdrop-filter: blur(24px) !important;
           border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.08)" : "rgba(229, 57, 53, 0.06)"} !important;
           box-shadow: ${isDarkMode ? "none" : "0 8px 24px -4px rgba(229, 57, 53, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.01)"} !important;
@@ -264,6 +298,13 @@ export default function Home() {
         }
         .glass-card:hover {
           box-shadow: ${isDarkMode ? "0 4px 20px rgba(0,0,0,0.3)" : "0 12px 25px -4px rgba(229, 57, 53, 0.06), 0 6px 12px -2px rgba(0, 0, 0, 0.01)"} !important;
+        }
+        .service-glass-card {
+          background: ${isDarkMode ? "rgba(255, 255, 255, 0.05)" : "rgba(250, 249, 246, 0.75)"} !important;
+          backdrop-filter: blur(24px) !important;
+          border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.08)" : "rgba(229, 57, 53, 0.06)"} !important;
+          box-shadow: ${isDarkMode ? "none" : "0 8px 24px -4px rgba(229, 57, 53, 0.04), 0 4px 12px -2px rgba(0, 0, 0, 0.01)"} !important;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .hide-scrollbar::-webkit-scrollbar { display: none !important; }
         .hide-scrollbar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
@@ -349,11 +390,11 @@ export default function Home() {
           margin-bottom: 16px !important;
         }
         .bg-surface\/80 {
-          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(255, 255, 255, 0.82)"} !important;
+          background-color: ${isDarkMode ? "rgba(19, 19, 19, 0.8)" : "rgba(250, 249, 246, 0.82)"} !important;
           backdrop-filter: blur(20px) !important;
         }
         .bg-surface {
-          background-color: ${isDarkMode ? "#131313" : "#ffffff"} !important;
+          background-color: ${isDarkMode ? "#131313" : "#FAF9F6"} !important;
         }
         .text-primary {
           color: #E53935 !important;
@@ -447,15 +488,15 @@ export default function Home() {
         }
         .service-card {
           border-bottom: 4px solid ${isDarkMode ? "#27272a" : "#e4e4e7"} !important;
-          box-shadow: ${isDarkMode 
-            ? "none" 
-            : "0 8px 16px -4px rgba(0, 0, 0, 0.06), 0 4px 8px -2px rgba(0, 0, 0, 0.02)"} !important;
+          box-shadow: ${isDarkMode
+              ? "none"
+              : "0 8px 16px -4px rgba(0, 0, 0, 0.06), 0 4px 8px -2px rgba(0, 0, 0, 0.02)"} !important;
         }
         .service-card.active-service-card {
           border-bottom: 4px solid #b71c1c !important;
-          box-shadow: ${isDarkMode 
-            ? "0 12px 25px rgba(229, 57, 53, 0.2)" 
-            : "0 12px 25px -4px rgba(229, 57, 53, 0.22), 0 6px 12px -2px rgba(229, 57, 53, 0.1)"} !important;
+          box-shadow: ${isDarkMode
+              ? "0 12px 25px rgba(229, 57, 53, 0.2)"
+              : "0 12px 25px -4px rgba(229, 57, 53, 0.22), 0 6px 12px -2px rgba(229, 57, 53, 0.1)"} !important;
         }
         `
         }} />
@@ -479,12 +520,13 @@ export default function Home() {
           </div>
           <button
             onClick={() => {
-              setIsDarkMode(!isDarkMode)
-              triggerToast(isDarkMode ? "Switched to Light mode" : "Switched to Dark mode")
+              navigate("/user/notifications")
+              triggerToast("Opening Notifications")
             }}
-            className="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95 cursor-pointer bg-transparent border-0 outline-none"
+            className="w-10 h-10 flex items-center justify-center text-primary dark:text-primary hover:opacity-85 transition-all active:scale-90 cursor-pointer bg-transparent border-0 outline-none"
+            title="Notifications"
           >
-            {isDarkMode ? "light_mode" : "dark_mode"}
+            <span className="material-symbols-outlined text-[24px]">notifications</span>
           </button>
         </header>
 
@@ -526,9 +568,12 @@ export default function Home() {
           {userName && (
             <div className="px-margin-mobile pt-2 pb-1 space-y-1">
               <h2 className={`font-headline-lg-mobile text-2xl font-black tracking-tight leading-tight ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
-                Welcome back {userName.trim().split(/\s+/)[0]}! 🍕
+                Welcome back {(() => {
+                  const firstName = userName.trim().split(/\s+/)[0];
+                  return firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : "";
+                })()}! 🍕
               </h2>
-              <p className={`text-xs font-semibold leading-normal ${isDarkMode ? "text-zinc-400" : "text-zinc-600"}`}>
+              <p className={`text-xs leading-normal ${isDarkMode ? "text-zinc-400" : "text-zinc-600"}`}>
                 Select Delivery or Takeaway to see local deals
               </p>
             </div>
@@ -546,7 +591,7 @@ export default function Home() {
           )}
 
           {/* Delivery/Takeaway Toggle */}
-          <section className="px-margin-mobile grid grid-cols-2 gap-4">
+          <section ref={cardsRef} className="px-margin-mobile grid grid-cols-2 gap-4">
             {[
               { id: "delivery", label: "Delivery", icon: "moped" },
               { id: "takeaway", label: "Takeaway", icon: "store" },
@@ -557,12 +602,10 @@ export default function Home() {
               return (
                 <motion.div
                   key={service.id}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.05 }}
-                  transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-                  onMouseEnter={() => setHoveredService(service.id)}
-                  onMouseLeave={() => setHoveredService(null)}
+                  variants={cardVariants}
+                  custom={index}
+                  initial="hidden"
+                  animate={!isCardsInView ? "hidden" : isSelected ? "selected" : "visible"}
                   onClick={() => {
                     if (service.id === "delivery") {
                       setShowMapModal(true)
@@ -578,62 +621,21 @@ export default function Home() {
                       triggerToast(`Switched to ${service.label}`)
                     }
                   }}
-                  className="w-full h-[96px] perspective-1000 cursor-pointer select-none"
+                  className={`w-full h-[96px] rounded-xl p-2.5 flex flex-col items-center justify-center gap-1 border transition-all duration-300 cursor-pointer select-none ${isSelected
+                    ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/5 active-service-card"
+                    : "border-black/5 dark:border-white/5"
+                    } service-glass-card service-card`}
                 >
-                  <motion.div
-                    className="w-full h-full relative preserve-3d"
-                    animate={{ rotateY: hoveredService === service.id ? 180 : 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    {/* Front Side */}
-                    <div
-                      className={`absolute inset-0 backface-hidden rounded-xl p-2.5 flex flex-col items-center justify-center gap-1 border transition-all duration-300 ${isSelected
-                          ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/5 active-service-card"
-                          : "border-black/5 dark:border-white/5"
-                        } glass-card service-card`}
-                      style={{ backfaceVisibility: "hidden" }}
-                    >
-                      <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${isSelected
-                          ? "bg-[#E53935] text-white shadow-md shadow-[#E53935]/20"
-                          : "bg-[#131313]/5 dark:bg-white/5 text-on-surface-variant"
-                        }`}>
-                        <span className="material-symbols-outlined text-[20px]">{service.icon}</span>
-                      </div>
-                      <span className={`font-label-sm uppercase tracking-wider text-[9px] ${isSelected ? "text-[#E53935] font-extrabold" : "opacity-75 font-semibold"
-                        }`}>
-                        {service.label}
-                      </span>
-                    </div>
-
-                    {/* Back Side (Flipped) */}
-                    <div
-                      className={`absolute inset-0 backface-hidden rounded-xl p-2 flex flex-col items-center justify-center gap-1 border text-center transition-all duration-300 ${isSelected
-                          ? "bg-[#E53935] border-transparent text-white active-service-card"
-                          : isDarkMode
-                            ? "bg-zinc-800 border-zinc-700 text-white"
-                            : "bg-gray-100 border-gray-200 text-gray-800"
-                        } service-card`}
-                      style={{
-                        backfaceVisibility: "hidden",
-                        transform: "rotateY(180deg)",
-                      }}
-                    >
-                      <span className={`text-[8px] font-black uppercase tracking-widest ${isSelected ? "text-white" : "text-[#E53935]"
-                        }`}>
-                        {isSelected ? "Active" : "Select"}
-                      </span>
-                      <span className="text-[9px] opacity-90 line-clamp-2 max-w-[125px] font-medium leading-tight">
-                        {service.id === "delivery"
-                          ? (locationConfirmed ? (deliveryAddress || "Tap to set") : "Tap to set")
-                          : service.id === "takeaway"
-                            ? (takeawayHut || "Tap to select")
-                            : service.id === "incar"
-                              ? (carNumber || "Tap to enter")
-                              : "Tap to enter"}
-                      </span>
-                    </div>
-                  </motion.div>
+                  <div className={`rounded-full flex items-center justify-center transition-all duration-300 ${isSelected
+                    ? "bg-[#E53935] text-white shadow-md shadow-[#E53935]/20 w-11 h-11"
+                    : "bg-[#131313]/5 dark:bg-white/5 text-on-surface-variant w-9 h-9"
+                    }`}>
+                    <span className={`material-symbols-outlined transition-all duration-300 ${isSelected ? "text-[26px]" : "text-[20px]"}`}>{service.icon}</span>
+                  </div>
+                  <span className={`font-label-sm uppercase tracking-wider text-[9px] ${isSelected ? "text-[#E53935] font-extrabold" : "opacity-75 font-semibold"
+                    }`}>
+                    {service.label}
+                  </span>
                 </motion.div>
               )
             })}
@@ -661,9 +663,8 @@ export default function Home() {
                 View Deals
               </button>
             </motion.div>
-            <div className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin-mobile pb-2">
+            <div ref={dealsRef} className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin-mobile pb-2">
               {DEALS.map((deal, index) => {
-                const isLeft = index % 2 === 0
                 const badgeColorClass =
                   deal.badge === "Bestseller"
                     ? "bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20"
@@ -673,12 +674,20 @@ export default function Home() {
                 return (
                   <motion.div
                     key={deal.id}
-                    initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.05 }}
-                    transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-                    whileHover={{ scale: 1.03, y: -4 }}
-                    className="min-w-[165px] max-w-[165px] glass-card rounded-xl overflow-hidden hover-glow flex flex-col justify-between h-[160px]"
+                    variants={cardVariants}
+                    custom={index}
+                    initial="hidden"
+                    animate={!isDealsInView ? "hidden" : activeDeal === deal.id ? "selected" : "visible"}
+                    onClick={() => {
+                      setActiveDeal(deal.id)
+                      checkLocation(() => {
+                        triggerToast("Deal claimed successfully!");
+                      });
+                    }}
+                    className={`min-w-[165px] max-w-[165px] rounded-xl overflow-hidden flex flex-col justify-between h-[160px] border transition-all duration-300 cursor-pointer select-none ${activeDeal === deal.id
+                        ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/5 active-service-card"
+                        : "border-black/5 dark:border-white/5"
+                      } service-glass-card`}
                   >
                     <div className="p-3 pt-3 flex flex-col justify-between flex-1">
                       <div className="space-y-1 mb-2">
@@ -689,7 +698,9 @@ export default function Home() {
                         <p className={`text-[10px] opacity-70 leading-snug line-clamp-2 ${isDarkMode ? "text-zinc-400" : "text-zinc-500"}`}>{deal.description}</p>
                       </div>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDeal(deal.id);
                           checkLocation(() => {
                             triggerToast("Deal claimed successfully!");
                           });
@@ -877,7 +888,7 @@ export default function Home() {
         )}
 
         {/* BottomNavBar */}
-        <nav className="fixed -bottom-[2px] left-1/2 -translate-x-1/2 w-full max-w-md z-50 rounded-t-xl bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-t border-zinc-200/60 dark:border-zinc-800/60 shadow-[0_-2px_12px_rgba(0,0,0,0.04)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] flex justify-around items-center h-[82px] pb-[2px] m-0">
+        <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[360px] z-50 rounded-full bg-[#FAF9F6]/90 dark:bg-zinc-950/95 backdrop-blur-xl border border-black/5 dark:border-white/5 shadow-[0_16px_36px_rgba(0,0,0,0.15)] flex justify-around items-center h-[68px] px-2 m-0">
           <button
             onClick={() => {
               if (window.location.pathname === "/user" || window.location.pathname === "/user/") {
@@ -887,36 +898,36 @@ export default function Home() {
               }
               triggerToast("Opening Home")
             }}
-            className="flex flex-col items-center justify-center text-primary dark:text-primary transition-all duration-300 active:scale-90 font-label-sm text-label-sm cursor-pointer bg-transparent border-0 outline-none"
+            className="flex flex-col items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer bg-transparent border-0 outline-none group"
           >
-            <span className="material-symbols-outlined fill" style={{ fontVariationSettings: " 'FILL' 1 " }}>home</span>
-            <span className="">Home</span>
+            <div className="w-14 h-8 rounded-full flex items-center justify-center mb-0.5 transition-all duration-300 bg-[#E53935]/10 text-[#E53935] dark:bg-[#E53935]/20">
+              <span className="material-symbols-outlined text-[22px] fill" style={{ fontVariationSettings: " 'FILL' 1 " }}>home</span>
+            </div>
+            <span className="text-[10px] font-bold tracking-wide text-[#E53935]">Home</span>
           </button>
           <button
             onClick={() => {
               navigate("/user/menu")
               triggerToast("Opening Menu")
             }}
-            className={`flex flex-col items-center justify-center transition-all duration-300 active:scale-90 font-label-sm text-label-sm cursor-pointer bg-transparent border-0 outline-none ${isDarkMode
-              ? "text-on-surface-variant opacity-60"
-              : "text-[#1c1b1b] opacity-60 hover:text-primary hover:opacity-100"
-              }`}
+            className="flex flex-col items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer bg-transparent border-0 outline-none group"
           >
-            <span className="material-symbols-outlined">restaurant_menu</span>
-            <span className="">Menu</span>
+            <div className="w-14 h-8 rounded-full flex items-center justify-center mb-0.5 transition-all duration-300 bg-transparent text-zinc-500 dark:text-zinc-400 group-hover:bg-black/5 dark:group-hover:bg-white/5">
+              <span className="material-symbols-outlined text-[22px]">restaurant_menu</span>
+            </div>
+            <span className="text-[10px] font-semibold tracking-wide text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200">Menu</span>
           </button>
           <button
             onClick={() => {
               navigate("/user/account")
               triggerToast("Opening Account")
             }}
-            className={`flex flex-col items-center justify-center transition-all duration-300 active:scale-90 font-label-sm text-label-sm active:scale-90 transition-transform cursor-pointer bg-transparent border-0 outline-none ${isDarkMode
-              ? "text-on-surface-variant opacity-60 animate-none"
-              : "text-[#1c1b1b] opacity-60 hover:text-primary hover:opacity-100"
-              }`}
+            className="flex flex-col items-center justify-center transition-all duration-300 active:scale-95 cursor-pointer bg-transparent border-0 outline-none group"
           >
-            <span className="material-symbols-outlined">person</span>
-            <span className="">Account</span>
+            <div className="w-14 h-8 rounded-full flex items-center justify-center mb-0.5 transition-all duration-300 bg-transparent text-zinc-500 dark:text-zinc-400 group-hover:bg-black/5 dark:group-hover:bg-white/5">
+              <span className="material-symbols-outlined text-[22px]">person</span>
+            </div>
+            <span className="text-[10px] font-semibold tracking-wide text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200">Account</span>
           </button>
         </nav>
 

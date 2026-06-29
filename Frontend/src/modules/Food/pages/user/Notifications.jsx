@@ -301,7 +301,7 @@ export default function Notifications() {
           title="Notifications" 
           showBack={true} 
           isDarkMode={isDarkMode} 
-          onThemeToggle={toggleTheme} 
+          showThemeToggle={false} 
           showCart={true} 
         />
 
