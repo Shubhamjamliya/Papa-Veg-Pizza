@@ -64,7 +64,7 @@ export const ProfileBankV2 = () => {
      finally { setIsSaving(false); }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><Loader2 className="w-8 h-8 animate-spin text-orange-500" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-50"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
 
   return (
     <div className="min-h-screen bg-gray-50 font-poppins">
@@ -72,7 +72,7 @@ export const ProfileBankV2 = () => {
           <button onClick={goBack}><ArrowLeft className="w-6 h-6" /></button>
           <h1 className="text-xl font-black">Bank Details</h1>
           {!isEditing && (
-             <button onClick={() => setIsEditing(true)} className="ml-auto p-2 bg-orange-50 text-orange-600 rounded-xl"><Edit2 className="w-4 h-4" /></button>
+             <button onClick={() => setIsEditing(true)} className="ml-auto p-2 bg-primary/10 text-primary rounded-xl"><Edit2 className="w-4 h-4" /></button>
           )}
        </div>
 
@@ -92,7 +92,7 @@ export const ProfileBankV2 = () => {
                          type="text" 
                          value={form[key]}
                          onChange={(e) => setForm({...form, [key]: e.target.value})}
-                         className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-gray-950 focus:ring-2 focus:ring-orange-500/20"
+                         className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-gray-950 focus:ring-2 focus:ring-primary/20"
                       />
                    ) : (
                       <p className="text-sm font-bold text-gray-950">{form[key] || "Not provided"}</p>
@@ -105,7 +105,7 @@ export const ProfileBankV2 = () => {
              <button 
                onClick={handleSave}
                disabled={isSaving}
-               className="w-full bg-black text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl flex items-center justify-center gap-2"
+               className="w-full bg-primary text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:bg-primary-hover transition-colors flex items-center justify-center gap-2"
              >
                 {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                 Save Changes

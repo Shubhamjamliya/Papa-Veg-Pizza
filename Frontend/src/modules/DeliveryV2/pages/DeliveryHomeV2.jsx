@@ -769,8 +769,8 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
             >
               {activeOrder ? (
                 <div className="grid grid-cols-2 gap-3 w-full">
-                  {/* LEFT: DISTANCE (Vibrant Orange Card) */}
-                  <div className="bg-[#ff8100] rounded-2xl p-3.5 shadow-xl shadow-orange-500/20 border border-orange-400/50 flex items-center justify-between overflow-hidden relative">
+                  {/* LEFT: DISTANCE (Vibrant Brand Card) */}
+                  <div className="bg-primary rounded-2xl p-3.5 shadow-xl shadow-primary/20 border border-primary/50 flex items-center justify-between overflow-hidden relative">
                     <div className="flex flex-col z-10">
                       <span className="text-[9px] text-white/70 font-black uppercase tracking-[0.15em] mb-1">Distance</span>
                       <div className="flex items-end gap-1">
@@ -781,12 +781,12 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
                       </div>
                     </div>
                     <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center z-10 shadow-lg">
-                      <Navigation2 className="w-4 h-4 text-[#ff8100] rotate-45" />
+                      <Navigation2 className="w-4 h-4 text-primary rotate-45" />
                     </div>
                   </div>
 
-                  {/* RIGHT: TIME (Emerald PRO Content) */}
-                  <div className="bg-[#10B981] rounded-2xl p-3.5 shadow-xl shadow-green-500/20 border border-green-400/50 flex items-center justify-between relative overflow-hidden group">
+                  {/* RIGHT: TIME (Secondary Brand Card) */}
+                  <div className="bg-secondary rounded-2xl p-3.5 shadow-xl shadow-secondary/20 border border-secondary/50 flex items-center justify-between relative overflow-hidden group">
                     <div className="flex flex-col z-10">
                       <span className="text-[9px] text-white/70 font-black uppercase tracking-[0.15em] mb-1">Arrival</span>
                       <div className="flex items-end gap-1">
@@ -797,7 +797,7 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
                       </div>
                     </div>
                     <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center z-10 shadow-lg">
-                       <Clock className="w-4 h-4 text-[#10B981]" />
+                       <Clock className="w-4 h-4 text-secondary" />
                     </div>
                   </div>
                 </div>
@@ -924,9 +924,9 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
                 </button>
                 <button 
                    onClick={() => mapRef.current?.setOptions({ gestureHandling: 'greedy' })} 
-                   className="w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center text-blue-600 border border-gray-100 active:scale-90 transition-all"
+                   className="w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center text-primary border border-gray-100 active:scale-90 transition-all"
                 >
-                  <div className="w-8 h-8 rounded-full border-2 border-blue-600 flex items-center justify-center"><Navigation2 className="w-4 h-4" /></div>
+                  <div className="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center"><Navigation2 className="w-4 h-4" /></div>
                 </button>
                 <button 
                   onClick={handleCenterMap}
@@ -1097,8 +1097,8 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
                         onClick={() => setShowVerification(true)} 
                         className="w-full text-white rounded-2xl py-4 sm:py-5 px-4 font-bold text-xs sm:text-sm tracking-[0.14em] transform transition-all active:scale-95 flex items-center justify-center gap-2.5 sm:gap-3 border border-white/20"
                         style={{
-                          background: 'linear-gradient(33deg, #E53935 0%, #000000 100%)',
-                          boxShadow: '0 14px 34px rgba(229, 57, 53, 0.42)',
+                          background: 'linear-gradient(33deg, var(--dv-primary) 0%, #000000 100%)',
+                          boxShadow: '0 14px 34px color-mix(in srgb, var(--dv-primary) 42%, transparent)',
                         }}
                       >
                         <CheckCircle2 className="w-6 h-6" /> VERIFY & COMPLETE

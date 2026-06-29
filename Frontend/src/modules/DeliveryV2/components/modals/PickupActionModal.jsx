@@ -108,9 +108,9 @@ export const PickupActionModal = ({
               <h3 className="text-gray-950 text-lg sm:text-xl font-bold">{restaurantName}</h3>
               <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 mt-1.5">
                 {isAtPickup ? (
-                  <span className="text-green-600">Reached Location √</span>
+                  <span className="text-primary font-bold">Reached Location √</span>
                 ) : (
-                  <span className="text-orange-500">
+                  <span className="text-primary">
                     {(distanceToTarget / 1000).toFixed(1)} km • {eta || '--'} min to Store
                   </span>
                 )}
@@ -122,7 +122,7 @@ export const PickupActionModal = ({
             {restaurantPhone && (
               <button
                 onClick={() => window.location.href = `tel:${restaurantPhone}`}
-                className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600 border border-green-100"
+                className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20"
               >
                 <Phone className="w-5 h-5" />
               </button>
@@ -141,7 +141,7 @@ export const PickupActionModal = ({
           {!isAtPickup ? (
             <div>
               <p className={`text-center text-[10px] font-bold uppercase tracking-widest mb-3 transition-colors ${
-                isWithinRange ? 'text-green-600' : 'text-orange-500 animate-pulse'
+                isWithinRange ? 'text-primary' : 'text-secondary animate-pulse'
               }`}>
                 {isWithinRange ? 'Ready - Swipe to confirm arrival' : 'Get closer to restaurant'}
               </p>
@@ -151,7 +151,7 @@ export const PickupActionModal = ({
                 successLabel="Reached!"
                 disabled={!isWithinRange}
                 onConfirm={onReachedPickup}
-                color="bg-green-600"
+                color="bg-primary"
               />
             </div>
           ) : (
@@ -168,7 +168,7 @@ export const PickupActionModal = ({
                       </button>
                       <button
                         onClick={handlePickFromGallery}
-                        className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-4 rounded-2xl bg-orange-50 text-orange-600 border border-orange-100 font-bold text-[11px] sm:text-xs uppercase tracking-widest active:scale-95 transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-4 rounded-2xl bg-primary/10 text-primary border border-primary/20 font-bold text-[11px] sm:text-xs uppercase tracking-widest active:scale-95 transition-all"
                       >
                         <ImageIcon className="w-5 h-5" />
                         <span>Gallery</span>
@@ -184,7 +184,7 @@ export const PickupActionModal = ({
                  )}
 
                  {billImageUploaded && (
-                    <div className="w-full flex items-center justify-center gap-2 py-3 sm:py-4 rounded-2xl bg-green-100 text-green-700 font-bold text-[11px] sm:text-xs uppercase tracking-widest">
+                    <div className="w-full flex items-center justify-center gap-2 py-3 sm:py-4 rounded-2xl bg-primary/10 text-primary border border-primary/20 font-bold text-[11px] sm:text-xs uppercase tracking-widest">
                        <CheckCircle2 className="w-4 h-4" />
                        <span>Bill Uploaded</span>
                     </div>
@@ -200,7 +200,7 @@ export const PickupActionModal = ({
               </div>
 
               <div>
-                <p className={`text-center text-[10px] font-bold uppercase tracking-widest mb-3 ${billImageUploaded ? 'text-green-600' : 'text-gray-400'}`}>
+                <p className={`text-center text-[10px] font-bold uppercase tracking-widest mb-3 ${billImageUploaded ? 'text-primary' : 'text-gray-400'}`}>
                   {billImageUploaded ? "Check the restaurant logo - Swipe to pick up" : "Capture bill to unlock swipe"}
                 </p>
                 <ActionSlider 
@@ -209,7 +209,7 @@ export const PickupActionModal = ({
                   successLabel="Picked Up!"
                   disabled={!billImageUploaded}
                   onConfirm={() => onPickedUp(billImageUrl)}
-                  color="bg-orange-500"
+                  color="bg-primary"
                 />
               </div>
             </div>
@@ -217,10 +217,10 @@ export const PickupActionModal = ({
 
           {/* Delivery Instructions (User Note) */}
           {order?.note && (
-            <div className="bg-orange-50 border border-orange-100 rounded-2xl p-3.5 sm:p-4 flex gap-3 items-start">
-              <ChefHat className="w-5 h-5 text-orange-500 mt-0.5 shrink-0" />
+            <div className="bg-primary/10 border border-primary/20 rounded-2xl p-3.5 sm:p-4 flex gap-3 items-start">
+              <ChefHat className="w-5 h-5 text-primary mt-0.5 shrink-0" />
               <div>
-                <p className="text-[10px] font-bold text-orange-600 uppercase tracking-widest mb-1.5">User Instructions</p>
+                <p className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1.5">User Instructions</p>
                 <p className="text-sm font-bold text-gray-800 leading-snug">"{order.note}"</p>
               </div>
             </div>
@@ -243,7 +243,7 @@ export const PickupActionModal = ({
               {items.map((item, idx) => (
                 <div key={idx} className="flex justify-between items-center p-3 border-b border-gray-50 last:border-0">
                   <span className="text-gray-700 text-sm font-bold">{item.name || 'Item Name'}</span>
-                  <span className="text-green-600 font-bold bg-green-50 px-2.5 py-1 rounded-lg text-xs">x{item.quantity || 1}</span>
+                  <span className="text-primary font-bold bg-primary/10 px-2.5 py-1 rounded-lg text-xs">x{item.quantity || 1}</span>
                 </div>
               ))}
             </div>

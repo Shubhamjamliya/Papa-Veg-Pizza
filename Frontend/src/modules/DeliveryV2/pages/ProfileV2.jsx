@@ -152,9 +152,9 @@ export const ProfileV2 = () => {
                 <User className="w-10 h-10 md:w-12 md:h-12 text-gray-400" />
               </div>
             )}
-            <div className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md border-2 border-white">
-              <Briefcase className="w-4 h-4 text-gray-600" />
-            </div>
+             <div className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md border-2 border-white">
+               <Briefcase className="w-4 h-4 text-primary" />
+             </div>
           </div>
         </div>
       </div>
@@ -183,12 +183,12 @@ export const ProfileV2 = () => {
               </h3>
               <p className="text-gray-500 text-xs font-medium">Invite friends to join the delivery partner fleet.</p>
             </div>
-            <button
-              onClick={handleShareReferral}
-              className="shrink-0 bg-black text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest shadow-md"
-            >
-              Share
-            </button>
+             <button
+               onClick={handleShareReferral}
+               className="shrink-0 bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest shadow-md hover:bg-primary-hover transition-colors"
+             >
+               Share
+             </button>
           </div>
 
           {/* Support Section */}
@@ -207,18 +207,18 @@ export const ProfileV2 = () => {
           </div>
 
           {/* Test Notification (Debug) */}
-          <div className="pt-0">
-            <div
-              onClick={handleTestNotification}
-              className="bg-white rounded-xl p-4 flex items-center justify-between cursor-pointer border border-blue-50 hover:bg-blue-50/30 active:bg-blue-50 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <Bell className={`w-5 h-5 text-blue-500 ${isTestingNotification ? "animate-pulse" : ""}`} />
-                <span className="text-sm font-bold text-gray-900">{isTestingNotification ? "Sending test..." : "Test Notification"}</span>
-              </div>
-              <ArrowRight className="w-5 h-5 text-blue-200" />
-            </div>
-          </div>
+           <div className="pt-0">
+             <div
+               onClick={handleTestNotification}
+               className="bg-white rounded-xl p-4 flex items-center justify-between cursor-pointer border border-primary/10 hover:bg-primary/5 active:bg-primary/10 transition-colors"
+             >
+               <div className="flex items-center gap-3">
+                 <Bell className={`w-5 h-5 text-primary ${isTestingNotification ? "animate-pulse" : ""}`} />
+                 <span className="text-sm font-bold text-gray-900">{isTestingNotification ? "Sending test..." : "Test Notification"}</span>
+               </div>
+               <ArrowRight className="w-5 h-5 text-primary/30" />
+             </div>
+           </div>
 
           {/* Delete Account */}
           <div className="pt-0">
