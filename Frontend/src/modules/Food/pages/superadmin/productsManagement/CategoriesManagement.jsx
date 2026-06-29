@@ -61,6 +61,21 @@ export default function CategoriesManagement() {
 
   // Confirmation Handlers
   const handleConfirmDuplicate = (category, options) => {
+    try {
+      const stored = localStorage.getItem("pvp_categories");
+      const list = stored ? JSON.parse(stored) : [];
+      const newCat = {
+        ...category,
+        id: `CAT-${Math.floor(Math.random() * 900) + 100}`,
+        name: `${category.name} (Copy)`,
+        slug: `${category.slug}-copy`,
+        lastUpdated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      };
+      list.push(newCat);
+      localStorage.setItem("pvp_categories", JSON.stringify(list));
+      window.dispatchEvent(new Event("pvp_categories_changed"));
+    } catch (e) {}
+
     triggerAlert(`Category "${category.name}" replicated successfully!`, "success");
     setStats((prev) => ({
       ...prev,
@@ -71,6 +86,14 @@ export default function CategoriesManagement() {
   };
 
   const handleConfirmDelete = (category) => {
+    try {
+      const stored = localStorage.getItem("pvp_categories");
+      let list = stored ? JSON.parse(stored) : [];
+      list = list.filter(c => c.id !== category.id);
+      localStorage.setItem("pvp_categories", JSON.stringify(list));
+      window.dispatchEvent(new Event("pvp_categories_changed"));
+    } catch (e) {}
+
     triggerAlert(`Category "${category.name}" soft-deleted from catalog.`, "error");
     setStats((prev) => ({
       ...prev,
@@ -83,19 +106,33 @@ export default function CategoriesManagement() {
   };
 
   const handleSaveCategory = (formData, mode) => {
-    if (mode === "add") {
-      triggerAlert(`Category "${formData.name}" added successfully!`, "success");
-      setStats((prev) => ({
-        ...prev,
-        totalCategories: prev.totalCategories + 1,
-        activeCategories: formData.status === "Active" ? prev.activeCategories + 1 : prev.activeCategories,
-        inactiveCategories: formData.status === "Inactive" ? prev.inactiveCategories + 1 : prev.inactiveCategories,
-        visibleCategories: formData.isVisible ? prev.visibleCategories + 1 : prev.visibleCategories,
-        hiddenCategories: !formData.isVisible ? prev.hiddenCategories + 1 : prev.hiddenCategories
-      }));
-    } else if (mode === "edit") {
-      triggerAlert(`Category configurations updated for "${formData.name}".`, "success");
-    }
+    try {
+      const stored = localStorage.getItem("pvp_categories");
+      let list = stored ? JSON.parse(stored) : [];
+      if (mode === "add") {
+        const newCat = {
+          ...formData,
+          id: formData.id || `CAT-${Math.floor(Math.random() * 900) + 100}`,
+          productsCount: 0,
+          lastUpdated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+        };
+        list.push(newCat);
+        triggerAlert(`Category "${formData.name}" added successfully!`, "success");
+        setStats((prev) => ({
+          ...prev,
+          totalCategories: prev.totalCategories + 1,
+          activeCategories: formData.status === "Active" ? prev.activeCategories + 1 : prev.activeCategories,
+          inactiveCategories: formData.status === "Inactive" ? prev.inactiveCategories + 1 : prev.inactiveCategories,
+          visibleCategories: formData.isVisible ? prev.visibleCategories + 1 : prev.visibleCategories,
+          hiddenCategories: !formData.isVisible ? prev.hiddenCategories + 1 : prev.hiddenCategories
+        }));
+      } else if (mode === "edit") {
+        list = list.map(c => c.id === formData.id ? { ...c, ...formData, lastUpdated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) } : c);
+        triggerAlert(`Category configurations updated for "${formData.name}".`, "success");
+      }
+      localStorage.setItem("pvp_categories", JSON.stringify(list));
+      window.dispatchEvent(new Event("pvp_categories_changed"));
+    } catch (e) {}
   };
 
   // Bulk actions operations

@@ -76,6 +76,13 @@ export default function ProductsManagement() {
   };
 
   const handleConfirmArchive = (product) => {
+    try {
+      const stored = localStorage.getItem("pvp_products");
+      let list = stored ? JSON.parse(stored) : [];
+      list = list.map(p => p.id === product.id ? { ...p, status: "Archived" } : p);
+      localStorage.setItem("pvp_products", JSON.stringify(list));
+      window.dispatchEvent(new Event("pvp_products_changed"));
+    } catch (e) {}
     // Update local stats and status
     triggerAlert(`Product "${product.name}" has been successfully archived.`, "warning");
     setStats((prev) => ({
@@ -86,6 +93,13 @@ export default function ProductsManagement() {
   };
 
   const handleConfirmDelete = (product) => {
+    try {
+      const stored = localStorage.getItem("pvp_products");
+      let list = stored ? JSON.parse(stored) : [];
+      list = list.filter(p => p.id !== product.id);
+      localStorage.setItem("pvp_products", JSON.stringify(list));
+      window.dispatchEvent(new Event("pvp_products_changed"));
+    } catch (e) {}
     triggerAlert(`Product "${product.name}" (SKU: ${product.id}) soft-deleted successfully.`, "error");
     setStats((prev) => ({
       ...prev,
@@ -97,26 +111,32 @@ export default function ProductsManagement() {
   };
 
   const handleSaveProduct = (formData, mode) => {
-    if (mode === "add") {
-      triggerAlert(`New product "${formData.name}" added to catalog successfully!`, "success");
-      setStats((prev) => ({
-        ...prev,
-        totalProducts: prev.totalProducts + 1,
-        activeProducts: formData.status === "Active" ? prev.activeProducts + 1 : prev.activeProducts,
-        draftProducts: formData.status === "Draft" ? prev.draftProducts + 1 : prev.draftProducts,
-        addedThisMonth: prev.addedThisMonth + 1
-      }));
-    } else if (mode === "edit") {
-      triggerAlert(`Product configurations updated for "${formData.name}".`, "success");
-    } else if (mode === "clone") {
-      triggerAlert(`Cloned product published as "${formData.name}".`, "success");
-      setStats((prev) => ({
-        ...prev,
-        totalProducts: prev.totalProducts + 1,
-        activeProducts: formData.status === "Active" ? prev.activeProducts + 1 : prev.activeProducts,
-        draftProducts: formData.status === "Draft" ? prev.draftProducts + 1 : prev.draftProducts
-      }));
-    }
+    try {
+      const stored = localStorage.getItem("pvp_products");
+      let list = stored ? JSON.parse(stored) : [];
+      if (mode === "add" || mode === "clone") {
+        const newProd = {
+          ...formData,
+          id: formData.id || `PP-V-${Math.floor(Math.random() * 900) + 100}`,
+          lastUpdated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          createdBy: "Admin Shubh"
+        };
+        list.push(newProd);
+        triggerAlert(`New product "${formData.name}" added to catalog successfully!`, "success");
+        setStats((prev) => ({
+          ...prev,
+          totalProducts: prev.totalProducts + 1,
+          activeProducts: formData.status === "Active" ? prev.activeProducts + 1 : prev.activeProducts,
+          draftProducts: formData.status === "Draft" ? prev.draftProducts + 1 : prev.draftProducts,
+          addedThisMonth: prev.addedThisMonth + 1
+        }));
+      } else if (mode === "edit") {
+        list = list.map(p => p.id === formData.id ? { ...p, ...formData, lastUpdated: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) } : p);
+        triggerAlert(`Product configurations updated for "${formData.name}".`, "success");
+      }
+      localStorage.setItem("pvp_products", JSON.stringify(list));
+      window.dispatchEvent(new Event("pvp_products_changed"));
+    } catch (e) {}
   };
 
   // Bulk operation actions

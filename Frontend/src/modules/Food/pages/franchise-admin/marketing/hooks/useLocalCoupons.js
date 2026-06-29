@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
-import { mockCoupons, mockCouponUsage, mockStores, mockProducts, mockCategories } from "../mockData";
+import { mockCoupons, mockCouponUsage, mockStores, mockProducts, mockCategories } from "../../../mockData";
 
 export function useLocalCoupons() {
   const [loading, setLoading] = useState(false);
@@ -29,12 +29,36 @@ export function useLocalCoupons() {
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
-      setRawCoupons(mockCoupons);
+      const stored = localStorage.getItem("franchise_admin_coupons");
+      if (stored) {
+        try {
+          setRawCoupons(JSON.parse(stored));
+        } catch (_) {
+          setRawCoupons(mockCoupons);
+          localStorage.setItem("franchise_admin_coupons", JSON.stringify(mockCoupons));
+        }
+      } else {
+        setRawCoupons(mockCoupons);
+        localStorage.setItem("franchise_admin_coupons", JSON.stringify(mockCoupons));
+      }
       setRawUsage(mockCouponUsage);
       setLoading(false);
     }, 400);
     return () => clearTimeout(timer);
   }, []);
+
+  // Save to LocalStorage helper
+  const saveToLocalStorage = (updatedList) => {
+    localStorage.setItem("franchise_admin_coupons", JSON.stringify(updatedList));
+    window.dispatchEvent(new Event("franchise_coupons_changed"));
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem("franchise_admin_coupons", JSON.stringify(rawCoupons));
+      window.dispatchEvent(new Event("franchise_coupons_changed"));
+    }
+  }, [rawCoupons, loading]);
 
   // Search Debouncing (300ms)
   useEffect(() => {
@@ -71,7 +95,7 @@ export function useLocalCoupons() {
     const activeCoupons = activeCouponsList.filter(c => c.status === "active").length;
     const expiredCoupons = activeCouponsList.filter(c => c.status === "expired").length;
     const totalUsage = rawUsage.length;
-    
+
     // Revenue Generated Through Coupons: Sum of order amounts for all applied coupon usage records
     const revenueGenerated = rawUsage.reduce((acc, curr) => acc + (curr.orderAmount || 0), 0);
 
@@ -116,13 +140,13 @@ export function useLocalCoupons() {
       if (discountType === "Percentage") typeKey = "percentage";
       if (discountType === "Fixed") typeKey = "fixed";
       if (discountType === "Free Delivery") typeKey = "free-delivery";
-      
+
       result = result.filter(c => c.discountType === typeKey);
     }
 
     // Store Dropdown Filter
     if (storeId !== "All") {
-      result = result.filter(c => 
+      result = result.filter(c =>
         c.storeIds.length === 0 || c.storeIds.includes(storeId)
       );
     }
@@ -312,7 +336,7 @@ export function useLocalCoupons() {
     const totalDiscountGiven = usages.reduce((sum, u) => sum + (u.discountAmount || 0), 0);
     const revenueGenerated = usages.reduce((sum, u) => sum + (u.orderAmount || 0), 0);
     const averageOrderValue = totalUsage > 0 ? Math.round(revenueGenerated / totalUsage) : 0;
-    
+
     // Simulate dynamic Conversion Rate based on usage vs simulated views
     const mockClicks = Math.max(totalUsage * 10 + 20, 50);
     const conversionRate = mockClicks > 0 ? ((totalUsage / mockClicks) * 100).toFixed(1) + "%" : "0.0%";

@@ -29,114 +29,150 @@ const productsList = [
 ];
 
 export default function Addons() {
-  // Main Data States mapped directly to MongoDB collections
-  const [addons, setAddons] = useState([
-    {
-      _id: "add_001",
-      name: "Tandoori Paneer Tikka",
-      type: "topping",
-      price: 60,
-      category: "Pizza",
-      isVeg: true,
-      isVegan: false,
-      maxQuantity: 3,
-      defaultQuantity: 0,
-      status: "active",
-      image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=100&q=80",
-      description: "Spiced paneer chunks grilled in a traditional clay oven.",
-      createdAt: "2026-06-01T10:00:00Z",
-      updatedAt: "2026-06-14T16:30:00Z"
-    },
-    {
-      _id: "add_002",
-      name: "Extra Cheese Burst",
-      type: "extra cheese",
-      price: 90,
-      category: "Pizza",
-      isVeg: true,
-      isVegan: false,
-      maxQuantity: 2,
-      defaultQuantity: 0,
-      status: "active",
-      image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=100&q=80",
-      description: "Liquid Cheddar cheese burst filling directly inside the crust.",
-      createdAt: "2026-06-02T10:00:00Z",
-      updatedAt: "2026-06-15T12:00:00Z"
-    },
-    {
-      _id: "add_003",
-      name: "Spicy Garlic Mayo Dip",
-      type: "dip",
-      price: 25,
-      category: "Garlic Bread",
-      isVeg: true,
-      isVegan: true,
-      maxQuantity: 4,
-      defaultQuantity: 0,
-      status: "active",
-      image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=100&q=80",
-      description: "Rich vegan mayonnaise infused with fresh roasted garlic and chili.",
-      createdAt: "2026-06-03T10:00:00Z",
-      updatedAt: "2026-06-12T14:15:00Z"
-    },
-    {
-      _id: "add_004",
-      name: "Hari Mirch & Capsicum Crunch",
-      type: "topping",
-      price: 45,
-      category: "Pizza",
-      isVeg: true,
-      isVegan: true,
-      maxQuantity: 3,
-      defaultQuantity: 0,
-      status: "active",
-      image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?fm=webp&fit=crop&w=100&q=80",
-      description: "Hottest green chilies paired with crunchy green bell pepper strips.",
-      createdAt: "2026-06-04T10:00:00Z",
-      updatedAt: "2026-06-13T10:20:00Z"
-    },
-    {
-      _id: "add_005",
-      name: "Tandoori Gravy Dip",
-      type: "dip",
-      price: 35,
-      category: "Garlic Bread",
-      isVeg: true,
-      isVegan: false,
-      maxQuantity: 4,
-      defaultQuantity: 0,
-      status: "inactive",
-      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?fm=webp&fit=crop&w=100&q=80",
-      description: "Premium smoked gravy dipping sauce made with traditional spices.",
-      createdAt: "2026-06-05T10:00:00Z",
-      updatedAt: "2026-06-10T11:00:00Z"
-    },
-    {
-      _id: "add_006",
-      name: "Spicy Grilled Mushrooms",
-      type: "topping",
-      price: 55,
-      category: "Pizza",
-      isVeg: true,
-      isVegan: true,
-      maxQuantity: 3,
-      defaultQuantity: 0,
-      status: "active",
-      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?fm=webp&fit=crop&w=100&q=80",
-      description: "Button mushrooms sautéed in spicy Indian herbs.",
-      createdAt: "2026-06-06T10:00:00Z",
-      updatedAt: "2026-06-16T15:10:00Z"
+  const getStoredAddons = () => {
+    const data = localStorage.getItem("pvp_addons");
+    const defaultAddons = [
+      {
+        _id: "add_001",
+        name: "Tandoori Paneer Tikka",
+        type: "topping",
+        price: 60,
+        category: "Pizza",
+        isVeg: true,
+        isVegan: false,
+        maxQuantity: 3,
+        defaultQuantity: 0,
+        status: "active",
+        image: "https://images.unsplash.com/photo-1571066811602-71683a3f680d?fm=webp&fit=crop&w=100&q=80",
+        description: "Spiced paneer chunks grilled in a traditional clay oven.",
+        createdAt: "2026-06-01T10:00:00Z",
+        updatedAt: "2026-06-14T16:30:00Z"
+      },
+      {
+        _id: "add_002",
+        name: "Extra Cheese Burst",
+        type: "extra cheese",
+        price: 90,
+        category: "Pizza",
+        isVeg: true,
+        isVegan: false,
+        maxQuantity: 2,
+        defaultQuantity: 0,
+        status: "active",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=100&q=80",
+        description: "Liquid Cheddar cheese burst filling directly inside the crust.",
+        createdAt: "2026-06-02T10:00:00Z",
+        updatedAt: "2026-06-15T12:00:00Z"
+      },
+      {
+        _id: "add_003",
+        name: "Spicy Garlic Mayo Dip",
+        type: "dip",
+        price: 25,
+        category: "Garlic Bread",
+        isVeg: true,
+        isVegan: true,
+        maxQuantity: 4,
+        defaultQuantity: 0,
+        status: "active",
+        image: "https://images.unsplash.com/photo-1544982503-9f984c14501a?fm=webp&fit=crop&w=100&q=80",
+        description: "Rich vegan mayonnaise infused with fresh roasted garlic and chili.",
+        createdAt: "2026-06-03T10:00:00Z",
+        updatedAt: "2026-06-12T14:15:00Z"
+      },
+      {
+        _id: "add_004",
+        name: "Hari Mirch & Capsicum Crunch",
+        type: "topping",
+        price: 45,
+        category: "Pizza",
+        isVeg: true,
+        isVegan: true,
+        maxQuantity: 3,
+        defaultQuantity: 0,
+        status: "active",
+        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?fm=webp&fit=crop&w=100&q=80",
+        description: "Hottest green chilies paired with crunchy green bell pepper strips.",
+        createdAt: "2026-06-04T10:00:00Z",
+        updatedAt: "2026-06-13T10:20:00Z"
+      },
+      {
+        _id: "add_005",
+        name: "Tandoori Gravy Dip",
+        type: "dip",
+        price: 35,
+        category: "Garlic Bread",
+        isVeg: true,
+        isVegan: false,
+        maxQuantity: 4,
+        defaultQuantity: 0,
+        status: "inactive",
+        image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?fm=webp&fit=crop&w=100&q=80",
+        description: "Premium smoked gravy dipping sauce made with traditional spices.",
+        createdAt: "2026-06-05T10:00:00Z",
+        updatedAt: "2026-06-10T11:00:00Z"
+      },
+      {
+        _id: "add_006",
+        name: "Spicy Grilled Mushrooms",
+        type: "topping",
+        price: 55,
+        category: "Pizza",
+        isVeg: true,
+        isVegan: true,
+        maxQuantity: 3,
+        defaultQuantity: 0,
+        status: "active",
+        image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?fm=webp&fit=crop&w=100&q=80",
+        description: "Button mushrooms sautéed in spicy Indian herbs.",
+        createdAt: "2026-06-06T10:00:00Z",
+        updatedAt: "2026-06-16T15:10:00Z"
+      }
+    ];
+    if (!data) {
+      localStorage.setItem("pvp_addons", JSON.stringify(defaultAddons));
+      return defaultAddons;
     }
-  ]);
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      return defaultAddons;
+    }
+  };
 
-  const [productAddons, setProductAddons] = useState([
-    { _id: "pa_1", productId: "PP-V-001", addonId: "add_001", isRequired: false, displayOrder: 1 },
-    { _id: "pa_2", productId: "PP-V-001", addonId: "add_002", isRequired: true, displayOrder: 2 },
-    { _id: "pa_3", productId: "PP-V-003", addonId: "add_001", isRequired: false, displayOrder: 1 },
-    { _id: "pa_4", productId: "PP-V-002", addonId: "add_003", isRequired: false, displayOrder: 1 },
-    { _id: "pa_5", productId: "PP-V-006", addonId: "add_003", isRequired: false, displayOrder: 2 },
-    { _id: "pa_6", productId: "PP-V-006", addonId: "add_005", isRequired: false, displayOrder: 3 }
-  ]);
+  const getStoredProductAddons = () => {
+    const data = localStorage.getItem("pvp_product_addons");
+    const defaultMappings = [
+      { _id: "pa_1", productId: "PP-V-001", addonId: "add_001", isRequired: false, displayOrder: 1 },
+      { _id: "pa_2", productId: "PP-V-001", addonId: "add_002", isRequired: true, displayOrder: 2 },
+      { _id: "pa_3", productId: "PP-V-003", addonId: "add_001", isRequired: false, displayOrder: 1 },
+      { _id: "pa_4", productId: "PP-V-002", addonId: "add_003", isRequired: false, displayOrder: 1 },
+      { _id: "pa_5", productId: "PP-V-006", addonId: "add_003", isRequired: false, displayOrder: 2 },
+      { _id: "pa_6", productId: "PP-V-006", addonId: "add_005", isRequired: false, displayOrder: 3 }
+    ];
+    if (!data) {
+      localStorage.setItem("pvp_product_addons", JSON.stringify(defaultMappings));
+      return defaultMappings;
+    }
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      return defaultMappings;
+    }
+  };
+
+  const [addons, setAddons] = useState(getStoredAddons);
+  const [productAddons, setProductAddons] = useState(getStoredProductAddons);
+
+  useEffect(() => {
+    localStorage.setItem("pvp_addons", JSON.stringify(addons));
+    window.dispatchEvent(new Event("pvp_addons_changed"));
+  }, [addons]);
+
+  useEffect(() => {
+    localStorage.setItem("pvp_product_addons", JSON.stringify(productAddons));
+    window.dispatchEvent(new Event("pvp_product_addons_changed"));
+  }, [productAddons]);
 
   // UI Control States
   const [searchTerm, setSearchTerm] = useState("");

@@ -93,6 +93,162 @@ export default function Home() {
   const isDealsInView = useInView(dealsRef, { once: false, amount: 0.05 })
   const [activeDeal, setActiveDeal] = useState(null)
 
+  // Dynamic Banners State
+  const [banners, setBanners] = useState(() => {
+    try {
+      const local = localStorage.getItem("franchise_admin_banners")
+      if (local) {
+        const parsed = JSON.parse(local).filter(b => b.status === "active")
+        if (parsed.length > 0) return parsed
+      }
+    } catch (e) {}
+
+    try {
+      const superadmin = localStorage.getItem("pvp_banners")
+      if (superadmin) {
+        const parsed = JSON.parse(superadmin).filter(b => b.isActive)
+        if (parsed.length > 0) return parsed
+      }
+    } catch (e) {}
+
+    return [
+      {
+        _id: "ban-01",
+        title: "Paneer Volcano",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCAJ1H7kfpIOVMST01cGdHOPK9zctqfPYuepo56-9Xt8VrjDotL945EWt6kVO8vNRM6ZK05zTPtpbInlC7BZrM6lBerNPa7UpA5DOzn1haf6-X4-TAanChNFzPI_Z6swWdt8jQnNq15ghwIv45L3x3XQnOvikSqpnRcI0TTf4czhHBPzZ-TfCC56kA2jx9m7t4XshJq08a_j1JyJAAyLP-ZS-8LGBejGgSyxcu3_N-t3KtKJjAOXBRaK9jKvwOU8KYa0JFB0wV1eQk2",
+        subtitle: "New Arrival",
+        bannerType: "Homepage Banner"
+      },
+      {
+        _id: "ban-02",
+        title: "BOGO: Double Joy",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhuBxF93NgpKNex48f17LImalRGfdBdZZqdLlNVab_K797rBPt0Qh41WKGhgBUY6BX_bguMlz7KB3zhPf89Rb5oW64QUft3d_e82SxwKnTaFUsozTWPHo6vjRJCZN72RrObT3u1FDquXmxIKDfadJDBh5XbyhXZ_DIZSk9oFll3KyAH08_2eo65-hOmzFFodulfl8DgB-vAiO7mZrjtsLHVOxzjYiVoALoG-MuCzQKaQPFXhiXSdpE_9bap7jwEFN7pqFbEtDXGEui",
+        subtitle: "Limited Offer",
+        bannerType: "Homepage Banner"
+      }
+    ]
+  })
+
+  // Dynamic Deals State
+  const [deals, setDeals] = useState(() => {
+    try {
+      const local = localStorage.getItem("franchise_admin_coupons")
+      if (local) {
+        const parsed = JSON.parse(local).filter(c => c.status === "active")
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            id: c._id,
+            badge: c.discountType === "percentage" ? "Save" : "Flat",
+            title: c.couponCode,
+            description: c.title
+          }))
+        }
+      }
+    } catch (e) {}
+
+    try {
+      const superadmin = localStorage.getItem("pvp_coupons")
+      if (superadmin) {
+        const parsed = JSON.parse(superadmin).filter(c => c.status === "active")
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            id: c._id,
+            badge: c.couponType === "Percentage" ? "Save" : "Flat",
+            title: c.code,
+            description: c.title
+          }))
+        }
+      }
+    } catch (e) {}
+
+    return DEALS
+  })
+
+  // Dynamic Order Methods State
+  const [orderMethods, setOrderMethods] = useState(() => {
+    const defaultMethods = [
+      { id: "delivery", label: "Delivery", icon: "moped", enabled: true },
+      { id: "takeaway", label: "Takeaway", icon: "store", enabled: true },
+      { id: "incar", label: "In-Car", icon: "directions_car", enabled: true },
+      { id: "train", label: "Delivery on Train", icon: "train", enabled: true }
+    ];
+    try {
+      const stored = localStorage.getItem("pvp_order_methods");
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {}
+    return defaultMethods;
+  });
+
+  // Dynamic Logo State
+  const [logoUrl, setLogoUrl] = useState(() => localStorage.getItem("sa_logo") || logoNew)
+
+  // Dynamic Categories State
+  const [categories, setCategories] = useState(() => {
+    const defaultCats = [
+      { id: "pizza", label: "Pizza", icon: "local_pizza" },
+      { id: "burger", label: "Burger", icon: "lunch_dining" },
+      { id: "bread", label: "Bread", icon: "bakery_dining" },
+      { id: "pasta", label: "Pasta", icon: "dinner_dining" },
+      { id: "desserts", label: "Desserts", icon: "icecream" },
+      { id: "drinks", label: "Drinks", icon: "local_drink" }
+    ];
+    try {
+      const stored = localStorage.getItem("pvp_categories");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.length > 0) {
+          return parsed.filter(c => c.status === "Active").map(c => {
+            const lower = c.name.toLowerCase();
+            let icon = "local_pizza";
+            if (lower.includes("burger")) icon = "lunch_dining";
+            else if (lower.includes("bread") || lower.includes("side")) icon = "bakery_dining";
+            else if (lower.includes("pasta")) icon = "dinner_dining";
+            else if (lower.includes("dessert") || lower.includes("sweet")) icon = "icecream";
+            else if (lower.includes("drink") || lower.includes("beverage")) icon = "local_drink";
+            return {
+              id: c.slug || c.name.toLowerCase().replace(/\s+/g, "-"),
+              label: c.name,
+              icon
+            };
+          });
+        }
+      }
+    } catch (e) {}
+    return defaultCats;
+  });
+
+  // Dynamic Products State
+  const [products, setProducts] = useState(() => {
+    const defaultProds = PRODUCTS;
+    try {
+      const stored = localStorage.getItem("pvp_products");
+      if (stored) {
+        const parsed = JSON.parse(stored).filter(p => p.status === "Active");
+        if (parsed.length > 0) {
+          const mapped = parsed.map(p => ({
+            id: p.id || `prod-${p.name.toLowerCase().replace(/\s+/g, "-")}`,
+            title: p.name,
+            price: typeof p.price === 'string' ? parseInt(p.price.replace(/[^\d]/g, ""), 10) || 299 : p.price || 299,
+            rating: p.rating || 4.5,
+            description: p.description || `${p.name} prepared fresh with premium toppings.`,
+            image: p.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80",
+            category: p.category
+          }));
+          const merged = [...defaultProds];
+          mapped.forEach(mp => {
+            if (!merged.some(dp => dp.title.toLowerCase() === mp.title.toLowerCase())) {
+              merged.push(mp);
+            }
+          });
+          return merged;
+        }
+      }
+    } catch (e) {}
+    return defaultProds;
+  });
+
   // App States
   const [userName, setUserName] = useState(() => {
     try {
@@ -251,9 +407,161 @@ export default function Home() {
   // Auto-play Slide loop
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % 2)
+      setActiveSlide((prev) => (prev + 1) % (banners.length || 1))
     }, 5000)
     return () => clearInterval(interval)
+  }, [banners])
+
+  // Sync States dynamically from events/localStorage updates
+  useEffect(() => {
+    const handleBannersSync = () => {
+      let list = []
+      try {
+        const local = localStorage.getItem("franchise_admin_banners")
+        if (local) {
+          list = JSON.parse(local).filter(b => b.status === "active")
+        }
+      } catch (e) {}
+
+      if (list.length === 0) {
+        try {
+          const superadmin = localStorage.getItem("pvp_banners")
+          if (superadmin) {
+            list = JSON.parse(superadmin).filter(b => b.isActive)
+          }
+        } catch (e) {}
+      }
+
+      if (list.length > 0) {
+        setBanners(list)
+      }
+    }
+
+    const handleDealsSync = () => {
+      let list = []
+      try {
+        const local = localStorage.getItem("franchise_admin_coupons")
+        if (local) {
+          const parsed = JSON.parse(local).filter(c => c.status === "active")
+          if (parsed.length > 0) {
+            list = parsed.map(c => ({
+              id: c._id,
+              badge: c.discountType === "percentage" ? "Save" : "Flat",
+              title: c.couponCode,
+              description: c.title
+            }))
+          }
+        }
+      } catch (e) {}
+
+      if (list.length === 0) {
+        try {
+          const superadmin = localStorage.getItem("pvp_coupons")
+          if (superadmin) {
+            const parsed = JSON.parse(superadmin).filter(c => c.status === "active")
+            if (parsed.length > 0) {
+              list = parsed.map(c => ({
+                id: c._id,
+                badge: c.couponType === "Percentage" ? "Save" : "Flat",
+                title: c.code,
+                description: c.title
+              }))
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (list.length > 0) {
+        setDeals(list)
+      }
+    }
+
+    const handleOrderMethodsSync = () => {
+      try {
+        const stored = localStorage.getItem("pvp_order_methods")
+        if (stored) {
+          setOrderMethods(JSON.parse(stored))
+        }
+      } catch (e) {}
+    }
+
+    const handleBrandingSync = () => {
+      setLogoUrl(localStorage.getItem("sa_logo") || logoNew)
+    }
+
+    const handleCategoriesSync = () => {
+      try {
+        const stored = localStorage.getItem("pvp_categories")
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          if (parsed.length > 0) {
+            setCategories(parsed.filter(c => c.status === "Active").map(c => {
+              const lower = c.name.toLowerCase();
+              let icon = "local_pizza";
+              if (lower.includes("burger")) icon = "lunch_dining";
+              else if (lower.includes("bread") || lower.includes("side")) icon = "bakery_dining";
+              else if (lower.includes("pasta")) icon = "dinner_dining";
+              else if (lower.includes("dessert") || lower.includes("sweet")) icon = "icecream";
+              else if (lower.includes("drink") || lower.includes("beverage")) icon = "local_drink";
+              return {
+                id: c.slug || c.name.toLowerCase().replace(/\s+/g, "-"),
+                label: c.name,
+                icon
+              };
+            }))
+          }
+        }
+      } catch (e) {}
+    }
+
+    const handleProductsSync = () => {
+      try {
+        const stored = localStorage.getItem("pvp_products")
+        if (stored) {
+          const parsed = JSON.parse(stored).filter(p => p.status === "Active")
+          if (parsed.length > 0) {
+            const mapped = parsed.map(p => ({
+              id: p.id || `prod-${p.name.toLowerCase().replace(/\s+/g, "-")}`,
+              title: p.name,
+              price: typeof p.price === 'string' ? parseInt(p.price.replace(/[^\d]/g, ""), 10) || 299 : p.price || 299,
+              rating: p.rating || 4.5,
+              description: p.description || `${p.name} prepared fresh with premium toppings.`,
+              image: p.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80",
+              category: p.category
+            }))
+            const merged = [...PRODUCTS]
+            mapped.forEach(mp => {
+              if (!merged.some(dp => dp.title.toLowerCase() === mp.title.toLowerCase())) {
+                merged.push(mp)
+              }
+            })
+            setProducts(merged)
+          }
+        }
+      } catch (e) {}
+    }
+
+    window.addEventListener("franchise_banners_changed", handleBannersSync)
+    window.addEventListener("pvp_banners_changed", handleBannersSync)
+    window.addEventListener("franchise_coupons_changed", handleDealsSync)
+    window.addEventListener("pvp_coupons_changed", handleDealsSync)
+    window.addEventListener("pvp_order_methods_changed", handleOrderMethodsSync)
+    window.addEventListener("systemThemeChanged", handleOrderMethodsSync)
+    window.addEventListener("systemThemeChanged", handleBrandingSync)
+    window.addEventListener("pvp_categories_changed", handleCategoriesSync)
+    window.addEventListener("pvp_products_changed", handleProductsSync)
+
+    return () => {
+      window.removeEventListener("franchise_banners_changed", handleBannersSync)
+      window.removeEventListener("pvp_banners_changed", handleBannersSync)
+      window.removeEventListener("franchise_coupons_changed", handleDealsSync)
+      window.removeEventListener("pvp_coupons_changed", handleDealsSync)
+      window.removeEventListener("pvp_order_methods_changed", handleOrderMethodsSync)
+      window.removeEventListener("systemThemeChanged", handleOrderMethodsSync)
+      window.removeEventListener("systemThemeChanged", handleBrandingSync)
+      window.removeEventListener("pvp_categories_changed", handleCategoriesSync)
+      window.removeEventListener("pvp_products_changed", handleProductsSync)
+    }
   }, [])
 
   // Handle active states
@@ -513,7 +821,7 @@ export default function Home() {
           <div className="w-10"></div>
           <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center">
             <img
-              src={logoNew}
+              src={logoUrl}
               alt="Papa Veg Pizza Logo"
               className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
@@ -540,27 +848,21 @@ export default function Home() {
             className="relative h-[190px] mx-5 overflow-hidden rounded-2xl shadow-lg border border-black/5 dark:border-white/5"
           >
             <div className="carousel-track flex h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
-              {/* Slide 1: Paneer Volcano */}
-              <div className="min-w-full h-full relative group">
-                <img className="w-full h-full object-cover" alt="A macro close-up of a Paneer Volcano pizza" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAJ1H7kfpIOVMST01cGdHOPK9zctqfPYuepo56-9Xt8VrjDotL945EWt6kVO8vNRM6ZK05zTPtpbInlC7BZrM6lBerNPa7UpA5DOzn1haf6-X4-TAanChNFzPI_Z6swWdt8jQnNq15ghwIv45L3x3XQnOvikSqpnRcI0TTf4czhHBPzZ-TfCC56kA2jx9m7t4XshJq08a_j1JyJAAyLP-ZS-8LGBejGgSyxcu3_N-t3KtKJjAOXBRaK9jKvwOU8KYa0JFB0wV1eQk2" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-margin-mobile">
-                  <span className="text-secondary font-label-sm uppercase tracking-widest mb-1">New Arrival</span>
-                  <h2 className="font-headline-lg-mobile text-white text-xl">Paneer Volcano</h2>
+              {banners.map((b) => (
+                <div key={b._id} className="min-w-full h-full relative group">
+                  <img className="w-full h-full object-cover" alt={b.title} src={b.image || b.bannerUrl} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-margin-mobile">
+                    <span className="text-secondary font-label-sm uppercase tracking-widest mb-1">{b.subtitle || b.bannerType || "Offer"}</span>
+                    <h2 className="font-headline-lg-mobile text-white text-xl">{b.title}</h2>
+                  </div>
                 </div>
-              </div>
-              {/* Slide 2: BOGO */}
-              <div className="min-w-full h-full relative group">
-                <img className="w-full h-full object-cover" alt="Two premium pizzas side-by-side" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhuBxF93NgpKNex48f17LImalRGfdBdZZqdLlNVab_K797rBPt0Qh41WKGhgBUY6BX_bguMlz7KB3zhPf89Rb5oW64QUft3d_e82SxwKnTaFUsozTWPHo6vjRJCZN72RrObT3u1FDquXmxIKDfadJDBh5XbyhXZ_DIZSk9oFll3KyAH08_2eo65-hOmzFFodulfl8DgB-vAiO7mZrjtsLHVOxzjYiVoALoG-MuCzQKaQPFXhiXSdpE_9bap7jwEFN7pqFbEtDXGEui" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-margin-mobile">
-                  <span className="text-primary font-label-sm uppercase tracking-widest mb-1">Limited Offer</span>
-                  <h2 className="font-headline-lg-mobile text-white text-xl">BOGO: Double Joy</h2>
-                </div>
-              </div>
+              ))}
             </div>
             {/* Indicators */}
             <div className="absolute bottom-4 right-margin-mobile flex gap-2">
-              <div className={`h-1 rounded-full transition-all duration-300 ${activeSlide === 0 ? "w-8 bg-primary" : "w-2 bg-white/30"}`}></div>
-              <div className={`h-1 rounded-full transition-all duration-300 ${activeSlide === 1 ? "w-8 bg-primary" : "w-2 bg-white/30"}`}></div>
+              {banners.map((_, i) => (
+                <div key={i} className={`h-1 rounded-full transition-all duration-300 ${activeSlide === i ? "w-8 bg-primary" : "w-2 bg-white/30"}`}></div>
+              ))}
             </div>
           </motion.section>
 
@@ -592,12 +894,7 @@ export default function Home() {
 
           {/* Delivery/Takeaway Toggle */}
           <section ref={cardsRef} className="px-margin-mobile grid grid-cols-2 gap-4">
-            {[
-              { id: "delivery", label: "Delivery", icon: "moped" },
-              { id: "takeaway", label: "Takeaway", icon: "store" },
-              { id: "incar", label: "In-Car", icon: "directions_car" },
-              { id: "train", label: "Delivery on Train", icon: "train" }
-            ].map((service, index) => {
+            {orderMethods.filter(m => m.enabled).map((service, index) => {
               const isSelected = activeService === service.id
               return (
                 <motion.div
@@ -664,7 +961,7 @@ export default function Home() {
               </button>
             </motion.div>
             <div ref={dealsRef} className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin-mobile pb-2">
-              {DEALS.map((deal, index) => {
+              {deals.map((deal, index) => {
                 const badgeColorClass =
                   deal.badge === "Bestseller"
                     ? "bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20"
@@ -737,14 +1034,7 @@ export default function Home() {
               </button>
             </motion.div>
             <div className="flex overflow-x-auto hide-scrollbar gap-sm px-margin-mobile pb-2">
-              {[
-                { id: "pizza", label: "Pizza", icon: "local_pizza" },
-                { id: "burger", label: "Burger", icon: "lunch_dining" },
-                { id: "bread", label: "Bread", icon: "bakery_dining" },
-                { id: "pasta", label: "Pasta", icon: "dinner_dining" },
-                { id: "desserts", label: "Desserts", icon: "icecream" },
-                { id: "drinks", label: "Drinks", icon: "local_drink" }
-              ].map((cat, index) => {
+              {categories.map((cat, index) => {
                 const isSelected = activeCategory === cat.id
                 const isLeft = index % 2 === 0
                 return (
@@ -789,7 +1079,7 @@ export default function Home() {
               <h3 className={`font-headline-lg-mobile ${isDarkMode ? "text-white" : "text-[#131313]"}`}>Most Loved</h3>
             </motion.div>
             <div className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin-mobile pb-4">
-              {PRODUCTS.map((product, index) => {
+              {products.map((product, index) => {
                 const isFav = favorites.includes(product.id)
                 const isLeft = index % 2 === 0
                 return (

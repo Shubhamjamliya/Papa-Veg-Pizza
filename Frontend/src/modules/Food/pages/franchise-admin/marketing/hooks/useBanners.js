@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import apiClient from "@food/api/axios";
 import { adminAPI } from "@food/api";
-import { mockBanners, mockStores, mockProducts, mockCategories, mockCoupons, mockCampaigns } from "../mockData";
+import { mockBanners, mockStores, mockProducts, mockCategories, mockCoupons, mockCampaigns } from "../../../mockData";
 
 const LOCAL_STORAGE_KEY_BANNERS = "franchise_admin_banners";
 
 export function useBanners() {
   const [loading, setLoading] = useState(false);
   const [rawBanners, setRawBanners] = useState([]);
-  
+
   // Dynamic Option lists
   const [stores, setStores] = useState([]);
   const [loadingStores, setLoadingStores] = useState(false);
@@ -121,7 +121,7 @@ export function useBanners() {
     return bannersList.map(b => {
       const start = new Date(b.startDate);
       const end = new Date(b.endDate);
-      
+
       let computedStatus = b.status;
       if (end < now) {
         computedStatus = "expired";
@@ -167,8 +167,8 @@ export function useBanners() {
 
     if (debouncedSearch.trim()) {
       const q = debouncedSearch.toLowerCase().trim();
-      result = result.filter(b => 
-        b.title?.toLowerCase().includes(q) || 
+      result = result.filter(b =>
+        b.title?.toLowerCase().includes(q) ||
         b.subtitle?.toLowerCase().includes(q)
       );
     }
@@ -182,9 +182,9 @@ export function useBanners() {
     }
 
     if (storeIdFilter !== "All" && storeIdFilter) {
-      result = result.filter(b => 
-        !b.stores || 
-        b.stores.length === 0 || 
+      result = result.filter(b =>
+        !b.stores ||
+        b.stores.length === 0 ||
         b.stores.includes(storeIdFilter)
       );
     }
@@ -230,6 +230,7 @@ export function useBanners() {
   // Save to LocalStorage helper
   const saveToLocalStorage = (updatedList) => {
     localStorage.setItem(LOCAL_STORAGE_KEY_BANNERS, JSON.stringify(updatedList));
+    window.dispatchEvent(new Event("franchise_banners_changed"));
   };
 
   // Operations

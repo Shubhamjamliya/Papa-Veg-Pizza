@@ -164,7 +164,200 @@ export default function MenuList() {
     const savedTheme = localStorage.getItem("appTheme")
     return savedTheme ? savedTheme === "dark" : true
   })
-  const [activeTab, setActiveTab] = useState("pizzas")
+
+  // Dynamic Logo State
+  const [logoUrl, setLogoUrl] = useState(() => localStorage.getItem("sa_logo") || logoNew);
+  useEffect(() => {
+    const handleBrandingSync = () => {
+      setLogoUrl(localStorage.getItem("sa_logo") || logoNew);
+    };
+    window.addEventListener("systemThemeChanged", handleBrandingSync);
+    return () => window.removeEventListener("systemThemeChanged", handleBrandingSync);
+  }, []);
+
+  // Dynamic Categories State
+  const [categories, setCategories] = useState(() => {
+    const defaultCats = [
+      { id: "pizzas", label: "Pizzas" },
+      { id: "burgers", label: "Burgers" },
+      { id: "breads", label: "Breads" },
+      { id: "pasta", label: "Pasta" },
+      { id: "desserts", label: "Desserts" },
+      { id: "drinks", label: "Drinks" }
+    ];
+    try {
+      const stored = localStorage.getItem("pvp_categories");
+      if (stored) {
+        const parsed = JSON.parse(stored).filter(c => c.status === "Active");
+        if (parsed.length > 0) {
+          return parsed.map(c => ({
+            id: c.slug || c.name.toLowerCase().replace(/\s+/g, "-"),
+            label: c.name
+          }));
+        }
+      }
+    } catch (e) {}
+    return defaultCats;
+  });
+
+  useEffect(() => {
+    const handleCategoriesSync = () => {
+      try {
+        const stored = localStorage.getItem("pvp_categories");
+        if (stored) {
+          const parsed = JSON.parse(stored).filter(c => c.status === "Active");
+          if (parsed.length > 0) {
+            setCategories(parsed.map(c => ({
+              id: c.slug || c.name.toLowerCase().replace(/\s+/g, "-"),
+              label: c.name
+            })));
+          }
+        }
+      } catch (e) {}
+    };
+    window.addEventListener("pvp_categories_changed", handleCategoriesSync);
+    return () => window.removeEventListener("pvp_categories_changed", handleCategoriesSync);
+  }, []);
+
+  // Dynamic Products Map State
+  const [productsMap, setProductsMap] = useState(() => {
+    try {
+      const stored = localStorage.getItem("pvp_products");
+      if (stored) {
+        const parsed = JSON.parse(stored).filter(p => p.status === "Active");
+        if (parsed.length > 0) {
+          const map = {};
+          parsed.forEach(p => {
+            const catKey = p.category ? p.category.toLowerCase().replace(/\s+/g, "-") : "pizzas";
+            if (!map[catKey]) map[catKey] = [];
+            
+            const priceVal = typeof p.price === 'string' ? parseInt(p.price.replace(/[^\d]/g, ""), 10) || 299 : p.price || 299;
+            map[catKey].push({
+              id: p.id || `prod-${p.name.toLowerCase().replace(/\s+/g, "-")}`,
+              title: p.name,
+              price: priceVal,
+              badge: "NEW",
+              image: p.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80",
+              description: p.description || `${p.name} prepared fresh with premium toppings.`,
+              sizes: p.sizes || ["Regular", "Medium", "Large"],
+              rating: p.rating || 4.5,
+              ratingCount: Math.floor(Math.random() * 40) + 5
+            });
+          });
+          return map;
+        }
+      }
+    } catch (e) {}
+    return null;
+  });
+
+  useEffect(() => {
+    const handleProductsSync = () => {
+      try {
+        const stored = localStorage.getItem("pvp_products");
+        if (stored) {
+          const parsed = JSON.parse(stored).filter(p => p.status === "Active");
+          if (parsed.length > 0) {
+            const map = {};
+            parsed.forEach(p => {
+              const catKey = p.category ? p.category.toLowerCase().replace(/\s+/g, "-") : "pizzas";
+              if (!map[catKey]) map[catKey] = [];
+              
+              const priceVal = typeof p.price === 'string' ? parseInt(p.price.replace(/[^\d]/g, ""), 10) || 299 : p.price || 299;
+              map[catKey].push({
+                id: p.id || `prod-${p.name.toLowerCase().replace(/\s+/g, "-")}`,
+                title: p.name,
+                price: priceVal,
+                badge: "NEW",
+                image: p.image || "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80",
+                description: p.description || `${p.name} prepared fresh with premium toppings.`,
+                sizes: p.sizes || ["Regular", "Medium", "Large"],
+                rating: p.rating || 4.5,
+                ratingCount: Math.floor(Math.random() * 40) + 5
+              });
+            });
+            setProductsMap(map);
+          }
+        }
+      } catch (e) {}
+    };
+    window.addEventListener("pvp_products_changed", handleProductsSync);
+    return () => window.removeEventListener("pvp_products_changed", handleProductsSync);
+  }, []);
+
+  // Dynamic Toppings State
+  const [toppings, setToppings] = useState(() => {
+    const defaultToppings = [
+      { name: "Jalapeno", price: 45, badge: "Bestseller" },
+      { name: "Paneer", price: 55, badge: "Protein Rich" },
+      { name: "Capsicum", price: 45 },
+      { name: "Mushroom", price: 45 },
+      { name: "Onion", price: 45 },
+      { name: "Red Paprika", price: 45 },
+      { name: "Red Capsicum", price: 45 },
+      { name: "Sweet Corn", price: 45 },
+      { name: "Tomato", price: 45 }
+    ];
+    try {
+      const stored = localStorage.getItem("pvp_addons");
+      if (stored) {
+        const parsed = JSON.parse(stored).filter(a => a.status === "active" && a.type === "topping");
+        if (parsed.length > 0) {
+          return parsed.map(a => ({
+            name: a.name,
+            price: a.price,
+            badge: a.category === "Pizza" ? "Bestseller" : ""
+          }));
+        }
+      }
+    } catch (e) {}
+    return defaultToppings;
+  });
+
+  useEffect(() => {
+    const handleToppingsSync = () => {
+      try {
+        const stored = localStorage.getItem("pvp_addons");
+        if (stored) {
+          const parsed = JSON.parse(stored).filter(a => a.status === "active" && a.type === "topping");
+          if (parsed.length > 0) {
+            setToppings(parsed.map(a => ({
+              name: a.name,
+              price: a.price,
+              badge: a.category === "Pizza" ? "Bestseller" : ""
+            })));
+          }
+        }
+      } catch (e) {}
+    };
+    window.addEventListener("pvp_addons_changed", handleToppingsSync);
+    return () => window.removeEventListener("pvp_addons_changed", handleToppingsSync);
+  }, []);
+
+  const getMergedMenuItems = () => {
+    const finalMap = { ...MENU_ITEMS };
+    if (productsMap) {
+      Object.keys(productsMap).forEach(key => {
+        const list = finalMap[key] ? [...finalMap[key]] : [];
+        const dynamicList = productsMap[key] || [];
+        dynamicList.forEach(dp => {
+          if (!list.some(lp => lp.title.toLowerCase() === dp.title.toLowerCase())) {
+            list.push(dp);
+          }
+        });
+        finalMap[key] = list;
+      });
+    }
+    return finalMap;
+  };
+  
+  const currentMenuItems = getMergedMenuItems();
+
+  const [activeTab, setActiveTab] = useState(() => {
+    const defaultTab = location.state?.category;
+    if (defaultTab) return defaultTab;
+    return "pizzas";
+  });
   const [isVegetarian, setIsVegetarian] = useState(true)
   const [showServiceSelector, setShowServiceSelector] = useState(false)
   const [showMapModal, setShowMapModal] = useState(false)
@@ -339,15 +532,20 @@ export default function MenuList() {
     })
     
     selectedToppingsList.forEach(opt => {
-      if (opt === "Jalapeno") base += 45
-      if (opt === "Paneer") base += 55
-      if (opt === "Capsicum") base += 45
-      if (opt === "Mushroom") base += 45
-      if (opt === "Onion") base += 45
-      if (opt === "Red Paprika") base += 45
-      if (opt === "Red Capsicum") base += 45
-      if (opt === "Sweet Corn") base += 45
-      if (opt === "Tomato") base += 45
+      const matched = toppings.find(t => t.name === opt)
+      if (matched) {
+        base += matched.price
+      } else {
+        if (opt === "Jalapeno") base += 45
+        if (opt === "Paneer") base += 55
+        if (opt === "Capsicum") base += 45
+        if (opt === "Mushroom") base += 45
+        if (opt === "Onion") base += 45
+        if (opt === "Red Paprika") base += 45
+        if (opt === "Red Capsicum") base += 45
+        if (opt === "Sweet Corn") base += 45
+        if (opt === "Tomato") base += 45
+      }
     })
     
     return base * quantity
@@ -398,7 +596,7 @@ export default function MenuList() {
   const totalCartPrice = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
   // Filter menu items by debounced search query (case-insensitive, match title or description)
-  const filteredItems = (MENU_ITEMS[activeTab] || []).filter((item) => {
+  const filteredItems = (currentMenuItems[activeTab] || []).filter((item) => {
     const titleMatch = item.title?.toLowerCase().includes(debouncedQuery.toLowerCase())
     const descMatch = item.description?.toLowerCase().includes(debouncedQuery.toLowerCase())
     return titleMatch || descMatch
@@ -547,7 +745,7 @@ export default function MenuList() {
         {/* Brand logo design */}
         <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center justify-center">
           <img
-            src={logoNew}
+            src={logoUrl}
             alt="Papa Veg Pizza Logo"
             className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105"
           />
@@ -559,12 +757,7 @@ export default function MenuList() {
       <div className="fixed top-16 left-1/2 -translate-x-1/2 w-full max-w-md z-45 bg-surface/85 backdrop-blur-md border-b border-white/10 px-5 flex overflow-x-auto hide-scrollbar py-3 gap-3">
         {[
           { id: "deals", label: "Deals", action: () => navigate("/user/deals") },
-          { id: "pizzas", label: "Pizzas" },
-          { id: "burgers", label: "Burgers" },
-          { id: "breads", label: "Breads" },
-          { id: "pasta", label: "Pasta" },
-          { id: "desserts", label: "Desserts" },
-          { id: "drinks", label: "Drinks" }
+          ...categories
         ].map((tab) => {
           const isSelected = activeTab === tab.id
           return (
@@ -979,17 +1172,7 @@ export default function MenuList() {
                   <p className="text-[10px] text-zinc-400 font-bold">Select upto 2</p>
                 </div>
                 <div className="bg-white dark:bg-[#1f1f22] rounded-2xl p-4 shadow-sm border border-zinc-200/30 dark:border-white/5 space-y-3">
-                  {[
-                    { name: "Jalapeno", price: 45, badge: "Bestseller" },
-                    { name: "Paneer", price: 55, badge: "Protein Rich" },
-                    { name: "Capsicum", price: 45 },
-                    { name: "Mushroom", price: 45 },
-                    { name: "Onion", price: 45 },
-                    { name: "Red Paprika", price: 45 },
-                    { name: "Red Capsicum", price: 45 },
-                    { name: "Sweet Corn", price: 45 },
-                    { name: "Tomato", price: 45 }
-                  ].map(top => {
+                  {toppings.map(top => {
                     const isSelected = selectedToppingsList.includes(top.name)
                     return (
                       <div

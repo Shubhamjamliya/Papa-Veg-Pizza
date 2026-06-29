@@ -290,12 +290,31 @@ export const initialCouponUsages = [
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+export const getStoredCoupons = () => {
+  const data = localStorage.getItem('pvp_coupons');
+  if (!data) {
+    localStorage.setItem('pvp_coupons', JSON.stringify(initialCoupons));
+    return initialCoupons;
+  }
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return initialCoupons;
+  }
+};
+
+export const saveStoredCoupons = (data) => {
+  localStorage.setItem('pvp_coupons', JSON.stringify(data));
+  window.dispatchEvent(new Event("pvp_coupons_changed"));
+};
+
 // Simulated in-memory database
-let couponsDatabase = [...initialCoupons];
+let couponsDatabase = getStoredCoupons();
 let usagesDatabase = [...initialCouponUsages];
 
 // Helper to calculate usage statistics
 export const getAggregateStats = () => {
+  couponsDatabase = getStoredCoupons();
   const activeCount = couponsDatabase.filter(c => c.status === 'active' && new Date(c.endDate) > new Date()).length;
   const expiredCount = couponsDatabase.filter(c => c.status === 'expired' || new Date(c.endDate) <= new Date()).length;
   const disabledCount = couponsDatabase.filter(c => c.status === 'disabled').length;
@@ -325,6 +344,7 @@ export const api = {
       throw new Error('API request failed due to connection timeout. Database query failed.');
     }
 
+    couponsDatabase = getStoredCoupons();
     let result = [...couponsDatabase];
 
     // Filter by code / search
@@ -468,6 +488,7 @@ export const api = {
   // POST /coupons
   createCoupon: async (couponData) => {
     await wait(800);
+    couponsDatabase = getStoredCoupons();
     const newCoupon = {
       ...couponData,
       _id: 'c-' + Math.random().toString(36).substr(2, 9),
@@ -485,12 +506,14 @@ export const api = {
       customerIds: couponData.customerIds || []
     };
     couponsDatabase.unshift(newCoupon);
+    saveStoredCoupons(couponsDatabase);
     return newCoupon;
   },
 
   // PUT /coupons/:id
   updateCoupon: async (id, updatedFields) => {
     await wait(800);
+    couponsDatabase = getStoredCoupons();
     const index = couponsDatabase.findIndex(c => c._id === id);
     if (index === -1) {
       throw new Error(`Coupon with ID ${id} not found`);
@@ -501,18 +524,21 @@ export const api = {
       ...updatedFields,
       updatedAt: new Date().toISOString()
     };
+    saveStoredCoupons(couponsDatabase);
     return couponsDatabase[index];
   },
 
   // DELETE /coupons/:id
   deleteCoupon: async (id) => {
     await wait(600);
+    couponsDatabase = getStoredCoupons();
     const index = couponsDatabase.findIndex(c => c._id === id);
     if (index === -1) {
       throw new Error(`Coupon with ID ${id} not found`);
     }
     const deleted = couponsDatabase[index];
     couponsDatabase.splice(index, 1);
+    saveStoredCoupons(couponsDatabase);
     
     // Also cleanup usages
     usagesDatabase = usagesDatabase.filter(u => u.couponId !== id);
