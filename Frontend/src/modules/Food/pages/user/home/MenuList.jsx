@@ -15,7 +15,9 @@ const MENU_ITEMS = {
       badge: "NEW",
       image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80",
       description: "Fiery schezwan sauce, dynamic mozzarella, onions, sweet bell peppers, and fresh greens.",
-      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"]
+      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"],
+      rating: 4.3,
+      ratingCount: 19
     },
     {
       id: "smokey-bbq",
@@ -24,7 +26,9 @@ const MENU_ITEMS = {
       badge: "NEW",
       image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop&q=80",
       description: "Rich smokey BBQ base, melted mozzarella, loaded red onions, golden sweet corn, and BBQ drizzle.",
-      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"]
+      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"],
+      rating: 4.5,
+      ratingCount: 22
     },
     {
       id: "paneer-makhni",
@@ -33,7 +37,9 @@ const MENU_ITEMS = {
       badge: "NEW",
       image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop&q=80",
       description: "Indian style Makhni sauce, premium marinated paneer cubes, capsicum, red onions, and tomatoes.",
-      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"]
+      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"],
+      rating: 4.7,
+      ratingCount: 35
     },
     {
       id: "overloaded-veggies",
@@ -42,7 +48,9 @@ const MENU_ITEMS = {
       badge: "NEW",
       image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=500&auto=format&fit=crop&q=80",
       description: "Black olives, mushrooms, sweet corn, red onions, tri-color bell peppers, and jalapeños.",
-      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"]
+      sizes: ["Oval 10in Crafted Flatz", "Personal Pan", "Medium Hand Tossed", "Large Stuffed Crust"],
+      rating: 4.4,
+      ratingCount: 18
     }
   ],
   burgers: [
@@ -51,14 +59,18 @@ const MENU_ITEMS = {
       title: "Crispy Veg Burger",
       price: 149,
       image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop&q=80",
-      description: "Crispy mixed vegetable patty, fresh lettuce, tomatoes, and creamy classic mayonnaise."
+      description: "Crispy mixed vegetable patty, fresh lettuce, tomatoes, and creamy classic mayonnaise.",
+      rating: 4.1,
+      ratingCount: 15
     },
     {
       id: "spicy-paneer-burger",
       title: "Spicy Paneer Burger",
       price: 189,
       image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=80",
-      description: "Spicy marinated paneer patty, layered with spicy dressing, melted cheese, and sliced onions."
+      description: "Spicy marinated paneer patty, layered with spicy dressing, melted cheese, and sliced onions.",
+      rating: 4.6,
+      ratingCount: 28
     }
   ],
   breads: [
@@ -67,14 +79,18 @@ const MENU_ITEMS = {
       title: "Garlic Bread Stix",
       price: 119,
       image: "https://images.unsplash.com/photo-1619535860434-ba1d8fa12536?w=500&auto=format&fit=crop&q=80",
-      description: "Freshly baked garlic bread sticks served warm with creamy dynamic dipping sauce."
+      description: "Freshly baked garlic bread sticks served warm with creamy dynamic dipping sauce.",
+      rating: 4.2,
+      ratingCount: 12
     },
     {
       id: "cheese-garlic-bread",
       title: "Cheese Garlic Bread",
       price: 149,
       image: "https://images.unsplash.com/photo-1574085733277-851d9d856a3a?w=500&auto=format&fit=crop&q=80",
-      description: "Toasted thick bread slices loaded with garlic butter, fresh parsley, and gooey melted mozzarella."
+      description: "Toasted thick bread slices loaded with garlic butter, fresh parsley, and gooey melted mozzarella.",
+      rating: 4.5,
+      ratingCount: 19
     }
   ],
   pasta: [
@@ -83,14 +99,18 @@ const MENU_ITEMS = {
       title: "Creamy Mushroom Penne",
       price: 249,
       image: "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=500&auto=format&fit=crop&q=80",
-      description: "Penne tossed in a rich, creamy white parmesan sauce loaded with fresh button mushrooms and garlic herbs."
+      description: "Penne tossed in a rich, creamy white parmesan sauce loaded with fresh button mushrooms and garlic herbs.",
+      rating: 4.3,
+      ratingCount: 14
     },
     {
       id: "spiced-arrabbiata",
       title: "Spiced Arrabbiata Pasta",
       price: 229,
       image: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=500&auto=format&fit=crop&q=80",
-      description: "Penne pasta in a fiery, spiced San Marzano tomato sauce infused with fresh garlic, chili flakes, and basil leaves."
+      description: "Penne pasta in a fiery, spiced San Marzano tomato sauce infused with fresh garlic, chili flakes, and basil leaves.",
+      rating: 4.4,
+      ratingCount: 21
     }
   ],
   desserts: [
@@ -99,14 +119,18 @@ const MENU_ITEMS = {
       title: "Warm Chocolate Brownie",
       price: 129,
       image: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=500&auto=format&fit=crop&q=80",
-      description: "Rich, dense chocolate brownie served warm with a shiny, gooey dark chocolate glaze on top."
+      description: "Rich, dense chocolate brownie served warm with a shiny, gooey dark chocolate glaze on top.",
+      rating: 4.8,
+      ratingCount: 42
     },
     {
       id: "choco-volcano",
       title: "Choco Volcano Cake",
       price: 139,
       image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&auto=format&fit=crop&q=80",
-      description: "Freshly baked soft chocolate sponge cake with a molten, oozing chocolate lava core inside."
+      description: "Freshly baked soft chocolate sponge cake with a molten, oozing chocolate lava core inside.",
+      rating: 4.9,
+      ratingCount: 50
     }
   ],
   drinks: [
@@ -115,14 +139,18 @@ const MENU_ITEMS = {
       title: "Purified Water Bottle",
       price: 40,
       image: "/food/bisleri_water_bottle.png",
-      description: "Ice-cold premium mineral packaged drinking water for refreshment."
+      description: "Ice-cold premium mineral packaged drinking water for refreshment.",
+      rating: 4.0,
+      ratingCount: 5
     },
     {
       id: "pepsi-cola",
       title: "Pepsi Cola (500ml)",
       price: 60,
       image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&auto=format&fit=crop&q=80",
-      description: "500ml bottle of cold, sparkling carbonated Pepsi cola beverage."
+      description: "500ml bottle of cold, sparkling carbonated Pepsi cola beverage.",
+      rating: 4.3,
+      ratingCount: 8
     }
   ]
 }
@@ -154,6 +182,14 @@ export default function MenuList() {
 
   const [searchQuery, setSearchQuery] = useState("")
   const [debouncedQuery, setDebouncedQuery] = useState("")
+  const [expandedItems, setExpandedItems] = useState({})
+
+  const toggleExpand = (itemId) => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [itemId]: !prev[itemId]
+    }))
+  }
 
   // Debouncing logic for search query
   useEffect(() => {
@@ -527,80 +563,88 @@ export default function MenuList() {
          {/* Menu list grid */}
         <section className="space-y-4">
           {filteredItems.map((item) => (
-            <div key={item.id} className="glass-card rounded-2xl overflow-hidden flex flex-row p-4 gap-4 border border-white/12 hover-glow transition-all duration-300">
+            <div key={item.id} className="glass-card rounded-2xl overflow-hidden flex flex-col p-4 gap-3 border border-white/12 hover-glow transition-all duration-300">
               
-              {/* Left Details: Title, Price, Description, Size Selector */}
-              <div className="flex-1 flex flex-col justify-between h-full min-w-0 text-left">
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="veg-box scale-75 shrink-0"><span className="veg-circle"></span></span>
-                    {item.badge && (
-                      <span className="bg-[#E53935]/10 text-[#E53935] text-[8px] font-black uppercase px-1.5 py-0.5 rounded tracking-wide">
-                        {item.badge}
+              {/* Top Row: Details on left, Image & ADD Button on right */}
+              <div className="flex flex-row justify-between gap-4">
+                
+                {/* Left Details: Title, Price, Size Selector */}
+                <div className="flex-1 flex flex-col justify-between min-w-0 text-left">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="veg-box scale-75 shrink-0"><span className="veg-circle"></span></span>
+                      {item.badge && (
+                        <span className="bg-[#E53935]/10 text-[#E53935] text-[8px] font-black uppercase px-1.5 py-0.5 rounded tracking-wide">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className={`font-headline-md-mobile text-xl leading-snug font-extrabold truncate ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  <div className="mt-2.5 flex flex-row items-center gap-3 text-left">
+                    <span className="text-primary font-black text-sm">₹{item.price}</span>
+                    
+                    {/* Rating Pill Badge */}
+                    <div className="flex items-center gap-1 bg-[#00c853]/10 dark:bg-[#00c853]/15 text-[#00c853] px-2 py-0.5 rounded-full text-[10px] font-black w-fit select-none">
+                      <span className="text-[9px]">★</span>
+                      <span>{item.rating || '4.3'}</span>
+                      <span className="opacity-70 font-semibold">({item.ratingCount || '19'})</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Side: Product Image & ADD Button Stack */}
+                <div className="relative w-24 h-28 shrink-0 flex flex-col items-center">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/10 shadow-sm">
+                    <img
+                      className="w-full h-full object-cover"
+                      alt={item.title}
+                      src={item.image}
+                    />
+                  </div>
+                  
+                  {/* ADD Button overlapping bottom of image & Customisable text */}
+                  <div className="absolute top-[80px] left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
+                    <button
+                      onClick={() => checkLocation(() => addToCart(item, selectedSize))}
+                      className="h-7 px-5 bg-[#E53935] hover:bg-red-700 text-white rounded-full font-label-sm text-[10px] uppercase font-black cursor-pointer border-0 active:scale-95 transition-all shadow-md shadow-[#E53935]/20 flex items-center justify-center whitespace-nowrap min-w-[65px]"
+                    >
+                      Add
+                    </button>
+                    {(activeTab === "pizzas" || activeTab === "breads") && (
+                      <span className="mt-1 text-zinc-500 dark:text-zinc-400 text-[10px] font-medium tracking-wide whitespace-nowrap select-none">
+                        Customisable
                       </span>
                     )}
                   </div>
-                  <h3 className={`font-headline-md-mobile text-sm leading-snug font-extrabold truncate ${isDarkMode ? "text-white" : "text-[#131313]"}`}>
-                    {item.title}
-                  </h3>
-                  <p className={`text-[10px] leading-normal line-clamp-2 ${isDarkMode ? "text-white/60" : "text-zinc-500"}`}>
-                    {item.description}
+                </div>
+
+              </div>
+
+              {/* Bottom Row: Description spanning full-width */}
+              {item.description && (
+                <div className="pt-2 border-t border-dashed border-white/5 text-left">
+                  <p className={`text-[10px] leading-normal ${isDarkMode ? "text-white/60" : "text-zinc-500"}`}>
+                    {expandedItems[item.id]
+                      ? item.description
+                      : `${item.description.slice(0, 50)}${item.description.length > 50 ? "..." : ""}`}
+                    {item.description.length > 50 && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleExpand(item.id)
+                        }}
+                        className="ml-1 text-primary hover:underline font-bold bg-transparent border-0 outline-none cursor-pointer text-[10px]"
+                      >
+                        {expandedItems[item.id] ? "less" : "more"}
+                      </button>
+                    )}
                   </p>
                 </div>
-
-                <div className="mt-3 flex flex-wrap items-center gap-3">
-                  <span className="text-primary font-black text-sm">₹{item.price}</span>
-                  
-                  {/* Size Selector as a clean, rounded pill */}
-                  {item.sizes && (
-                    <div className="relative">
-                      <select
-                        defaultValue={item.sizes[0]}
-                        onChange={(e) => setSelectedSize(e.target.value)}
-                        className={`h-6 max-w-[90px] bg-[#131313]/5 dark:bg-white/5 border border-zinc-200 dark:border-white/10 rounded-full pl-2.5 pr-5 text-[9px] font-extrabold select-none outline-none appearance-none cursor-pointer truncate ${isDarkMode ? "text-white" : "text-[#131313]"}`}
-                      >
-                        {item.sizes.map((s) => (
-                          <option key={s} value={s} className={`font-bold text-[9px] ${isDarkMode ? "bg-[#131313] text-white" : "bg-white text-[#131313]"}`}>{s}</option>
-                        ))}
-                      </select>
-                      <span className="material-symbols-outlined absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-white/50 text-[10px] pointer-events-none">
-                        keyboard_arrow_down
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Right Side: Product Image & ADD Button Stack */}
-              <div className="relative flex flex-col items-center shrink-0 pb-3">
-                <div className="w-24 h-24 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/10 shadow-sm">
-                  <img
-                    className="w-full h-full object-cover"
-                    alt={item.title}
-                    src={item.image}
-                  />
-                </div>
-                
-                {/* ADD Button overlapping bottom of image */}
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                  <button
-                    onClick={() => checkLocation(() => addToCart(item, selectedSize))}
-                    className="h-7 px-5 bg-[#E53935] hover:bg-red-700 text-white rounded-full font-label-sm text-[10px] uppercase font-black cursor-pointer border-0 active:scale-95 transition-all shadow-md shadow-[#E53935]/20 flex items-center justify-center whitespace-nowrap min-w-[65px]"
-                  >
-                    Add
-                  </button>
-                  
-                  {/* Small customise hint below add button */}
-                  {(activeTab === "pizzas" || activeTab === "breads") && (
-                    <button
-                      onClick={() => checkLocation(() => setCustomizeItem(item))}
-                      className="mt-1 text-[#E53935] hover:text-red-700 text-[8px] font-extrabold uppercase bg-transparent border-0 outline-none cursor-pointer tracking-wider whitespace-nowrap"
-                    >
-                      Customise
-                    </button>
-                  )}
-                </div>
-              </div>
+              )}
 
             </div>
           ))}
