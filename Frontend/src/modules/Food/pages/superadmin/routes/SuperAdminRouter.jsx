@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useState, useEffect } from "react"
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom"
 import { useSystemTheme } from "@/shared/utils/themeSync"
+import ProtectedRoute from "@food/components/ProtectedRoute"
 import Sidebar from "../layouts/Sidebar"
 import Navbar from "../layouts/Navbar"
 
@@ -200,60 +201,68 @@ export default function SuperAdminRouter() {
       }
     >
       <Routes>
-        {/* Main Dashboard route (standalone view with its own layout states) */}
-        <Route path="/dashboard" element={<SuperAdminDashboard />} />
+        <Route
+          element={
+            <ProtectedRoute requiredRole="superadmin" loginPath="/superadmin/login">
+              <Outlet />
+            </ProtectedRoute>
+          }
+        >
+          {/* Main Dashboard route (standalone view with its own layout states) */}
+          <Route path="/dashboard" element={<SuperAdminDashboard />} />
 
-        {/* Customer Management module routes wrapped in the shared Layout */}
-        <Route element={<SuperAdminLayout />}>
-          <Route path="/customers" element={<CustomerAnalysis />} />
-          <Route path="/customers/list" element={<CustomerList />} />
-          <Route path="/customers/profile/:id" element={<UserProfile />} />
-          <Route path="/customers/profile" element={<UserProfile />} />
-          <Route path="/franchise-stores" element={<FranchiseStores />} />
-          <Route path="/franchise-approvals" element={<FranchiseApprovals />} />
-          <Route path="/regions-zones" element={<RegionsZones />} />
-          <Route path="/territory-management" element={<TerritoryManagement />} />
-          <Route path="/franchises" element={<FranchiseList />} />
-          <Route path="/managers" element={<StoreManagers />} />
-          <Route path="/managers/list" element={<StoreManagersList />} />
-          <Route path="/delivery-partners" element={<DeliveryPartnersManagement />} />
-          <Route path="/kitchen-staff" element={<KitchenStaffManagement />} />
-          <Route path="/roles-permissions" element={<RolesPermissionManagement />} />
-          <Route path="/products" element={<ProductsManagement />} />
-          <Route path="/categories" element={<CategoriesManagement />} />
-          <Route path="/addons" element={<Addons />} />
-          <Route path="/combos-deals" element={<ComboDeals />} />
-          <Route path="/global-pricing" element={<GlobalPrice />} />
-          <Route path="/orders" element={<AllOrders />} />
-          <Route path="/order-tracking" element={<OrderTracking />} />
-          <Route path="/disputes" element={<Disputes />} />
-          <Route path="/refund-requests" element={<RefundRequests />} />
+          {/* Customer Management module routes wrapped in the shared Layout */}
+          <Route element={<SuperAdminLayout />}>
+            <Route path="/customers" element={<CustomerAnalysis />} />
+            <Route path="/customers/list" element={<CustomerList />} />
+            <Route path="/customers/profile/:id" element={<UserProfile />} />
+            <Route path="/customers/profile" element={<UserProfile />} />
+            <Route path="/franchise-stores" element={<FranchiseStores />} />
+            <Route path="/franchise-approvals" element={<FranchiseApprovals />} />
+            <Route path="/regions-zones" element={<RegionsZones />} />
+            <Route path="/territory-management" element={<TerritoryManagement />} />
+            <Route path="/franchises" element={<FranchiseList />} />
+            <Route path="/managers" element={<StoreManagers />} />
+            <Route path="/managers/list" element={<StoreManagersList />} />
+            <Route path="/delivery-partners" element={<DeliveryPartnersManagement />} />
+            <Route path="/kitchen-staff" element={<KitchenStaffManagement />} />
+            <Route path="/roles-permissions" element={<RolesPermissionManagement />} />
+            <Route path="/products" element={<ProductsManagement />} />
+            <Route path="/categories" element={<CategoriesManagement />} />
+            <Route path="/addons" element={<Addons />} />
+            <Route path="/combos-deals" element={<ComboDeals />} />
+            <Route path="/global-pricing" element={<GlobalPrice />} />
+            <Route path="/orders" element={<AllOrders />} />
+            <Route path="/order-tracking" element={<OrderTracking />} />
+            <Route path="/disputes" element={<Disputes />} />
+            <Route path="/refund-requests" element={<RefundRequests />} />
 
-          <Route path="/coupons" element={<CouponsManagement />} />
-          <Route path="/campaigns" element={<Campaign />} />
-          <Route path="/push-notifications" element={<PushNotification />} />
-          <Route path="/banners" element={<Banners />} />
-          <Route path="/loyalty" element={<LoyaltyProgram />} />
-          <Route path="/tax-reports" element={<TaxReports />} />
-          <Route path="/transactions" element={<TransactionManagement />} />
-          <Route path="/commissions" element={<FranchiseCommission />} />
-          <Route path="/payouts" element={<Payouts />} />
-          <Route path="/revenue" element={<Revenue />} />
-          <Route path="/sales-analytics" element={<SalesAnalytics />} />
-          <Route path="/customer-analytics" element={<CustomerAnalytics />} />
-          <Route path="/store-analytics" element={<StoreAnalytics />} />
-          <Route path="/delivery-analytics" element={<DeliveryAnalytics />} />
-          <Route path="/growth-reports" element={<GrowthReport />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/app-configuration" element={<AppConfiguration />} />
-          <Route path="/payment-gateways" element={<PaymentGateways />} />
-          <Route path="/notification-settings" element={<NotificationsSettings />} />
-          <Route path="/audit-logs" element={<AuditLogs />} />
-          <Route path="/content-management" element={<ContentManagement />} />
-          <Route path="/franchise-tickets" element={<FranchiseTicket />} />
-          <Route path="/support-requests" element={<SupportRequests />} />
-          <Route path="/customer-complaints" element={<CustomerComplaints />} />
-          <Route path="/feedback-reviews" element={<FeedbackAndReview />} />
+            <Route path="/coupons" element={<CouponsManagement />} />
+            <Route path="/campaigns" element={<Campaign />} />
+            <Route path="/push-notifications" element={<PushNotification />} />
+            <Route path="/banners" element={<Banners />} />
+            <Route path="/loyalty" element={<LoyaltyProgram />} />
+            <Route path="/tax-reports" element={<TaxReports />} />
+            <Route path="/transactions" element={<TransactionManagement />} />
+            <Route path="/commissions" element={<FranchiseCommission />} />
+            <Route path="/payouts" element={<Payouts />} />
+            <Route path="/revenue" element={<Revenue />} />
+            <Route path="/sales-analytics" element={<SalesAnalytics />} />
+            <Route path="/customer-analytics" element={<CustomerAnalytics />} />
+            <Route path="/store-analytics" element={<StoreAnalytics />} />
+            <Route path="/delivery-analytics" element={<DeliveryAnalytics />} />
+            <Route path="/growth-reports" element={<GrowthReport />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/app-configuration" element={<AppConfiguration />} />
+            <Route path="/payment-gateways" element={<PaymentGateways />} />
+            <Route path="/notification-settings" element={<NotificationsSettings />} />
+            <Route path="/audit-logs" element={<AuditLogs />} />
+            <Route path="/content-management" element={<ContentManagement />} />
+            <Route path="/franchise-tickets" element={<FranchiseTicket />} />
+            <Route path="/support-requests" element={<SupportRequests />} />
+            <Route path="/customer-complaints" element={<CustomerComplaints />} />
+            <Route path="/feedback-reviews" element={<FeedbackAndReview />} />
+          </Route>
         </Route>
 
         {/* Redirect empty paths to dashboard */}

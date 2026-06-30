@@ -70,10 +70,10 @@ export default function FranchiseAdminRouter() {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        {/* Protected Routes - With Layout */}
-        <Route path="login" element={<AdminLogin />} />
+        {/* Redirect old login/signup paths to unified franchise login */}
+        <Route path="login" element={<Navigate to="/franchise-admin/login" replace />} />
+        <Route path="signup" element={<Navigate to="/franchise-admin/login" replace />} />
         <Route path="forgot-password" element={<AdminForgotPassword />} />
-        <Route path="signup" element={<AdminSignup />} />
 
         {/* Protected Routes - With Layout */}
         <Route

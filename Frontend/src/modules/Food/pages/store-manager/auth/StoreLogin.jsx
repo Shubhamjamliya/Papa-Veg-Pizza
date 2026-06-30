@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { adminAPI } from "@food/api"
 import { setAuthData } from "@food/utils/auth"
-import { ShieldCheck, UserCog, Star, Heart, ArrowRight, Loader2, Mail, Lock, Eye, EyeOff, ShieldQuestion } from "lucide-react"
+import { Pizza, ArrowRight, Loader2, Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react"
 import { Button } from "@food/components/ui/button"
 import { useSystemTheme } from "@/shared/utils/themeSync"
 import logoNew from "@/assets/logo1.png"
 import { toast } from "sonner"
 
-export default function AdminLogin() {
+export default function StoreLogin() {
   const navigate = useNavigate()
   const { logo, themeMode } = useSystemTheme()
   const [email, setEmail] = useState("")
@@ -41,20 +41,32 @@ export default function AdminLogin() {
     setLoading(true)
 
     try {
-      const response = await adminAPI.login(email.trim(), password)
+      const response = await adminAPI.storeLogin(email.trim(), password)
       const data = response?.data?.data || response?.data || {}
 
       const accessToken = data.accessToken
-      const adminUser = data.user || data.admin
+      const storeUser = data.user
       const refreshToken = data.refreshToken ?? null
 
-      if (!accessToken || !adminUser || !refreshToken) {
+      if (!accessToken || !storeUser) {
         throw new Error("Invalid response from server")
       }
 
-      setAuthData("admin", accessToken, adminUser, refreshToken)
-      toast.success("Welcome, Administrator")
-      navigate("/franchise-admin/dashboard", { replace: true })
+      // Store Auth Details for the store module
+      setAuthData("store", accessToken, storeUser, refreshToken)
+      
+      // Store the specific role context
+      localStorage.setItem("store_role", storeUser.role)
+      window.dispatchEvent(new CustomEvent("storeRoleChanged", { detail: storeUser.role }))
+
+      toast.success(`Signed in as ${storeUser.name || 'Store Operations'}`)
+
+      // Role-based routing
+      if (storeUser.role === "store_manager" || storeUser.role === "store-manager") {
+        navigate("/store-operations/dashboard", { replace: true })
+      } else {
+        navigate("/store-operations/tasks", { replace: true })
+      }
     } catch (err) {
       const msg = err?.response?.data?.message || err?.message || "Login failed. Check your credentials."
       toast.error(msg)
@@ -118,7 +130,7 @@ export default function AdminLogin() {
               transition={{ delay: 0.2 }}
               className="text-gray-400 dark:text-gray-500 font-semibold text-[9px] uppercase tracking-[0.2em]"
             >
-              Franchise Portal
+              STORE OPERATIONS
             </motion.p>
           </div>
 
@@ -127,7 +139,7 @@ export default function AdminLogin() {
              <form onSubmit={handleLogin} className="space-y-3.5">
               <div className="space-y-2.5">
                 <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-0.5">Email Address</label>
+                  <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-0.5">Operations Email</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
@@ -137,7 +149,7 @@ export default function AdminLogin() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="block w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border border-transparent focus:border-[var(--primary)]/50 rounded-lg outline-none transition-all placeholder:text-gray-400 font-medium text-xs"
-                      placeholder="admin@papavegpizza.com"
+                      placeholder="manager@papavegpizza.com"
                     />
                   </div>
                 </div>
@@ -145,7 +157,6 @@ export default function AdminLogin() {
                 <div className="space-y-1">
                   <div className="flex justify-between items-center px-0.5">
                     <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400">Password</label>
-                    <Link to="/franchise-admin/forgot-password" size="sm" className="text-[10px] font-medium text-[var(--primary)] hover:underline transition-colors">Forgot?</Link>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -160,7 +171,7 @@ export default function AdminLogin() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-655 dark:hover:text-zinc-200 transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                     </button>
@@ -177,7 +188,7 @@ export default function AdminLogin() {
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <>
-                    <span>Enter Dashboard</span>
+                    <span>Enter Portal</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </>
                 )}
@@ -185,10 +196,20 @@ export default function AdminLogin() {
             </form>
           </div>
 
+          {/* Quick Info / Role Map */}
+          <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200/10 text-[10px] opacity-75">
+            <h4 className="font-semibold text-gray-500 dark:text-gray-400 mb-1">Simulated Credentials</h4>
+            <div className="space-y-0.5 text-xs">
+              <div className="flex justify-between"><span className="text-gray-400">Manager:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">manager@papavegpizza.com</code></div>
+              <div className="flex justify-between"><span className="text-gray-400">Supervisor:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">supervisor@papavegpizza.com</code></div>
+              <div className="flex justify-between"><span className="text-gray-400">Staff:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">staff@papavegpizza.com</code></div>
+            </div>
+          </div>
+
           <div className="mt-4 flex flex-col items-center gap-2 text-[10px] text-gray-400 dark:text-gray-500 font-medium">
             <div className="flex items-center gap-1 opacity-50">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Secure Connection</span>
+              <span>Secure Operations Portal</span>
             </div>
             <Link to="/user/auth/support" className="hover:text-[var(--primary)] hover:underline transition-colors opacity-70">
               Need Support? Contact Support
@@ -199,5 +220,3 @@ export default function AdminLogin() {
     </div>
   )
 }
-
-

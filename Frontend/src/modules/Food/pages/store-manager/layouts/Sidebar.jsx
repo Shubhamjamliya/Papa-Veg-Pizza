@@ -48,9 +48,9 @@ export default function Sidebar({ isOpen, onClose, role, isCollapsed = false, on
       localStorage.removeItem("store_user")
       localStorage.removeItem("store_role")
       window.dispatchEvent(new Event("storeAuthChanged"))
-      navigate("/store-operations/login", { replace: true })
+      navigate("/store-operation/login", { replace: true })
     } catch (_) {
-      navigate("/store-operations/login", { replace: true })
+      navigate("/store-operation/login", { replace: true })
     }
   }
 

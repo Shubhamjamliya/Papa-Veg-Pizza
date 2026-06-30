@@ -191,6 +191,7 @@ export const adminAPI = {
   getDashboardCustomerActivity: () => adminClient.get("/admin/dashboard/customer-activity"),
   globalSearch: (q) => adminClient.get("/search", { params: { q } }),
   login: (email, password) => authService.adminLogin(email, password),
+  storeLogin: (email, password) => authService.storeLogin(email, password),
 
   // Store Performance Endpoints
   getStorePerformanceDashboard: () => adminClient.get("/store-performance/dashboard"),

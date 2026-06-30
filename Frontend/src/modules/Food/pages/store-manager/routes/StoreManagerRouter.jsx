@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from "react"
 import { Routes, Route, Navigate, useLocation, useOutletContext } from "react-router-dom"
 import { useSystemTheme } from "@/shared/utils/themeSync"
+import ProtectedRoute from "@food/components/ProtectedRoute"
 import * as Icons from "lucide-react"
 import StoreOperationsLayout from "../layouts/StoreOperationsLayout"
 import Loader from "@food/components/Loader"
@@ -122,9 +123,14 @@ export default function StoreManagerRouter() {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
+        {/* Redirect old login path to unified store login */}
+        <Route path="login" element={<Navigate to="/store-operation/login" replace />} />
+
         <Route
           element={
-            <StoreOperationsLayout />
+            <ProtectedRoute requiredRole="store" loginPath="/store-operation/login">
+              <StoreOperationsLayout />
+            </ProtectedRoute>
           }
         >
           {/* Default Path Redirect */}
