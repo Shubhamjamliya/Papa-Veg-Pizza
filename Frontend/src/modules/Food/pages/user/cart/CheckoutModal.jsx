@@ -192,30 +192,30 @@ export default function CheckoutModal({
                 <div className="flex items-center justify-between px-6 py-4 border-b relative" style={{ borderColor: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)" }}>
                   {/* Contact Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-black shadow-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white text-[9px] font-black shadow-sm">
                       <Check className="w-3 h-3 text-white stroke-[3px]" />
                     </div>
                     <span className="text-[9px] font-semibold mt-1 opacity-70">Contact</span>
-                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-primary -z-10"></div>
                   </div>
                   
                   {/* Address Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full border-2 border-emerald-600 flex items-center justify-center bg-white dark:bg-[#111111] shadow-sm">
-                      <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
+                    <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center bg-white dark:bg-[#111111] shadow-sm">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
                     </div>
-                    <span className="text-[9px] font-black text-emerald-600 mt-1">Address</span>
-                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-emerald-600 -z-10"></div>
-                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <span className="text-[9px] font-black text-primary mt-1">Address</span>
+                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-primary -z-10"></div>
+                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-primary -z-10"></div>
                   </div>
 
                   {/* Payment Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-black shadow-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white text-[9px] font-black shadow-sm">
                       <Check className="w-3 h-3 text-white stroke-[3px]" />
                     </div>
                     <span className="text-[9px] font-semibold mt-1 opacity-70">Payment</span>
-                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-primary -z-10"></div>
                     <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-zinc-200 dark:bg-zinc-800 -z-10"></div>
                   </div>
 
@@ -263,7 +263,7 @@ export default function CheckoutModal({
                       value={houseNumber}
                       onChange={(e) => setHouseNumber(e.target.value)}
                       placeholder="House number or flat number"
-                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-emerald-600 transition-all font-semibold shadow-2xs"
+                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-primary transition-all font-semibold shadow-2xs"
                     />
                   </div>
 
@@ -277,7 +277,7 @@ export default function CheckoutModal({
                       value={landmark}
                       onChange={(e) => setLandmark(e.target.value)}
                       placeholder="Landmark"
-                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-emerald-600 transition-all font-semibold shadow-2xs"
+                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-primary transition-all font-semibold shadow-2xs"
                     />
                   </div>
 
@@ -291,7 +291,7 @@ export default function CheckoutModal({
                       onChange={(e) => setInstructions(e.target.value)}
                       placeholder="E.g. leave at the door"
                       rows={3}
-                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-emerald-600 transition-all font-semibold resize-none shadow-2xs"
+                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-primary transition-all font-semibold resize-none shadow-2xs"
                     />
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export default function CheckoutModal({
                       }
                       setModalView("checkout") // transition to checkout dashboard
                     }}
-                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-[#0a893e] hover:bg-[#07682f] text-white active:scale-95 cursor-pointer shadow-md shadow-emerald-500/10"
+                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-primary hover:bg-primary-hover text-white active:scale-95 cursor-pointer shadow-md shadow-primary/10"
                   >
                     Save address details
                   </button>
@@ -321,40 +321,40 @@ export default function CheckoutModal({
                 <div className="flex items-center justify-between px-6 py-4 border-b relative" style={{ borderColor: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)" }}>
                   {/* Contact Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-black shadow-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white text-[9px] font-black shadow-sm">
                       <Check className="w-3 h-3 text-white stroke-[3px]" />
                     </div>
                     <span className="text-[9px] font-semibold mt-1 opacity-70">Contact</span>
-                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-primary -z-10"></div>
                   </div>
                   
                   {/* Address Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-black shadow-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white text-[9px] font-black shadow-sm">
                       <Check className="w-3 h-3 text-white stroke-[3px]" />
                     </div>
                     <span className="text-[9px] font-semibold mt-1 opacity-70">Address</span>
-                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-emerald-600 -z-10"></div>
-                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-primary -z-10"></div>
+                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-primary -z-10"></div>
                   </div>
 
                   {/* Payment Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[9px] font-black shadow-sm">
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white text-[9px] font-black shadow-sm">
                       <Check className="w-3 h-3 text-white stroke-[3px]" />
                     </div>
                     <span className="text-[9px] font-semibold mt-1 opacity-70">Payment</span>
-                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-emerald-600 -z-10"></div>
-                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-primary -z-10"></div>
+                    <div className="absolute top-2.5 left-[50%] right-[-50%] h-[2px] bg-primary -z-10"></div>
                   </div>
 
                   {/* Checkout Step */}
                   <div className="flex flex-col items-center flex-1 relative z-10">
-                    <div className="w-5 h-5 rounded-full border-2 border-emerald-600 flex items-center justify-center bg-white dark:bg-[#111111] shadow-sm">
-                      <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
+                    <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center bg-white dark:bg-[#111111] shadow-sm">
+                      <div className="w-2 h-2 rounded-full bg-primary"></div>
                     </div>
-                    <span className="text-[9px] font-black text-emerald-600 mt-1">Checkout</span>
-                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-emerald-600 -z-10"></div>
+                    <span className="text-[9px] font-black text-primary mt-1">Checkout</span>
+                    <div className="absolute top-2.5 left-[-50%] right-[50%] h-[2px] bg-primary -z-10"></div>
                   </div>
                 </div>
 
@@ -378,7 +378,7 @@ export default function CheckoutModal({
                     </div>
                     <button 
                       onClick={triggerContactEdit}
-                      className="text-xs font-black text-[#0a893e] hover:text-[#07682f] bg-transparent border-0 outline-none cursor-pointer"
+                      className="text-xs font-black text-primary hover:text-primary-hover bg-transparent border-0 outline-none cursor-pointer"
                     >
                       View
                     </button>
@@ -392,7 +392,7 @@ export default function CheckoutModal({
                     </div>
                     <button 
                       onClick={() => setModalView("timeslot_edit")}
-                      className="text-xs font-black text-[#0a893e] hover:text-[#07682f] bg-transparent border-0 outline-none cursor-pointer"
+                      className="text-xs font-black text-primary hover:text-primary-hover bg-transparent border-0 outline-none cursor-pointer"
                     >
                       Change
                     </button>
@@ -409,7 +409,7 @@ export default function CheckoutModal({
                     </div>
                     <button 
                       onClick={() => setModalView("address")}
-                      className="text-xs font-black text-[#0a893e] hover:text-[#07682f] bg-transparent border-0 outline-none cursor-pointer"
+                      className="text-xs font-black text-primary hover:text-primary-hover bg-transparent border-0 outline-none cursor-pointer"
                     >
                       Change
                     </button>
@@ -423,7 +423,7 @@ export default function CheckoutModal({
                     </div>
                     <button 
                       onClick={onOpenGiftCard}
-                      className="text-xs font-black text-[#0a893e] hover:text-[#07682f] bg-transparent border-0 outline-none cursor-pointer"
+                      className="text-xs font-black text-primary hover:text-primary-hover bg-transparent border-0 outline-none cursor-pointer"
                     >
                       Add
                     </button>
@@ -443,7 +443,7 @@ export default function CheckoutModal({
                         onClose()
                         navigate("/user/account/profile-details/payments")
                       }}
-                      className="text-xs font-black text-[#0a893e] hover:text-[#07682f] bg-transparent border-0 outline-none cursor-pointer"
+                      className="text-xs font-black text-primary hover:text-primary-hover bg-transparent border-0 outline-none cursor-pointer"
                     >
                       Change
                     </button>
@@ -453,7 +453,7 @@ export default function CheckoutModal({
                   <div className="p-4 flex items-start gap-3 select-none cursor-pointer" onClick={() => setPromoCommunication(!promoCommunication)}>
                     <div className={`w-5 h-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all ${
                       promoCommunication 
-                        ? "border-emerald-600 bg-emerald-600 text-white" 
+                        ? "border-primary bg-primary text-white" 
                         : "border-zinc-300 dark:border-zinc-700 bg-transparent"
                     }`}>
                       {promoCommunication && <Check className="w-3.5 h-3.5 stroke-[3px]" />}
@@ -467,7 +467,7 @@ export default function CheckoutModal({
                 {/* Footer and Checkout Button */}
                 <div className="p-5 border-t" style={{ borderColor: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)" }}>
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-500">
+                    <span className="text-[10px] font-bold text-zinc-455 dark:text-zinc-500">
                       Prices are GST-inclusive
                     </span>
                     <span className="text-sm font-black">
@@ -477,7 +477,7 @@ export default function CheckoutModal({
 
                   <button 
                     onClick={() => setModalView("payment")}
-                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-[#0a893e] hover:bg-[#07682f] text-white active:scale-95 cursor-pointer shadow-md shadow-emerald-500/10"
+                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-primary hover:bg-primary-hover text-white active:scale-95 cursor-pointer shadow-md shadow-primary/10"
                   >
                     Continue to payment
                   </button>
@@ -514,7 +514,7 @@ export default function CheckoutModal({
                       value={editName}
                       onChange={(e) => setEditName(e.target.value)}
                       placeholder="Enter name"
-                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-emerald-600 transition-all font-semibold"
+                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-primary transition-all font-semibold"
                     />
                   </div>
 
@@ -525,7 +525,7 @@ export default function CheckoutModal({
                     </label>
                     <div className="flex gap-2">
                       {/* Flag box */}
-                      <div className="flex items-center gap-1.5 px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-950 shrink-0">
+                      <div className="flex items-center gap-1.5 px-3 py-3 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-955 shrink-0">
                         {/* Indian Flag SVG */}
                         <div className="flex flex-col w-5 h-3.5 border border-zinc-200 shrink-0">
                           <div className="bg-[#FF9933] h-1/3"></div>
@@ -541,7 +541,7 @@ export default function CheckoutModal({
                         value={editPhone}
                         onChange={(e) => setEditPhone(e.target.value)}
                         placeholder="Mobile number"
-                        className="flex-1 px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-emerald-600 transition-all font-semibold"
+                        className="flex-1 px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-primary transition-all font-semibold"
                       />
                     </div>
                   </div>
@@ -556,7 +556,7 @@ export default function CheckoutModal({
                       value={editEmail}
                       onChange={(e) => setEditEmail(e.target.value)}
                       placeholder="Email address"
-                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-emerald-600 transition-all font-semibold"
+                      className="w-full px-4 py-3 text-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-850 dark:text-zinc-200 focus:outline-none focus:border-primary transition-all font-semibold"
                     />
                   </div>
                 </div>
@@ -565,7 +565,7 @@ export default function CheckoutModal({
                 <div className="p-5 border-t" style={{ borderColor: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)" }}>
                   <button 
                     type="submit"
-                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-[#0a893e] hover:bg-[#07682f] text-white active:scale-95 cursor-pointer shadow-md shadow-emerald-500/10"
+                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-primary hover:bg-primary-hover text-white active:scale-95 cursor-pointer shadow-md shadow-primary/10"
                   >
                     Save contact info
                   </button>
@@ -594,13 +594,13 @@ export default function CheckoutModal({
                   {/* ASAP Option */}
                   <div 
                     onClick={() => setTimeOption("ASAP")}
-                    className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-850 hover:border-emerald-600/30 cursor-pointer transition-all text-left"
+                    className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-850 hover:border-primary/30 cursor-pointer transition-all text-left"
                   >
                     <div className="flex items-center gap-3 select-none">
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                        timeOption === "ASAP" ? "border-emerald-600 bg-transparent" : "border-zinc-300 dark:border-zinc-700 bg-transparent"
+                        timeOption === "ASAP" ? "border-primary bg-transparent" : "border-zinc-300 dark:border-zinc-700 bg-transparent"
                       }`}>
-                        {timeOption === "ASAP" && <div className="w-2.5 h-2.5 rounded-full bg-emerald-600" />}
+                        {timeOption === "ASAP" && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
                       </div>
                       <span className="text-xs font-bold">ASAP</span>
                     </div>
@@ -609,13 +609,13 @@ export default function CheckoutModal({
                   {/* Future Option */}
                   <div 
                     onClick={() => setTimeOption("future")}
-                    className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-850 hover:border-emerald-600/30 cursor-pointer transition-all text-left"
+                    className="flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-850 hover:border-primary/30 cursor-pointer transition-all text-left"
                   >
                     <div className="flex items-center gap-3 select-none">
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                        timeOption === "future" ? "border-emerald-600 bg-transparent" : "border-zinc-300 dark:border-zinc-700 bg-transparent"
+                        timeOption === "future" ? "border-primary bg-transparent" : "border-zinc-300 dark:border-zinc-700 bg-transparent"
                       }`}>
-                        {timeOption === "future" && <div className="w-2.5 h-2.5 rounded-full bg-emerald-600" />}
+                        {timeOption === "future" && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
                       </div>
                       <span className="text-xs font-semibold text-zinc-550 dark:text-zinc-400">Order for future</span>
                     </div>
@@ -626,7 +626,7 @@ export default function CheckoutModal({
                 <div className="p-5 border-t" style={{ borderColor: isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)" }}>
                   <button 
                     onClick={() => setModalView("checkout")}
-                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-[#0a893e] hover:bg-[#07682f] text-white active:scale-95 cursor-pointer shadow-md shadow-emerald-500/10"
+                    className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-primary hover:bg-primary-hover text-white active:scale-95 cursor-pointer shadow-md shadow-primary/10"
                   >
                     Select Timeslot
                   </button>

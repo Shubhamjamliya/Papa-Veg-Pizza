@@ -1242,17 +1242,17 @@ export default function MenuList() {
             {/* Footer: Fixed Bottom */}
             <div className="bg-white dark:bg-[#1f1f22] p-4 flex items-center justify-between gap-4 border-t border-zinc-200/50 dark:border-white/5 shrink-0">
               {/* Quantity Selector */}
-              <div className="flex items-center border border-[#0f8a42]/30 rounded-xl h-11 px-3 gap-4 bg-white dark:bg-transparent">
+              <div className="flex items-center border border-primary/30 rounded-xl h-11 px-3 gap-4 bg-white dark:bg-transparent">
                 <button
                   onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                  className="material-symbols-outlined text-[#0f8a42] hover:opacity-80 active:scale-95 cursor-pointer bg-transparent border-0 outline-none text-base font-bold flex items-center justify-center"
+                  className="material-symbols-outlined text-primary hover:opacity-80 active:scale-95 cursor-pointer bg-transparent border-0 outline-none text-base font-bold flex items-center justify-center"
                 >
                   remove
                 </button>
-                <span className="text-xs font-black text-[#0f8a42] w-4 text-center select-none">{quantity}</span>
+                <span className="text-xs font-black text-primary w-4 text-center select-none">{quantity}</span>
                 <button
                   onClick={() => setQuantity(prev => prev + 1)}
-                  className="material-symbols-outlined text-[#0f8a42] hover:opacity-80 active:scale-95 cursor-pointer bg-transparent border-0 outline-none text-base font-bold flex items-center justify-center"
+                  className="material-symbols-outlined text-primary hover:opacity-80 active:scale-95 cursor-pointer bg-transparent border-0 outline-none text-base font-bold flex items-center justify-center"
                 >
                   add
                 </button>
@@ -1261,7 +1261,7 @@ export default function MenuList() {
               {/* Add to Cart CTA */}
               <button
                 onClick={addCustomizedToCart}
-                className="flex-1 h-11 bg-[#0f8a42] hover:bg-[#0c7537] text-white font-extrabold rounded-xl text-xs uppercase cursor-pointer border-0 shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                className="flex-1 h-11 bg-primary hover:bg-primary-hover text-white font-extrabold rounded-xl text-xs uppercase cursor-pointer border-0 shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5"
               >
                 <span>Add Item</span>
                 <span className="opacity-50">|</span>
