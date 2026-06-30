@@ -76,10 +76,7 @@ export default function CategoryPage() {
   const BACKEND_ORIGIN = useMemo(() => API_BASE_URL.replace(/\/api\/?$/, ""), [])
   const slugify = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
   const buildRestaurantLink = (restaurant) => {
-    const restaurantSlug = slugify(restaurant?.name || "")
-    const dishId = restaurant?.dishId || restaurant?.categoryDish?.id || restaurant?.categoryDish?._id || null
-    if (!dishId) return `/user/restaurants/${restaurantSlug}`
-    return `/user/restaurants/${restaurantSlug}?dish=${encodeURIComponent(String(dishId))}`
+    return `/food/user/menu`
   }
   const normalizeCategoryToken = (value) =>
     String(value || "")
