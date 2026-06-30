@@ -584,6 +584,46 @@ export default function Home() {
     triggerToast("Added to basket!")
   }
 
+  // Banner click navigation routing
+  const handleBannerClick = (b) => {
+    if (b.redirectType === "category" && b.redirectId) {
+      navigate("/user/menu", { state: { category: b.redirectId } })
+      triggerToast(`Opening ${b.redirectId} category...`)
+    } else if (b.redirectType === "product" && b.redirectId) {
+      navigate(`/user/product/${b.redirectId}`)
+      triggerToast(`Opening product details...`)
+    } else if (b.redirectType === "coupon" && b.redirectId) {
+      navigate("/user/deals")
+      triggerToast("Opening deals...")
+    } else {
+      // Fallback matching algorithm by searching title & subtitle content
+      const titleLower = (b.title || "").toLowerCase()
+      const descLower = (b.subtitle || "").toLowerCase()
+      if (titleLower.includes("pizza") || descLower.includes("pizza")) {
+        navigate("/user/menu", { state: { category: "pizza" } })
+        triggerToast("Opening pizza menu...")
+      } else if (titleLower.includes("bread") || descLower.includes("bread") || titleLower.includes("side") || descLower.includes("side")) {
+        navigate("/user/menu", { state: { category: "bread" } })
+        triggerToast("Opening bread & sides menu...")
+      } else if (titleLower.includes("burger") || descLower.includes("burger")) {
+        navigate("/user/menu", { state: { category: "burger" } })
+        triggerToast("Opening burger menu...")
+      } else if (titleLower.includes("drink") || descLower.includes("drink") || titleLower.includes("beverage") || descLower.includes("beverage") || titleLower.includes("coke") || descLower.includes("coke")) {
+        navigate("/user/menu", { state: { category: "drinks" } })
+        triggerToast("Opening drinks menu...")
+      } else if (titleLower.includes("dessert") || descLower.includes("dessert") || titleLower.includes("sweet") || descLower.includes("sweet")) {
+        navigate("/user/menu", { state: { category: "desserts" } })
+        triggerToast("Opening desserts menu...")
+      } else if (titleLower.includes("pasta") || descLower.includes("pasta")) {
+        navigate("/user/menu", { state: { category: "pasta" } })
+        triggerToast("Opening pasta menu...")
+      } else {
+        navigate("/user/menu")
+        triggerToast("Opening Menu...")
+      }
+    }
+  }
+
   const totalCartCount = Object.values(cart).reduce((sum, qty) => sum + qty, 0)
 
   return (
@@ -849,7 +889,11 @@ export default function Home() {
           >
             <div className="carousel-track flex h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
               {banners.map((b) => (
-                <div key={b._id} className="min-w-full h-full relative group">
+                <div 
+                  key={b._id} 
+                  className="min-w-full h-full relative group cursor-pointer"
+                  onClick={() => handleBannerClick(b)}
+                >
                   <img className="w-full h-full object-cover" alt={b.title} src={b.mobileImageUrl || b.imageUrl || b.image || b.bannerUrl} />
                   {/* Deeper gradient overlay to guarantee readability */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent flex flex-col justify-end p-5">
