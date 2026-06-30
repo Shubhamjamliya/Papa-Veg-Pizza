@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import apiClient from "@food/api/axios";
 import { adminAPI } from "@food/api";
-import { mockBanners, mockStores, mockProducts, mockCategories, mockCoupons, mockCampaigns } from "../../../mockData";
+import { mockBanners, mockStores, mockProducts, mockCategories, mockCoupons, mockCampaigns } from "../../marketing/mockData";
 
 const LOCAL_STORAGE_KEY_BANNERS = "franchise_admin_banners";
 

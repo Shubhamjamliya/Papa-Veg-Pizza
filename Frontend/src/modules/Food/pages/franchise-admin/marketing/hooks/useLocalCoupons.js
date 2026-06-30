@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
-import { mockCoupons, mockCouponUsage, mockStores, mockProducts, mockCategories } from "../../../mockData";
+import { mockCoupons, mockCouponUsage, mockStores, mockProducts, mockCategories } from "../../marketing/mockData";
 
 export function useLocalCoupons() {
   const [loading, setLoading] = useState(false);

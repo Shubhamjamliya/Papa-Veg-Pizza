@@ -58,13 +58,13 @@ const cardVariants = {
   hidden: {
     opacity: 0,
     y: 40,
-    clipPath: "inset(100% 0% 0% 0% round 12px)",
+    clipPath: "inset(100% 0% 0% 0% round 16px)",
     scale: 1.0
   },
   visible: (index) => ({
     opacity: 1,
     y: 0,
-    clipPath: "inset(-30px -30px -30px -30px round 12px)",
+    clipPath: "inset(-30px -30px -30px -30px round 16px)",
     scale: 1.0,
     transition: {
       default: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 },
@@ -74,7 +74,7 @@ const cardVariants = {
   selected: (index) => ({
     opacity: 1,
     y: 0,
-    clipPath: "inset(-30px -30px -30px -30px round 12px)",
+    clipPath: "inset(-30px -30px -30px -30px round 16px)",
     scale: 1.08,
     transition: {
       default: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 },
@@ -850,10 +850,22 @@ export default function Home() {
             <div className="carousel-track flex h-full" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
               {banners.map((b) => (
                 <div key={b._id} className="min-w-full h-full relative group">
-                  <img className="w-full h-full object-cover" alt={b.title} src={b.image || b.bannerUrl} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-margin-mobile">
-                    <span className="text-secondary font-label-sm uppercase tracking-widest mb-1">{b.subtitle || b.bannerType || "Offer"}</span>
-                    <h2 className="font-headline-lg-mobile text-white text-xl">{b.title}</h2>
+                  <img className="w-full h-full object-cover" alt={b.title} src={b.mobileImageUrl || b.imageUrl || b.image || b.bannerUrl} />
+                  {/* Deeper gradient overlay to guarantee readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent flex flex-col justify-end p-5">
+                    {(b.bannerType || b.subtitle) && (
+                      <span className="bg-[#E53935] text-white text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md w-fit mb-1.5 shadow-sm">
+                        {b.bannerType || "Offer"}
+                      </span>
+                    )}
+                    <h2 className="font-headline-lg-mobile text-white text-base font-black leading-tight" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+                      {b.title}
+                    </h2>
+                    {b.subtitle && (
+                      <p className="text-zinc-200 text-[10px] font-medium mt-1 leading-snug line-clamp-2 max-w-[85%]" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.8)" }}>
+                        {b.subtitle}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -960,14 +972,18 @@ export default function Home() {
                 View Deals
               </button>
             </motion.div>
-            <div ref={dealsRef} className="flex overflow-x-auto hide-scrollbar gap-gutter px-margin-mobile pb-2">
+            <div ref={dealsRef} className="flex overflow-x-auto hide-scrollbar gap-4 px-margin-mobile pb-3 pt-1">
               {deals.map((deal, index) => {
                 const badgeColorClass =
                   deal.badge === "Bestseller"
-                    ? "bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20"
+                    ? "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
                     : deal.badge === "Value"
-                      ? "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20"
-                      : "bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20"
+                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                      : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                
+                const isClaimed = activeDeal === deal.id
+                const isCouponCode = deal.title && /^[A-Z0-9_-]+$/.test(deal.title)
+
                 return (
                   <motion.div
                     key={deal.id}
@@ -981,31 +997,74 @@ export default function Home() {
                         triggerToast("Deal claimed successfully!");
                       });
                     }}
-                    className={`min-w-[165px] max-w-[165px] rounded-xl overflow-hidden flex flex-col justify-between h-[160px] border transition-all duration-300 cursor-pointer select-none ${activeDeal === deal.id
-                        ? "border-[#E53935]/40 shadow-lg shadow-[#E53935]/5 active-service-card"
-                        : "border-black/5 dark:border-white/5"
-                      } service-glass-card`}
+                    className={`min-w-[165px] max-w-[165px] rounded-2xl flex flex-col justify-between h-[175px] border transition-all duration-300 cursor-pointer select-none relative overflow-hidden ${
+                      isClaimed
+                        ? "border-[#E53935]/45 shadow-md shadow-[#E53935]/8 dark:shadow-[#E53935]/4"
+                        : "border-zinc-200/60 dark:border-zinc-800/40 hover:border-zinc-300 dark:hover:border-zinc-700"
+                    } ${
+                      isDarkMode 
+                        ? "bg-gradient-to-b from-zinc-900/90 to-zinc-950/95" 
+                        : "bg-gradient-to-b from-white to-zinc-50/80"
+                    }`}
                   >
-                    <div className="p-3 pt-3 flex flex-col justify-between flex-1">
-                      <div className="space-y-1 mb-2">
-                        <div className={`inline-block w-fit px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${badgeColorClass}`}>
+                    {/* Top Section */}
+                    <div className="p-3 pt-3 flex flex-col flex-1 justify-start">
+                      <div className="flex flex-col items-start gap-1">
+                        <div className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${badgeColorClass}`}>
                           {deal.badge}
                         </div>
-                        <h4 className={`font-sans text-[11px] font-bold leading-tight line-clamp-2 ${isDarkMode ? "text-white" : "text-zinc-900"}`}>{deal.title}</h4>
-                        <p className={`text-[10px] opacity-70 leading-snug line-clamp-2 ${isDarkMode ? "text-zinc-400" : "text-zinc-500"}`}>{deal.description}</p>
+                        
+                        {isCouponCode ? (
+                          <div className="font-mono text-[11px] font-extrabold tracking-widest text-[#E53935] dark:text-[#ff5252] bg-[#E53935]/5 dark:bg-[#ff5252]/10 border border-dashed border-[#E53935]/20 dark:border-[#ff5252]/30 px-2 py-0.5 rounded mt-1 text-center select-all">
+                            {deal.title}
+                          </div>
+                        ) : (
+                          <h4 className={`font-sans text-[11px] font-extrabold leading-tight line-clamp-2 mt-1 ${isDarkMode ? "text-white" : "text-zinc-900"}`}>
+                            {deal.title}
+                          </h4>
+                        )}
+                        
+                        <p className={`text-[10px] leading-snug line-clamp-2 mt-1.5 opacity-75 ${isDarkMode ? "text-zinc-400" : "text-zinc-500"}`}>
+                          {deal.description}
+                        </p>
                       </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveDeal(deal.id);
-                          checkLocation(() => {
-                            triggerToast("Deal claimed successfully!");
-                          });
-                        }}
-                        className="w-full h-8 bg-primary text-on-primary rounded-lg font-bold text-[9px] tracking-wider uppercase cursor-pointer hover:bg-red-700 transition-colors btn-3d-primary flex items-center justify-center"
-                      >
-                        Claim Deal
-                      </button>
+                    </div>
+
+                    {/* Ticket Tear Line & Cutouts */}
+                    <div className="relative w-full flex items-center justify-between py-1 z-10">
+                      {/* Left Cutout */}
+                      <div className="absolute -left-[7px] w-3 h-3 rounded-full bg-[#FAF9F6] dark:bg-[#111111] border-r border-zinc-200/60 dark:border-zinc-800/40 z-10"></div>
+                      {/* Right Cutout */}
+                      <div className="absolute -right-[7px] w-3 h-3 rounded-full bg-[#FAF9F6] dark:bg-[#111111] border-l border-zinc-200/60 dark:border-zinc-800/40 z-10"></div>
+                      {/* Dashed Line */}
+                      <div className="w-full border-t border-dashed border-zinc-200/80 dark:border-zinc-800/80 z-0"></div>
+                    </div>
+
+                    {/* Bottom Section */}
+                    <div className="p-3 pt-1">
+                      {isClaimed ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                          className="w-full h-8 bg-emerald-600 dark:bg-emerald-600 text-white rounded-lg font-bold text-[9px] tracking-wider uppercase flex items-center justify-center gap-1 transition-all duration-300 cursor-default"
+                        >
+                          Claimed ✓
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveDeal(deal.id);
+                            checkLocation(() => {
+                              triggerToast("Deal claimed successfully!");
+                            });
+                          }}
+                          className="w-full h-8 bg-primary text-on-primary rounded-lg font-bold text-[9px] tracking-wider uppercase cursor-pointer hover:bg-red-700 transition-colors btn-3d-primary flex items-center justify-center"
+                        >
+                          Claim Deal
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 )

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import apiClient from "@food/api/axios";
 import { adminAPI } from "@food/api";
-import { mockCampaigns, mockCampaignPerformance, mockStores } from "../mockdata";
+import { mockCampaigns, mockCampaignPerformance, mockStores } from "../../marketing/mockData";
 
 // Key for local storage persistence fallback
 const LOCAL_STORAGE_KEY_CAMPAIGNS = "franchise_admin_campaigns";
@@ -55,7 +55,7 @@ export function useCampaigns() {
   // Initialize data (try local storage fallback first, then mock data)
   useEffect(() => {
     fetchStoresList();
-    
+
     // Load Campaigns
     const localCamps = localStorage.getItem(LOCAL_STORAGE_KEY_CAMPAIGNS);
     const localPerf = localStorage.getItem(LOCAL_STORAGE_KEY_PERFORMANCE);
@@ -116,10 +116,10 @@ export function useCampaigns() {
   // Calculate Dashboard KPIs (5 Cards)
   const dashboardStats = useMemo(() => {
     const totalCount = syncedCampaignsList.length;
-    
+
     // 1. Running Campaigns: status === "active"
     const runningCount = syncedCampaignsList.filter(c => c.status === "active").length;
-    
+
     // 2. Scheduled Campaigns: status === "draft" (or status === "scheduled")
     const scheduledCount = syncedCampaignsList.filter(c => c.status === "draft" || c.status === "scheduled").length;
 
@@ -263,7 +263,7 @@ export function useCampaigns() {
       return res.data;
     } catch (err) {
       console.log("API Create Campaign failed, executing mock fallback.");
-      
+
       const newCamp = {
         ...payload,
         _id: `camp-${Date.now()}`,
@@ -293,7 +293,7 @@ export function useCampaigns() {
       setRawPerformance(updatedPerf);
 
       syncToLocalStorage(updatedCamps, updatedPerf);
-      
+
       toast.success(`Campaign "${payload.campaignName}" created successfully!`);
       return newCamp;
     } finally {
@@ -310,10 +310,10 @@ export function useCampaigns() {
       return res.data;
     } catch (err) {
       console.log("API Update Campaign failed, executing mock fallback.");
-      
+
       const updatedCamps = rawCampaigns.map(c => (c._id === id ? { ...c, ...payload } : c));
       setRawCampaigns(updatedCamps);
-      
+
       syncToLocalStorage(updatedCamps, null);
       toast.success("Campaign updated successfully!");
       return true;
@@ -331,11 +331,11 @@ export function useCampaigns() {
       return true;
     } catch (err) {
       console.log("API Delete Campaign failed, executing mock fallback.");
-      
+
       const campaignName = rawCampaigns.find(c => c._id === id)?.campaignName || "Campaign";
       const updatedCamps = rawCampaigns.filter(c => c._id !== id);
       setRawCampaigns(updatedCamps);
-      
+
       // Keep performance clean
       const updatedPerf = { ...rawPerformance };
       delete updatedPerf[id];
@@ -358,10 +358,10 @@ export function useCampaigns() {
       return res.data;
     } catch (err) {
       console.log("API Update status failed, executing mock fallback.");
-      
+
       const updatedCamps = rawCampaigns.map(c => (c._id === id ? { ...c, status: newStatus } : c));
       setRawCampaigns(updatedCamps);
-      
+
       syncToLocalStorage(updatedCamps, null);
       toast.success(`Campaign is now ${newStatus === "active" ? "Active" : "Paused"}.`);
       return true;
@@ -377,7 +377,7 @@ export function useCampaigns() {
       return res.data?.data || res.data;
     } catch (err) {
       console.log("API Performance fetch failed, returning mock analytics.");
-      
+
       const campaign = rawCampaigns.find(c => c._id === id);
       const perf = rawPerformance[id] || {
         _id: `perf-mock`,
