@@ -23,6 +23,7 @@ export default function StoreOperationsLayout() {
     const next = !isCollapsed
     setIsCollapsed(next)
     localStorage.setItem("store_sidebar_collapsed", next ? "true" : "false")
+    window.dispatchEvent(new CustomEvent("sidebarCollapseChanged", { detail: next }))
   }
 
   return (

@@ -24,12 +24,12 @@ export default function KitchenStaff() {
   // Main Data States
   const [staffList, setStaffList] = useState(initialKitchenStaff)
   const [kpis, setKpis] = useState(getKitchenDashboardStats(initialKitchenStaff))
-  
+
   // Table state
   const [filteredStaff, setFilteredStaff] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
-  
+
   // Filter States
   const [searchVal, setSearchVal] = useState("")
   const [debouncedSearch, setDebouncedSearch] = useState("")
@@ -39,17 +39,17 @@ export default function KitchenStaff() {
   const [experienceFilter, setExperienceFilter] = useState("All")
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
-  
+
   // Pagination & Sorting
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [sortKey, setSortKey] = useState("name")
   const [sortOrder, setSortOrder] = useState("asc") // "asc" | "desc"
-  
+
   // Modals & Drawers Control
   const [selectedStaff, setSelectedStaff] = useState(null)
   const [activeMenuId, setActiveMenuId] = useState(null)
-  
+
   const [isAddEditOpen, setIsAddEditOpen] = useState(false)
   const [isViewOpen, setIsViewOpen] = useState(false)
   const [isAssignStoreOpen, setIsAssignStoreOpen] = useState(false)
@@ -59,7 +59,7 @@ export default function KitchenStaff() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isShiftScheduleOpen, setIsShiftScheduleOpen] = useState(false)
   const [drawerTab, setDrawerTab] = useState("profile")
-  
+
   // Toast notifications
   const [toast, setToast] = useState(null)
 
@@ -81,7 +81,7 @@ export default function KitchenStaff() {
   const processData = useCallback(() => {
     setLoading(true)
     let list = [...staffList]
-    
+
     // Soft-delete filter
     list = list.filter((s) => s.status !== "DELETED")
 
@@ -189,7 +189,7 @@ export default function KitchenStaff() {
         `WebSocket: Inventory usage audit completed by ${randomStaff.name} at Oven Station`,
         `WebSocket: Temperature threshold alert resolved by ${randomStaff.name}`
       ]
-      
+
       const randomEvent = events[Math.floor(Math.random() * events.length)]
       showToast(randomEvent, "info")
     }, 15000)
@@ -245,15 +245,15 @@ export default function KitchenStaff() {
         prev.map((s) =>
           s.id === selectedStaff.id
             ? {
-                ...s,
-                ...payload,
-                personalDetails: {
-                  ...s.personalDetails,
-                  address: payload.address,
-                  emergencyContact: payload.emergencyContact,
-                  salary: payload.salary
-                }
+              ...s,
+              ...payload,
+              personalDetails: {
+                ...s.personalDetails,
+                address: payload.address,
+                emergencyContact: payload.emergencyContact,
+                salary: payload.salary
               }
+            }
             : s
         )
       )
@@ -328,7 +328,7 @@ export default function KitchenStaff() {
 
   return (
     <div className="px-4 pb-4 pt-4 max-w-7xl mx-auto space-y-4 text-zinc-900 dark:text-zinc-100">
-      
+
       {/* PAGE HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
@@ -336,13 +336,13 @@ export default function KitchenStaff() {
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">Manage kitchen employees, shifts schedule, performance metrics, and compliance audits.</p>
         </div>
         <div className="flex items-center gap-1.5">
-          <button
+          {/* <button
             onClick={() => { setSelectedStaff(null); setIsAddEditOpen(true); }}
             className="flex items-center gap-1 px-3 py-2 text-white bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-xl text-xs font-bold shadow-md shadow-[var(--primary)]/10 transition-all cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
             Add Staff
-          </button>
+          </button> */}
           <button
             onClick={handleExportCSV}
             className="flex items-center gap-1 px-3 py-2 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-950 rounded-xl text-xs font-bold transition-colors cursor-pointer"
@@ -392,7 +392,7 @@ export default function KitchenStaff() {
       {/* FILTER BAR */}
       <div className="bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 rounded-xl p-3 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          
+
           {/* Search bar */}
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-zinc-400" />
@@ -493,7 +493,7 @@ export default function KitchenStaff() {
 
       {/* KITCHEN STAFF TABLE */}
       <div className="bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 rounded-xl overflow-hidden shadow-xs">
-        
+
         {loading ? (
           /* Table Loader Skeleton */
           <div className="p-6 space-y-4">
@@ -544,7 +544,7 @@ export default function KitchenStaff() {
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-850 text-[11px] text-zinc-700 dark:text-zinc-350">
                 {filteredStaff.map((staff) => {
                   const store = initialStores.find((s) => s._id === staff.storeId)
-                  
+
                   // Mock speed and rating for display from employee seed
                   const seed = parseInt(staff.id.split("-")[1] || 1)
                   const displaySpeed = (8.5 + (seed % 6) * 0.7).toFixed(1)
@@ -575,13 +575,12 @@ export default function KitchenStaff() {
                         </div>
                       </td>
                       <td className="px-3 py-2">
-                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
-                          staff.status === "Active"
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${staff.status === "Active"
                             ? "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-650"
                             : staff.status === "On Leave"
                               ? "bg-amber-50 dark:bg-amber-950/20 text-amber-650"
                               : "bg-red-50 dark:bg-red-950/20 text-red-650"
-                        }`}>
+                          }`}>
                           {staff.status}
                         </span>
                       </td>
@@ -772,13 +771,12 @@ export default function KitchenStaff() {
 
       {/* Floating Success/Info Toast Alerts */}
       {toast && (
-        <div className={`fixed bottom-4 right-4 z-50 px-5 py-3 rounded-2xl border shadow-2xl flex items-center gap-2 animate-slide-in-right ${
-          toast.type === "warning"
+        <div className={`fixed bottom-4 right-4 z-50 px-5 py-3 rounded-2xl border shadow-2xl flex items-center gap-2 animate-slide-in-right ${toast.type === "warning"
             ? "bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 border-rose-250"
             : toast.type === "info"
               ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border-blue-250"
               : "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-650 dark:text-emerald-400 border-emerald-250"
-        }`}>
+          }`}>
           <span className="text-xs font-bold">{toast.message}</span>
         </div>
       )}
