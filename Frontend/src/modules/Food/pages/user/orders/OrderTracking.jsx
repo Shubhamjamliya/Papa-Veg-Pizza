@@ -1509,7 +1509,7 @@ export default function OrderTracking() {
                 transition={{ delay: 1.5 }}
                 className="mt-8"
               >
-                <div className="w-8 h-8 border-2 border-[#7e3866] border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full animate-spin mx-auto" />
                 <p className="text-sm text-gray-500 mt-3">Loading order details...</p>
               </motion.div>
 
@@ -1519,7 +1519,7 @@ export default function OrderTracking() {
                 transition={{ delay: 2.0 }}
                 className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800"
               >
-                <div className="flex items-center justify-center gap-2 text-[#7e3866] dark:text-orange-400 font-medium cursor-pointer hover:opacity-80 transition-opacity" onClick={() => navigate('/user/profile/report-safety-emergency', { state: { returnTo: location.pathname } })}>
+                <div className="flex items-center justify-center gap-2 text-[var(--primary)] dark:text-[var(--primary)] font-medium cursor-pointer hover:opacity-80 transition-opacity" onClick={() => navigate('/user/profile/report-safety-emergency', { state: { returnTo: location.pathname } })}>
                   <Shield className="w-4 h-4" />
                   <span className="text-sm">Learn about delivery partner safety</span>
                 </div>
@@ -1622,7 +1622,7 @@ export default function OrderTracking() {
               {orderStatus === 'preparing' && (
                 <>
                   <span className="w-1 h-1 rounded-full bg-white" />
-                  <span className="text-sm text-orange-200">On time</span>
+                  <span className="text-sm text-white/80">On time</span>
                 </>
               )}
               <motion.button
@@ -1698,7 +1698,7 @@ export default function OrderTracking() {
                 currentStatus.iconType === 'rider' ? 'bg-blue-50 dark:bg-blue-900/20' : 
                 currentStatus.iconType === 'cancelled' ? 'bg-red-50 dark:bg-red-900/20' : 
                 currentStatus.iconType === 'delivered' ? 'bg-green-50 dark:bg-green-900/20' : 
-                'bg-orange-50 dark:bg-orange-900/20'
+                'bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20'
               }`}>
                 {currentStatus.iconType === 'rider' ? (
                   <div 
@@ -1714,7 +1714,7 @@ export default function OrderTracking() {
                     <Check className="w-full h-full" />
                   </div>
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center p-2 text-orange-500">
+                  <div className="w-full h-full flex items-center justify-center p-2 text-[var(--primary)]">
                     <Receipt className="w-full h-full" />
                   </div>
                 )}
@@ -1730,17 +1730,17 @@ export default function OrderTracking() {
         {/* Rating Logic: Show rating card after delivery */}
         {orderStatus === 'delivered' && !isOrderRated && (
           <motion.div
-            className="bg-white dark:bg-[#1a1a1a] rounded-xl p-6 shadow-sm border-2 border-[#7e3866]/10 relative overflow-hidden group"
+            className="bg-white dark:bg-[#1a1a1a] rounded-xl p-6 shadow-sm border-2 border-[var(--primary)]/15 relative overflow-hidden group"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
           >
             {/* Background pattern decoration */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-[#7e3866]/5 rounded-full blur-2xl group-hover:bg-[#7e3866]/10 transition-colors" />
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-[var(--primary)]/5 rounded-full blur-2xl group-hover:bg-[var(--primary)]/10 transition-colors" />
             
             <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-16 h-16 bg-[#7e3866]/10 dark:bg-[#7e3866]/20 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300">
-                <Star className="w-8 h-8 text-[#7e3866] fill-[#7e3866]" />
+              <div className="w-16 h-16 bg-[var(--primary)]/10 dark:bg-[var(--primary)]/20 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300">
+                <Star className="w-8 h-8 text-[var(--primary)] fill-[var(--primary)]" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Enjoyed your food?</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 mb-6 max-w-[280px]">
@@ -1749,7 +1749,7 @@ export default function OrderTracking() {
               
               <Button 
                 onClick={handleOpenRating}
-                className="w-full max-w-[200px] bg-[#7e3866] hover:bg-[#55254b] text-white font-bold h-12 rounded-xl border-none shadow-lg shadow-[#7e3866]/20"
+                className="w-full max-w-[200px] bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold h-12 rounded-xl border-none shadow-lg shadow-[var(--primary)]/20"
               >
                 Rate Order
               </Button>
@@ -1771,7 +1771,7 @@ export default function OrderTracking() {
               </h3>
               <button 
                 onClick={handleOpenRating}
-                className="text-[10px] font-bold text-[#7e3866] dark:text-orange-400 uppercase tracking-widest hover:opacity-80 transition-opacity"
+                className="text-[10px] font-bold text-[var(--primary)] dark:text-[var(--primary)] uppercase tracking-widest hover:opacity-80 transition-opacity"
               >
                 Edit Rating
               </button>
@@ -1998,7 +1998,7 @@ export default function OrderTracking() {
           transition={{ delay: 0.75 }}
         >
           <div className="flex items-center gap-3 p-4 border-b border-dashed border-gray-200 dark:border-gray-800">
-            <div className="w-12 h-12 rounded-full bg-orange-100 overflow-hidden flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-full bg-[var(--primary)]/10 overflow-hidden flex items-center justify-center flex-shrink-0">
               <div
                 dangerouslySetInnerHTML={{ __html: SAFE_RESTAURANT_PIN }}
                 className="w-7 h-7 [&_svg]:w-full [&_svg]:h-full [&_svg]:block"
@@ -2009,11 +2009,11 @@ export default function OrderTracking() {
               <p className="text-sm text-gray-500 dark:text-gray-400">{order.restaurantAddress || 'Restaurant location'}</p>
             </div>
             <motion.button
-              className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center"
+              className="w-10 h-10 rounded-full bg-[var(--primary)]/10 flex items-center justify-center"
               onClick={handleCallRestaurant}
               whileTap={{ scale: 0.9 }}
             >
-              <Phone className="w-5 h-5 text-[#7e3866]" />
+              <Phone className="w-5 h-5 text-[var(--primary)]" />
             </motion.button>
           </div>
 
@@ -2192,10 +2192,10 @@ export default function OrderTracking() {
 
             {/* Delivery Instructions Section */}
             {order?.note && (
-              <div className="bg-orange-50/50 rounded-xl p-4 border border-orange-100 flex gap-3">
-                <MessageSquare className="w-5 h-5 text-[#7e3866] shrink-0 mt-0.5" />
+              <div className="bg-[var(--primary)]/5 rounded-xl p-4 border border-[var(--primary)]/10 flex gap-3">
+                <MessageSquare className="w-5 h-5 text-[var(--primary)] shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-xs text-#55254b font-bold uppercase tracking-wider mb-1">Delivery Instructions</p>
+                  <p className="text-xs text-[var(--primary-hover)] font-bold uppercase tracking-wider mb-1">Delivery Instructions</p>
                   <p className="text-sm text-gray-800 leading-relaxed font-medium capitalize">
                     {order.note}
                   </p>
@@ -2302,7 +2302,7 @@ export default function OrderTracking() {
       <Dialog open={isInstructionsModalOpen} onOpenChange={setIsInstructionsModalOpen}>
         <DialogContent className="sm:max-w-md w-[95vw] rounded-3xl p-6 border-0 shadow-2xl bg-white dark:bg-[#1a1a1a] max-h-[90vh] overflow-y-auto z-[200]">
           <DialogHeader className="mb-2">
-            <DialogTitle className="text-xl font-bold bg-gradient-to-r from-#55254b to-orange-400 bg-clip-text text-transparent">
+            <DialogTitle className="text-xl font-bold bg-gradient-to-r from-[var(--primary-hover)] to-[var(--primary)] bg-clip-text text-transparent">
               Delivery Instructions
             </DialogTitle>
           </DialogHeader>
@@ -2314,12 +2314,12 @@ export default function OrderTracking() {
               value={deliveryInstructions}
               onChange={(e) => setDeliveryInstructions(e.target.value)}
               placeholder="E.g. Ring the doorbell, leave at the front desk..."
-              className="min-h-[120px] resize-none border-gray-200 focus:ring-[#7e3866] rounded-xl bg-gray-50 text-base"
+              className="min-h-[120px] resize-none border-gray-200 focus:ring-[var(--primary)] rounded-xl bg-gray-50 text-base"
             />
             <Button 
               onClick={handleUpdateInstructions} 
               disabled={isUpdatingInstructions}
-              className="w-full bg-gradient-to-r from-[#7e3866] to-amber-500 hover:from-#55254b hover:to-amber-600 text-white font-bold h-12 rounded-xl border-none"
+              className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary-hover)] hover:from-[var(--primary-hover)] hover:to-[var(--primary-hover)] text-white font-bold h-12 rounded-xl border-none"
             >
               {isUpdatingInstructions ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Save Instructions"}
             </Button>
@@ -2332,17 +2332,17 @@ export default function OrderTracking() {
         <DialogContent className="sm:max-w-md w-[95vw] rounded-3xl p-6 border-0 shadow-2xl bg-white dark:bg-[#1a1a1a] max-h-[90vh] overflow-y-auto">
           <DialogHeader className="mb-2">
             <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Star className="w-6 h-6 text-[#7e3866] fill-[#7e3866]" />
+              <Star className="w-6 h-6 text-[var(--primary)] fill-[var(--primary)]" />
               Rate your Experience
             </DialogTitle>
           </DialogHeader>
-
+ 
           <div className="space-y-6 py-2">
             {/* Restaurant Rating */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <p className="font-semibold text-gray-800 dark:text-gray-200">How was the food?</p>
-                <span className="text-xs px-2 py-0.5 bg-orange-50 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400 rounded-full font-medium">Restaurant</span>
+                <span className="text-xs px-2 py-0.5 bg-[var(--primary)]/10 text-[var(--primary)] dark:bg-[var(--primary)]/20 dark:text-[var(--primary)] rounded-full font-medium">Restaurant</span>
               </div>
               <div className="flex justify-center gap-3">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -2409,7 +2409,7 @@ export default function OrderTracking() {
             <Button
               onClick={handleSubmitRating}
               disabled={submittingRating || selectedRestaurantRating === null || (hasDeliveryPartner && selectedDeliveryRating === null)}
-              className="w-full bg-[#7e3866] hover:bg-[#55254b] text-white font-bold h-14 rounded-2xl shadow-lg mt-4"
+              className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold h-14 rounded-2xl shadow-lg mt-4"
             >
               {submittingRating ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Submit Feedback"}
             </Button>

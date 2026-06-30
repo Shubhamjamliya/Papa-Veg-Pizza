@@ -263,11 +263,10 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("pizza")
   const [favorites, setFavorites] = useState([])
   const [cart, setCart] = useState(() => {
-    const storedCart = JSON.parse(localStorage.getItem("userCart") || "{}")
-    if (Object.keys(storedCart).length > 0) return storedCart
-    return {
-      "margherita-supreme": 1,
-      "farmhouse-delight": 1
+    try {
+      return JSON.parse(localStorage.getItem("userCart") || "{}")
+    } catch (e) {
+      return {}
     }
   })
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -367,9 +366,11 @@ export default function Home() {
   // Sync cart from localStorage dynamically
   useEffect(() => {
     const handleCartSync = () => {
-      const storedCart = JSON.parse(localStorage.getItem("userCart") || "{}")
-      if (Object.keys(storedCart).length > 0) {
+      try {
+        const storedCart = JSON.parse(localStorage.getItem("userCart") || "{}")
         setCart(storedCart)
+      } catch (e) {
+        setCart({})
       }
     }
     window.addEventListener("cartUpdated", handleCartSync)

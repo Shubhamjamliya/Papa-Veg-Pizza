@@ -459,7 +459,27 @@ export default function MenuList() {
     }
   }, [location.state])
   const [locationName, setLocationName] = useState(localStorage.getItem("deliveryAddress") || "")
-  const [cart, setCart] = useState({})
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("userCart") || "{}")
+    } catch (e) {
+      return {}
+    }
+  })
+
+  // Sync cart from localStorage dynamically
+  useEffect(() => {
+    const handleCartSync = () => {
+      try {
+        const storedCart = JSON.parse(localStorage.getItem("userCart") || "{}")
+        setCart(storedCart)
+      } catch (e) {
+        setCart({})
+      }
+    }
+    window.addEventListener("cartUpdated", handleCartSync)
+    return () => window.removeEventListener("cartUpdated", handleCartSync)
+  }, [])
 
   // Custom Customize Modal States
   const [customizeItem, setCustomizeItem] = useState(null)

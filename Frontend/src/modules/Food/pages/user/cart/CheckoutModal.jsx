@@ -5,6 +5,7 @@ import { useCart } from "@food/context/CartContext"
 import { useProfile } from "@food/context/ProfileContext"
 import { useOrders } from "@food/context/OrdersContext"
 import { motion, AnimatePresence } from "framer-motion"
+import RazorpayPayment from "./RazorpayPayment"
 
 export default function CheckoutModal({
   show,
@@ -19,7 +20,7 @@ export default function CheckoutModal({
   total
 }) {
   const navigate = useNavigate()
-  const { replaceCart } = useCart()
+  const { replaceCart, clearCart } = useCart()
   const { addAddress, paymentMethods } = useProfile()
   const { createOrder } = useOrders()
 
@@ -150,8 +151,13 @@ export default function CheckoutModal({
     // Clear cart in storage & context
     try {
       localStorage.removeItem("userCart")
+      localStorage.removeItem("cart")
     } catch (e) {}
+    if (typeof clearCart === "function") {
+      clearCart()
+    }
     replaceCart([]) // clear cart in context
+    window.dispatchEvent(new Event("cartUpdated"))
 
     onClose()
 
@@ -470,7 +476,7 @@ export default function CheckoutModal({
                   </div>
 
                   <button 
-                    onClick={handleSaveAddressAndCheckout}
+                    onClick={() => setModalView("payment")}
                     className="w-full h-12 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border-0 bg-[#0a893e] hover:bg-[#07682f] text-white active:scale-95 cursor-pointer shadow-md shadow-emerald-500/10"
                   >
                     Continue to payment
@@ -626,6 +632,15 @@ export default function CheckoutModal({
                   </button>
                 </div>
               </>
+            )}
+
+            {modalView === "payment" && (
+              <RazorpayPayment
+                total={total}
+                restaurantName={cartItems[0]?.restaurant || "Papa Veg Pizza"}
+                onClose={() => setModalView("checkout")}
+                onPaymentSuccess={handleSaveAddressAndCheckout}
+              />
             )}
           </motion.div>
         </div>
