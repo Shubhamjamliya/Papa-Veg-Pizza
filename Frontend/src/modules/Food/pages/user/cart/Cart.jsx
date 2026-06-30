@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Tag, ChevronRight, Gift, ChevronDown, ChevronUp } fro
 import { useCart } from "@food/context/CartContext"
 import ApplyCoupon from "./ApplyCoupon"
 import AddGiftCard from "./AddGiftCard"
+import CheckoutModal from "./CheckoutModal"
 
 const ALL_PRODUCTS = {
   "margherita-supreme": {
@@ -123,6 +124,9 @@ const ALL_PRODUCTS = {
 export default function Cart() {
   const navigate = useNavigate()
   const { replaceCart } = useCart()
+
+  // Checkout Modal State
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
 
   // State Management
   const [cartItems, setCartItems] = useState([])
@@ -712,7 +716,7 @@ export default function Cart() {
         <button
           onClick={() => {
             if (cartItems.length > 0) {
-              navigate("/user/cart/checkout")
+              setShowCheckoutModal(true)
             }
           }}
           disabled={cartItems.length === 0}
@@ -738,6 +742,20 @@ export default function Cart() {
         show={showGiftCardModal}
         onClose={() => setShowGiftCardModal(false)}
         onApply={(card) => setAppliedGiftCard(card)}
+      />
+
+      {/* Checkout Modal Overlay */}
+      <CheckoutModal
+        show={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        onOpenGiftCard={() => setShowGiftCardModal(true)}
+        cartItems={cartItems}
+        subtotal={subtotal}
+        discount={discount}
+        handlingCharge={handlingCharge}
+        cgst={cgst}
+        sgst={sgst}
+        total={total}
       />
       </div>
     </div>
