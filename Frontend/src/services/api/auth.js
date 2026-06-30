@@ -10,6 +10,7 @@ const AUTH = {
   USER_REQUEST_OTP: "/food/auth/user/request-otp",
   USER_VERIFY_OTP: "/food/auth/user/verify-otp",
   ADMIN_LOGIN: "/food/auth/admin/login",
+  STORE_LOGIN: "/food/auth/store/login",
   RESTAURANT_REQUEST_OTP: "/food/auth/restaurant/request-otp",
   RESTAURANT_VERIFY_OTP: "/food/auth/restaurant/verify-otp",
   DELIVERY_REQUEST_OTP: "/food/auth/delivery/request-otp",
@@ -126,6 +127,32 @@ export function adminLogin(email, password) {
     password: passwordStr,
   });
 }
+
+/**
+ * Store user login (email + password).
+ * Validation: email required and valid, password required and min 6 characters.
+ */
+export function storeLogin(email, password) {
+  const trimmedEmail = typeof email === "string" ? email.trim() : "";
+  if (!trimmedEmail) {
+    return Promise.reject(new Error("Email is required"));
+  }
+  if (!EMAIL_REGEX.test(trimmedEmail)) {
+    return Promise.reject(new Error("Please enter a valid email address"));
+  }
+  const passwordStr = String(password ?? "");
+  if (!passwordStr) {
+    return Promise.reject(new Error("Password is required"));
+  }
+  if (passwordStr.length < 6) {
+    return Promise.reject(new Error("Password must be at least 6 characters"));
+  }
+  return adminClient.post(AUTH.STORE_LOGIN, {
+    email: trimmedEmail,
+    password: passwordStr,
+  });
+}
+
 
 /**
  * Refresh access token.

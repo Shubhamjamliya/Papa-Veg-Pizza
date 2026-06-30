@@ -120,7 +120,7 @@ export default function Navbar({ onToggleSidebar, role, onRoleChange }) {
     localStorage.removeItem("store_authenticated")
     localStorage.removeItem("store_user")
     localStorage.removeItem("store_role")
-    navigate("/store-operations/login", { replace: true })
+    navigate("/store-operation/login", { replace: true })
   }
 
   const markAllRead = () => {

@@ -42,6 +42,11 @@ const FranchiseAdminRouter = lazy(() => import('../modules/Food/pages/franchise-
 const SuperAdminRouter = lazy(() => import('../modules/Food/pages/superadmin/routes/SuperAdminRouter'))
 const StoreManagerRouter = lazy(() => import('../modules/Food/pages/store-manager/routes/StoreManagerRouter'))
 
+const SuperAdminLogin = lazy(() => import('../modules/Food/pages/superadmin/auth/SuperAdminLogin'))
+const StoreLogin = lazy(() => import('../modules/Food/pages/store-manager/auth/StoreLogin'))
+const FranchiseAdminLogin = lazy(() => import('../modules/Food/pages/franchise-admin/auth/AdminLogin'))
+
+
 const AppRoutes = () => {
   const location = useLocation()
 
@@ -77,6 +82,16 @@ const AppRoutes = () => {
 
       {/* Food Module - Handle both /food and root / for the user app */}
       <Route path="/food/*" element={<FoodAppWrapper />} />
+
+      {/* Unified Authentication Routes */}
+      <Route path="/superadmin/login" element={<Suspense fallback={<PageLoader />}><SuperAdminLogin /></Suspense>} />
+      <Route path="/admin/login" element={<Navigate to="/superadmin/login" replace />} />
+      <Route path="/franchise-admin/login" element={<Suspense fallback={<PageLoader />}><FranchiseAdminLogin /></Suspense>} />
+      <Route path="/store-operation/login" element={<Suspense fallback={<PageLoader />}><StoreLogin /></Suspense>} />
+
+      {/* Redirects for Store operations shortcut URLs */}
+      <Route path="/store/dashboard" element={<Navigate to="/store-operations/dashboard" replace />} />
+      <Route path="/store/my-tasks" element={<Navigate to="/store-operations/tasks" replace />} />
 
       {/* Global Franchise Admin Portal */}
       <Route path="/franchise-admin/*" element={<FranchiseAdminRouter />} />

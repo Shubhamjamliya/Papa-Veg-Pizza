@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate, Link } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { adminAPI } from "@food/api"
 import { setAuthData } from "@food/utils/auth"
-import { ShieldCheck, UserCog, Star, Heart, ArrowRight, Loader2, Mail, Lock, Eye, EyeOff, ShieldQuestion } from "lucide-react"
+import { ShieldCheck, ArrowRight, Loader2, Mail, Lock, Eye, EyeOff, ShieldAlert } from "lucide-react"
 import { Button } from "@food/components/ui/button"
 import { useSystemTheme } from "@/shared/utils/themeSync"
 import logoNew from "@/assets/logo1.png"
 import { toast } from "sonner"
 
-export default function AdminLogin() {
+export default function SuperAdminLogin() {
   const navigate = useNavigate()
-  const { logo, themeMode } = useSystemTheme()
+  const { logo, themeMode, primaryColor } = useSystemTheme()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -19,6 +19,8 @@ export default function AdminLogin() {
   const submitting = useRef(false)
 
   const isDarkMode = themeMode === "dark"
+  const brandColor = primaryColor || "#a43c12"
+  const hoverColor = `${brandColor}d9`
 
   useEffect(() => {
     const linkFonts = document.createElement("link")
@@ -48,13 +50,18 @@ export default function AdminLogin() {
       const adminUser = data.user || data.admin
       const refreshToken = data.refreshToken ?? null
 
-      if (!accessToken || !adminUser || !refreshToken) {
+      if (!accessToken || !adminUser) {
         throw new Error("Invalid response from server")
       }
 
-      setAuthData("admin", accessToken, adminUser, refreshToken)
-      toast.success("Welcome, Administrator")
-      navigate("/franchise-admin/dashboard", { replace: true })
+      // Strict Super Admin RBAC Check
+      if (adminUser.role !== "superadmin") {
+        throw new Error("Access Denied: You do not have Super Admin privileges")
+      }
+
+      setAuthData("superadmin", accessToken, adminUser, refreshToken)
+      toast.success("Welcome, Super Administrator")
+      navigate("/superadmin/dashboard", { replace: true })
     } catch (err) {
       const msg = err?.response?.data?.message || err?.message || "Login failed. Check your credentials."
       toast.error(msg)
@@ -81,6 +88,16 @@ export default function AdminLogin() {
           backdrop-filter: blur(20px) !important;
           border: 1px solid ${isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.06)"} !important;
           box-shadow: ${isDarkMode ? "none" : "0 4px 6px -1px rgba(0, 0, 0, 0.05)"} !important;
+        }
+        .brand-text {
+          color: ${brandColor} !important;
+        }
+        .brand-btn {
+          background-color: ${brandColor} !important;
+          box-shadow: 0 4px 10px -2px ${brandColor}20 !important;
+        }
+        .brand-btn:hover:not(:disabled) {
+          background-color: ${hoverColor} !important;
         }
         `
       }} />
@@ -112,14 +129,17 @@ export default function AdminLogin() {
               />
             </motion.div>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-gray-400 dark:text-gray-500 font-semibold text-[9px] uppercase tracking-[0.2em]"
+              className="flex items-center justify-center gap-1 mb-0.5"
             >
-              Franchise Portal
-            </motion.p>
+              <ShieldCheck className="w-3.5 h-3.5 brand-text" />
+              <span className="text-gray-400 dark:text-gray-500 font-semibold text-[9px] uppercase tracking-[0.2em]">
+                SUPER ADMIN PANEL
+              </span>
+            </motion.div>
           </div>
 
           {/* Login Card */}
@@ -137,7 +157,7 @@ export default function AdminLogin() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="block w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border border-transparent focus:border-[var(--primary)]/50 rounded-lg outline-none transition-all placeholder:text-gray-400 font-medium text-xs"
-                      placeholder="admin@papavegpizza.com"
+                      placeholder="superadmin@papavegpizza.com"
                     />
                   </div>
                 </div>
@@ -145,7 +165,6 @@ export default function AdminLogin() {
                 <div className="space-y-1">
                   <div className="flex justify-between items-center px-0.5">
                     <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400">Password</label>
-                    <Link to="/franchise-admin/forgot-password" size="sm" className="text-[10px] font-medium text-[var(--primary)] hover:underline transition-colors">Forgot?</Link>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -171,13 +190,13 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2 bg-[var(--primary)] hover:bg-[var(--sa-primary-hover)] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white rounded-lg font-bold text-xs shadow-md shadow-[var(--primary)]/10 transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 group overflow-hidden relative border-0 cursor-pointer"
+                className="w-full py-2 brand-btn disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white rounded-lg font-bold text-xs shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 group overflow-hidden relative border-0 cursor-pointer"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <>
-                    <span>Enter Dashboard</span>
+                    <span>Enter Control Console</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </>
                 )}
@@ -188,7 +207,7 @@ export default function AdminLogin() {
           <div className="mt-4 flex flex-col items-center gap-2 text-[10px] text-gray-400 dark:text-gray-500 font-medium">
             <div className="flex items-center gap-1 opacity-50">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Secure Connection</span>
+              <span>Restricted access area</span>
             </div>
             <Link to="/user/auth/support" className="hover:text-[var(--primary)] hover:underline transition-colors opacity-70">
               Need Support? Contact Support
@@ -199,5 +218,3 @@ export default function AdminLogin() {
     </div>
   )
 }
-
-

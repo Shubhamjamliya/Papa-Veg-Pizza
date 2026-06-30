@@ -1,11 +1,19 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { clearModuleAuth } from "@food/utils/auth"
 import { Menu, Bell, Store, ChevronDown, User, LogOut, Settings as SettingsIcon, AlertCircle } from "lucide-react"
 
 export default function Navbar({ onToggleSidebar, isCollapsed }) {
+  const navigate = useNavigate()
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [selectedStore, setSelectedStore] = useState("All Stores")
   const [showStoreDropdown, setShowStoreDropdown] = useState(false)
+
+  const handleLogout = () => {
+    clearModuleAuth("superadmin")
+    navigate("/superadmin/login", { replace: true })
+  }
 
   const stores = ["All Stores", "Indore Central", "Bhopal Zone", "Ujjain Branch", "Gwalior Hub"]
   
@@ -147,7 +155,7 @@ export default function Navbar({ onToggleSidebar, isCollapsed }) {
                 <span>Settings</span>
               </button>
               <div className="border-t border-zinc-50 dark:border-zinc-800 my-1.5"></div>
-              <button className="w-full flex items-center gap-2.5 px-3.5 py-1.5 text-xs font-bold text-rose-500 hover:bg-rose-50/50 dark:hover:bg-rose-950/20 transition-colors">
+              <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3.5 py-1.5 text-xs font-bold text-rose-500 hover:bg-rose-50/50 dark:hover:bg-rose-950/20 transition-colors">
                 <LogOut size={14} />
                 <span>Sign Out</span>
               </button>

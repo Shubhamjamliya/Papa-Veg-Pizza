@@ -1994,7 +1994,20 @@ export function handleMockRequest(config) {
   // 1. Authentication & Profile
   if (url.includes("/food/auth/admin/login") || url.includes("/auth/admin/login")) {
     const email = data?.email || "";
-    if (email.includes("admin")) {
+    if (email.includes("superadmin")) {
+      return {
+        success: true,
+        status: 200,
+        data: {
+          success: true,
+          data: {
+            accessToken: "mockHeader.eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJzdXBlcmFkbWluIiwidXNlcklkIjoiYWRtaW4tMSJ9.mockSignature",
+            refreshToken: "mock-superadmin-refresh-token-12345",
+            user: { id: "admin-1", name: "Papa Veg Super Admin", email, role: "superadmin" }
+          }
+        }
+      };
+    } else if (email.includes("franchise") || email.includes("admin")) {
       return {
         success: true,
         status: 200,
@@ -2003,12 +2016,46 @@ export function handleMockRequest(config) {
           data: {
             accessToken: "mockHeader.eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJhZG1pbiIsInVzZXJJZCI6ImFkbWluLTEifQ==.mockSignature",
             refreshToken: "mock-admin-refresh-token-12345",
-            user: { id: "admin-1", name: "Papa Veg Admin", email: email || "admin@papavegpizza.com", role: "superadmin" }
+            user: { id: "admin-2", name: "Papa Veg Franchise Admin", email, role: "admin" }
           }
         }
       };
     }
     return errorRes("Invalid email or password");
+  }
+
+  // Store Operations Unified Login Mock
+  if (url.includes("/food/auth/store/login") || url.includes("/auth/store/login")) {
+    const email = data?.email || "";
+    let role = "store_manager";
+    let tokenPayload = "eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJzdG9yZV9tYW5hZ2VyIiwidXNlcklkIjoic3RvcmUtMSJ9"; // store_manager
+    let name = "Store Manager";
+    let id = "store-1";
+
+    if (email.includes("supervisor")) {
+      role = "kitchen_supervisor";
+      tokenPayload = "eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJraXRjaGVuX3N1cGVydmlzb3IiLCJ1c2VySWQiOiJzdG9yZS0yIn0=";
+      name = "Kitchen Supervisor";
+      id = "store-2";
+    } else if (email.includes("staff")) {
+      role = "kitchen_staff";
+      tokenPayload = "eyJleHAiOjk5OTk5OTk5OTksInJvbGUiOiJraXRjaGVuX3N0YWZmIiwidXNlcklkIjoic3RvcmUtMyJ9";
+      name = "Kitchen Chef";
+      id = "store-3";
+    }
+
+    return {
+      success: true,
+      status: 200,
+      data: {
+        success: true,
+        data: {
+          accessToken: `mockHeader.${tokenPayload}.mockSignature`,
+          refreshToken: "mock-store-refresh-token-12345",
+          user: { id, name, email, role }
+        }
+      }
+    };
   }
 
   // Delivery Partner Login Mock
@@ -2113,19 +2160,51 @@ export function handleMockRequest(config) {
       };
     }
 
+    const moduleName = config.contextModule || "admin";
+    let moduleUser = null;
+    try {
+      const stored = localStorage.getItem(`${moduleName}_user`);
+      if (stored) {
+        moduleUser = JSON.parse(stored);
+      }
+    } catch (e) {}
+
+    if (!moduleUser) {
+      // Fallback defaults
+      if (moduleName === "superadmin") {
+        moduleUser = {
+          id: "admin-1",
+          name: "Papa Veg Super Admin",
+          email: "superadmin@papavegpizza.com",
+          role: "superadmin",
+          profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
+        };
+      } else if (moduleName === "admin") {
+        moduleUser = {
+          id: "admin-2",
+          name: "Papa Veg Franchise Admin",
+          email: "franchise@papavegpizza.com",
+          role: "admin",
+          profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
+        };
+      } else {
+        moduleUser = {
+          id: "store-1",
+          name: "Store Manager",
+          email: "manager@papavegpizza.com",
+          role: "store_manager",
+          profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
+        };
+      }
+    }
+
     return {
       success: true,
       status: 200,
       data: {
         success: true,
         data: {
-          user: {
-            id: "admin-1",
-            name: "Papa Veg Admin",
-            email: "admin@papavegpizza.com",
-            role: "superadmin",
-            profileImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde"
-          }
+          user: moduleUser
         }
       }
     };
