@@ -126,7 +126,7 @@ export default function Favorites() {
             ) : (
               restaurantFavorites.map((restaurant, index) => (
             <ScrollReveal key={restaurant.slug} delay={index * 0.1}>
-              <Link to={`/user/restaurants/${restaurant.slug}`}>
+              <Link to="/food/user/menu">
                 <Card className="overflow-hidden h-full">
                   <div className="h-32 w-full relative overflow-hidden">
                     <img
@@ -206,7 +206,7 @@ export default function Favorites() {
                 const restaurantSlug = dish.restaurantSlug || ""
                 return (
                   <ScrollReveal key={`${dish.id}-${dish.restaurantId}`} delay={index * 0.1}>
-                    <Link to={`/food/user/restaurants/${restaurantSlug}?dish=${dish.id}`}>
+                    <Link to="/food/user/menu">
                       <Card className="overflow-hidden h-full cursor-pointer hover:shadow-lg transition-shadow">
                         <div className="h-32 w-full relative overflow-hidden">
                           <img

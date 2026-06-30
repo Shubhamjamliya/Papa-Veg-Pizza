@@ -105,7 +105,7 @@ export default function Offers() {
                   {dishes.slice(0, 8).map((dish) => (
                     <Link 
                       key={dish.id} 
-                      to={`/user/restaurants/${dish.restaurantSlug}`}
+                      to="/food/user/menu"
                       className="w-full"
                     >
                       <div className="group">

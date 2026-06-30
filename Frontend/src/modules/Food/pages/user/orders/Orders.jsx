@@ -443,7 +443,7 @@ export default function Orders() {
 
     replaceCart(reorderItems)
     toast.success("Items added to cart")
-    navigate(`/food/user/restaurants/${restaurantTarget}`)
+    navigate("/food/user/menu")
   }
 
   // Three-dots menu handlers
@@ -542,7 +542,7 @@ export default function Orders() {
       `${order.address?.city || ""}, ${order.address?.state || ""}`.trim()
     const restaurantPath = order.restaurantSlug || order.restaurantId
     const shareUrl = restaurantPath
-      ? `${window.location.origin}/food/user/restaurants/${restaurantPath}`
+      ? `${window.location.origin}/food/user/menu`
       : `${window.location.origin}/food/user/orders/${order.id}`
 
     const shareText = `Check out ${order.restaurant} on ${companyName}.
@@ -779,13 +779,11 @@ Order again from this restaurant in the ${companyName} app.`
                           {order.deliveryPartnerPhone && ` | ${order.deliveryPartnerPhone}`}
                         </p>
                       )}
-                      {order.restaurantId && (
-                        <Link to={`/user/restaurants/${order.restaurantId}`}>
-                          <button className="text-xs text-[#7e3866] font-medium flex items-center mt-1 hover:text-[#55254b]">
-                            View menu <span className="ml-0.5">&gt;</span>
-                          </button>
-                        </Link>
-                      )}
+                      <Link to="/food/user/menu">
+                        <button className="text-xs text-[#7e3866] font-medium flex items-center mt-1 hover:text-[#55254b]">
+                          View menu <span className="ml-0.5">&gt;</span>
+                        </button>
+                      </Link>
                     </div>
                   </div>
 

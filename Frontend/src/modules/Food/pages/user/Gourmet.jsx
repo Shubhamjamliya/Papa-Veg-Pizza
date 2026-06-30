@@ -194,7 +194,7 @@ export default function Gourmet() {
                   const restaurantImage = resolveImageUrl(rawRestaurantImage)
 
                   return (
-                    <Link key={restaurantId} to={`/user/restaurants/${restaurantSlug}`}>
+                    <Link key={restaurantId} to="/food/user/menu">
                       <Card className="overflow-hidden cursor-pointer border-0 group bg-white dark:bg-[#1a1a1a] shadow-xl shadow-gray-200/20 dark:shadow-none hover:shadow-2xl hover:shadow-[#7e3866]/5 transition-all duration-500 py-0 rounded-[32px] mb-4 group active:scale-[0.98]">
                         {/* Image Section */}
                         <div className="relative h-48 sm:h-56 md:h-60 w-full overflow-hidden rounded-t-[32px]">
