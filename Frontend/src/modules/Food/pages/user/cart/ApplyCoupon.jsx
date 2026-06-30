@@ -161,10 +161,10 @@ export default function ApplyCoupon({ show, onClose, onApply, cartTotal }) {
                   className="border border-zinc-150 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white flex flex-col"
                 >
                   {/* Banner */}
-                  <div className="relative h-28 bg-[#d92323] flex items-center justify-between p-5 text-white">
+                  <div className="relative h-28 bg-primary flex items-center justify-between p-5 text-white">
                     {/* Left: Text */}
                     <div className="z-10 text-left space-y-1">
-                      <div className="bg-yellow-400 text-red-700 font-extrabold text-[10px] px-2 py-0.5 rounded-full inline-block uppercase tracking-wider">
+                      <div className="bg-yellow-400 text-primary font-extrabold text-[10px] px-2 py-0.5 rounded-full inline-block uppercase tracking-wider">
                         Apply Code {coupon.code}
                       </div>
                       <h4 className="font-extrabold text-xl leading-none">{coupon.bannerText}</h4>
@@ -176,7 +176,7 @@ export default function ApplyCoupon({ show, onClose, onApply, cartTotal }) {
                       alt="coupon pizza" 
                       className="absolute right-0 top-0 h-full w-1/2 object-cover opacity-60 mix-blend-overlay"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#d92323] via-[#d92323]/90 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-transparent"></div>
                   </div>
 
                   {/* Body info */}
