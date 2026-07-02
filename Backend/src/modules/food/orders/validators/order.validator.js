@@ -46,7 +46,7 @@ const pricingSchema = z.object({
 export function validateCalculateOrderDto(body) {
     const schema = z.object({
         items: z.array(orderItemSchema).min(1, 'At least one item required'),
-        restaurantId: z.string().min(1, 'Restaurant id required'),
+        storeId: z.string().min(1, 'Store id required'),
         deliveryAddress: z
             .object({
                 location: z
@@ -76,14 +76,14 @@ export function validateCreateOrderDto(body) {
     const schema = z.object({
         items: z.array(orderItemSchema).min(1, 'At least one item required'),
         address: addressSchema,
-        restaurantId: z.string().min(1, 'Restaurant id required'),
-        restaurantName: z.string().optional(),
+        storeId: z.string().min(1, 'Store id required'),
+        storeName: z.string().optional(),
         customerName: z.string().optional(),
         customerPhone: z.string().optional(),
         pricing: pricingSchema,
         deliveryFleet: z.string().optional(),
         note: z.string().optional(),
-        restaurantNote: z.string().optional(),
+        storeNote: z.string().optional(),
         sendCutlery: z.boolean().optional(),
         // 'razorpay_qr' means COD-style flow, but payment is collected via Razorpay QR at delivery.
         paymentMethod: z.enum(['cash', 'razorpay', 'razorpay_qr', 'card', 'wallet']),
@@ -133,7 +133,7 @@ export function validateOrderStatusDto(body) {
             'ready_for_pickup',
             'picked_up',
             'delivered',
-            'cancelled_by_restaurant'
+            'cancelled_by_store'
         ]),
         note: z.string().optional()
     });
@@ -168,9 +168,9 @@ export function validateDispatchSettingsDto(body) {
 
 export function validateOrderRatingsDto(body) {
     const schema = z.object({
-        restaurantRating: z.number().min(1).max(5),
+        storeRating: z.number().min(1).max(5),
         deliveryPartnerRating: z.number().min(1).max(5).optional(),
-        restaurantComment: z.string().max(500).optional(),
+        storeComment: z.string().max(500).optional(),
         deliveryPartnerComment: z.string().max(500).optional()
     });
     const result = schema.safeParse(body || {});

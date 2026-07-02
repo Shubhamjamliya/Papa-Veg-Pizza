@@ -129,7 +129,7 @@ export default function AdminProfile() {
   const franchiseInfo = {
     name: "Papa Veg Pizza Indore",
     code: "PVP-IND-09",
-    ownerName: "Rohan Sharma",
+    managerName: "Rohan Sharma",
     gstNumber: "23AAAAA1111A1Z1",
     panNumber: "ABCDE1234F",
     registeredAddress: "102, Orbit Mall, Vijay Nagar, Indore, Madhya Pradesh - 452010",
@@ -808,7 +808,7 @@ export default function AdminProfile() {
                       {[
                         { label: "Franchise Name", value: franchiseInfo.name },
                         { label: "Franchise Code", value: franchiseInfo.code },
-                        { label: "Owner / Director", value: franchiseInfo.ownerName },
+                        { label: "Owner / Director", value: franchiseInfo.managerName },
                         { label: "GST Number", value: franchiseInfo.gstNumber },
                         { label: "PAN Number", value: franchiseInfo.panNumber },
                         { label: "Registered Region", value: franchiseInfo.region },

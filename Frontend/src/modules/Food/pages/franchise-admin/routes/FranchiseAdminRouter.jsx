@@ -78,7 +78,7 @@ export default function FranchiseAdminRouter() {
         {/* Protected Routes - With Layout */}
         <Route
           element={
-            <ProtectedRoute requiredRole="admin" loginPath="/franchise-admin/login">
+            <ProtectedRoute module="admin" requiredRole="franchise-admin" loginPath="/franchise-admin/login">
               <FranchiseAdminLayout />
             </ProtectedRoute>
           }
@@ -140,7 +140,7 @@ export default function FranchiseAdminRouter() {
             <Route path="orders/food-on-the-way" element={<Navigate to="/franchise-admin/live-orders" replace />} />
             <Route path="orders/delivered" element={<Navigate to="/franchise-admin/completed-orders" replace />} />
             <Route path="orders/canceled" element={<Navigate to="/franchise-admin/cancelled-orders" replace />} />
-            <Route path="orders/restaurant-cancelled" element={<Navigate to="/franchise-admin/live-orders" replace />} />
+            <Route path="orders/store-cancelled" element={<Navigate to="/franchise-admin/live-orders" replace />} />
             <Route path="orders/payment-failed" element={<Navigate to="/franchise-admin/live-orders" replace />} />
             <Route path="orders/refunded" element={<Navigate to="/franchise-admin/live-orders" replace />} />
             <Route path="orders/offline-payments" element={<Navigate to="/franchise-admin/live-orders" replace />} />
@@ -177,7 +177,7 @@ export default function FranchiseAdminRouter() {
             
             <Route path="customers" element={<Navigate to="/franchise-admin/customers-list" replace />} />
             <Route path="support-tickets" element={<Navigate to="/franchise-admin/customer-complaints" replace />} />
-            <Route path="restaurants/reviews" element={<Navigate to="/franchise-admin/reviews-ratings" replace />} />
+            <Route path="stores/reviews" element={<Navigate to="/franchise-admin/reviews-ratings" replace />} />
             <Route path="wallet/add-fund" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             <Route path="wallet/bonus" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             <Route path="loyalty-point/report" element={<Navigate to="/franchise-admin/loyalty-members" replace />} />
@@ -194,20 +194,20 @@ export default function FranchiseAdminRouter() {
             {/* REPORTS & SETTINGS */}
             <Route path="transaction-report" element={<Navigate to="/franchise-admin/reports" replace />} />
             <Route path="expense-report" element={<Navigate to="/franchise-admin/expenses" replace />} />
-            <Route path="disbursement-report/restaurants" element={<Navigate to="/franchise-admin/store-earnings" replace />} />
+            <Route path="disbursement-report/stores" element={<Navigate to="/franchise-admin/store-earnings" replace />} />
             <Route path="disbursement-report/deliverymen" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             <Route path="order-report/regular" element={<Navigate to="/franchise-admin/orders-report" replace />} />
             <Route path="order-report/campaign" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             <Route path="customer-report/feedback-experience" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             <Route path="tax-report" element={<Navigate to="/franchise-admin/dashboard" replace />} />
-            <Route path="restaurant-vat-report" element={<Navigate to="/franchise-admin/dashboard" replace />} />
+            <Route path="store-vat-report" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             
             {/* Extra Report paths from sidebar */}
             {/* Mapped outside to /franchise-admin/sales-report */}
             <Route path="staff-report" element={<Navigate to="/franchise-admin/staff-reports" replace />} />
             <Route path="inventory-report" element={<Navigate to="/franchise-admin/inventory-reports" replace />} />
 
-            <Route path="restaurant-withdraws" element={<Navigate to="/franchise-admin/dashboard" replace />} />
+            <Route path="store-withdraws" element={<Navigate to="/franchise-admin/dashboard" replace />} />
             <Route path="withdraw-method" element={<Navigate to="/franchise-admin/dashboard" replace />} />
 
             {/* SYSTEM & BUSINESS SETTINGS */}

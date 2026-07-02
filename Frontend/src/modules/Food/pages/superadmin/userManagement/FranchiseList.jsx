@@ -19,7 +19,9 @@ import {
 import FranchiseKPIs from "./FranchiseKPIs"
 import FranchiseFilters from "./FranchiseFilters"
 import FranchiseDetailsDrawer from "./FranchiseDetailsDrawer"
-import { EditFranchiseModal, SuspendFranchiseModal } from "./FranchiseModals"
+import AddFranchiseModal from "./components/AddFranchiseModal"
+import EditFranchiseModal from "./components/EditFranchiseModal"
+import SuspendFranchiseModal from "./components/SuspendFranchiseModal"
 
 const INITIAL_FRANCHISES = [
   {
@@ -491,15 +493,24 @@ export default function FranchiseList() {
         admin={selectedAdmin}
       />
 
-      {/* Edit / Add Modal Popup */}
-      <EditFranchiseModal
-        isOpen={isAddModalOpen || isEditModalOpen}
+      {/* Add Modal Popup */}
+      <AddFranchiseModal
+        isOpen={isAddModalOpen}
         onClose={() => {
           setIsAddModalOpen(false)
+          setSelectedAdmin(null)
+        }}
+        onSave={handleSaveAdmin}
+      />
+
+      {/* Edit Modal Popup */}
+      <EditFranchiseModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
           setIsEditModalOpen(false)
           setSelectedAdmin(null)
         }}
-        admin={isEditModalOpen ? selectedAdmin : null}
+        admin={selectedAdmin}
         onSave={handleSaveAdmin}
       />
 

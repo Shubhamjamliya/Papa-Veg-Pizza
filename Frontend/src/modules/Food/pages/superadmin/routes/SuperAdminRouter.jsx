@@ -203,7 +203,7 @@ export default function SuperAdminRouter() {
       <Routes>
         <Route
           element={
-            <ProtectedRoute requiredRole="superadmin" loginPath="/superadmin/login">
+            <ProtectedRoute module="admin" requiredRole="superadmin" loginPath="/superadmin/login">
               <Outlet />
             </ProtectedRoute>
           }

@@ -132,8 +132,8 @@ export function normalizeOrderForClient(orderDoc) {
       order?.deliveryState?.deliveredAt || order?.deliveredAt || null,
     deliveryPartnerId:
       order?.dispatch?.deliveryPartnerId || order?.deliveryPartnerId || null,
-    rating: order?.ratings?.restaurant?.rating ?? order?.rating ?? null,
-    restaurantNote: order?.restaurantNote || "",
+    rating: order?.ratings?.store?.rating ?? order?.rating ?? null,
+    storeNote: order?.storeNote || "",
     cancellationReason: (order?.orderStatus?.includes('cancel') || order?.status?.includes('cancel')) 
       ? (order.statusHistory?.findLast(h => h.to?.includes('cancel'))?.note || "")
       : null,
@@ -164,10 +164,10 @@ export async function applyAggregateRating(model, entityId, newRating) {
   await doc.save();
 }
 
-export function buildDeliverySocketPayload(orderDoc, restaurantDoc = null) {
+export function buildDeliverySocketPayload(orderDoc, storeDoc = null) {
   const order = orderDoc?.toObject ? orderDoc.toObject() : orderDoc || {};
-  const restaurant = restaurantDoc || order?.restaurantId || null;
-  const restaurantLocation = restaurant?.location || {};
+  const store = storeDoc || order?.storeId || null;
+  const storeLocation = store?.location || {};
   const deliveryAddress = order?.deliveryAddress || {};
   const customerAddressParts = [
     deliveryAddress.street,
@@ -189,28 +189,28 @@ export function buildDeliverySocketPayload(orderDoc, restaurantDoc = null) {
     total: order?.pricing?.total,
     payment: order?.payment,
     paymentMethod: order?.payment?.method,
-    restaurantId:
-      order?.restaurantId?._id?.toString?.() ||
-      order?.restaurantId?.toString?.() ||
-      order?.restaurantId,
-    restaurantName: restaurant?.restaurantName || order?.restaurantName,
-    restaurantAddress:
-      restaurantLocation?.address ||
-      restaurantLocation?.formattedAddress ||
-      restaurant?.addressLine1 ||
+    storeId:
+      order?.storeId?._id?.toString?.() ||
+      order?.storeId?.toString?.() ||
+      order?.storeId,
+    storeName: store?.storeName || order?.storeName,
+    storeAddress:
+      storeLocation?.address ||
+      storeLocation?.formattedAddress ||
+      store?.addressLine1 ||
       "",
-    restaurantPhone: restaurant?.phone || "",
-    restaurantLocation: {
-      latitude: restaurantLocation?.latitude,
-      longitude: restaurantLocation?.longitude,
+    storePhone: store?.phone || "",
+    storeLocation: {
+      latitude: storeLocation?.latitude,
+      longitude: storeLocation?.longitude,
       address:
-        restaurantLocation?.address ||
-        restaurantLocation?.formattedAddress ||
-        restaurant?.addressLine1 ||
+        storeLocation?.address ||
+        storeLocation?.formattedAddress ||
+        store?.addressLine1 ||
         "",
-      area: restaurantLocation?.area || restaurant?.area || "",
-      city: restaurantLocation?.city || restaurant?.city || "",
-      state: restaurantLocation?.state || restaurant?.state || "",
+      area: storeLocation?.area || store?.area || "",
+      city: storeLocation?.city || store?.city || "",
+      state: storeLocation?.state || store?.state || "",
     },
     deliveryAddress: order?.deliveryAddress,
     customerAddress: customerAddressParts.length ? customerAddressParts.join(', ') : "",
@@ -229,16 +229,16 @@ export function buildDeliverySocketPayload(orderDoc, restaurantDoc = null) {
   };
 }
 
-export function canExposeOrderToRestaurant(orderLike) {
+export function canExposeOrderToStore(orderLike) {
   const method = String(orderLike?.payment?.method || "").toLowerCase();
   const status = String(orderLike?.payment?.status || "").toLowerCase();
   if (["cash", "wallet"].includes(method)) return true;
   return ["paid", "authorized", "captured", "settled"].includes(status);
 }
 
-export async function notifyRestaurantNewOrder(orderDoc) {
+export async function notifyStoreNewOrder(orderDoc) {
   try {
-    if (!orderDoc || !canExposeOrderToRestaurant(orderDoc)) return;
+    if (!orderDoc || !canExposeOrderToStore(orderDoc)) return;
 
     const io = getIO();
     if (io) {
@@ -248,13 +248,13 @@ export async function notifyRestaurantNewOrder(orderDoc) {
         orderId: orderDoc.order_id || orderDoc._id?.toString?.(),
       };
       logger.info(
-        `[RestaurantOrders] Emitting new_order to ${rooms.restaurant(orderDoc.restaurantId)} for order ${orderDoc._id?.toString?.() || ''}`,
+        `[StoreOrders] Emitting new_order to ${rooms.store(orderDoc.storeId)} for order ${orderDoc._id?.toString?.() || ''}`,
       );
-      io.to(rooms.restaurant(orderDoc.restaurantId)).emit("new_order", payload);
+      io.to(rooms.store(orderDoc.storeId)).emit("new_order", payload);
     }
 
     await notifyOwnersSafely(
-      [{ ownerType: "RESTAURANT", ownerId: orderDoc.restaurantId }],
+      [{ ownerType: "STORE", ownerId: orderDoc.storeId }],
       {
         title: "New order received",
         body: `Order #${orderDoc.order_id || orderDoc._id} is waiting for review.`,
@@ -262,7 +262,7 @@ export async function notifyRestaurantNewOrder(orderDoc) {
           type: "new_order",
           orderId: orderDoc._id.toString(),
           orderMongoId: orderDoc._id?.toString?.() || "",
-          link: `/restaurant/orders/${orderDoc._id?.toString?.() || ""}`,
+          link: `/store/orders/${orderDoc._id?.toString?.() || ""}`,
         },
       },
     );
@@ -281,7 +281,7 @@ export const STATUS_PRIORITY = {
   reached_drop: 70,
   delivered: 80,
   cancelled_by_user: 100,
-  cancelled_by_restaurant: 100,
+  cancelled_by_store: 100,
   cancelled_by_admin: 100,
 };
 

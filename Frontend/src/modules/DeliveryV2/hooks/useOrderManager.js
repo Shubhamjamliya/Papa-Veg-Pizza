@@ -61,8 +61,8 @@ export const useOrderManager = () => {
 
         console.log('[OrderManager] Raw Full Order Data:', fullOrder);
 
-        const resLoc = getLoc(fullOrder.restaurantId, ['latitude', 'lat'], ['longitude', 'lng']) || 
-                       getLoc(fullOrder, ['restaurant_lat', 'restaurantLat', 'latitude'], ['restaurant_lng', 'restaurantLng', 'longitude']);
+        const resLoc = getLoc(fullOrder.storeId, ['latitude', 'lat'], ['longitude', 'lng']) || 
+                       getLoc(fullOrder, ['store_lat', 'storeLat', 'latitude'], ['store_lng', 'storeLng', 'longitude']);
                        
         const cusLoc = getLoc(fullOrder.deliveryAddress, ['latitude', 'lat'], ['longitude', 'lng']) || 
                        getLoc(fullOrder, ['customer_lat', 'customerLat', 'latitude'], ['customer_lng', 'customerLng', 'longitude']);
@@ -72,7 +72,7 @@ export const useOrderManager = () => {
         setActiveOrder({
           ...fullOrder,
           orderId: orderId,
-          restaurantLocation: resLoc,
+          storeLocation: resLoc,
           customerLocation: cusLoc
         });
 
@@ -99,7 +99,7 @@ export const useOrderManager = () => {
 
 
   /**
-   * Mark "Reached Pickup" (Arrival at restaurant)
+   * Mark "Reached Pickup" (Arrival at store)
    */
   const reachPickup = async () => {
     const orderId = resolveOrderId();
@@ -111,7 +111,7 @@ export const useOrderManager = () => {
       const response = await deliveryAPI.confirmReachedPickup(orderId);
       if (response?.data?.success) {
         updateTripStatus('REACHED_PICKUP');
-        // toast.info('Arrived at Restaurant');
+        // toast.info('Arrived at Store');
       } else {
         throw new Error('Confirm pickup failed');
       }

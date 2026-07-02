@@ -3,7 +3,7 @@ import ms from "ms";
 import { FoodUser } from "../users/user.model.js";
 import { FoodAdmin } from "../admin/admin.model.js";
 import { AdminResetOtp } from "../admin/adminResetOtp.model.js";
-import { FoodRestaurant } from "../../modules/food/restaurant/models/restaurant.model.js";
+
 import { FoodDeliveryPartner } from "../../modules/food/delivery/models/deliveryPartner.model.js";
 import { FoodReferralSettings } from "../../modules/food/admin/models/referralSettings.model.js";
 import { FoodReferralLog } from "../../modules/food/admin/models/referralLog.model.js";
@@ -19,10 +19,22 @@ import { creditReferralReward } from "../../modules/food/user/services/userWalle
 
 const ROLES = {
   USER: "USER",
-  RESTAURANT: "RESTAURANT",
+
   DELIVERY_PARTNER: "DELIVERY_PARTNER",
   ADMIN: "ADMIN",
 };
+
+const normalizeAdminRole = (role) => {
+  return String(role || '').trim().replace(/_/g, '-').toLowerCase();
+};
+
+const ADMIN_PANEL_ROLES = new Set([
+  'superadmin',
+  'franchise-admin',
+  'store-manager',
+  'kitchen-supervisor',
+  'kitchen-staff'
+]);
 
 const toSafeImageUrl = (value) => {
   if (!value) return "";
@@ -51,25 +63,6 @@ const sanitizeUserForAuthResponse = (userDoc = {}) => {
   };
 };
 
-const sanitizeRestaurantForAuthResponse = (restaurantDoc = {}) => {
-  const id =
-    restaurantDoc?._id?.toString?.() ||
-    restaurantDoc?.id?.toString?.() ||
-    restaurantDoc?._id ||
-    restaurantDoc?.id ||
-    null;
-
-  return {
-    id,
-    _id: id,
-    name: restaurantDoc?.restaurantName || restaurantDoc?.name || "",
-    restaurantName: restaurantDoc?.restaurantName || "",
-    phone: restaurantDoc?.ownerPhone || restaurantDoc?.primaryContactNumber || "",
-    email: restaurantDoc?.ownerEmail || "",
-    status: restaurantDoc?.status || "",
-    profileImage: toSafeImageUrl(restaurantDoc?.profileImage),
-  };
-};
 
 const sanitizeDeliveryForAuthResponse = (deliveryDoc = {}) => {
   const id =
@@ -89,6 +82,20 @@ const sanitizeDeliveryForAuthResponse = (deliveryDoc = {}) => {
     profileImage: toSafeImageUrl(deliveryDoc?.profilePhoto),
     walletAmount: Number(deliveryDoc?.walletAmount || 0),
     refCode: deliveryDoc?.referralCode || "",
+  };
+};
+
+const sanitizeAdminForAuthResponse = (adminDoc = {}) => {
+  const id = adminDoc?._id?.toString?.() || adminDoc?.id?.toString?.() || adminDoc?._id || adminDoc?.id || null;
+  return {
+    id,
+    _id: id,
+    name: adminDoc?.name || "",
+    email: adminDoc?.email || "",
+    role: adminDoc?.role || "superadmin",
+    storeId: adminDoc?.storeId || null,
+    franchiseId: adminDoc?.franchiseId || null,
+    permissions: adminDoc?.permissions || []
   };
 };
 
@@ -281,14 +288,41 @@ export const verifyUserOtpAndLogin = async (
   };
 };
 
-export const adminLogin = async (email, password) => {
-  if (!email || !password) {
-    throw new ValidationError("Email and password are required");
+export const adminLogin = async ({ email, mobile, password } = {}, allowedRoles = null) => {
+  if ((!email && !mobile) || !password) {
+    throw new ValidationError("Email/mobile and password are required");
   }
 
-  const admin = await FoodAdmin.findOne({ email });
+  const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+  const normalizedMobile = typeof mobile === "string" ? mobile.replace(/\D/g, "") : "";
+  const filters = [];
+  if (normalizedEmail) filters.push({ email: normalizedEmail });
+  if (normalizedMobile) {
+    filters.push({ mobile: normalizedMobile }, { phone: normalizedMobile });
+    filters.push({ mobile: { $regex: new RegExp(`${normalizedMobile}$`) } });
+    filters.push({ phone: { $regex: new RegExp(`${normalizedMobile}$`) } });
+  }
+
+  const admin = await FoodAdmin.findOne(filters.length > 1 ? { $or: filters } : filters[0]);
   if (!admin) {
     throw new AuthError("Invalid credentials");
+  }
+
+  if (admin.isActive === false || admin.isDeleted === true) {
+    throw new AuthError("Your account is inactive. Please contact support.");
+  }
+
+  if (admin.emailVerified === false) {
+    throw new AuthError("Please verify your email before logging in.");
+  }
+
+  const role = normalizeAdminRole(admin.role);
+  if (!ADMIN_PANEL_ROLES.has(role) && !ADMIN_PANEL_ROLES.has(String(admin.role || "").toUpperCase())) {
+    throw new AuthError("This account is not allowed to access admin panels");
+  }
+
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    throw new AuthError("Access denied: Insufficient permissions for this portal");
   }
 
   const isMatch = await admin.comparePassword(password);
@@ -296,7 +330,7 @@ export const adminLogin = async (email, password) => {
     throw new AuthError("Invalid credentials");
   }
 
-  const payload = { userId: admin._id.toString(), role: admin.role };
+  const payload = { userId: admin._id.toString(), role };
 
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
@@ -310,106 +344,13 @@ export const adminLogin = async (email, password) => {
     expiresAt,
   });
 
-  const userObj = admin.toObject();
-  delete userObj.password;
-  return { accessToken, refreshToken, user: userObj };
+  admin.lastLogin = new Date();
+  admin.refreshToken = refreshToken;
+  await admin.save();
+
+  return { accessToken, refreshToken, user: sanitizeAdminForAuthResponse(admin.toObject()) };
 };
 
-export const requestRestaurantOtp = async (phone) => {
-  if (!phone) {
-    throw new ValidationError("Phone is required");
-  }
-  const otp = await createOrUpdateOtp(phone);
-  // Only expose OTP in response when in default/dev mode — never in production with real SMS
-  const shouldExposeOtp =
-    config.nodeEnv !== "production" || config.useDefaultOtp;
-  return shouldExposeOtp ? { otp } : {};
-};
-
-export const verifyRestaurantOtpAndLogin = async (phone, otp, fcmToken, platform) => {
-  const result = await verifyOtp(phone, otp);
-  if (!result.valid) {
-    throw new AuthError(result.reason || "OTP verification failed");
-  }
-
-  // Restaurants may store ownerPhone with country code or formatting, or normalized fields.
-  // Match by exact phone, last-10 digits, suffix match, or normalized fields to avoid false "needsRegistration".
-  const digits = String(phone || "").replace(/\D/g, "");
-  const last10 = digits.slice(-10);
-  const phoneCandidates = [phone, digits, last10].filter(Boolean);
-  const phoneOrFields = (field) => [
-    { [field]: { $in: phoneCandidates } },
-    ...(last10 ? [{ [field]: { $regex: new RegExp(last10 + "$") } }] : []),
-  ];
-
-  const restaurant = await FoodRestaurant.findOne({
-    $or: [
-      ...phoneOrFields("ownerPhone"),
-      ...phoneOrFields("primaryContactNumber"),
-      ...phoneOrFields("ownerPhoneDigits"),
-      ...phoneOrFields("ownerPhoneLast10"),
-    ],
-  });
-    const restaurantDoc = restaurant;
-    if (!restaurantDoc) {
-      return {
-        needsRegistration: true,
-        phone,
-      };
-    }
-
-  // Update FCM token if provided
-  if (fcmToken) {
-    let isModified = false;
-    if (platform === "mobile") {
-      if (!restaurantDoc.fcmTokenMobile) restaurantDoc.fcmTokenMobile = [];
-      if (!restaurantDoc.fcmTokenMobile.includes(fcmToken)) {
-        restaurantDoc.fcmTokenMobile.push(fcmToken);
-        isModified = true;
-      }
-    } else {
-      if (!restaurantDoc.fcmTokens) restaurantDoc.fcmTokens = [];
-      if (!restaurantDoc.fcmTokens.includes(fcmToken)) {
-        restaurantDoc.fcmTokens.push(fcmToken);
-        isModified = true;
-      }
-    }
-    if (isModified) {
-      await restaurantDoc.save();
-    }
-  }
-
-  // If restaurant approval status is used, handle pending/rejected states by returning info instead of throwing errors.
-    if (restaurantDoc.status && restaurantDoc.status !== "approved") {
-    return {
-      pendingApproval: true,
-      status: restaurantDoc.status,
-      isRejected: restaurantDoc.status === "rejected",
-      rejectionReason: restaurantDoc.rejectionReason || null,
-      phone,
-    };
-  }
-
-  const payload = { userId: restaurantDoc._id.toString(), role: ROLES.RESTAURANT };
-  const accessToken = signAccessToken(payload);
-  const refreshToken = signRefreshToken(payload);
-  const ttlMs = ms(config.jwtRefreshExpiresIn || "7d");
-  const expiresAt = new Date(Date.now() + ttlMs);
-
-  await FoodRefreshToken.create({
-    userId: restaurantDoc._id,
-    token: refreshToken,
-    expiresAt,
-  });
-
-  return {
-    token: accessToken,
-    accessToken,
-    refreshToken,
-    user: sanitizeRestaurantForAuthResponse(restaurantDoc?.toObject?.() || restaurantDoc),
-    needsRegistration: false,
-  };
-};
 
 export const requestDeliveryOtp = async (phone) => {
   if (!phone) {
@@ -524,7 +465,7 @@ export const logout = async (refreshToken, fcmToken, platform) => {
     // We try to remove the token from all 4 possible models regardless of the user ID, 
     // ensuring no stale connections are left across any role or app the user was logged into.
     const field = platform === "mobile" ? "fcmTokenMobile" : "fcmTokens";
-    const models = [FoodUser, FoodRestaurant, FoodDeliveryPartner, FoodAdmin];
+    const models = [FoodUser, FoodDeliveryPartner, FoodAdmin];
     
     try {
       await Promise.all(
@@ -560,65 +501,7 @@ export const getProfile = async (userId, role) => {
     case ROLES.ADMIN:
       profile = await FoodAdmin.findById(id).select("-password").lean();
       break;
-    case ROLES.RESTAURANT:
-      {
-        const doc = await FoodRestaurant.findById(id).lean();
-        if (!doc) break;
 
-        const location =
-          doc.addressLine1 ||
-          doc.addressLine2 ||
-          doc.area ||
-          doc.city ||
-          doc.state ||
-          doc.pincode ||
-          doc.landmark
-            ? {
-                addressLine1: doc.addressLine1 || "",
-                addressLine2: doc.addressLine2 || "",
-                area: doc.area || "",
-                city: doc.city || "",
-                state: doc.state || "",
-                pincode: doc.pincode || "",
-                landmark: doc.landmark || "",
-              }
-            : null;
-
-        const menuImages = Array.isArray(doc.menuImages)
-          ? doc.menuImages
-              .map((m) => (m && (typeof m === "string" ? m : m.url)) || null)
-              .filter(Boolean)
-              .map((url) => ({ url, publicId: null }))
-          : [];
-
-        profile = {
-          id: doc._id,
-          _id: doc._id,
-          // Frontend expects "name" and "location" for restaurant screens.
-          name: doc.restaurantName || "",
-          restaurantName: doc.restaurantName || "",
-          cuisines: Array.isArray(doc.cuisines) ? doc.cuisines : [],
-          location,
-          ownerName: doc.ownerName || "",
-          ownerEmail: doc.ownerEmail || "",
-          ownerPhone: doc.ownerPhone || "",
-          primaryContactNumber: doc.primaryContactNumber || "",
-          profileImage: doc.profileImage ? { url: doc.profileImage } : null,
-          menuImages,
-          coverImages: [],
-          openingTime: doc.openingTime || null,
-          closingTime: doc.closingTime || null,
-          openDays: Array.isArray(doc.openDays) ? doc.openDays : [],
-          status: doc.status || null,
-          createdAt: doc.createdAt,
-          updatedAt: doc.updatedAt,
-          // These fields may not exist yet in DB, keep stable defaults for UI.
-          rating: typeof doc.rating === "number" ? doc.rating : 0,
-          totalRatings:
-            typeof doc.totalRatings === "number" ? doc.totalRatings : 0,
-        };
-      }
-      break;
     case ROLES.DELIVERY_PARTNER: {
       const partner = await FoodDeliveryPartner.findById(id).lean();
       if (!partner) break;

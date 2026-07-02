@@ -71,11 +71,11 @@ export const PickupActionModal = ({
   }
 
   const isAtPickup = status === 'REACHED_PICKUP';
-  const restaurantName = order.restaurantName || order.restaurant_name || 'Restaurant';
-  const restaurantAddress = order.restaurantAddress || order.restaurant_address || order.restaurantLocation?.address || 'Address not available';
-  const restaurantPhone = order.restaurantPhone || order.restaurant_phone || order.restaurantId?.phone || '';
+  const storeName = order.storeName || order.store_name || 'Store';
+  const storeAddress = order.storeAddress || order.store_address || order.storeLocation?.address || 'Address not available';
+  const storePhone = order.storePhone || order.store_phone || order.storeId?.phone || '';
   const items = order.items || [];
-  const restaurantLogo = order.restaurantImage || order.restaurant?.logo || order.restaurant?.profileImage || 'https://cdn-icons-png.flaticon.com/512/3170/3170733.png';
+  const storeLogo = order.storeImage || order.store?.logo || order.store?.profileImage || 'https://cdn-icons-png.flaticon.com/512/3170/3170733.png';
 
   return (
     <div className="fixed inset-0 z-110 p-0 sm:p-4 flex items-end justify-center">
@@ -98,14 +98,14 @@ export const PickupActionModal = ({
           </button>
         </div>
 
-        {/* Restaurant Header */}
+        {/* Store Header */}
         <div className="flex items-start justify-between mb-5 sm:mb-8 pb-3 sm:pb-4 border-b border-gray-50">
           <div className="flex gap-3 sm:gap-4">
             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg shadow-black/5 overflow-hidden border border-gray-100">
-              <img src={restaurantLogo} alt="Logo" className="w-full h-full object-cover" />
+              <img src={storeLogo} alt="Logo" className="w-full h-full object-cover" />
             </div>
             <div>
-              <h3 className="text-gray-950 text-lg sm:text-xl font-bold">{restaurantName}</h3>
+              <h3 className="text-gray-950 text-lg sm:text-xl font-bold">{storeName}</h3>
               <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 mt-1.5">
                 {isAtPickup ? (
                   <span className="text-primary font-bold">Reached Location √</span>
@@ -119,16 +119,16 @@ export const PickupActionModal = ({
           </div>
 
           <div className="flex gap-2">
-            {restaurantPhone && (
+            {storePhone && (
               <button
-                onClick={() => window.location.href = `tel:${restaurantPhone}`}
+                onClick={() => window.location.href = `tel:${storePhone}`}
                 className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20"
               >
                 <Phone className="w-5 h-5" />
               </button>
             )}
             <button 
-              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurantAddress)}`, '_blank')}
+              onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(storeAddress)}`, '_blank')}
               className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white shadow-lg"
             >
               <Navigation className="w-5 h-5" />
@@ -143,7 +143,7 @@ export const PickupActionModal = ({
               <p className={`text-center text-[10px] font-bold uppercase tracking-widest mb-3 transition-colors ${
                 isWithinRange ? 'text-primary' : 'text-secondary animate-pulse'
               }`}>
-                {isWithinRange ? 'Ready - Swipe to confirm arrival' : 'Get closer to restaurant'}
+                {isWithinRange ? 'Ready - Swipe to confirm arrival' : 'Get closer to store'}
               </p>
               <ActionSlider 
                 key="action-reach"
@@ -201,7 +201,7 @@ export const PickupActionModal = ({
 
               <div>
                 <p className={`text-center text-[10px] font-bold uppercase tracking-widest mb-3 ${billImageUploaded ? 'text-primary' : 'text-gray-400'}`}>
-                  {billImageUploaded ? "Check the restaurant logo - Swipe to pick up" : "Capture bill to unlock swipe"}
+                  {billImageUploaded ? "Check the store logo - Swipe to pick up" : "Capture bill to unlock swipe"}
                 </p>
                 <ActionSlider 
                   key="action-pickup"

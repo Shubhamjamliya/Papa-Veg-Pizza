@@ -3,13 +3,13 @@ import mongoose from 'mongoose';
 /**
  * Financial snapshot preserved when an account is deleted.
  * This ensures admin money calculations remain accurate even
- * after user/delivery/restaurant data is purged.
+ * after user/delivery/store data is purged.
  */
 const accountDeletionSchema = new mongoose.Schema(
     {
         accountType: {
             type: String,
-            enum: ['USER', 'DELIVERY_PARTNER', 'RESTAURANT'],
+            enum: ['USER', 'DELIVERY_PARTNER', 'STORE'],
             required: true,
             index: true
         },

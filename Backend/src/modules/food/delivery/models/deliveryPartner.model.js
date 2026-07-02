@@ -20,6 +20,19 @@ const deliveryPartnerSchema = new mongoose.Schema(
             unique: true
         },
         email: { type: String, trim: true },
+        password: { type: String },
+        franchiseId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FoodFranchise',
+            default: null,
+            index: true
+        },
+        storeId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FoodStore',
+            default: null,
+            index: true
+        },
         countryCode: {
             type: String,
             default: '+91'
@@ -119,7 +132,9 @@ const deliveryPartnerSchema = new mongoose.Schema(
             max: 5,
             set: normalizeRatingValue
         },
-        totalRatings: { type: Number, default: 0, min: 0 }
+        totalRatings: { type: Number, default: 0, min: 0 },
+        walletAmount: { type: Number, default: 0 },
+        totalDeliveries: { type: Number, default: 0 }
     },
     {
         collection: 'food_delivery_partners',

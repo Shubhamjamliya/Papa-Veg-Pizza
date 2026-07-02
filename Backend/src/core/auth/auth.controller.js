@@ -3,8 +3,6 @@ import {
   verifyUserOtpAndLogin,
   adminLogin,
   refreshAccessToken,
-  requestRestaurantOtp,
-  verifyRestaurantOtpAndLogin,
   requestDeliveryOtp,
   verifyDeliveryOtpAndLogin,
   logout,
@@ -17,8 +15,6 @@ import {
 import { validateUserOtpRequestDto } from "../../dtos/auth/userOtpRequest.dto.js";
 import { validateUserOtpVerifyDto } from "../../dtos/auth/userOtpVerify.dto.js";
 import { validateAdminLoginDto } from "../../dtos/auth/adminLogin.dto.js";
-import { validateRestaurantOtpRequestDto } from "../../dtos/auth/restaurantOtpRequest.dto.js";
-import { validateRestaurantOtpVerifyDto } from "../../dtos/auth/restaurantOtpVerify.dto.js";
 import { validateDeliveryOtpRequestDto } from "../../dtos/auth/deliveryOtpRequest.dto.js";
 import { validateDeliveryOtpVerifyDto } from "../../dtos/auth/deliveryOtpVerify.dto.js";
 import { validateLogoutDto } from "../../dtos/auth/logout.dto.js";
@@ -63,9 +59,39 @@ export const verifyUserOtpController = async (req, res, next) => {
 
 export const adminLoginController = async (req, res, next) => {
   try {
-    const { email, password } = validateAdminLoginDto(req.body);
-    const result = await adminLogin(email, password);
-    return sendResponse(res, 200, "Admin login successful", result);
+    const payload = validateAdminLoginDto(req.body);
+    const result = await adminLogin(payload);
+    return sendResponse(res, 200, "Login successful", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const superAdminLoginController = async (req, res, next) => {
+  try {
+    const payload = validateAdminLoginDto(req.body);
+    const result = await adminLogin(payload, ['superadmin']);
+    return sendResponse(res, 200, "Super Admin Login successful", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const franchiseAdminLoginController = async (req, res, next) => {
+  try {
+    const payload = validateAdminLoginDto(req.body);
+    const result = await adminLogin(payload, ['franchise-admin']);
+    return sendResponse(res, 200, "Franchise Admin Login successful", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const storeLoginController = async (req, res, next) => {
+  try {
+    const payload = validateAdminLoginDto(req.body);
+    const result = await adminLogin(payload, ['store-manager', 'kitchen-supervisor', 'kitchen-staff']);
+    return sendResponse(res, 200, "Store Login successful", result);
   } catch (error) {
     next(error);
   }
@@ -76,29 +102,6 @@ export const refreshTokenController = async (req, res, next) => {
     const { refreshToken } = validateRefreshTokenDto(req.body);
     const result = await refreshAccessToken(refreshToken);
     return sendResponse(res, 200, "Access token refreshed", result);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const requestRestaurantOtpController = async (req, res, next) => {
-  try {
-    const { phone } = validateRestaurantOtpRequestDto(req.body);
-    const result = await requestRestaurantOtp(phone);
-    return sendResponse(res, 200, "OTP sent successfully", {
-      phone,
-      ...result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const verifyRestaurantOtpController = async (req, res, next) => {
-  try {
-    const { phone, otp, fcmToken, platform } = validateRestaurantOtpVerifyDto(req.body);
-    const result = await verifyRestaurantOtpAndLogin(phone, otp, fcmToken, platform);
-    return sendResponse(res, 200, "Authentication successful", result);
   } catch (error) {
     next(error);
   }

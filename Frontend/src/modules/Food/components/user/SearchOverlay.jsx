@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { X, Search, Clock, Loader2, Mic } from "lucide-react"
 import { Button } from "@food/components/ui/button"
 import { Input } from "@food/components/ui/input"
-import { restaurantAPI } from "@food/api"
+import { storeAPI } from "@food/api"
 import { useVoiceSearch } from "@food/hooks/useVoiceSearch"
 
 const SEARCH_HISTORY_KEY = "user_recent_searches_v1"
@@ -68,7 +68,7 @@ export default function SearchOverlay({ isOpen, onClose, searchValue, onSearchCh
     const fetchDishesFromDB = async () => {
       setLoadingFoods(true)
       try {
-        const dishesRes = await restaurantAPI.getPublicDishes({ limit: 800 })
+        const dishesRes = await storeAPI.getPublicDishes({ limit: 800 })
         const dishes =
           dishesRes?.data?.data?.dishes ||
           dishesRes?.data?.dishes ||
@@ -175,7 +175,7 @@ export default function SearchOverlay({ isOpen, onClose, searchValue, onSearchCh
                 ref={inputRef}
                 value={searchValue}
                 onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="Search dishes or restaurants"
+                placeholder="Search dishes or stores"
                 className="pl-14 pr-16 h-13 w-full bg-white dark:bg-[#1a1a1a] border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-[#7e3866]/20 focus:border-[#7e3866] dark:focus:border-[#7e3866] rounded-2xl text-base dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 shadow-sm transition-all duration-200"
               />
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-3">
@@ -297,7 +297,7 @@ export default function SearchOverlay({ isOpen, onClose, searchValue, onSearchCh
                     {searchValue.trim() ? `No results found for "${searchValue}"` : "No dishes found in database"}
                   </p>
                   <p className="text-sm sm:text-base text-gray-500 dark:text-gray-500 mt-2">
-                    {searchValue.trim() ? "Try a different search term" : "Add menu items in restaurant menus to show here"}
+                    {searchValue.trim() ? "Try a different search term" : "Add menu items in store menus to show here"}
                   </p>
                 </>
               )}

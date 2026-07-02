@@ -12,7 +12,7 @@ import { toast } from "sonner"
 export default function SuperAdminLogin() {
   const navigate = useNavigate()
   const { logo, themeMode, primaryColor } = useSystemTheme()
-  const [email, setEmail] = useState("")
+  const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -34,7 +34,7 @@ export default function SuperAdminLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    if (!email || !password) {
+    if (!identifier || !password) {
       toast.error("Please fill in all fields")
       return
     }
@@ -43,7 +43,7 @@ export default function SuperAdminLogin() {
     setLoading(true)
 
     try {
-      const response = await adminAPI.login(email.trim(), password)
+      const response = await adminAPI.superAdminLogin(identifier.trim(), password)
       const data = response?.data?.data || response?.data || {}
 
       const accessToken = data.accessToken
@@ -55,11 +55,11 @@ export default function SuperAdminLogin() {
       }
 
       // Strict Super Admin RBAC Check
-      if (adminUser.role !== "superadmin") {
+      if (String(adminUser.role || "").replace(/_/g, "-") !== "superadmin") {
         throw new Error("Access Denied: You do not have Super Admin privileges")
       }
 
-      setAuthData("superadmin", accessToken, adminUser, refreshToken)
+      setAuthData("admin", accessToken, adminUser, refreshToken)
       toast.success("Welcome, Super Administrator")
       navigate("/superadmin/dashboard", { replace: true })
     } catch (err) {
@@ -147,17 +147,17 @@ export default function SuperAdminLogin() {
              <form onSubmit={handleLogin} className="space-y-3.5">
               <div className="space-y-2.5">
                 <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-0.5">Email Address</label>
+                    <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-0.5">Email or Mobile</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
-                      type="email"
+                      type="text"
                       required
                       autoFocus
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={identifier}
+                      onChange={(e) => setIdentifier(e.target.value)}
                       className="block w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border border-transparent focus:border-[var(--primary)]/50 rounded-lg outline-none transition-all placeholder:text-gray-400 font-medium text-xs"
-                      placeholder="superadmin@papavegpizza.com"
+                      placeholder="superadmin@papavegpizza.com or 9876543210"
                     />
                   </div>
                 </div>

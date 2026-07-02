@@ -29,7 +29,7 @@ function maskToken(token) {
 }
 
 const roomNames = {
-    restaurant: (id) => `restaurant:${String(id)}`,
+    store: (id) => `store:${String(id)}`,
     user: (id) => `user:${String(id)}`,
     delivery: (id) => `delivery:${String(id)}`,
     tracking: (orderId) => `tracking:${String(orderId)}`
@@ -122,7 +122,7 @@ export const initSocket = async (server) => {
 
         // Auto-join role rooms (lets us emit without a custom join).
         if (userId && role) {
-            if (role === 'RESTAURANT') socket.join(roomNames.restaurant(userId));
+            if (role === 'STORE') socket.join(roomNames.store(userId));
             if (role === 'USER') socket.join(roomNames.user(userId));
             if (role === 'DELIVERY_PARTNER') {
                 socket.join(roomNames.delivery(userId));
@@ -135,13 +135,13 @@ export const initSocket = async (server) => {
             }
         }
 
-        // Explicit join (used by existing restaurant client hook).
-        socket.on('join-restaurant', (restaurantId) => {
-            if (socket.user?.role !== 'RESTAURANT') return;
-            // Security: only join your own restaurant room.
-            if (String(socket.user?.userId) !== String(restaurantId)) return;
-            socket.join(roomNames.restaurant(restaurantId));
-            socket.emit('restaurant-room-joined', { room: roomNames.restaurant(restaurantId), restaurantId: String(restaurantId) });
+        // Explicit join (used by existing store client hook).
+        socket.on('join-store', (storeId) => {
+            if (socket.user?.role !== 'STORE') return;
+            // Security: only join your own store room.
+            if (String(socket.user?.userId) !== String(storeId)) return;
+            socket.join(roomNames.store(storeId));
+            socket.emit('store-room-joined', { room: roomNames.store(storeId), storeId: String(storeId) });
         });
 
         // Explicit join (used by existing delivery client hook).
@@ -177,11 +177,11 @@ export const initSocket = async (server) => {
 
         // ─── Live Tracking Events ───────────────────────────────────────
 
-        // Users / restaurants subscribe to an order's real-time tracking room.
+        // Users / stores subscribe to an order's real-time tracking room.
         socket.on('join-tracking', (orderId) => {
             if (!orderId) return;
             const role = socket.user?.role;
-            if (role !== 'USER' && role !== 'RESTAURANT' && role !== 'DELIVERY_PARTNER') return;
+            if (role !== 'USER' && role !== 'STORE' && role !== 'DELIVERY_PARTNER') return;
             const room = roomNames.tracking(orderId);
             socket.join(room);
             logger.info(`Socket ${socket.id} (${role}:${userId}) joined tracking room ${room}`);
@@ -242,8 +242,8 @@ export const initSocket = async (server) => {
                 socket.to(roomNames.user(data.userId)).emit('location-update', payload);
             }
 
-            if (data.restaurantId) {
-                socket.to(roomNames.restaurant(data.restaurantId)).emit('location-update', payload);
+            if (data.storeId) {
+                socket.to(roomNames.store(data.storeId)).emit('location-update', payload);
             }
 
             // ─── Scalable Persistence (BullMQ + Redis "Hot" Buffering) ───

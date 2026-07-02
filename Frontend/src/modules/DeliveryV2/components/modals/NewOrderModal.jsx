@@ -37,9 +37,9 @@ export const NewOrderModal = ({ order, onAccept, onReject, onMinimize }) => {
     }
 
     // B. Calculate from locations (Local calculation fallback)
-    const rest = order.restaurantLocation || order.restaurantId?.location || {};
-    const resLat = parseFloat(order.restaurant_lat || order.restaurantLat || rest.latitude || rest.lat);
-    const resLng = parseFloat(order.restaurant_lng || order.restaurantLng || rest.longitude || rest.lng);
+    const rest = order.storeLocation || order.storeId?.location || {};
+    const resLat = parseFloat(order.store_lat || order.storeLat || rest.latitude || rest.lat);
+    const resLng = parseFloat(order.store_lng || order.storeLng || rest.longitude || rest.lng);
 
     if (riderLocation && !isNaN(resLat) && !isNaN(resLng)) {
       const distM = getHaversineDistance(
@@ -62,8 +62,8 @@ export const NewOrderModal = ({ order, onAccept, onReject, onMinimize }) => {
   if (!order) return null;
 
   const earnings = order.earnings || order.riderEarning || (order.orderAmount ? order.orderAmount * 0.1 : 0);
-  const restaurantName = order.restaurantName || order.restaurant_name || (order.restaurantId?.name) || 'Restaurant';
-  const restaurantAddress = order.restaurantAddress || order.restaurant_address || (order.restaurantId?.location?.address) || 'Address not available';
+  const storeName = order.storeName || order.store_name || (order.storeId?.name) || 'Store';
+  const storeAddress = order.storeAddress || order.store_address || (order.storeId?.location?.address) || 'Address not available';
   const deliveryAddress = order?.deliveryAddress || {};
 
   const geoCoords =
@@ -149,10 +149,10 @@ export const NewOrderModal = ({ order, onAccept, onReject, onMinimize }) => {
               <div>
                 <div className="flex items-center gap-2 mb-2 font-bold text-[10px] uppercase tracking-widest text-green-600">
                   <ChefHat className="w-4 h-4" />
-                  <span>Restaurant Pickup</span>
+                  <span>Store Pickup</span>
                 </div>
-                <p className="text-gray-950 font-bold text-base sm:text-xl leading-tight">{restaurantName}</p>
-                <p className="text-gray-500 text-sm font-medium leading-relaxed">{restaurantAddress}</p>
+                <p className="text-gray-950 font-bold text-base sm:text-xl leading-tight">{storeName}</p>
+                <p className="text-gray-500 text-sm font-medium leading-relaxed">{storeAddress}</p>
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-2 font-bold text-[10px] uppercase tracking-widest text-blue-600">

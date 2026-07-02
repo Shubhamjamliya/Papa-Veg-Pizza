@@ -1,29 +1,29 @@
 import { FoodTransaction } from '../models/foodTransaction.model.js';
-import { FoodRestaurantCommission } from '../../admin/models/restaurantCommission.model.js';
+import { FoodStoreCommission } from '../../admin/models/storeCommission.model.js';
 import mongoose from 'mongoose';
 
-const RESTAURANT_COMMISSION_CACHE_MS = 60 * 1000;
-let restaurantCommissionRulesCache = null;
-let restaurantCommissionRulesLoadedAt = 0;
+const STORE_COMMISSION_CACHE_MS = 60 * 1000;
+let storeCommissionRulesCache = null;
+let storeCommissionRulesLoadedAt = 0;
 
-async function getActiveRestaurantCommissionRules() {
+async function getActiveStoreCommissionRules() {
   const now = Date.now();
   if (
-    restaurantCommissionRulesCache &&
-    now - restaurantCommissionRulesLoadedAt < RESTAURANT_COMMISSION_CACHE_MS
+    storeCommissionRulesCache &&
+    now - storeCommissionRulesLoadedAt < STORE_COMMISSION_CACHE_MS
   ) {
-    return restaurantCommissionRulesCache;
+    return storeCommissionRulesCache;
   }
 
-  const list = await FoodRestaurantCommission.find({
+  const list = await FoodStoreCommission.find({
     status: { $ne: false },
   }).lean();
-  restaurantCommissionRulesCache = list || [];
-  restaurantCommissionRulesLoadedAt = now;
-  return restaurantCommissionRulesCache;
+  storeCommissionRulesCache = list || [];
+  storeCommissionRulesLoadedAt = now;
+  return storeCommissionRulesCache;
 }
 
-export function computeRestaurantCommissionAmount(baseAmount, rule) {
+export function computeStoreCommissionAmount(baseAmount, rule) {
   const safeBase = Math.max(0, Number(baseAmount) || 0);
   if (!Number.isFinite(safeBase) || safeBase < 0) return 0;
 
@@ -47,12 +47,12 @@ export function computeRestaurantCommissionAmount(baseAmount, rule) {
   return { commissionAmount, commissionType, commissionValue, baseAmount: safeBase };
 }
 
-export async function getRestaurantCommissionSnapshot(orderDoc) {
+export async function getStoreCommissionSnapshot(orderDoc) {
   const baseAmount = Number(orderDoc?.pricing?.subtotal ?? 0) || 0;
-  const restaurantIdRaw =
-    orderDoc?.restaurantId?._id ?? orderDoc?.restaurantId ?? null;
+  const storeIdRaw =
+    orderDoc?.storeId?._id ?? orderDoc?.storeId ?? null;
 
-  if (!restaurantIdRaw) {
+  if (!storeIdRaw) {
     return {
       commissionAmount: 0,
       commissionType: 'percentage',
@@ -61,11 +61,11 @@ export async function getRestaurantCommissionSnapshot(orderDoc) {
     };
   }
 
-  const rules = await getActiveRestaurantCommissionRules();
+  const rules = await getActiveStoreCommissionRules();
   const rule =
-    rules.find((r) => String(r.restaurantId) === String(restaurantIdRaw)) ||
-    // Fallback: accept legacy docs where restaurantId may be stored under `restaurant` / `restaurant_id`
-    rules.find((r) => String(r.restaurant || r.restaurant_id || '') === String(restaurantIdRaw)) ||
+    rules.find((r) => String(r.storeId) === String(storeIdRaw)) ||
+    // Fallback: accept legacy docs where storeId may be stored under `store` / `store_id`
+    rules.find((r) => String(r.store || r.store_id || '') === String(storeIdRaw)) ||
     null;
 
   if (!rule) {
@@ -77,33 +77,33 @@ export async function getRestaurantCommissionSnapshot(orderDoc) {
     };
   }
 
-  return computeRestaurantCommissionAmount(baseAmount, rule);
+  return computeStoreCommissionAmount(baseAmount, rule);
 }
 
 /**
  * Creates an initial 'pending' transaction when an order is created.
  */
 export async function createInitialTransaction(order) {
-    const { commissionAmount } = await getRestaurantCommissionSnapshot(order);
+    const { commissionAmount } = await getStoreCommissionSnapshot(order);
     
     // Split logic
     const totalCustomerPaid = order.pricing?.total || 0;
     const riderShare = order.riderEarning || 0;
     // Prefer commission already computed & stored on the order (source of truth for this order),
     // fallback to rule snapshot for older orders.
-    const restaurantCommissionFromOrder = Number(order.pricing?.restaurantCommission);
-    const restaurantCommission =
-        Number.isFinite(restaurantCommissionFromOrder) && restaurantCommissionFromOrder > 0
-            ? restaurantCommissionFromOrder
+    const storeCommissionFromOrder = Number(order.pricing?.storeCommission);
+    const storeCommission =
+        Number.isFinite(storeCommissionFromOrder) && storeCommissionFromOrder > 0
+            ? storeCommissionFromOrder
             : (commissionAmount || 0);
-    const restaurantNet = (order.pricing?.subtotal || 0) + (order.pricing?.packagingFee || 0) - restaurantCommission;
-    const platformNetProfit = (order.pricing?.platformFee || 0) + (order.pricing?.deliveryFee || 0) + restaurantCommission - riderShare;
+    const storeNet = (order.pricing?.subtotal || 0) + (order.pricing?.packagingFee || 0) - storeCommission;
+    const platformNetProfit = (order.pricing?.platformFee || 0) + (order.pricing?.deliveryFee || 0) + storeCommission - riderShare;
 
     const transaction = new FoodTransaction({
         orderId: order._id,
 
         userId: order.userId,
-        restaurantId: order.restaurantId,
+        storeId: order.storeId,
         deliveryPartnerId: order.dispatch?.deliveryPartnerId,
         paymentMethod: order.payment?.method || 'cash',
         status: order.payment?.status === 'paid' ? 'captured' : 'pending',
@@ -131,15 +131,15 @@ export async function createInitialTransaction(order) {
             packagingFee: Number(order.pricing?.packagingFee || 0) || 0,
             deliveryFee: Number(order.pricing?.deliveryFee || 0) || 0,
             platformFee: Number(order.pricing?.platformFee || 0) || 0,
-            restaurantCommission,
+            storeCommission,
             discount: Number(order.pricing?.discount || 0) || 0,
             total: Number(order.pricing?.total || 0) || 0,
             currency: String(order.pricing?.currency || order.currency || 'INR'),
         },
         amounts: {
             totalCustomerPaid,
-            restaurantShare: Math.max(0, restaurantNet),
-            restaurantCommission,
+            storeShare: Math.max(0, storeNet),
+            storeCommission,
             riderShare,
             platformNetProfit,
             taxAmount: order.pricing?.tax || 0
@@ -230,12 +230,12 @@ export async function updateTransactionRider(orderId, riderId) {
 }
 
 /**
- * Marks restaurant as settled in the finance record.
+ * Marks store as settled in the finance record.
  */
-export async function settleRestaurant(orderId, adminId) {
+export async function settleStore(orderId, adminId) {
     return await updateTransactionStatus(orderId, 'settled', {
         status: 'captured', // Ensure it's marked as captured if it was pending cash
-        note: 'Restaurant payout settled by admin',
+        note: 'Store payout settled by admin',
         recordedByRole: 'ADMIN',
         recordedById: adminId
     });

@@ -217,7 +217,7 @@ export function clearRestaurantPendingPhone() {
  * Clear all authentication data for all modules
  */
 export function clearAuthData() {
-  const modules = ['admin', 'restaurant', 'delivery', 'user'];
+  const modules = ['admin', 'superadmin', 'store', 'restaurant', 'delivery', 'user'];
   modules.forEach(module => {
     clearModuleAuth(module);
   });

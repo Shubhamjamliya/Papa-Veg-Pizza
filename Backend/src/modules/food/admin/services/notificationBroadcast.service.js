@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { ValidationError, NotFoundError } from '../../../../core/auth/errors.js';
 import { FoodUser } from '../../../../core/users/user.model.js';
-import { FoodRestaurant } from '../../restaurant/models/restaurant.model.js';
+import { FoodStore as FoodStore } from '../../store/models/store.model.js';
 import { FoodDeliveryPartner } from '../../delivery/models/deliveryPartner.model.js';
 import { BroadcastNotification } from '../../../../core/notifications/models/notificationBroadcast.model.js';
 import { FoodNotification } from '../../../../core/notifications/models/notification.model.js';
@@ -12,14 +12,14 @@ import { getIO, rooms } from '../../../../config/socket.js';
 const TARGET_TYPE_MAP = {
     ALL: 'ALL',
     USER: 'USER',
-    RESTAURANT: 'RESTAURANT',
+    STORE: 'STORE',
     DELIVERY: 'DELIVERY',
     CUSTOM: 'CUSTOM'
 };
 
 const OWNER_LABEL_MAP = {
     USER: 'Users',
-    RESTAURANT: 'Restaurants',
+    STORE: 'Stores',
     DELIVERY_PARTNER: 'Delivery Partners'
 };
 
@@ -49,7 +49,7 @@ const normalizeTargetType = (value) => {
 
 const ownerModelMap = {
     USER: FoodUser,
-    RESTAURANT: FoodRestaurant,
+    STORE: FoodStore,
     DELIVERY_PARTNER: FoodDeliveryPartner
 };
 
@@ -58,9 +58,9 @@ const buildUserLabel = (doc) => ({
     subLabel: [doc?.phone, doc?.email].filter(Boolean).join(' • ')
 });
 
-const buildRestaurantLabel = (doc) => ({
-    label: String(doc?.restaurantName || doc?.ownerName || 'Restaurant').trim(),
-    subLabel: [doc?.ownerPhone, doc?.ownerEmail].filter(Boolean).join(' • ')
+const buildStoreLabel = (doc) => ({
+    label: String(doc?.storeName || doc?.managerName || 'Store').trim(),
+    subLabel: [doc?.phone, doc?.email].filter(Boolean).join(' • ')
 });
 
 const buildDeliveryLabel = (doc) => ({
@@ -75,11 +75,11 @@ const modelConfigMap = {
         select: '_id name phone email',
         buildLabel: buildUserLabel
     },
-    RESTAURANT: {
-        model: FoodRestaurant,
+    STORE: {
+        model: FoodStore,
         query: { status: 'approved' },
-        select: '_id restaurantName ownerName ownerPhone ownerEmail',
-        buildLabel: buildRestaurantLabel
+        select: '_id storeName managerName phone email',
+        buildLabel: buildStoreLabel
     },
     DELIVERY_PARTNER: {
         model: FoodDeliveryPartner,
@@ -136,16 +136,16 @@ const resolveCustomTargets = async ({ targets = [], targetIds = [] } = {}) => {
 
 const resolveTargets = async ({ targetType, targetIds = [], targets = [] } = {}) => {
     if (targetType === 'ALL') {
-        const [users, restaurants, deliveryPartners] = await Promise.all([
+        const [users, stores, deliveryPartners] = await Promise.all([
             loadTargetsByOwnerType('USER'),
-            loadTargetsByOwnerType('RESTAURANT'),
+            loadTargetsByOwnerType('STORE'),
             loadTargetsByOwnerType('DELIVERY_PARTNER')
         ]);
-        return [...users, ...restaurants, ...deliveryPartners];
+        return [...users, ...stores, ...deliveryPartners];
     }
 
     if (targetType === 'USER') return loadTargetsByOwnerType('USER');
-    if (targetType === 'RESTAURANT') return loadTargetsByOwnerType('RESTAURANT');
+    if (targetType === 'STORE') return loadTargetsByOwnerType('STORE');
     if (targetType === 'DELIVERY') return loadTargetsByOwnerType('DELIVERY_PARTNER');
     if (targetType === 'CUSTOM') return resolveCustomTargets({ targets, targetIds });
 
@@ -187,8 +187,8 @@ const emitRealtimeNotifications = (targets = [], broadcast) => {
         if (target.ownerType === 'USER') {
             io.to(rooms.user(ownerId)).emit('admin_notification', payload);
         }
-        if (target.ownerType === 'RESTAURANT') {
-            io.to(rooms.restaurant(ownerId)).emit('admin_notification', payload);
+        if (target.ownerType === 'STORE') {
+            io.to(rooms.store(ownerId)).emit('admin_notification', payload);
         }
         if (target.ownerType === 'DELIVERY_PARTNER') {
             io.to(rooms.delivery(ownerId)).emit('admin_notification', payload);

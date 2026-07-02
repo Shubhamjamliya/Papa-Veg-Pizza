@@ -1,6 +1,6 @@
 ﻿import mongoose from 'mongoose';
 import { FoodOrder } from '../models/order.model.js';
-import { FoodRestaurant } from '../../restaurant/models/restaurant.model.js';
+import { FoodStore as FoodStore } from '../../store/models/store.model.js';
 import { FoodFeeSettings } from '../../admin/models/feeSettings.model.js';
 import { FoodOffer } from '../../admin/models/offer.model.js';
 import { FoodOfferUsage } from '../../admin/models/offerUsage.model.js';
@@ -8,12 +8,12 @@ import { ValidationError } from '../../../../core/auth/errors.js';
 import { haversineKm } from './order.helpers.js';
 
 export async function calculateOrderPricing(userId, dto) {
-  const restaurant = await FoodRestaurant.findById(dto.restaurantId)
+  const store = await FoodStore.findById(dto.storeId)
     .select("status location")
     .lean();
-  if (!restaurant) throw new ValidationError("Restaurant not found");
-  if (restaurant.status !== "approved")
-    throw new ValidationError("Restaurant not available");
+  if (!store) throw new ValidationError("Store not found");
+  if (store.status !== "approved")
+    throw new ValidationError("Store not available");
 
   const items = Array.isArray(dto.items) ? dto.items : [];
   const subtotal = items.reduce(
@@ -41,10 +41,10 @@ export async function calculateOrderPricing(userId, dto) {
   const freeThreshold = Number(feeSettings.freeDeliveryThreshold || 0);
   let distanceKm = null;
   if (
-    restaurant?.location?.coordinates?.length === 2 &&
+    store?.location?.coordinates?.length === 2 &&
     dto?.deliveryAddress?.location?.coordinates?.length === 2
   ) {
-    const [rLng, rLat] = restaurant.location.coordinates;
+    const [rLng, rLat] = store.location.coordinates;
     const [dLng, dLat] = dto.deliveryAddress.location.coordinates;
     const d = haversineKm(rLat, rLng, dLat, dLng);
     distanceKm = Number.isFinite(d) ? d : null;
@@ -131,8 +131,8 @@ export async function calculateOrderPricing(userId, dto) {
       const startOk = !offer.startDate || now >= new Date(offer.startDate);
       const endOk = !offer.endDate || now < new Date(offer.endDate);
       const scopeOk =
-        offer.restaurantScope !== "selected" ||
-        String(offer.restaurantId || "") === String(dto.restaurantId || "");
+        offer.storeScope !== "selected" ||
+        String(offer.storeId || "") === String(dto.storeId || "");
       const minOk = subtotal >= (Number(offer.minOrderValue) || 0);
       let usageOk = true;
       if (

@@ -17,7 +17,7 @@ export default function AuthInitializer({ children }) {
     const initializeAuth = async () => {
       try {
         // Check all module tokens to ensure they're properly loaded from localStorage
-        const modules = ['user', 'restaurant', 'delivery', 'admin'];
+        const modules = ['user', 'store', 'delivery', 'admin'];
         
         modules.forEach(module => {
           const token = getModuleToken(module);

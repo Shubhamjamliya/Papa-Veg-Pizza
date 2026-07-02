@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { FoodOrder, FoodSettings } from '../models/order.model.js';
-import { FoodRestaurant } from '../../restaurant/models/restaurant.model.js';
+import { FoodStore as FoodStore } from '../../store/models/store.model.js';
 import { FoodDeliveryPartner } from '../../delivery/models/deliveryPartner.model.js';
 import { FoodDeliveryCashDeposit } from '../../delivery/models/foodDeliveryCashDeposit.model.js';
 import { FoodDeliveryCashLimit } from '../../admin/models/deliveryCashLimit.model.js';
@@ -122,15 +122,15 @@ async function filterPartnersByCashLimit(partners = [], options = {}) {
 }
 
 async function listNearbyOnlineDeliveryPartners(
-  restaurantId,
+  storeId,
   { maxKm = 15, limit = 25, requiredAmount = 0, allowOverLimitFallback = true } = {},
 ) {
-  const rId = (restaurantId?._id || restaurantId).toString();
-  const restaurant = await FoodRestaurant.findById(rId)
+  const rId = (storeId?._id || storeId).toString();
+  const store = await FoodStore.findById(rId)
     .select("location")
     .lean();
 
-  if (!restaurant?.location?.coordinates?.length) {
+  if (!store?.location?.coordinates?.length) {
     const partners = await FoodDeliveryPartner.find({
       status: "approved",
       availabilityStatus: "online",
@@ -145,12 +145,12 @@ async function listNearbyOnlineDeliveryPartners(
     );
 
     return {
-      restaurant: null,
+      store: null,
       partners: cashEligiblePartners.map((p) => ({ partnerId: p.partnerId || p._id, distanceKm: null })),
     };
   }
 
-  const [rLng, rLat] = restaurant.location.coordinates;
+  const [rLng, rLat] = store.location.coordinates;
   const allOnline = await FoodDeliveryPartner.find({
     availabilityStatus: "online",
   })
@@ -258,7 +258,7 @@ export async function tryAutoAssign(orderId, options = {}) {
       $set: { 'dispatch.dispatchingAt': new Date() }
     },
     { new: true }
-  ).populate(['restaurantId', 'userId']);
+  ).populate(['storeId', 'userId']);
 
   if (!order) {
     logger.info(`tryAutoAssign: Skip for ${orderId} (not dispatchable, already dispatching, accepted, or multi-attempt lock active).`);
@@ -284,7 +284,7 @@ export async function tryAutoAssign(orderId, options = {}) {
       requiredAmount,
       allowOverLimitFallback: true,
     };
-    const { partners } = await listNearbyOnlineDeliveryPartners(order.restaurantId, searchOptions);
+    const { partners } = await listNearbyOnlineDeliveryPartners(order.storeId, searchOptions);
     
     // TIERED ALERT LOGIC
     // Phase 2: Broadcast to all (Attempt 3+)
@@ -317,7 +317,7 @@ export async function tryAutoAssign(orderId, options = {}) {
       // If we ran out of new eligible partners, we might want to re-offer to everyone (Phase 2 style)
       const io = getIO();
       if (io && partners.length > 0) {
-        const payload = buildDeliverySocketPayload(order, order.restaurantId);
+        const payload = buildDeliverySocketPayload(order, order.storeId);
         for (const p of partners) {
           const roomName = rooms.delivery(p.partnerId);
           io.to(roomName).emit('new_order_available', { ...payload, pickupDistanceKm: p.distanceKm });
@@ -336,7 +336,7 @@ export async function tryAutoAssign(orderId, options = {}) {
     }
 
     const io = getIO();
-    const payload = buildDeliverySocketPayload(order, order.restaurantId);
+    const payload = buildDeliverySocketPayload(order, order.storeId);
 
     const phase1Batch = eligible.slice(0, Math.min(3, eligible.length));
 
@@ -441,11 +441,11 @@ export async function processDispatchTimeout(orderId, partnerId) {
 }
 
 
-export async function resendDeliveryNotificationRestaurant(orderId, restaurantId) {
+export async function resendDeliveryNotificationStore(orderId, storeId) {
   const identity = buildOrderIdentityFilter(orderId);
   const order = await FoodOrder.findOne({
     ...identity,
-    restaurantId: new mongoose.Types.ObjectId(restaurantId),
+    storeId: new mongoose.Types.ObjectId(storeId),
   });
 
   if (!order) throw new NotFoundError('Order not found');
@@ -461,7 +461,7 @@ export async function resendDeliveryNotificationRestaurant(orderId, restaurantId
 
   const paymentMethod = String(order.payment?.method || 'cash').toLowerCase();
   const requiredAmount = paymentMethod === 'cash' ? Number(order?.pricing?.total || 0) : 0;
-  const preview = await listNearbyOnlineDeliveryPartners(order.restaurantId, {
+  const preview = await listNearbyOnlineDeliveryPartners(order.storeId, {
     maxKm: 15,
     limit: 15,
     requiredAmount,

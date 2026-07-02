@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { FoodOrder } from '../models/order.model.js';
-import { FoodRestaurant } from '../../restaurant/models/restaurant.model.js';
+import { FoodStore as FoodStore } from '../../store/models/store.model.js';
 import { FoodTransaction } from '../models/foodTransaction.model.js';
 import { FoodDeliveryPartner } from '../../delivery/models/deliveryPartner.model.js';
 import { FoodDeliveryCashDeposit } from '../../delivery/models/foodDeliveryCashDeposit.model.js';
@@ -146,7 +146,7 @@ function emitOrderUpdate(order, deliveryPartnerId, options = {}) {
         'order_status_update',
         payload,
       );
-      io.to(rooms.restaurant(order.restaurantId)).emit(
+      io.to(rooms.store(order.storeId)).emit(
         'order_status_update',
         payload,
       );
@@ -287,8 +287,8 @@ export async function getCurrentTripDelivery(deliveryPartnerId) {
     },
   })
     .populate({
-      path: 'restaurantId',
-      select: 'restaurantName name phone location addressLine1 area city state profileImage',
+      path: 'storeId',
+      select: 'storeName name phone location addressLine1 area city state profileImage',
     })
     .populate({ path: 'userId', select: 'name phone' })
     .sort({ updatedAt: -1 })
@@ -326,7 +326,7 @@ export async function listOrdersAvailableDelivery(deliveryPartnerId, query) {
       $nin: [
         'delivered',
         'cancelled_by_user',
-        'cancelled_by_restaurant',
+        'cancelled_by_store',
         'cancelled_by_admin',
       ],
     },
@@ -351,8 +351,8 @@ export async function listOrdersAvailableDelivery(deliveryPartnerId, query) {
       .limit(limit)
       .populate('userId', 'name phone email')
       .populate(
-        'restaurantId',
-        'restaurantName name address phone ownerPhone location profileImage',
+        'storeId',
+        'storeName name address phone phone location profileImage',
       )
       .lean(),
     FoodOrder.countDocuments(filter),
@@ -417,7 +417,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
   const acceptedStatuses = ['confirmed', 'preparing', 'ready_for_pickup', 'picked_up'];
   const cancellableStatuses = [
     'cancelled_by_user',
-    'cancelled_by_restaurant',
+    'cancelled_by_store',
     'cancelled_by_admin',
   ];
 
@@ -454,7 +454,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
       },
     },
     { new: true },
-  ).populate('restaurantId userId');
+  ).populate('storeId userId');
 
   if (!order) {
     const existing = await FoodOrder.findOne(identity)
@@ -476,7 +476,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
       String(existing.dispatch?.deliveryPartnerId || '') === String(deliveryPartnerId)
     ) {
       const acceptedOrder = await FoodOrder.findOne(identity)
-        .populate('restaurantId userId');
+        .populate('storeId userId');
       return acceptedOrder
         ? sanitizeOrderForExternal(acceptedOrder)
         : null;
@@ -495,7 +495,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
 
   void (async () => {
     try {
-      const rest = order.restaurantId;
+      const rest = order.storeId;
       const userLoc = order.deliveryAddress?.location?.coordinates;
       const restLoc = rest?.location?.coordinates;
 
@@ -515,8 +515,8 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
               lng: restLoc[0],
               boy_lat: restLoc[1],
               boy_lng: restLoc[0],
-              restaurant_lat: restLoc[1],
-              restaurant_lng: restLoc[0],
+              store_lat: restLoc[1],
+              store_lng: restLoc[0],
               customer_lat: userLoc[1],
               customer_lng: userLoc[0],
               status: 'accepted',
@@ -553,7 +553,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
           dispatchStatus: order.dispatch?.status,
         };
         io.to(rooms.delivery(deliveryPartnerId)).emit('order_status_update', payload);
-        io.to(rooms.restaurant(order.restaurantId)).emit('order_status_update', payload);
+        io.to(rooms.store(order.storeId)).emit('order_status_update', payload);
         io.to(rooms.user(order.userId)).emit('order_status_update', payload);
 
         // Broadcast order_claimed to ALL online delivery partners so every popup is dismissed
@@ -584,7 +584,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
       );
 
       await notifyOwnerSafely(
-        { ownerType: 'RESTAURANT', ownerId: order.restaurantId },
+        { ownerType: 'STORE', ownerId: order.storeId },
         {
           title: `Rider assigned`,
           body: `Order #${order._id.toString()} is now assigned to a delivery partner.`,
@@ -593,7 +593,7 @@ export async function acceptOrderDelivery(orderId, deliveryPartnerId) {
             orderId: order._id.toString(),
             orderMongoId: order._id?.toString?.() || '',
             dispatchStatus: order.dispatch?.status,
-            link: '/food/restaurant/orders',
+            link: '/food/store/orders',
           },
         },
       );
@@ -702,19 +702,19 @@ export async function confirmReachedPickupDelivery(orderId, deliveryPartnerId) {
   emitOrderUpdate(order, deliveryPartnerId);
 
   try {
-    const restaurant = await FoodRestaurant.findById(order.restaurantId)
-      .select('restaurantName')
+    const store = await FoodStore.findById(order.storeId)
+      .select('storeName')
       .lean();
     const partner = await FoodDeliveryPartner.findById(deliveryPartnerId)
       .select('name')
       .lean();
 
     await notifyOwnersSafely(
-      [{ ownerType: 'RESTAURANT', ownerId: order.restaurantId }],
+      [{ ownerType: 'STORE', ownerId: order.storeId }],
       {
         title: 'Rider arrived!',
         body: `${partner?.name || 'The delivery partner'} has arrived at ${
-          restaurant?.restaurantName || 'your restaurant'
+          store?.storeName || 'your store'
         } to pick up Order #${order._id.toString()}.`,
         data: {
           type: 'rider_arrived',
@@ -726,7 +726,7 @@ export async function confirmReachedPickupDelivery(orderId, deliveryPartnerId) {
     );
   } catch (error) {
     logger.error(
-      `Error notifying restaurant about rider arrival for ${order._id}: ${
+      `Error notifying store about rider arrival for ${order._id}: ${
         error?.message || error
       }`,
     );
