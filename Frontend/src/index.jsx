@@ -45,7 +45,7 @@ function resolveNativeInitialRoute() {
   const storedRoute = String(localStorage.getItem(NATIVE_LAST_ROUTE_KEY) || '').trim()
 
   if (pathname.startsWith('/food/')) return pathname
-  if (pathname.startsWith('/restaurant')) return `/food${pathname}`
+  if (pathname.startsWith('/store')) return `/food${pathname}`
   if (pathname.startsWith('/delivery')) return `/food${pathname}`
   if (pathname.startsWith('/user')) return `/food${pathname}`
   if (pathname.startsWith('/admin')) return pathname
@@ -53,7 +53,7 @@ function resolveNativeInitialRoute() {
     return storedRoute
   }
 
-  if (isModuleAuthenticated('restaurant')) return '/food/restaurant'
+  if (isModuleAuthenticated('store')) return '/food/store'
   if (isModuleAuthenticated('delivery')) return '/food/delivery'
   if (isModuleAuthenticated('admin')) return '/admin'
   if (isModuleAuthenticated('user')) return '/food/user'
@@ -120,7 +120,7 @@ console.error = (...args) => {
   ) return
 
   if (
-    errorStr.includes('Restaurant Socket connection error') ||
+    errorStr.includes('Store Socket connection error') ||
     errorStr.includes('xhr poll error') ||
     (errorStr.includes('WebSocket connection to') && errorStr.includes('socket.io') && errorStr.includes('failed'))
   ) return

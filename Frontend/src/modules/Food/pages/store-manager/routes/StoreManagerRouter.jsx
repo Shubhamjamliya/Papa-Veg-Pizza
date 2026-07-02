@@ -128,7 +128,7 @@ export default function StoreManagerRouter() {
 
         <Route
           element={
-            <ProtectedRoute requiredRole="store" loginPath="/store-operation/login">
+            <ProtectedRoute module="admin" requiredRole={["store-manager", "kitchen-supervisor", "kitchen-staff"]} loginPath="/store-operation/login">
               <StoreOperationsLayout />
             </ProtectedRoute>
           }

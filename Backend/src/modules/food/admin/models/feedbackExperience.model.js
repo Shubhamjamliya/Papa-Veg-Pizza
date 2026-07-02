@@ -10,12 +10,12 @@ const feedbackExperienceSchema = new mongoose.Schema(
         userModel: {
             type: String,
             required: true,
-            enum: ['FoodUser', 'FoodRestaurant', 'FoodDeliveryPartner'],
+            enum: ['FoodUser', 'FoodStore', 'FoodDeliveryPartner'],
             default: 'FoodUser'
         },
-        restaurantId: { 
+        storeId: { 
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'FoodRestaurant', 
+            ref: 'FoodStore', 
             index: true 
         },
         rating: { 
@@ -31,7 +31,7 @@ const feedbackExperienceSchema = new mongoose.Schema(
         },
         module: { 
             type: String, 
-            enum: ['user', 'restaurant', 'delivery'],
+            enum: ['user', 'store', 'delivery'],
             required: true,
             index: true
         }

@@ -2,8 +2,8 @@ import { z } from 'zod';
 import mongoose from 'mongoose';
 import { ValidationError } from '../../../../core/auth/errors.js';
 
-const restaurantCommissionUpsertSchema = z.object({
-    restaurantId: z.string().min(1, 'Restaurant is required'),
+const storeCommissionUpsertSchema = z.object({
+    storeId: z.string().min(1, 'Store is required'),
     defaultCommission: z.object({
         type: z.enum(['percentage', 'amount']).default('percentage'),
         value: z.number().min(0, 'Commission value must be 0 or greater')
@@ -11,9 +11,9 @@ const restaurantCommissionUpsertSchema = z.object({
     notes: z.string().optional().or(z.literal(''))
 });
 
-export const validateRestaurantCommissionUpsertDto = (body) => {
+export const validateStoreCommissionUpsertDto = (body) => {
     const normalized = {
-        restaurantId: body?.restaurantId ? String(body.restaurantId) : '',
+        storeId: body?.storeId ? String(body.storeId) : '',
         defaultCommission: {
             type: body?.defaultCommission?.type,
             value: Number(body?.defaultCommission?.value)
@@ -21,18 +21,18 @@ export const validateRestaurantCommissionUpsertDto = (body) => {
         notes: body?.notes != null ? String(body.notes) : ''
     };
 
-    const result = restaurantCommissionUpsertSchema.safeParse(normalized);
+    const result = storeCommissionUpsertSchema.safeParse(normalized);
     if (!result.success) {
         throw new ValidationError(result.error.errors[0].message);
     }
-    if (!mongoose.Types.ObjectId.isValid(result.data.restaurantId)) {
-        throw new ValidationError('Invalid restaurantId');
+    if (!mongoose.Types.ObjectId.isValid(result.data.storeId)) {
+        throw new ValidationError('Invalid storeId');
     }
     if (result.data.defaultCommission.type === 'percentage' && (result.data.defaultCommission.value < 0 || result.data.defaultCommission.value > 100)) {
         throw new ValidationError('Percentage must be between 0-100');
     }
     return {
-        restaurantId: result.data.restaurantId,
+        storeId: result.data.storeId,
         defaultCommission: result.data.defaultCommission,
         notes: result.data.notes ? result.data.notes.trim() : ''
     };

@@ -84,14 +84,14 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
     return (Number.isFinite(lat) && Number.isFinite(lng)) ? { lat, lng } : null;
   }, []);
 
-  const restaurantPoint = useMemo(() => parsePoint(activeOrder?.restaurantLocation), [activeOrder?.restaurantLocation, parsePoint]);
+  const storePoint = useMemo(() => parsePoint(activeOrder?.storeLocation), [activeOrder?.storeLocation, parsePoint]);
   const customerPoint = useMemo(() => parsePoint(activeOrder?.customerLocation), [activeOrder?.customerLocation, parsePoint]);
 
   const targetLocation = useMemo(() => {
     if (!activeOrder) return null;
     let rawLoc = null;
     if (tripStatus === 'PICKING_UP' || tripStatus === 'REACHED_PICKUP') {
-      rawLoc = activeOrder.restaurantLocation;
+      rawLoc = activeOrder.storeLocation;
     } else if (tripStatus === 'PICKED_UP' || tripStatus === 'REACHED_DROP') {
       rawLoc = activeOrder.customerLocation;
     }
@@ -168,9 +168,9 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
     })();
   }, []);
 
-  const restaurantMarkerUrl = useMemo(() => {
+  const storeMarkerUrl = useMemo(() => {
     if (!activeOrder) return 'https://cdn-icons-png.flaticon.com/512/3170/3170733.png';
-    return activeOrder.restaurantImage || activeOrder.restaurant?.logo || activeOrder.restaurant?.profileImage || 'https://cdn-icons-png.flaticon.com/512/3170/3170733.png';
+    return activeOrder.storeImage || activeOrder.store?.logo || activeOrder.store?.profileImage || 'https://cdn-icons-png.flaticon.com/512/3170/3170733.png';
   }, [activeOrder]);
 
   const customerMarkerUrl = useMemo(() => {
@@ -183,7 +183,7 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
   useEffect(() => {
     if (!map || !window.google?.maps) return;
 
-    const hasAnchors = restaurantPoint || customerPoint;
+    const hasAnchors = storePoint || customerPoint;
     if (!hasAnchors && !parsedRiderLocation) return;
 
     const now = Date.now();
@@ -191,7 +191,7 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
     lastBoundsUpdateRef.current = now;
 
     const bounds = new window.google.maps.LatLngBounds();
-    if (restaurantPoint) bounds.extend(restaurantPoint);
+    if (storePoint) bounds.extend(storePoint);
     if (customerPoint) bounds.extend(customerPoint);
     if (parsedRiderLocation) bounds.extend(parsedRiderLocation);
 
@@ -200,7 +200,7 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
     if (parsedRiderLocation) {
       lastCenteredPosRef.current = parsedRiderLocation;
     }
-  }, [map, parsedRiderLocation, restaurantPoint, customerPoint]);
+  }, [map, parsedRiderLocation, storePoint, customerPoint]);
 
   const { remainingPath, traveledPath } = useMemo(() => {
     if (!directions || !parsedRiderLocation || !window.google?.maps) return { remainingPath: [], traveledPath: [] };
@@ -254,8 +254,8 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
     travelMode: 'DRIVING',
   } : null;
 
-  const baselineServiceOptions = (restaurantPoint && customerPoint) ? {
-    origin: restaurantPoint,
+  const baselineServiceOptions = (storePoint && customerPoint) ? {
+    origin: storePoint,
     destination: customerPoint,
     travelMode: 'DRIVING',
   } : null;
@@ -319,11 +319,11 @@ export const LiveMap = ({ onMapClick, onMapLoad, onPathReceived, onPolylineRecei
           </OverlayView>
         )}
 
-        {restaurantPoint && (
+        {storePoint && (
           <Marker
-            position={restaurantPoint}
+            position={storePoint}
             icon={{
-              url: restaurantMarkerUrl,
+              url: storeMarkerUrl,
               scaledSize: new window.google.maps.Size(44, 44),
               anchor: new window.google.maps.Point(22, 22)
             }}

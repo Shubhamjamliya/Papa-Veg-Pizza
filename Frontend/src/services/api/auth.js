@@ -7,13 +7,14 @@ import apiClient, { userClient, restaurantClient, deliveryClient, adminClient } 
 import { EMAIL_REGEX } from "@/shared/utils/emailValidation";
 
 const AUTH = {
-  USER_REQUEST_OTP: "/food/auth/user/request-otp",
+  USER_REQUEST_OTP: "/food/auth/user/send-otp",
   USER_VERIFY_OTP: "/food/auth/user/verify-otp",
   ADMIN_LOGIN: "/food/auth/admin/login",
+  FRANCHISE_LOGIN: "/food/auth/franchise/login",
   STORE_LOGIN: "/food/auth/store/login",
   RESTAURANT_REQUEST_OTP: "/food/auth/restaurant/request-otp",
   RESTAURANT_VERIFY_OTP: "/food/auth/restaurant/verify-otp",
-  DELIVERY_REQUEST_OTP: "/food/auth/delivery/request-otp",
+  DELIVERY_REQUEST_OTP: "/food/auth/delivery/send-otp",
   DELIVERY_VERIFY_OTP: "/food/auth/delivery/verify-otp",
   REFRESH_TOKEN: "/food/auth/refresh-token",
   LOGOUT: "/food/auth/logout",
@@ -102,55 +103,52 @@ export function verifyUserOtp(
   });
 }
 
-/**
- * Admin login (email + password).
- * Validation: email required and valid format, password required and min 6 characters.
- * Backend returns { accessToken, refreshToken, user } (key is "user" not "admin").
- */
-export function adminLogin(email, password) {
-  const trimmedEmail = typeof email === "string" ? email.trim() : "";
-  if (!trimmedEmail) {
-    return Promise.reject(new Error("Email is required"));
+function buildPasswordLoginPayload(identifier, password) {
+  const value = typeof identifier === "string" ? identifier.trim() : "";
+  if (!value) {
+    return { error: new Error("Email or mobile is required") };
   }
-  if (!EMAIL_REGEX.test(trimmedEmail)) {
-    return Promise.reject(new Error("Please enter a valid email address"));
-  }
+
   const passwordStr = String(password ?? "");
   if (!passwordStr) {
-    return Promise.reject(new Error("Password is required"));
+    return { error: new Error("Password is required") };
   }
   if (passwordStr.length < 6) {
-    return Promise.reject(new Error("Password must be at least 6 characters"));
+    return { error: new Error("Password must be at least 6 characters") };
   }
-  return adminClient.post(AUTH.ADMIN_LOGIN, {
-    email: trimmedEmail,
-    password: passwordStr,
-  });
+
+  const mobile = value.replace(/\D/g, "");
+  if (EMAIL_REGEX.test(value)) {
+    return { payload: { email: value, password: passwordStr } };
+  }
+  if (mobile.length >= 8) {
+    return { payload: { mobile, password: passwordStr } };
+  }
+  return { error: new Error("Please enter a valid email address or mobile number") };
 }
 
-/**
- * Store user login (email + password).
- * Validation: email required and valid, password required and min 6 characters.
- */
-export function storeLogin(email, password) {
-  const trimmedEmail = typeof email === "string" ? email.trim() : "";
-  if (!trimmedEmail) {
-    return Promise.reject(new Error("Email is required"));
-  }
-  if (!EMAIL_REGEX.test(trimmedEmail)) {
-    return Promise.reject(new Error("Please enter a valid email address"));
-  }
-  const passwordStr = String(password ?? "");
-  if (!passwordStr) {
-    return Promise.reject(new Error("Password is required"));
-  }
-  if (passwordStr.length < 6) {
-    return Promise.reject(new Error("Password must be at least 6 characters"));
-  }
-  return adminClient.post(AUTH.STORE_LOGIN, {
-    email: trimmedEmail,
-    password: passwordStr,
-  });
+export function adminLogin(identifier, password) {
+  const { payload, error } = buildPasswordLoginPayload(identifier, password);
+  if (error) return Promise.reject(error);
+  return adminClient.post(AUTH.ADMIN_LOGIN, payload);
+}
+
+export function superAdminLogin(identifier, password) {
+  const { payload, error } = buildPasswordLoginPayload(identifier, password);
+  if (error) return Promise.reject(error);
+  return adminClient.post(AUTH.ADMIN_LOGIN, payload);
+}
+
+export function franchiseLogin(identifier, password) {
+  const { payload, error } = buildPasswordLoginPayload(identifier, password);
+  if (error) return Promise.reject(error);
+  return adminClient.post(AUTH.FRANCHISE_LOGIN, payload);
+}
+
+export function storeLogin(identifier, password) {
+  const { payload, error } = buildPasswordLoginPayload(identifier, password);
+  if (error) return Promise.reject(error);
+  return adminClient.post(AUTH.STORE_LOGIN, payload);
 }
 
 

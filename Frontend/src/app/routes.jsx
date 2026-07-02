@@ -16,7 +16,7 @@ const PageLoader = () => <AppShellSkeleton />
 /**
  * FoodAppWrapper — Quick-spicy App. को /food prefix के साथ render करता है.
  * 
- * Quick-spicy की App.jsx में routes /restaurant, /usermain, /admin, /delivery
+ * Quick-spicy की App.jsx में routes /store, /usermain, /admin, /delivery
  * जैसे hain (bina /food prefix ke). Yahan hum useLocation se /food ke baad wala
  * path nikalne ke baad FoodApp render karte hain. FoodApp internally BrowserRouter
  * nahi use karta (sirf Routes use karta hai), isliye ye directly kaam karta hai.
@@ -32,8 +32,8 @@ const FoodAppWrapper = () => {
 const RedirectToFood = () => {
   const location = useLocation();
   // We safely replace the exact current pathname with a /food prefixed pathname
-  // This effectively catches programmatic navigation to absolute paths like '/restaurant/login'
-  // and turns them into '/food/restaurant/login'
+  // This effectively catches programmatic navigation to absolute paths like '/store/login'
+  // and turns them into '/food/store/login'
   return <Navigate to={`/food${location.pathname}${location.search}`} replace />;
 };
 
@@ -74,7 +74,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Auth Module */}
       <Route path="/delivery/auth/*" element={<AuthApp />} />
-      <Route path="/restaurant/auth/*" element={<AuthApp />} />
+      <Route path="/store/auth/*" element={<AuthApp />} />
 
       {/* Delivery V2 Module */}
       <Route path="/delivery/*" element={<Navigate to="/food/delivery" replace />} />
@@ -94,14 +94,26 @@ const AppRoutes = () => {
       <Route path="/store/my-tasks" element={<Navigate to="/store-operations/tasks" replace />} />
 
       {/* Global Franchise Admin Portal */}
-      <Route path="/franchise-admin/*" element={<FranchiseAdminRouter />} />
+      <Route path="/franchise-admin/*" element={
+        <ProtectedRoute module="admin" requiredRole="franchise-admin" loginPath="/franchise-admin/login">
+          <FranchiseAdminRouter />
+        </ProtectedRoute>
+      } />
       <Route path="/admin/*" element={<Navigate to="/franchise-admin/dashboard" replace />} />
       
       {/* Unified Store Operations Panel (Role-Based) */}
-      <Route path="/store-operations/*" element={<StoreManagerRouter />} />
+      <Route path="/store-operations/*" element={
+        <ProtectedRoute module="admin" requiredRole={["store-manager", "kitchen-supervisor", "kitchen-staff"]} loginPath="/store-operation/login">
+          <StoreManagerRouter />
+        </ProtectedRoute>
+      } />
 
       {/* Super Admin Portal */}
-      <Route path="/superadmin/*" element={<Suspense fallback={<PageLoader />}><SuperAdminRouter /></Suspense>} />
+      <Route path="/superadmin/*" element={
+        <ProtectedRoute module="admin" requiredRole="superadmin" loginPath="/superadmin/login">
+          <Suspense fallback={<PageLoader />}><SuperAdminRouter /></Suspense>
+        </ProtectedRoute>
+      } />
 
 
       {/* Handle root and other paths via FoodAppWrapper */}

@@ -12,7 +12,7 @@ import { toast } from "sonner"
 export default function StoreLogin() {
   const navigate = useNavigate()
   const { logo, themeMode } = useSystemTheme()
-  const [email, setEmail] = useState("")
+  const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -32,7 +32,7 @@ export default function StoreLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    if (!email || !password) {
+    if (!identifier || !password) {
       toast.error("Please fill in all fields")
       return
     }
@@ -41,16 +41,21 @@ export default function StoreLogin() {
     setLoading(true)
 
     try {
-      const response = await adminAPI.storeLogin(email.trim(), password)
+      const response = await adminAPI.storeLogin(identifier.trim(), password)
       const data = response?.data?.data || response?.data || {}
 
       const accessToken = data.accessToken
-      const storeUser = data.user
+      const rawUser = data.user
       const refreshToken = data.refreshToken ?? null
 
-      if (!accessToken || !storeUser) {
+      if (!accessToken || !rawUser) {
         throw new Error("Invalid response from server")
       }
+      const role = String(rawUser.role || "").replace(/_/g, "-")
+      if (!["store-manager", "kitchen-supervisor", "kitchen-staff"].includes(role)) {
+        throw new Error("Access Denied: This login is only for store roles")
+      }
+      const storeUser = { ...rawUser, role: role.replace(/-/g, "_") }
 
       // Store Auth Details for the store module
       setAuthData("store", accessToken, storeUser, refreshToken)
@@ -62,11 +67,7 @@ export default function StoreLogin() {
       toast.success(`Signed in as ${storeUser.name || 'Store Operations'}`)
 
       // Role-based routing
-      if (storeUser.role === "store_manager" || storeUser.role === "store-manager") {
-        navigate("/store-operations/dashboard", { replace: true })
-      } else {
-        navigate("/store-operations/tasks", { replace: true })
-      }
+      navigate("/store", { replace: true })
     } catch (err) {
       const msg = err?.response?.data?.message || err?.message || "Login failed. Check your credentials."
       toast.error(msg)
@@ -139,17 +140,17 @@ export default function StoreLogin() {
              <form onSubmit={handleLogin} className="space-y-3.5">
               <div className="space-y-2.5">
                 <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-0.5">Operations Email</label>
+                  <label className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-0.5">Email or Mobile</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
-                      type="email"
+                      type="text"
                       required
                       autoFocus
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={identifier}
+                      onChange={(e) => setIdentifier(e.target.value)}
                       className="block w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border border-transparent focus:border-[var(--primary)]/50 rounded-lg outline-none transition-all placeholder:text-gray-400 font-medium text-xs"
-                      placeholder="manager@papavegpizza.com"
+                      placeholder="manager@papavegpizza.com or 9876543210"
                     />
                   </div>
                 </div>

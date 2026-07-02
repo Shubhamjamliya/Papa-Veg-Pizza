@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { clearModuleAuth } from "@food/utils/auth"
 import { Menu, Bell, Store, ChevronDown, User, LogOut, Settings as SettingsIcon, AlertCircle } from "lucide-react"
+import Profile from "../profile/Profile"
 
 export default function Navbar({ onToggleSidebar, isCollapsed }) {
   const navigate = useNavigate()
@@ -9,6 +10,7 @@ export default function Navbar({ onToggleSidebar, isCollapsed }) {
   const [showNotifications, setShowNotifications] = useState(false)
   const [selectedStore, setSelectedStore] = useState("All Stores")
   const [showStoreDropdown, setShowStoreDropdown] = useState(false)
+  const [showProfileModal, setShowProfileModal] = useState(false)
 
   const handleLogout = () => {
     clearModuleAuth("superadmin")
@@ -146,7 +148,13 @@ export default function Navbar({ onToggleSidebar, isCollapsed }) {
                 <p className="text-xs font-bold text-zinc-800 dark:text-zinc-100">Global Manager</p>
                 <p className="text-[10px] text-zinc-400 truncate">manager@papaveg.com</p>
               </div>
-              <button className="w-full flex items-center gap-2.5 px-3.5 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">
+              <button 
+                onClick={() => {
+                  setShowProfileMenu(false)
+                  setShowProfileModal(true)
+                }}
+                className="w-full flex items-center gap-2.5 px-3.5 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
+              >
                 <User size={14} className="text-zinc-400" />
                 <span>My Profile</span>
               </button>
@@ -164,6 +172,10 @@ export default function Navbar({ onToggleSidebar, isCollapsed }) {
         </div>
 
       </div>
+
+      {showProfileModal && (
+        <Profile onClose={() => setShowProfileModal(false)} />
+      )}
     </header>
   )
 }

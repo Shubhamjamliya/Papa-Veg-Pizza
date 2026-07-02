@@ -18,9 +18,9 @@ export const useProximityCheck = () => {
   const targetLocation = useMemo(() => {
     if (!activeOrder) return null;
     
-    // If heading to pickup or arrived at pickup, target is restaurant
+    // If heading to pickup or arrived at pickup, target is store
     if (['PICKING_UP', 'REACHED_PICKUP'].includes(tripStatus)) {
-      return activeOrder.restaurantLocation || activeOrder.restaurant_location;
+      return activeOrder.storeLocation || activeOrder.store_location;
     }
     
     // If heading to drop or arrived at drop, target is customer

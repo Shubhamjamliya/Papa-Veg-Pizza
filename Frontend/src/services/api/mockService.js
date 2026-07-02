@@ -1992,7 +1992,14 @@ export function handleMockRequest(config) {
 
 
   // 1. Authentication & Profile
-  if (url.includes("/food/auth/admin/login") || url.includes("/auth/admin/login")) {
+  if (
+    url.includes("/food/auth/admin/login") ||
+    url.includes("/auth/admin/login") ||
+    url.includes("/food/auth/franchise/login") ||
+    url.includes("/auth/franchise/login") ||
+    url.includes("/food/auth/store/login") ||
+    url.includes("/auth/store/login")
+  ) {
     const email = data?.email || "";
     if (email.includes("superadmin")) {
       return {
@@ -2059,7 +2066,12 @@ export function handleMockRequest(config) {
   }
 
   // Delivery Partner Login Mock
-  if (url.includes("/food/auth/delivery/request-otp") || url.includes("/auth/delivery/request-otp")) {
+  if (
+    url.includes("/food/auth/delivery/request-otp") ||
+    url.includes("/auth/delivery/request-otp") ||
+    url.includes("/food/auth/delivery/send-otp") ||
+    url.includes("/auth/delivery/send-otp")
+  ) {
     return successRes({ otp: "1234" });
   }
 
@@ -2096,7 +2108,12 @@ export function handleMockRequest(config) {
   }
 
   // Customer User Login Mock
-  if (url.includes("/food/auth/user/request-otp") || url.includes("/auth/user/request-otp")) {
+  if (
+    url.includes("/food/auth/user/request-otp") ||
+    url.includes("/auth/user/request-otp") ||
+    url.includes("/food/auth/user/send-otp") ||
+    url.includes("/auth/user/send-otp")
+  ) {
     return successRes({ otp: "1234" });
   }
 

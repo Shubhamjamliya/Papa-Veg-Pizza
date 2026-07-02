@@ -5,7 +5,7 @@ const foodTransactionSchema = new mongoose.Schema({
     orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodOrder', required: true, unique: true, index: true },
 
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodUser', required: true, index: true },
-    restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodRestaurant', required: true, index: true },
+    storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodStore', required: true, index: true },
     deliveryPartnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodDeliveryPartner', index: true },
 
     // Core Payment Info
@@ -29,7 +29,7 @@ const foodTransactionSchema = new mongoose.Schema({
         packagingFee: { type: Number, default: 0, min: 0 },
         deliveryFee: { type: Number, default: 0, min: 0 },
         platformFee: { type: Number, default: 0, min: 0 },
-        restaurantCommission: { type: Number, default: 0, min: 0 },
+        storeCommission: { type: Number, default: 0, min: 0 },
         discount: { type: Number, default: 0, min: 0 },
         total: { type: Number, default: 0, min: 0 },
         currency: { type: String, default: 'INR', trim: true },
@@ -58,8 +58,8 @@ const foodTransactionSchema = new mongoose.Schema({
     // Financial Breakdown (The Split)
     amounts: {
         totalCustomerPaid: { type: Number, required: true, min: 0 },
-        restaurantShare: { type: Number, required: true, min: 0 },
-        restaurantCommission: { type: Number, required: true, min: 0 },
+        storeShare: { type: Number, required: true, min: 0 },
+        storeCommission: { type: Number, required: true, min: 0 },
         riderShare: { type: Number, required: true, min: 0 },
         platformNetProfit: { type: Number, required: true, min: 0 },
         taxAmount: { type: Number, default: 0, min: 0 }
@@ -77,8 +77,8 @@ const foodTransactionSchema = new mongoose.Schema({
 
     // Settlement Tracking
     settlement: {
-        isRestaurantSettled: { type: Boolean, default: false },
-        restaurantSettledAt: Date,
+        isStoreSettled: { type: Boolean, default: false },
+        storeSettledAt: Date,
         isRiderSettled: { type: Boolean, default: false },
         riderSettledAt: Date
     },
@@ -101,7 +101,7 @@ const foodTransactionSchema = new mongoose.Schema({
 
 // Powerful indexes for Finance & Analytics
 foodTransactionSchema.index({ createdAt: -1 });
-foodTransactionSchema.index({ 'settlement.isRestaurantSettled': 1, restaurantId: 1 });
+foodTransactionSchema.index({ 'settlement.isStoreSettled': 1, storeId: 1 });
 foodTransactionSchema.index({ 'status': 1, paymentMethod: 1 });
 
 export const FoodTransaction = mongoose.model('FoodTransaction', foodTransactionSchema);

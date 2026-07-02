@@ -127,7 +127,7 @@ export default function DeliveryMapModal({
             ? "bg-[#E65100]/20 border-[#E65100]/40 text-[#ffb74d]"
             : "bg-[#E65100]/15 border-[#E65100]/30 text-[#E65100]"
             }`}>
-            <span className="material-symbols-outlined text-[10px] fill" style={{ fontVariationSettings: "'FILL' 1" }}>restaurant</span>
+            <span className="material-symbols-outlined text-[10px] fill" style={{ fontVariationSettings: "'FILL' 1" }}>store</span>
           </div>
           <div className="text-left leading-tight">
             <p className={`text-[10px] font-extrabold ${isDarkMode ? "text-slate-200" : "text-slate-800"}`}>Ganesh Bakery Sindhi Colony</p>
@@ -169,7 +169,7 @@ export default function DeliveryMapModal({
             ? "bg-[#E65100]/20 border-[#E65100]/40 text-[#ffb74d]"
             : "bg-[#E65100]/15 border-[#E65100]/30 text-[#E65100]"
             }`}>
-            <span className="material-symbols-outlined text-[10px] fill" style={{ fontVariationSettings: "'FILL' 1" }}>restaurant</span>
+            <span className="material-symbols-outlined text-[10px] fill" style={{ fontVariationSettings: "'FILL' 1" }}>store</span>
           </div>
           <div className="text-left leading-tight">
             <p className={`text-[10px] font-extrabold ${isDarkMode ? "text-slate-200" : "text-[#795548]"}`}>Veera Di Hatti</p>

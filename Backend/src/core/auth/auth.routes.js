@@ -3,9 +3,11 @@ import {
     requestUserOtpController,
     verifyUserOtpController,
     adminLoginController,
+    superAdminLoginController,
+    franchiseAdminLoginController,
+    storeLoginController,
     refreshTokenController,
-    requestRestaurantOtpController,
-    verifyRestaurantOtpController,
+
     requestDeliveryOtpController,
     verifyDeliveryOtpController,
     logoutController,
@@ -24,18 +26,22 @@ const router = express.Router();
 
 // User OTP login
 router.post('/user/request-otp', authRateLimiter, requestUserOtpController);
+router.post('/user/send-otp', authRateLimiter, requestUserOtpController);
 router.post('/user/verify-otp', authRateLimiter, verifyUserOtpController);
 
-// Restaurant OTP login
-router.post('/restaurant/request-otp', authRateLimiter, requestRestaurantOtpController);
-router.post('/restaurant/verify-otp', authRateLimiter, verifyRestaurantOtpController);
 
 // Delivery partner OTP login
 router.post('/delivery/request-otp', authRateLimiter, requestDeliveryOtpController);
+router.post('/delivery/send-otp', authRateLimiter, requestDeliveryOtpController);
 router.post('/delivery/verify-otp', authRateLimiter, verifyDeliveryOtpController);
 
-// Admin login
-router.post('/admin/login', authRateLimiter, adminLoginController);
+// Unified login for all admin panel roles: superadmin, franchise-admin, store-manager, kitchen-supervisor, kitchen-staff
+router.post('/login', authRateLimiter, adminLoginController);
+
+// Role-restricted login endpoints
+router.post('/admin/login', authRateLimiter, superAdminLoginController);
+router.post('/franchise/login', authRateLimiter, franchiseAdminLoginController);
+router.post('/store/login', authRateLimiter, storeLoginController);
 
 // Admin forgot password (no auth required)
 router.post('/admin/forgot-password/request-otp', authRateLimiter, requestAdminForgotPasswordOtpController);

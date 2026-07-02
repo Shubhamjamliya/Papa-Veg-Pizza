@@ -3,7 +3,7 @@ import { FoodOrder, FoodSettings } from '../models/order.model.js';
 // import { paymentSnapshotFromOrder } from './foodOrderPayment.service.js';
 import { logger } from '../../../../utils/logger.js';
 import { FoodUser } from '../../../../core/users/user.model.js';
-import { FoodRestaurant } from '../../restaurant/models/restaurant.model.js';
+import { FoodStore as FoodStore } from '../../store/models/store.model.js';
 import { FoodDeliveryPartner } from '../../delivery/models/deliveryPartner.model.js';
 import { FoodZone } from '../../admin/models/zone.model.js';
 import { FoodFeeSettings } from '../../admin/models/feeSettings.model.js';
@@ -12,7 +12,7 @@ import { buildPaginationOptions, buildPaginatedResult } from '../../../../utils/
 import { FoodOffer } from '../../admin/models/offer.model.js';
 import { FoodOfferUsage } from '../../admin/models/offerUsage.model.js';
 import { FoodDeliveryCommissionRule } from '../../admin/models/deliveryCommissionRule.model.js';
-import { FoodRestaurantCommission } from '../../admin/models/restaurantCommission.model.js';
+import { FoodStoreCommission } from '../../admin/models/storeCommission.model.js';
 import { FoodTransaction } from '../models/foodTransaction.model.js';
 import { FoodSupportTicket } from '../../user/models/supportTicket.model.js';
 import { config } from '../../../../config/env.js';
@@ -47,7 +47,7 @@ import {
   normalizeOrderForClient,
   applyAggregateRating,
   buildDeliverySocketPayload,
-  notifyRestaurantNewOrder,
+  notifyStoreNewOrder,
   isStatusAdvance,
 } from './order.helpers.js';
 
@@ -127,14 +127,14 @@ export async function calculateOrder(userId, dto) {
 
 // ----- Create order -----
 export async function createOrder(userId, dto) {
-  const restaurant = await FoodRestaurant.findById(dto.restaurantId)
-    .select("status restaurantName zoneId location isAcceptingOrders")
+  const store = await FoodStore.findById(dto.storeId)
+    .select("status storeName zoneId location isAcceptingOrders")
     .lean();
-  if (!restaurant) throw new ValidationError("Restaurant not found");
-  if (restaurant.status !== "approved")
-    throw new ValidationError("Restaurant not accepting orders");
-  if (restaurant.isAcceptingOrders === false)
-    throw new ValidationError("Restaurant not accepting orders");
+  if (!store) throw new ValidationError("Store not found");
+  if (store.status !== "approved")
+    throw new ValidationError("Store not accepting orders");
+  if (store.isAcceptingOrders === false)
+    throw new ValidationError("Store not accepting orders");
 
 
   const settings = await getDispatchSettings();
@@ -213,10 +213,10 @@ export async function createOrder(userId, dto) {
 
   let distanceKm = null;
   if (
-    restaurant.location?.coordinates?.length === 2 &&
+    store.location?.coordinates?.length === 2 &&
     dto.address?.location?.coordinates?.length === 2
   ) {
-    const [rLng, rLat] = restaurant.location.coordinates;
+    const [rLng, rLat] = store.location.coordinates;
     const [dLng, dLat] = dto.address.location.coordinates;
     const d = haversineKm(rLat, rLng, dLat, dLng);
     distanceKm = Number.isFinite(d) ? d : null;
@@ -228,28 +228,28 @@ export async function createOrder(userId, dto) {
 
   const riderEarning = await getRiderEarning(distanceKm);
   
-  // Calculate restaurant commission from subtotal
-  const { commissionAmount: restaurantCommission } = await foodTransactionService.getRestaurantCommissionSnapshot({
+  // Calculate store commission from subtotal
+  const { commissionAmount: storeCommission } = await foodTransactionService.getStoreCommissionSnapshot({
     pricing: normalizedPricing,
-    restaurantId: dto.restaurantId
+    storeId: dto.storeId
   });
 
-  normalizedPricing.restaurantCommission = restaurantCommission || 0;
+  normalizedPricing.storeCommission = storeCommission || 0;
 
   const platformProfit = Math.max(
     0,
     (Number.isFinite(normalizedPricing.deliveryFee) ? normalizedPricing.deliveryFee : 0) +
       (Number.isFinite(normalizedPricing.platformFee) ? normalizedPricing.platformFee : 0) +
-      restaurantCommission -
+      storeCommission -
       riderEarning,
   );
 
   const order = new FoodOrder({
     userId: new mongoose.Types.ObjectId(userId),
-    restaurantId: new mongoose.Types.ObjectId(dto.restaurantId),
+    storeId: new mongoose.Types.ObjectId(dto.storeId),
     zoneId: dto.zoneId
       ? new mongoose.Types.ObjectId(dto.zoneId)
-      : restaurant.zoneId,
+      : store.zoneId,
     items: dto.items,
     deliveryAddress,
     customerName: dto.customerName || deliveryAddress.fullName || "",
@@ -268,7 +268,7 @@ export async function createOrder(userId, dto) {
       },
     ],
     note: dto.note || "",
-    restaurantNote: dto.restaurantNote || "",
+    storeNote: dto.storeNote || "",
     sendCutlery: dto.sendCutlery !== false,
     deliveryFleet: dto.deliveryFleet || "standard",
     scheduledAt: dto.scheduledAt ? new Date(dto.scheduledAt) : null,
@@ -334,8 +334,8 @@ export async function createOrder(userId, dto) {
         ? "Complete Payment to Confirm Order"
         : "Order Confirmed! 🍔",
       body: isAwaitingOnlinePayment
-        ? `Order #${order.order_id || order._id} is created. Please complete payment to send it to ${restaurant.restaurantName || "the restaurant"}.`
-        : `Your order #${order.order_id || order._id} from ${restaurant.restaurantName || "the restaurant"} has been placed successfully.`,
+        ? `Order #${order.order_id || order._id} is created. Please complete payment to send it to ${store.storeName || "the store"}.`
+        : `Your order #${order.order_id || order._id} from ${store.storeName || "the store"} has been placed successfully.`,
       image: "https://i.ibb.co/3m2Yh7r/Appzeto-Brand-Image.png",
       data: {
         type: isAwaitingOnlinePayment
@@ -347,12 +347,12 @@ export async function createOrder(userId, dto) {
       },
     });
 
-    // Restaurant gets new-order request only when payment is already settled.
+    // Store gets new-order request only when payment is already settled.
     // For Razorpay (online) payments, we skip here because verifyPayment() will
-    // call notifyRestaurantNewOrder() AFTER payment is confirmed — preventing a
-    // duplicate FCM push to the restaurant for the same order.
+    // call notifyStoreNewOrder() AFTER payment is confirmed — preventing a
+    // duplicate FCM push to the store for the same order.
     if (!isAwaitingOnlinePayment) {
-      await notifyRestaurantNewOrder(order);
+      await notifyStoreNewOrder(order);
     }
   } catch {
     // Don't block order placement on socket failures.
@@ -439,8 +439,8 @@ export async function verifyPayment(userId, dto) {
     recordedById: new mongoose.Types.ObjectId(userId)
   });
 
-  // After online payment is verified, now notify restaurant about the new order.
-  await notifyRestaurantNewOrder(order);
+  // After online payment is verified, now notify store about the new order.
+  await notifyStoreNewOrder(order);
 
   // Notify Customer about payment success
   await notifyOwnersSafely([{ ownerType: "USER", ownerId: userId }], {
@@ -496,8 +496,8 @@ export async function listOrdersUser(userId, query) {
   const [docs, total] = await Promise.all([
     FoodOrder.find(filter)
       .populate(
-        "restaurantId",
-        "restaurantName profileImage area city location rating totalRatings",
+        "storeId",
+        "storeName profileImage area city location rating totalRatings",
       )
       .populate("dispatch.deliveryPartnerId", "name phone rating totalRatings")
       .sort({ createdAt: -1 })
@@ -516,14 +516,14 @@ export async function listOrdersUser(userId, query) {
 
 export async function getOrderById(
   orderId,
-  { userId, restaurantId, deliveryPartnerId, admin } = {},
+  { userId, storeId, deliveryPartnerId, admin } = {},
 ) {
   const identity = buildOrderIdentityFilter(orderId);
   if (!identity) throw new ValidationError("Order id required");
   const order = await FoodOrder.findOne(identity)
     .populate(
-      "restaurantId",
-      "restaurantName ownerPhone profileImage area city location rating totalRatings primaryContactNumber",
+      "storeId",
+      "storeName phone profileImage area city location rating totalRatings phone",
     )
     .populate("dispatch.deliveryPartnerId", "name fullName phone phoneNumber rating totalRatings profileImage avatar")
     .populate("userId", "name fullName phone email")
@@ -534,17 +534,17 @@ export async function getOrderById(
   if (admin) return normalizeOrderForClient(order);
 
   const orderUserId = order.userId?._id?.toString() || order.userId?.toString();
-  const orderRestaurantId = order.restaurantId?._id?.toString() || order.restaurantId?.toString();
+  const orderStoreId = order.storeId?._id?.toString() || order.storeId?.toString();
   const orderPartnerId = order.dispatch?.deliveryPartnerId?._id?.toString() || order.dispatch?.deliveryPartnerId?.toString();
 
   if (userId && orderUserId !== userId.toString())
     throw new ForbiddenError("Not your order");
-  if (restaurantId && orderRestaurantId !== restaurantId.toString())
-    throw new ForbiddenError("Not your restaurant order");
+  if (storeId && orderStoreId !== storeId.toString())
+    throw new ForbiddenError("Not your store order");
   if (deliveryPartnerId && orderPartnerId !== deliveryPartnerId.toString())
     throw new ForbiddenError("Not assigned to you");
 
-  if (deliveryPartnerId || restaurantId) {
+  if (deliveryPartnerId || storeId) {
     return sanitizeOrderForExternal(order);
   }
 
@@ -611,7 +611,7 @@ export async function recoverStuckOrders() {
       'dispatch.status': 'assigned',
       'dispatch.acceptedAt': { $exists: false },
       'dispatch.assignedAt': { $lt: new Date(now - TWO_MIN) },
-      orderStatus: { $nin: ['delivered', 'cancelled_by_user', 'cancelled_by_restaurant'] }
+      orderStatus: { $nin: ['delivered', 'cancelled_by_user', 'cancelled_by_store'] }
     });
 
     if (stuckAssigned.length > 0) {
@@ -644,7 +644,7 @@ export async function resyncState(userId, role) {
         $nin: [
           "delivered",
           "cancelled_by_user",
-          "cancelled_by_restaurant",
+          "cancelled_by_store",
           "cancelled_by_admin",
         ],
       },
@@ -673,10 +673,10 @@ export async function resyncState(userId, role) {
       "dispatch.deliveryPartnerId": new mongoose.Types.ObjectId(userId),
       "dispatch.status": { $in: ["assigned", "accepted"] },
       orderStatus: {
-        $nin: ["delivered", "cancelled_by_user", "cancelled_by_restaurant"],
+        $nin: ["delivered", "cancelled_by_user", "cancelled_by_store"],
       },
     })
-      .populate("restaurantId")
+      .populate("storeId")
       .lean();
     return { activeOrder: order ? sanitizeOrderForExternal(order) : null };
   }
@@ -818,7 +818,7 @@ export async function cancelOrder(orderId, userId, reason, refundDestination = "
     logger.warn(`cancelOrder transaction sync failed: ${err?.message || err}`);
   }
 
-  // Notify User and Restaurant about the cancellation
+  // Notify User and Store about the cancellation
   const finalPaymentMethod = String(order.payment?.method || paymentMethod || "cash").toLowerCase();
   const finalPaymentStatus = String(order.payment?.status || paymentStatus || "cod_pending").toLowerCase();
   const isOnlinePaid =
@@ -837,7 +837,7 @@ export async function cancelOrder(orderId, userId, reason, refundDestination = "
   await notifyOwnersSafely(
     [
       { ownerType: "USER", ownerId: userId },
-      { ownerType: "RESTAURANT", ownerId: order.restaurantId },
+      { ownerType: "STORE", ownerId: order.storeId },
     ],
     {
       title: "Order Cancelled ❌",
@@ -862,7 +862,7 @@ export async function cancelOrder(orderId, userId, reason, refundDestination = "
         message: `Order #${order.order_id || order._id} has been cancelled successfully.${refundDetail}`
       };
       io.to(rooms.user(userId)).emit("order_status_update", payload);
-      io.to(rooms.restaurant(order.restaurantId)).emit("order_status_update", payload);
+      io.to(rooms.store(order.storeId)).emit("order_status_update", payload);
     }
   } catch (err) {
     logger.warn(`cancelOrder socket emit failed: ${err?.message || err}`);
@@ -889,21 +889,21 @@ export async function submitOrderRatings(orderId, userId, dto) {
     throw new ValidationError("Delivery partner rating is required");
   }
 
-  const restaurantAlreadyRated = Number.isFinite(
-    Number(order?.ratings?.restaurant?.rating),
+  const storeAlreadyRated = Number.isFinite(
+    Number(order?.ratings?.store?.rating),
   );
   const deliveryAlreadyRated = Number.isFinite(
     Number(order?.ratings?.deliveryPartner?.rating),
   );
-  if (restaurantAlreadyRated || (hasDeliveryPartner && deliveryAlreadyRated)) {
+  if (storeAlreadyRated || (hasDeliveryPartner && deliveryAlreadyRated)) {
     throw new ValidationError("Ratings already submitted for this order");
   }
 
   const now = new Date();
   order.ratings = order.ratings || {};
-  order.ratings.restaurant = {
-    rating: dto.restaurantRating,
-    comment: dto.restaurantComment || "",
+  order.ratings.store = {
+    rating: dto.storeRating,
+    comment: dto.storeComment || "",
     ratedAt: now,
   };
 
@@ -917,9 +917,9 @@ export async function submitOrderRatings(orderId, userId, dto) {
 
   await Promise.all([
     applyAggregateRating(
-      FoodRestaurant,
-      order.restaurantId,
-      dto.restaurantRating,
+      FoodStore,
+      order.storeId,
+      dto.storeRating,
     ),
     hasDeliveryPartner
       ? applyAggregateRating(
@@ -935,7 +935,7 @@ export async function submitOrderRatings(orderId, userId, dto) {
         orderMongoId: order._id?.toString?.(),
         orderId: order._id.toString(),
         userId,
-        restaurantRating: dto.restaurantRating,
+        storeRating: dto.storeRating,
         deliveryPartnerRating: hasDeliveryPartner ? dto.deliveryPartnerRating : null
     });
 }
@@ -960,11 +960,11 @@ export async function updateOrderInstructions(orderId, userId, instructions) {
   return order;
 }
 
-// ----- Restaurant -----
-export async function listOrdersRestaurant(restaurantId, query) {
+// ----- Store -----
+export async function listOrdersStore(storeId, query) {
   const { page, limit, skip } = buildPaginationOptions(query);
   const filter = {
-    restaurantId: new mongoose.Types.ObjectId(restaurantId),
+    storeId: new mongoose.Types.ObjectId(storeId),
     $or: [
       { "payment.method": { $in: ["cash", "wallet"] } },
       { "payment.status": { $in: ["paid", "authorized", "captured", "settled", "refunded"] } },
@@ -982,16 +982,16 @@ export async function listOrdersRestaurant(restaurantId, query) {
   return buildPaginatedResult({ docs: docs.map(d => normalizeOrderForClient(d)), total, page, limit });
 }
 
-export async function updateOrderStatusRestaurant(
+export async function updateOrderStatusStore(
   orderId,
-  restaurantId,
+  storeId,
   orderStatus,
   note = ""
 ) {
   const identity = buildOrderIdentityFilter(orderId);
   let order = await FoodOrder.findOne({
     ...identity,
-    restaurantId: new mongoose.Types.ObjectId(restaurantId),
+    storeId: new mongoose.Types.ObjectId(storeId),
   });
   if (!order) throw new NotFoundError("Order not found");
   const from = order.orderStatus;
@@ -1000,8 +1000,8 @@ export async function updateOrderStatusRestaurant(
   }
   order.orderStatus = orderStatus;
   pushStatusHistory(order, {
-    byRole: "RESTAURANT",
-    byId: restaurantId,
+    byRole: "STORE",
+    byId: storeId,
     from,
     to: orderStatus,
     note: note || ""
@@ -1014,10 +1014,10 @@ export async function updateOrderStatusRestaurant(
 
   if (orderStatus === "confirmed") {
     title = "Order Accepted! 🧑‍🍳";
-    body = "The restaurant has accepted your order and is starting to prepare it.";
+    body = "The store has accepted your order and is starting to prepare it.";
   } else if (orderStatus === "preparing") {
     title = "Food is being prepared! 🍳";
-    body = "Your food is currently being prepared by the restaurant.";
+    body = "Your food is currently being prepared by the store.";
   } else if (orderStatus === "ready_for_pickup") {
     title = "Food is ready! 🛍️";
     body = "Your order is ready and waiting to be picked up.";
@@ -1026,15 +1026,15 @@ export async function updateOrderStatusRestaurant(
     const refundDetail = isOnlinePaid ? ` Your refund of ₹${order.pricing.total} is being processed and will be credited to your original payment method within 5-7 working days.` : "";
     
     title = "Order Cancelled ❌";
-    body = `Unfortunately, your order has been cancelled by the restaurant.${refundDetail}`;
+    body = `Unfortunately, your order has been cancelled by the store.${refundDetail}`;
   }
 
-  // Real-time: status update to restaurant room.
+  // Real-time: status update to store room.
   try {
     const io = getIO();
     if (io) {
       console.log(
-        `[DEBUG] Emitting status update to restaurant ${restaurantId} and user ${order.userId}: ${orderStatus}`,
+        `[DEBUG] Emitting status update to store ${storeId} and user ${order.userId}: ${orderStatus}`,
       );
       const payload = {
         orderMongoId: order._id?.toString?.(),
@@ -1044,7 +1044,7 @@ export async function updateOrderStatusRestaurant(
         message: body,
       };
       
-      const restRoom = rooms.restaurant(restaurantId);
+      const restRoom = rooms.store(storeId);
       const userRoom = rooms.user(order.userId);
       
       console.log(`[DEBUG] Emitting order_status_update to rooms: ${restRoom}, ${userRoom}`);
@@ -1062,7 +1062,7 @@ export async function updateOrderStatusRestaurant(
 
     const notifyList = [
       { ownerType: "USER", ownerId: order.userId },
-      { ownerType: "RESTAURANT", ownerId: restaurantId },
+      { ownerType: "STORE", ownerId: storeId },
     ];
 
     const assignedRiderId = order.dispatch?.deliveryPartnerId;
@@ -1080,14 +1080,14 @@ export async function updateOrderStatusRestaurant(
       // Sync transaction status
       try {
         const isOnlinePaid = order.payment.method === "razorpay" && (order.payment.status === "paid" || order.payment.status === "refunded");
-        await foodTransactionService.updateTransactionStatus(order._id, 'cancelled_by_restaurant', {
+        await foodTransactionService.updateTransactionStatus(order._id, 'cancelled_by_store', {
             status: isOnlinePaid ? 'refunded' : 'failed',
-            note: `Order cancelled by restaurant/admin`,
-            recordedByRole: 'RESTAURANT',
-            recordedById: restaurantId
+            note: `Order cancelled by store/admin`,
+            recordedByRole: 'STORE',
+            recordedById: storeId
         });
       } catch (err) {
-        logger.warn(`updateOrderStatusRestaurant transaction sync failed: ${err?.message || err}`);
+        logger.warn(`updateOrderStatusStore transaction sync failed: ${err?.message || err}`);
       }
     }
 
@@ -1107,7 +1107,7 @@ export async function updateOrderStatusRestaurant(
       },
     );
   } catch (err) {
-    console.error("[DEBUG] Error emitting status update to restaurant:", err);
+    console.error("[DEBUG] Error emitting status update to store:", err);
   }
 
   // Real-time: delivery request / ready notifications.
@@ -1128,7 +1128,7 @@ export async function updateOrderStatusRestaurant(
             // Refresh local order state after assignment search
             order = await FoodOrder.findById(order._id); 
         } catch (err) {
-            console.error(`[DEBUG] Auto-assign in updateOrderStatusRestaurant failed:`, err);
+            console.error(`[DEBUG] Auto-assign in updateOrderStatusStore failed:`, err);
         }
       }
 
@@ -1138,8 +1138,8 @@ export async function updateOrderStatusRestaurant(
                 const assignedId = order.dispatch?.deliveryPartnerId?.toString?.() || order.dispatch?.deliveryPartnerId;
                 if (assignedId) {
                     console.log(`[DEBUG] Notifying assigned partner ${assignedId} that order is ready.`);
-                    const restaurant = await FoodRestaurant.findById(order.restaurantId).select('restaurantName location addressLine1 area city state').lean();
-                    const payload = buildDeliverySocketPayload(order, restaurant);
+                    const store = await FoodStore.findById(order.storeId).select('storeName location addressLine1 area city state').lean();
+                    const payload = buildDeliverySocketPayload(order, store);
                     logger.info(
                       `[DeliveryDispatch] Emitting order_ready to ${rooms.delivery(assignedId)} for order ${order._id.toString()}`,
                     );
@@ -1153,16 +1153,16 @@ export async function updateOrderStatusRestaurant(
         console.error('[DEBUG] Error in delivery notification logic:', err);
     }
 
-    enqueueOrderEvent('restaurant_order_status_updated', {
+    enqueueOrderEvent('store_order_status_updated', {
         orderMongoId: order._id?.toString?.(),
         orderId: order._id.toString(),
-        restaurantId,
+        storeId,
         from,
         to: orderStatus
     });
 
-    // ✅ NEW: Automated Razorpay Refund on Restaurant Cancel
-    // Triggers if the restaurant sets status to a cancelled state (e.g., cancelled_by_restaurant)
+    // ✅ NEW: Automated Razorpay Refund on Store Cancel
+    // Triggers if the store sets status to a cancelled state (e.g., cancelled_by_store)
     if (
       String(orderStatus).includes("cancel") &&
       order.payment.status === "paid" &&
@@ -1192,7 +1192,7 @@ export async function updateOrderStatusRestaurant(
           };
         }
       } catch (err) {
-        console.error(`Automated refund failed for Order ${order._id.toString()} (Restaurant Cancel):`, err);
+        console.error(`Automated refund failed for Order ${order._id.toString()} (Store Cancel):`, err);
         order.payment.refund = { status: "failed", amount: order.pricing.total };
       }
       // Re-save order with updated payment status
@@ -1204,7 +1204,7 @@ export async function updateOrderStatusRestaurant(
       (!order.payment.refund || order.payment.refund.status !== "processed")
     ) {
       try {
-        await userWalletService.refundWalletBalance(order.userId, order.pricing.total, `Refund for order #${order.order_id || order._id} cancelled by restaurant`, { orderId: order._id });
+        await userWalletService.refundWalletBalance(order.userId, order.pricing.total, `Refund for order #${order.order_id || order._id} cancelled by store`, { orderId: order._id });
         order.payment.status = "refunded";
         order.payment.refund = {
           status: "processed",
@@ -1223,20 +1223,20 @@ export async function updateOrderStatusRestaurant(
 }
 
 /**
- * Manually re-trigger delivery partner search for a restaurant order.
+ * Manually re-trigger delivery partner search for a store order.
  * Only allowed if status is preparing/ready and no partner has accepted yet.
  */
-export async function resendDeliveryNotificationRestaurant(orderId, restaurantId) {
-    return dispatchService.resendDeliveryNotificationRestaurant(orderId, restaurantId);
+export async function resendDeliveryNotificationStore(orderId, storeId) {
+    return dispatchService.resendDeliveryNotificationStore(orderId, storeId);
     const order = await FoodOrder.findOne({
         _id: new mongoose.Types.ObjectId(orderId),
-        restaurantId: new mongoose.Types.ObjectId(restaurantId)
+        storeId: new mongoose.Types.ObjectId(storeId)
     });
 
     if (!order) throw new NotFoundError('Order not found');
 
     // Allow resend for fresh confirmed orders too, because this route is often
-    // used right after restaurant confirmation when the first rider alert was missed.
+    // used right after store confirmation when the first rider alert was missed.
     const activeStatuses = ['confirmed', 'preparing', 'ready_for_pickup', 'ready'];
     if (!activeStatuses.includes(order.orderStatus)) {
         throw new ValidationError(`Cannot resend notification for order in status: ${order.orderStatus}`);
@@ -1344,8 +1344,8 @@ export async function listOrdersAdmin(query) {
     typeof query.cancelledBy === "string"
       ? query.cancelledBy.trim().toLowerCase()
       : "";
-  const restaurantIdRaw =
-    typeof query.restaurantId === "string" ? query.restaurantId.trim() : "";
+  const storeIdRaw =
+    typeof query.storeId === "string" ? query.storeId.trim() : "";
   const startDateRaw =
     typeof query.startDate === "string" ? query.startDate.trim() : "";
   const endDateRaw =
@@ -1373,13 +1373,13 @@ export async function listOrdersAdmin(query) {
         filter.orderStatus = {
           $in: [
             "cancelled_by_user",
-            "cancelled_by_restaurant",
+            "cancelled_by_store",
             "cancelled_by_admin",
           ],
         };
         break;
-      case "restaurant-cancelled":
-        filter.orderStatus = "cancelled_by_restaurant";
+      case "store-cancelled":
+        filter.orderStatus = "cancelled_by_store";
         break;
       case "payment-failed":
         filter["payment.status"] = "failed";
@@ -1400,15 +1400,15 @@ export async function listOrdersAdmin(query) {
   }
 
   if (cancelledBy) {
-    if (cancelledBy === "restaurant") {
-      filter.orderStatus = "cancelled_by_restaurant";
+    if (cancelledBy === "store") {
+      filter.orderStatus = "cancelled_by_store";
     } else if (cancelledBy === "user" || cancelledBy === "customer") {
       filter.orderStatus = "cancelled_by_user";
     }
   }
 
-  if (restaurantIdRaw && mongoose.Types.ObjectId.isValid(restaurantIdRaw)) {
-    filter.restaurantId = new mongoose.Types.ObjectId(restaurantIdRaw);
+  if (storeIdRaw && mongoose.Types.ObjectId.isValid(storeIdRaw)) {
+    filter.storeId = new mongoose.Types.ObjectId(storeIdRaw);
   }
 
   if (startDateRaw || endDateRaw) {
@@ -1430,7 +1430,7 @@ export async function listOrdersAdmin(query) {
     FoodOrder.find(filter)
       .select("+deliveryOtp")
       .populate("userId", "name phone email")
-      .populate("restaurantId", "restaurantName area city ownerPhone")
+      .populate("storeId", "storeName area city phone")
       .populate("dispatch.deliveryPartnerId", "name phone")
       .sort({ createdAt: -1 })
       .skip(skip)
@@ -1513,7 +1513,7 @@ export async function deleteOrderAdmin(orderId, adminId) {
       };
 
       if (order.userId) io.to(rooms.user(order.userId)).emit("order_deleted", payload);
-      if (order.restaurantId) io.to(rooms.restaurant(order.restaurantId)).emit("order_deleted", payload);
+      if (order.storeId) io.to(rooms.store(order.storeId)).emit("order_deleted", payload);
       if (order.dispatch?.deliveryPartnerId) {
         io.to(rooms.delivery(order.dispatch.deliveryPartnerId)).emit("order_deleted", payload);
       }

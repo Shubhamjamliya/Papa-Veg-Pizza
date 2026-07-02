@@ -1655,7 +1655,7 @@ export const mockOrderIssues = [
     franchiseId: "FRAN-001",
     category: "Late Delivery",
     priority: "High",
-    description: "The order took almost 2 hours to deliver. The restaurant is only 3 km away. Rider got lost and phone was unreachable.",
+    description: "The order took almost 2 hours to deliver. The store is only 3 km away. Rider got lost and phone was unreachable.",
     attachments: [],
     assignedTo: {
       id: "STF-202",

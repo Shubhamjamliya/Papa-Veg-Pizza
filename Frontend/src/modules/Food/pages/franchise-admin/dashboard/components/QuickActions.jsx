@@ -27,7 +27,7 @@ export default function QuickActions({ onAddStore, onAddManager, onAddAlert }) {
     setLoading(true)
     try {
       // Simulate API call to create store
-      const response = await adminAPI.createRestaurant(storeForm)
+      const response = await adminAPI.createStore(storeForm)
       if (response.data?.success) {
         toast.success(`Store "${storeForm.name}" created successfully!`)
         if (onAddStore) onAddStore()

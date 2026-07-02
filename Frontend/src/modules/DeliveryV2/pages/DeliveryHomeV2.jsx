@@ -281,7 +281,7 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
     const targetPoint =
       tripStatus === 'PICKED_UP' || tripStatus === 'REACHED_DROP'
         ? parsePoint(activeOrder.customerLocation)
-        : parsePoint(activeOrder.restaurantLocation);
+        : parsePoint(activeOrder.storeLocation);
 
     if (!riderPoint || !targetPoint) return;
 
@@ -340,8 +340,8 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
             return null;
           };
 
-          const resLoc = getLoc(serverData.restaurantId, ['latitude', 'lat'], ['longitude', 'lng']) || 
-                         getLoc(serverData, ['restaurant_lat', 'restaurantLat', 'latitude'], ['restaurant_lng', 'restaurantLng', 'longitude']);
+          const resLoc = getLoc(serverData.storeId, ['latitude', 'lat'], ['longitude', 'lng']) || 
+                         getLoc(serverData, ['store_lat', 'storeLat', 'latitude'], ['store_lng', 'storeLng', 'longitude']);
                          
           const cusLoc = getLoc(serverData.deliveryAddress, ['latitude', 'lat'], ['longitude', 'lng']) || 
                          getLoc(serverData, ['customer_lat', 'customerLat', 'latitude'], ['customer_lng', 'customerLng', 'longitude']);
@@ -350,7 +350,7 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
             ...serverData,
             _id: serverData._id,
             orderId: serverData.orderId || serverData.order_id || serverData._id,
-            restaurantLocation: resLoc,
+            storeLocation: resLoc,
             customerLocation: cusLoc
           };
 
@@ -570,8 +570,8 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
             return null;
           };
 
-          const resLoc = getLoc(currentPayload.restaurantId, ['latitude', 'lat'], ['longitude', 'lng']) || 
-                         getLoc(currentPayload, ['restaurant_lat', 'restaurantLat', 'latitude'], ['restaurant_lng', 'restaurantLng', 'longitude']);
+          const resLoc = getLoc(currentPayload.storeId, ['latitude', 'lat'], ['longitude', 'lng']) || 
+                         getLoc(currentPayload, ['store_lat', 'storeLat', 'latitude'], ['store_lng', 'storeLng', 'longitude']);
           const cusLoc = getLoc(currentPayload.deliveryAddress, ['latitude', 'lat'], ['longitude', 'lng']) || 
                          getLoc(currentPayload, ['customer_lat', 'customerLat', 'latitude'], ['customer_lng', 'customerLng', 'longitude']);
 
@@ -579,7 +579,7 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
             ...currentPayload,
             _id: currentPayload._id,
             orderId: currentPayload.orderId || currentPayload.order_id || currentPayload._id,
-            restaurantLocation: resLoc,
+            storeLocation: resLoc,
             customerLocation: cusLoc
           });
 
@@ -892,7 +892,7 @@ export default function DeliveryHomeV2({ tab = 'feed' }) {
                       const target =
                         tripStatus === 'PICKED_UP' || tripStatus === 'REACHED_DROP'
                           ? parsePoint(activeOrder?.customerLocation)
-                          : parsePoint(activeOrder?.restaurantLocation);
+                          : parsePoint(activeOrder?.storeLocation);
 
                       const currentRider = useDeliveryStore.getState().riderLocation;
                       const riderPoint = parsePoint(currentRider) || (target

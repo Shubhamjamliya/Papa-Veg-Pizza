@@ -1,12 +1,9 @@
 import mongoose from 'mongoose';
 import { ValidationError } from '../../../../core/auth/errors.js';
 import { FoodItem } from '../models/food.model.js';
-import { FoodAddon } from '../../restaurant/models/foodAddon.model.js';
-import { FoodRestaurant } from '../../restaurant/models/restaurant.model.js';
-import { syncMenuItemApprovalStatus } from '../../restaurant/services/restaurantMenu.service.js';
 import { getFoodDisplayPrice, serializeFoodVariants } from './foodVariant.service.js';
 
-const toRestaurantDisplayId = (mongoId) => {
+const toStoreDisplayId = (mongoId) => {
     const s = String(mongoId || '');
     return s.length >= 5 ? s.slice(-5) : s;
 };
@@ -17,8 +14,8 @@ export async function listPendingFoodApprovals(query = {}) {
     const skip = (page - 1) * limit;
 
     const filter = { approvalStatus: 'pending' };
-    if (query.restaurantId && mongoose.Types.ObjectId.isValid(String(query.restaurantId))) {
-        filter.restaurantId = query.restaurantId;
+    if (query.storeId && mongoose.Types.ObjectId.isValid(String(query.storeId))) {
+        filter.storeId = query.storeId;
     }
     if (query.search && String(query.search).trim()) {
         const term = String(query.search).trim().slice(0, 80);
@@ -32,32 +29,32 @@ export async function listPendingFoodApprovals(query = {}) {
         .sort({ requestedAt: -1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select('restaurantId categoryName name price variants image foodType approvalStatus requestedAt createdAt')
+        .select('storeId categoryName name price variants image foodType approvalStatus requestedAt createdAt')
         .lean();
 
     const addonList = await FoodAddon.find({ approvalStatus: 'pending' })
         .sort({ requestedAt: -1, createdAt: -1 })
         .limit(limit)
-        .select('restaurantId draft isAvailable requestedAt createdAt')
+        .select('storeId draft isAvailable requestedAt createdAt')
         .lean();
 
-    const restaurantIds = Array.from(new Set([
-        ...foodList.map((f) => String(f.restaurantId)),
-        ...addonList.map((a) => String(a.restaurantId))
+    const storeIds = Array.from(new Set([
+        ...foodList.map((f) => String(f.storeId)),
+        ...addonList.map((a) => String(a.storeId))
     ].filter(Boolean)));
 
-    const restaurants = restaurantIds.length
-        ? await FoodRestaurant.find({ _id: { $in: restaurantIds } }).select('restaurantName').lean()
+    const stores = storeIds.length
+        ? await FoodStore.find({ _id: { $in: storeIds } }).select('storeName').lean()
         : [];
-    const restaurantMap = new Map(restaurants.map((r) => [String(r._id), r.restaurantName]));
+    const storeMap = new Map(stores.map((r) => [String(r._id), r.storeName]));
 
     const foodRequests = foodList.map((f) => ({
         _id: f._id,
         id: f._id,
         entityType: 'food',
         type: 'food',
-        restaurantName: restaurantMap.get(String(f.restaurantId)) || 'Unknown Restaurant',
-        restaurantId: toRestaurantDisplayId(f.restaurantId),
+        storeName: storeMap.get(String(f.storeId)) || 'Unknown Store',
+        storeId: toStoreDisplayId(f.storeId),
         category: f.categoryName || '',
         itemName: f.name,
         foodType: f.foodType || 'Non-Veg',
@@ -77,8 +74,8 @@ export async function listPendingFoodApprovals(query = {}) {
         id: a._id,
         entityType: 'addon',
         type: 'addon',
-        restaurantName: restaurantMap.get(String(a.restaurantId)) || 'Unknown Restaurant',
-        restaurantId: toRestaurantDisplayId(a.restaurantId),
+        storeName: storeMap.get(String(a.storeId)) || 'Unknown Store',
+        storeId: toStoreDisplayId(a.storeId),
         category: 'Add-on',
         itemName: a.draft?.name || 'Unnamed Add-on',
         foodType: 'Add-on',
@@ -109,14 +106,14 @@ export async function approveFoodItem(id) {
         { $set: { approvalStatus: 'approved', approvedAt: new Date(), rejectedAt: null, rejectionReason: '' } },
         { new: true }
     ).lean();
-    if (updated?.restaurantId) {
+    if (updated?.storeId) {
         // Single DB update; makes user-facing menu reflect approval immediately.
-        await syncMenuItemApprovalStatus(updated.restaurantId, updated._id, 'approved', '');
+        await syncMenuItemApprovalStatus(updated.storeId, updated._id, 'approved', '');
         
         try {
             const { notifyOwnersSafely } = await import('../../../core/notifications/firebase.service.js');
             await notifyOwnersSafely(
-                [{ ownerType: 'RESTAURANT', ownerId: updated.restaurantId }],
+                [{ ownerType: 'STORE', ownerId: updated.storeId }],
                 {
                     title: 'Dish Approved! 🍲',
                     body: `Your dish "${updated.name}" has been approved and is now visible to customers.`,
@@ -124,7 +121,7 @@ export async function approveFoodItem(id) {
                     data: {
                         type: 'food_approved',
                         foodId: String(updated._id),
-                        restaurantId: String(updated.restaurantId)
+                        storeId: String(updated.storeId)
                     }
                 }
             );
@@ -148,13 +145,13 @@ export async function rejectFoodItem(id, reason) {
         { $set: { approvalStatus: 'rejected', rejectedAt: new Date(), rejectionReason: r, approvedAt: null } },
         { new: true }
     ).lean();
-    if (updated?.restaurantId) {
-        await syncMenuItemApprovalStatus(updated.restaurantId, updated._id, 'rejected', r);
+    if (updated?.storeId) {
+        await syncMenuItemApprovalStatus(updated.storeId, updated._id, 'rejected', r);
         
         try {
             const { notifyOwnersSafely } = await import('../../../core/notifications/firebase.service.js');
             await notifyOwnersSafely(
-                [{ ownerType: 'RESTAURANT', ownerId: updated.restaurantId }],
+                [{ ownerType: 'STORE', ownerId: updated.storeId }],
                 {
                     title: 'Dish Rejected ❌',
                     body: `Your dish "${updated.name}" was rejected. Reason: ${r}`,
@@ -162,7 +159,7 @@ export async function rejectFoodItem(id, reason) {
                     data: {
                         type: 'food_rejected',
                         foodId: String(updated._id),
-                        restaurantId: String(updated.restaurantId),
+                        storeId: String(updated.storeId),
                         reason: r
                     }
                 }
