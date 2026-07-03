@@ -11,35 +11,53 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 // Sub-components
-import AddRegionModal from "./AddRegionModal";
-import AddZoneModal from "./AddZoneModal";
-import AssignTerritoryModal from "./AssignTerritoryModal";
-import RegionDetailsDrawer from "./RegionDetailsDrawer";
-import ZoneDetailsDrawer from "./ZoneDetailsDrawer";
-import RegionsZonesData from "./RegionsZonesData";
+import AddRegionModal from "./components/AddRegionModal";
+import EditRegionModal from "./components/EditRegionModal";
+import AddZoneModal from "./components/AddZoneModal";
+import EditZoneModal from "./components/EditZoneModal";
+import AssignTerritoryModal from "./components/AssignTerritoryModal";
+import RegionDetailsDrawer from "./components/RegionDetailsDrawer";
+import ZoneDetailsDrawer from "./components/ZoneDetailsDrawer";
+import RegionsData from "./RegionsData";
+import ZonesData from "./ZonesData";
+import apiClient from "../../../../../services/api/axios";
 
 export default function RegionsZones() {
   const [activeTab, setActiveTab] = useState("regions"); // "regions" | "zones"
 
-  // Mock initial datasets (Indian geographics)
-  const [regions, setRegions] = useState([
-    { id: "reg-1", name: "North India", country: "India", description: "Covers Delhi NCR, Punjab, Haryana, and Rajasthan.", zonesCount: 4, franchisesCount: 12, storesCount: 32, revenue: 15400000, status: "Active", createdDate: "2026-01-12" },
-    { id: "reg-2", name: "West India", country: "India", description: "Covers Maharashtra, Gujarat, and Goa clusters.", zonesCount: 3, franchisesCount: 8, storesCount: 24, revenue: 12400000, status: "Active", createdDate: "2026-02-15" },
-    { id: "reg-3", name: "South India", country: "India", description: "Covers Karnataka, Tamil Nadu, Telangana, and Kerala.", zonesCount: 5, franchisesCount: 15, storesCount: 40, revenue: 18500000, status: "Active", createdDate: "2026-01-20" },
-    { id: "reg-4", name: "Central India", country: "India", description: "Covers Madhya Pradesh and Chhattisgarh.", zonesCount: 2, franchisesCount: 6, storesCount: 16, revenue: 8400000, status: "Active", createdDate: "2026-03-01" },
-    { id: "reg-5", name: "East India", country: "India", description: "Covers West Bengal, Odisha, and Bihar.", zonesCount: 1, franchisesCount: 2, storesCount: 4, revenue: 1200000, status: "Archived", createdDate: "2026-04-10" }
-  ]);
+  const [regions, setRegions] = useState([]);
+  const [zones, setZones] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [zones, setZones] = useState([
-    { id: "zn-1", name: "Mumbai Zone", regionId: "reg-2", regionName: "West India", description: "Metro Mumbai, Thane, Navi Mumbai region.", territoriesCount: 6, franchisesCount: 4, storesCount: 12, activeOrders: 14, revenue: 6500000, status: "Active", createdDate: "2026-02-16" },
-    { id: "zn-2", name: "Pune Zone", regionId: "reg-2", regionName: "West India", description: "Pune municipal corp, PCMC and Hinjewadi.", territoriesCount: 4, franchisesCount: 3, storesCount: 8, activeOrders: 8, revenue: 4200000, status: "Active", createdDate: "2026-02-18" },
-    { id: "zn-3", name: "Delhi NCR Zone", regionId: "reg-1", regionName: "North India", description: "Delhi, Noida, Gurugram, and Ghaziabad.", territoriesCount: 8, franchisesCount: 7, storesCount: 20, activeOrders: 22, revenue: 9800000, status: "Active", createdDate: "2026-01-15" },
-    { id: "zn-4", name: "Bengaluru Zone", regionId: "reg-3", regionName: "South India", description: "Bengaluru Urban, East/West, and outer rings.", territoriesCount: 10, franchisesCount: 9, storesCount: 25, activeOrders: 28, revenue: 11500000, status: "Active", createdDate: "2026-01-22" },
-    { id: "zn-5", name: "Chennai Zone", regionId: "reg-3", regionName: "South India", description: "Chennai city, OMR, and industrial corridors.", territoriesCount: 6, franchisesCount: 5, storesCount: 12, activeOrders: 10, revenue: 5800000, status: "Active", createdDate: "2026-01-28" },
-    { id: "zn-6", name: "Bhopal Zone", regionId: "reg-4", regionName: "Central India", description: "Bhopal city limits and Arera Cluster.", territoriesCount: 3, franchisesCount: 2, storesCount: 6, activeOrders: 5, revenue: 2800000, status: "Active", createdDate: "2026-03-05" },
-    { id: "zn-7", name: "Indore Zone", regionId: "reg-4", regionName: "Central India", description: "Indore city, Vijay Nagar, and Rajwada.", territoriesCount: 4, franchisesCount: 3, storesCount: 8, activeOrders: 7, revenue: 4200000, status: "Active", createdDate: "2026-03-10" },
-    { id: "zn-8", name: "Kolkata Zone", regionId: "reg-5", regionName: "East India", description: "Salt Lake, New Town, and South Kolkata.", territoriesCount: 2, franchisesCount: 2, storesCount: 4, activeOrders: 0, revenue: 1200000, status: "Archived", createdDate: "2026-04-12" }
-  ]);
+  const fetchGeographyData = async () => {
+    try {
+      setIsLoading(true);
+      const [regionsRes, zonesRes] = await Promise.all([
+        apiClient.get('/food/admin/regions'),
+        apiClient.get('/food/admin/zones')
+      ]);
+      setRegions(regionsRes.data.data || []);
+      setZones(zonesRes.data.data || []);
+    } catch (error) {
+      console.error("Error fetching geography data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchGeographyData();
+  }, []);
+
+  // Update filtered datasets whenever source data changes
+  useEffect(() => {
+    setFilteredRegions(regions);
+  }, [regions]);
+
+  useEffect(() => {
+    setFilteredZones(zones);
+  }, [zones]);
+
 
   // Search and Debounce
   const [regionsSearch, setRegionsSearch] = useState("");
@@ -73,9 +91,11 @@ export default function RegionsZones() {
   const [isZoneDrawerOpen, setIsZoneDrawerOpen] = useState(false);
 
   const [isRegionModalOpen, setIsRegionModalOpen] = useState(false);
+  const [isEditRegionModalOpen, setIsEditRegionModalOpen] = useState(false);
   const [editRegionData, setEditRegionData] = useState(null);
 
   const [isZoneModalOpen, setIsZoneModalOpen] = useState(false);
+  const [isEditZoneModalOpen, setIsEditZoneModalOpen] = useState(false);
   const [editZoneData, setEditZoneData] = useState(null);
 
   const [isAssignTerritoryOpen, setIsAssignTerritoryOpen] = useState(false);
@@ -92,7 +112,6 @@ export default function RegionsZones() {
   const totalTerritories = zones.reduce((acc, curr) => acc + (curr.territoriesCount || 0), 0);
   const totalFranchises = regions.reduce((acc, curr) => acc + (curr.franchisesCount || 0), 0);
   const totalStores = regions.reduce((acc, curr) => acc + (curr.storesCount || 0), 0);
-  const totalRevenueVal = regions.reduce((acc, curr) => acc + (curr.revenue || 0), 0);
 
   const formatCurrencyInCr = (val) => {
     const inCr = val / 10000000;
@@ -102,8 +121,8 @@ export default function RegionsZones() {
   // CSV Downloader
   const handleDownloadCSV = () => {
     if (activeTab === "regions") {
-      const headers = ["Region ID", "Region Name", "Country", "Zones count", "Franchises count", "Stores count", "Revenue (INR)", "Status", "Created Date"];
-      const rows = filteredRegions.map((r) => [r.id, r.name, r.country, r.zonesCount, r.franchisesCount, r.storesCount, r.revenue, r.status, r.createdDate]);
+      const headers = ["Region ID", "Region Name", "Country", "Zones count", "Franchises count", "Stores count", "Status", "Created Date"];
+      const rows = filteredRegions.map((r) => [r.id, r.name, r.country, r.zonesCount, r.franchisesCount, r.storesCount, r.status, r.createdDate]);
       const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.map(val => `"${val}"`).join(","))].join("\n");
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
@@ -113,8 +132,8 @@ export default function RegionsZones() {
       link.click();
       document.body.removeChild(link);
     } else {
-      const headers = ["Zone ID", "Zone Name", "Parent Region", "Territories count", "Franchises count", "Stores count", "Active Orders", "Revenue (INR)", "Status", "Created Date"];
-      const rows = filteredZones.map((z) => [z.id, z.name, z.regionName, z.territoriesCount, z.franchisesCount, z.storesCount, z.activeOrders, z.revenue, z.status, z.createdDate]);
+      const headers = ["Zone ID", "Zone Name", "Parent Region", "Territories count", "Franchises count", "Stores count", "Active Orders", "Status", "Created Date"];
+      const rows = filteredZones.map((z) => [z.id, z.name, z.regionName, z.territoriesCount, z.franchisesCount, z.storesCount, z.activeOrders, z.status, z.createdDate]);
       const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.map(val => `"${val}"`).join(","))].join("\n");
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
@@ -136,12 +155,12 @@ export default function RegionsZones() {
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 21);
 
     const headers = isReg
-      ? ["ID", "Region Name", "Country", "Zones", "Franchises", "Stores", "Total Revenue", "Status", "Created Date"]
-      : ["ID", "Zone Name", "Parent Region", "Territories", "Franchises", "Stores", "Orders", "Revenue", "Status", "Created Date"];
+      ? ["ID", "Region Name", "Country", "Zones", "Franchises", "Stores", "Status", "Created Date"]
+      : ["ID", "Zone Name", "Parent Region", "Territories", "Franchises", "Stores", "Orders", "Status", "Created Date"];
 
     const tableRows = isReg
-      ? filteredRegions.map((r) => [r.id, r.name, r.country, r.zonesCount, r.franchisesCount, r.storesCount, `₹${r.revenue.toLocaleString()}`, r.status, r.createdDate])
-      : filteredZones.map((z) => [z.id, z.name, z.regionName, z.territoriesCount, z.franchisesCount, z.storesCount, z.activeOrders, `₹${z.revenue.toLocaleString()}`, z.status, z.createdDate]);
+      ? filteredRegions.map((r) => [r.id, r.name, r.country, r.zonesCount, r.franchisesCount, r.storesCount, r.status, r.createdDate])
+      : filteredZones.map((z) => [z.id, z.name, z.regionName, z.territoriesCount, z.franchisesCount, z.storesCount, z.activeOrders, z.status, z.createdDate]);
 
     autoTable(doc, {
       head: [headers],
@@ -156,24 +175,75 @@ export default function RegionsZones() {
   };
 
   // Add/Edit Submissions
-  const handleRegionSubmit = (regionData) => {
-    if (editRegionData) {
-      setRegions((prev) => prev.map((r) => (r.id === regionData.id ? regionData : r)));
-    } else {
-      setRegions((prev) => [...prev, regionData]);
+  const handleAddRegionSubmit = async (regionData) => {
+    try {
+      const response = await apiClient.post('/food/admin/regions', regionData);
+      setRegions((prev) => [...prev, {
+          ...response.data.data,
+          id: response.data.data._id,
+          zonesCount: 0,
+          franchisesCount: 0,
+          storesCount: 0,
+          status: response.data.data.isActive ? 'Active' : 'Inactive',
+          createdDate: new Date(response.data.data.createdAt).toISOString().slice(0,10)
+      }]);
+      setIsRegionModalOpen(false);
+    } catch(err) {
+      console.error(err);
     }
-    setIsRegionModalOpen(false);
-    setEditRegionData(null);
   };
 
-  const handleZoneSubmit = (zoneData) => {
-    if (editZoneData) {
-      setZones((prev) => prev.map((z) => (z.id === zoneData.id ? zoneData : z)));
-    } else {
-      setZones((prev) => [...prev, zoneData]);
+  const handleEditRegionSubmit = async (regionData) => {
+    try {
+      const response = await apiClient.patch(`/food/admin/regions/${regionData.id}`, regionData);
+      setRegions((prev) => prev.map((r) => r.id === regionData.id ? {
+          ...r,
+          ...response.data.data,
+          status: response.data.data.isActive ? 'Active' : 'Inactive'
+      } : r));
+      setIsEditRegionModalOpen(false);
+      setEditRegionData(null);
+    } catch(err) {
+      console.error(err);
     }
-    setIsZoneModalOpen(false);
-    setEditZoneData(null);
+  };
+
+  const handleAddZoneSubmit = async (zoneData) => {
+    try {
+      const response = await apiClient.post('/food/admin/zones', zoneData);
+      const parentRegion = regions.find(r => r.id === zoneData.regionId);
+      setZones((prev) => [...prev, {
+          ...response.data.data,
+          id: response.data.data._id,
+          regionName: parentRegion ? parentRegion.name : 'Unknown',
+          territoriesCount: 0,
+          franchisesCount: 0,
+          storesCount: 0,
+          activeOrders: 0,
+          status: response.data.data.isActive ? 'Active' : 'Inactive',
+          createdDate: new Date(response.data.data.createdAt).toISOString().slice(0,10)
+      }]);
+      setIsZoneModalOpen(false);
+    } catch(err) {
+      console.error(err);
+    }
+  };
+
+  const handleEditZoneSubmit = async (zoneData) => {
+    try {
+      const response = await apiClient.patch(`/food/admin/zones/${zoneData.id}`, zoneData);
+      const parentRegion = regions.find(r => r.id === zoneData.regionId);
+      setZones((prev) => prev.map((z) => z.id === zoneData.id ? {
+          ...z,
+          ...response.data.data,
+          regionName: parentRegion ? parentRegion.name : 'Unknown',
+          status: response.data.data.isActive ? 'Active' : 'Inactive'
+      } : z));
+      setIsEditZoneModalOpen(false);
+      setEditZoneData(null);
+    } catch(err) {
+      console.error(err);
+    }
   };
 
   // Archival Confirmations & Toggle Status
@@ -182,23 +252,21 @@ export default function RegionsZones() {
     setIsArchiveConfirmOpen(true);
   };
 
-  const confirmArchive = () => {
+  const confirmArchive = async () => {
     if (!archiveTarget) return;
     const { type, data } = archiveTarget;
-    if (type === "region") {
-      setRegions((prev) =>
-        prev.map((r) => (r.id === data.id ? { ...r, status: "Archived" } : r))
-      );
-      if (selectedRegion?.id === data.id) {
-        setSelectedRegion((prev) => ({ ...prev, status: "Archived" }));
+    try {
+      if (type === "region") {
+        await apiClient.delete(`/food/admin/regions/${data.id}`);
+        setRegions((prev) => prev.filter((r) => r.id !== data.id));
+        if (selectedRegion?.id === data.id) setSelectedRegion(null);
+      } else {
+        await apiClient.delete(`/food/admin/zones/${data.id}`);
+        setZones((prev) => prev.filter((z) => z.id !== data.id));
+        if (selectedZone?.id === data.id) setSelectedZone(null);
       }
-    } else {
-      setZones((prev) =>
-        prev.map((z) => (z.id === data.id ? { ...z, status: "Archived" } : z))
-      );
-      if (selectedZone?.id === data.id) {
-        setSelectedZone((prev) => ({ ...prev, status: "Archived" }));
-      }
+    } catch (error) {
+      console.error("Error deleting record:", error);
     }
     setIsArchiveConfirmOpen(false);
     setArchiveTarget(null);
@@ -293,8 +361,8 @@ export default function RegionsZones() {
         </div>
       </div>
 
-      {/* 8 Dynamic KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 select-none">
+      {/* 7 Dynamic KPI Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3 select-none">
         {/* Total Regions */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-250/50 dark:border-zinc-900 rounded-xl p-3 flex flex-col justify-between shadow-sm">
           <span className="text-[9px] font-bold text-black/60 dark:text-zinc-400 uppercase tracking-wider block truncate">Total Regions</span>
@@ -357,15 +425,6 @@ export default function RegionsZones() {
             <span className="text-[8px] font-bold text-zinc-500">Mapped Outlets</span>
           </div>
         </div>
-
-        {/* Revenue */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-250/50 dark:border-zinc-900 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-          <span className="text-[9px] font-bold text-black/60 dark:text-zinc-400 uppercase tracking-wider block truncate">Total Revenue</span>
-          <div className="mt-2 flex flex-col">
-            <h3 className="text-xs font-black text-[var(--primary)]">{formatCurrencyInCr(totalRevenueVal)}</h3>
-            <span className="text-[7px] font-bold text-emerald-600">All Regions</span>
-          </div>
-        </div>
       </div>
 
       {/* Tabs Controller */}
@@ -417,32 +476,43 @@ export default function RegionsZones() {
       </div>
 
       {/* Grid and Table Data Rendering */}
-      <RegionsZonesData
-        activeTab={activeTab}
-        regions={regions}
-        setRegions={setRegions}
-        zones={zones}
-        setZones={setZones}
-        setSelectedRegion={setSelectedRegion}
-        setIsRegionDrawerOpen={setIsRegionDrawerOpen}
-        setSelectedZone={setSelectedZone}
-        setIsZoneDrawerOpen={setIsZoneDrawerOpen}
-        setEditRegionData={setEditRegionData}
-        setIsRegionModalOpen={setIsRegionModalOpen}
-        setEditZoneData={setEditZoneData}
-        setIsZoneModalOpen={setIsZoneModalOpen}
-        setIsAssignTerritoryOpen={setIsAssignTerritoryOpen}
-        triggerArchiveConfirm={triggerArchiveConfirm}
-        activateRecord={activateRecord}
-        regionsSearch={regionsSearch}
-        setRegionsSearch={setRegionsSearch}
-        regionsDebouncedSearch={regionsDebouncedSearch}
-        zonesSearch={zonesSearch}
-        setZonesSearch={setZonesSearch}
-        zonesDebouncedSearch={zonesDebouncedSearch}
-        onFilteredRegionsChange={setFilteredRegions}
-        onFilteredZonesChange={setFilteredZones}
-      />
+      {activeTab === "regions" ? (
+        <RegionsData
+          regions={regions}
+          setRegions={setRegions}
+          setSelectedRegion={setSelectedRegion}
+          setIsRegionDrawerOpen={setIsRegionDrawerOpen}
+          onEdit={(r) => {
+            setEditRegionData(r);
+            setIsEditRegionModalOpen(true);
+          }}
+          triggerArchiveConfirm={triggerArchiveConfirm}
+          activateRecord={activateRecord}
+          regionsSearch={regionsSearch}
+          setRegionsSearch={setRegionsSearch}
+          regionsDebouncedSearch={regionsDebouncedSearch}
+          onFilteredRegionsChange={setFilteredRegions}
+        />
+      ) : (
+        <ZonesData
+          regions={regions}
+          zones={zones}
+          setZones={setZones}
+          setSelectedZone={setSelectedZone}
+          setIsZoneDrawerOpen={setIsZoneDrawerOpen}
+          onEdit={(z) => {
+            setEditZoneData(z);
+            setIsEditZoneModalOpen(true);
+          }}
+          setIsAssignTerritoryOpen={setIsAssignTerritoryOpen}
+          triggerArchiveConfirm={triggerArchiveConfirm}
+          activateRecord={activateRecord}
+          zonesSearch={zonesSearch}
+          setZonesSearch={setZonesSearch}
+          zonesDebouncedSearch={zonesDebouncedSearch}
+          onFilteredZonesChange={setFilteredZones}
+        />
+      )}
 
       {/* Region details drawer */}
       <RegionDetailsDrawer
@@ -452,14 +522,7 @@ export default function RegionsZones() {
         onEdit={(r) => {
           setIsRegionDrawerOpen(false);
           setEditRegionData(r);
-          setIsRegionModalOpen(true);
-        }}
-        onArchiveToggle={(r) => {
-          if (r.status === "Active") {
-            triggerArchiveConfirm("region", r);
-          } else {
-            activateRecord("region", r);
-          }
+          setIsEditRegionModalOpen(true);
         }}
       />
 
@@ -471,36 +534,46 @@ export default function RegionsZones() {
         onEdit={(z) => {
           setIsZoneDrawerOpen(false);
           setEditZoneData(z);
-          setIsZoneModalOpen(true);
+          setIsEditZoneModalOpen(true);
         }}
         onAssignTerritory={(z) => {
           setIsZoneDrawerOpen(false);
           setSelectedZone(z);
           setIsAssignTerritoryOpen(true);
         }}
-        onArchiveToggle={(z) => {
-          if (z.status === "Active") {
-            triggerArchiveConfirm("zone", z);
-          } else {
-            activateRecord("zone", z);
-          }
-        }}
       />
 
-      {/* Add / Edit Region Modal */}
+      {/* Add Region Modal */}
       <AddRegionModal
         isOpen={isRegionModalOpen}
         onClose={() => setIsRegionModalOpen(false)}
-        onSubmit={handleRegionSubmit}
+        onSubmit={handleAddRegionSubmit}
+        existingRegions={regions}
+      />
+
+      {/* Edit Region Modal */}
+      <EditRegionModal
+        isOpen={isEditRegionModalOpen}
+        onClose={() => setIsEditRegionModalOpen(false)}
+        onSubmit={handleEditRegionSubmit}
         existingRegions={regions}
         editRegion={editRegionData}
       />
 
-      {/* Add / Edit Zone Modal */}
+      {/* Add Zone Modal */}
       <AddZoneModal
         isOpen={isZoneModalOpen}
         onClose={() => setIsZoneModalOpen(false)}
-        onSubmit={handleZoneSubmit}
+        onSubmit={handleAddZoneSubmit}
+        regions={regions}
+        existingZones={zones}
+      />
+
+      {/* Edit Zone Modal */}
+      <EditZoneModal
+        isOpen={isEditZoneModalOpen}
+        onClose={() => setIsEditZoneModalOpen(false)}
+        onSubmit={handleEditZoneSubmit}
         regions={regions}
         existingZones={zones}
         editZone={editZoneData}
@@ -519,7 +592,7 @@ export default function RegionsZones() {
         <div className="fixed inset-0 bg-black/55 backdrop-blur-sm z-[70] flex items-center justify-center p-4 lg:pl-[280px]" id="archive-confirm-modal">
           <div className="bg-white dark:bg-zinc-950 w-full max-w-sm rounded-xl shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-900 animate-scaleUp">
             <div className="p-4 border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-900/40 flex justify-between items-center">
-              <h3 className="text-xs font-black uppercase tracking-wider text-rose-600">Archive Confirmation</h3>
+              <h3 className="text-xs font-black uppercase tracking-wider text-rose-600">Delete Confirmation</h3>
               <button
                 onClick={() => setIsArchiveConfirmOpen(false)}
                 className="text-black dark:text-zinc-300 hover:text-[var(--primary)] cursor-pointer"
@@ -530,11 +603,11 @@ export default function RegionsZones() {
             <div className="p-5 text-xs font-semibold text-black dark:text-zinc-300 space-y-3">
               {archiveTarget.type === "region" ? (
                 <p className="leading-relaxed">
-                  Archiving this region will disable future assignments but preserve historical relationships. Existing zones, territories, franchises, and stores remain intact.
+                  Deleting this region will permanently remove it. Existing zones, territories, franchises, and stores linked to this region may lose their structural parent.
                 </p>
               ) : (
                 <p className="leading-relaxed">
-                  Archiving this zone will prevent future assignments while preserving historical operational data.
+                  Deleting this zone will permanently remove it along with all related assignments.
                 </p>
               )}
             </div>
@@ -549,7 +622,7 @@ export default function RegionsZones() {
                 onClick={confirmArchive}
                 className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
               >
-                {archiveTarget.type === "region" ? "Archive Region" : "Archive Zone"}
+                Delete {archiveTarget.type === "region" ? "Region" : "Zone"}
               </button>
             </div>
           </div>

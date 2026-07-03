@@ -7,6 +7,8 @@ import * as addonsApprovalController from '../controllers/addonsApproval.control
 import * as businessSettingsController from '../controllers/businessSettings.controller.js';
 import * as feedbackExperienceController from '../controllers/feedbackExperience.controller.js';
 import * as notificationBroadcastController from '../controllers/notificationBroadcast.controller.js';
+import * as franchiseController from '../controllers/franchise.controller.js';
+import * as geographyController from '../controllers/geography.controller.js';
 
 import * as orderController from '../../orders/controllers/order.controller.js';
 import { getAdminPageController, upsertAdminPageController } from '../controllers/pageContent.controller.js';
@@ -23,6 +25,10 @@ router.use(requireAdmin);
 router.post('/notifications/broadcast', notificationBroadcastController.createBroadcastNotificationController);
 router.get('/notifications/broadcast', notificationBroadcastController.getBroadcastNotificationsController);
 router.delete('/notifications/broadcast/:id', notificationBroadcastController.deleteBroadcastNotificationController);
+
+// ----- Franchises -----
+router.post('/franchises', franchiseController.createFranchise);
+router.get('/franchises', franchiseController.getFranchises);
 
 // ----- Customers -----
 router.get('/customers', adminController.getCustomers);
@@ -175,14 +181,24 @@ router.patch('/delivery/:id', adminController.updateDeliveryPartner);
 router.patch('/delivery/:id/approve', adminController.approveDeliveryPartner);
 router.patch('/delivery/:id/reject', adminController.rejectDeliveryPartner);
 
-// ----- Zones -----
-router.get('/zones', adminController.getZones);
-router.get('/zones/:id', adminController.getZoneById);
-router.post('/zones', adminController.createZone);
-router.patch('/zones/:id', adminController.updateZone);
-router.delete('/zones/:id', adminController.deleteZone);
+// ----- Regions, Zones, Territories -----
+router.get('/regions', geographyController.getRegions);
+router.post('/regions', geographyController.createRegion);
+router.get('/regions/:id', geographyController.getRegionById);
+router.patch('/regions/:id', geographyController.updateRegion);
+router.delete('/regions/:id', geographyController.deleteRegion);
 
+router.get('/zones', geographyController.getZones);
+router.post('/zones', geographyController.createZone);
+router.get('/zones/:id', geographyController.getZoneById);
+router.patch('/zones/:id', geographyController.updateZone);
+router.delete('/zones/:id', geographyController.deleteZone);
 
+router.get('/territories', geographyController.getTerritories);
+router.post('/territories', geographyController.createTerritory);
+router.get('/territories/:id', geographyController.getTerritoryById);
+router.patch('/territories/:id', geographyController.updateTerritory);
+router.delete('/territories/:id', geographyController.deleteTerritory);
 // ----- Orders -----
 router.get('/orders', orderController.listOrdersAdminController);
 router.get('/orders/:orderId', orderController.getOrderByIdAdminController);

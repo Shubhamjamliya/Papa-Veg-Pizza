@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import apiClient from "../../../../../services/api/axios"
 import {
   MoreVertical,
   Eye,
@@ -18,111 +19,79 @@ import {
 // Reusable custom subcomponents
 import FranchiseKPIs from "./FranchiseKPIs"
 import FranchiseFilters from "./FranchiseFilters"
-import FranchiseDetailsDrawer from "./FranchiseDetailsDrawer"
+import FranchiseDetailsDrawer from "./components/FranchiseDetailsDrawer"
 import AddFranchiseModal from "./components/AddFranchiseModal"
 import EditFranchiseModal from "./components/EditFranchiseModal"
 import SuspendFranchiseModal from "./components/SuspendFranchiseModal"
 
-const INITIAL_FRANCHISES = [
-  {
-    id: "FRAN-4921",
-    name: "Ramesh Kumar",
-    email: "ramesh.k@papaveg.com",
-    phone: "+91 98765 43210",
-    franchiseName: "Papa Veg Pizza Mumbai",
-    city: "Mumbai",
-    state: "Maharashtra",
-    type: "Multi Store",
-    totalStores: 3,
-    totalManagers: 6,
-    revenue: 150000,
-    status: "ACTIVE",
-    joinedDate: "Jan 12, 2024",
-    franchiseDuration: 3,
-    franchiseCost: 600000,
-    paidAmount: 450000,
-    dueAmount: 150000
-  },
-  {
-    id: "FRAN-8832",
-    name: "Suresh Sharma",
-    email: "suresh.s@papaveg.com",
-    phone: "+91 98765 43211",
-    franchiseName: "Papa Veg Pizza Delhi",
-    city: "New Delhi",
-    state: "Delhi",
-    type: "Multi Store",
-    totalStores: 2,
-    totalManagers: 4,
-    revenue: 98000,
-    status: "ACTIVE",
-    joinedDate: "Feb 20, 2024",
-    franchiseDuration: 5,
-    franchiseCost: 500000,
-    paidAmount: 500000,
-    dueAmount: 0
-  },
-  {
-    id: "FRAN-1029",
-    name: "Priya Patel",
-    email: "priya.p@papaveg.com",
-    phone: "+91 98765 43212",
-    franchiseName: "Papa Veg Pizza Ahmedabad",
-    city: "Ahmedabad",
-    state: "Gujarat",
-    type: "Single Store",
-    totalStores: 1,
-    totalManagers: 2,
-    revenue: 45000,
-    status: "INACTIVE",
-    joinedDate: "Mar 05, 2024",
-    franchiseDuration: 2,
-    franchiseCost: 300000,
-    paidAmount: 200000,
-    dueAmount: 100000
-  },
-  {
-    id: "FRAN-7721",
-    name: "Amit Singh",
-    email: "amit.s@papaveg.com",
-    phone: "+91 98765 43213",
-    franchiseName: "Papa Veg Pizza Bangalore",
-    city: "Bangalore",
-    state: "Karnataka",
-    type: "Multi Store",
-    totalStores: 4,
-    totalManagers: 8,
-    revenue: 215000,
-    status: "ACTIVE",
-    joinedDate: "Nov 15, 2023",
-    franchiseDuration: 4,
-    franchiseCost: 800000,
-    paidAmount: 600000,
-    dueAmount: 200000
-  },
-  {
-    id: "FRAN-5534",
-    name: "Neha Gupta",
-    email: "neha.g@papaveg.com",
-    phone: "+91 98765 43214",
-    franchiseName: "Papa Veg Pizza Hyderabad",
-    city: "Hyderabad",
-    state: "Telangana",
-    type: "Single Store",
-    totalStores: 1,
-    totalManagers: 1,
-    revenue: 32000,
-    status: "SUSPENDED",
-    joinedDate: "Dec 01, 2023",
-    franchiseDuration: 3,
-    franchiseCost: 400000,
-    paidAmount: 150000,
-    dueAmount: 250000
-  }
-]
+const MOCK_REGIONS = [
+  { id: "reg-1", name: "North India" },
+  { id: "reg-2", name: "West India" },
+  { id: "reg-3", name: "South India" },
+  { id: "reg-4", name: "Central India" }
+];
+
+const MOCK_ZONES = [
+  { id: "zn-1", name: "Delhi NCR Zone", regionId: "reg-1" },
+  { id: "zn-2", name: "Mumbai Zone", regionId: "reg-2" },
+  { id: "zn-3", name: "Pune Zone", regionId: "reg-2" },
+  { id: "zn-4", name: "Bengaluru Zone", regionId: "reg-3" },
+  { id: "zn-5", name: "Indore Zone", regionId: "reg-4" },
+  { id: "zn-6", name: "Bhopal Zone", regionId: "reg-4" }
+];
 
 export default function FranchiseList() {
-  const [franchises, setFranchises] = useState(INITIAL_FRANCHISES)
+  const [franchises, setFranchises] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchFranchises = async () => {
+      try {
+        setIsLoading(true)
+        const response = await apiClient.get('/food/admin/franchises')
+        const data = response.data.data.map(f => {
+          const regionName = MOCK_REGIONS.find(r => r.id === f.regionId)?.name || f.regionId;
+          const zoneName = MOCK_ZONES.find(z => z.id === f.zoneId)?.name || f.zoneId;
+
+          return {
+            id: f.franchiseCode,
+            _id: f._id,
+            name: f.ownerName || f.managerName,
+            email: f.email,
+            phone: f.phone,
+            franchiseName: f.name,
+            city: f.city,
+            state: f.state,
+            regionId: f.regionId,
+            zoneId: f.zoneId,
+            regionName,
+            zoneName,
+            type: f.type,
+            totalStores: f.totalStores,
+            status: f.isActive ? 'ACTIVE' : 'INACTIVE',
+            joinedDate: new Date(f.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric"
+            }),
+            franchiseDuration: f.franchiseDuration,
+            gstNumber: f.gstNumber,
+            address: f.address,
+            franchiseCost: f.franchiseCost,
+            paidAmount: f.paidAmount,
+            dueAmount: f.dueAmount
+          }
+        })
+        setFranchises(data)
+      } catch (error) {
+        console.error("Error fetching franchises:", error)
+        showToast("Failed to fetch franchises", "error")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchFranchises()
+  }, [])
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState("")
@@ -150,28 +119,17 @@ export default function FranchiseList() {
     setTimeout(() => setToast(null), 3000)
   }
 
-  // Calculate high-fidelity metrics dynamically based on active list state
-  const dashboardStats = useMemo(() => {
-    const total = franchises.length
-    const active = franchises.filter((f) => f.status === "ACTIVE").length
-    const inactive = franchises.filter((f) => f.status === "INACTIVE").length
-    const revenue = franchises.reduce((acc, f) => acc + f.revenue, 0)
-    const pending = franchises.filter((f) => f.status === "INACTIVE" && f.revenue === 0).length
-
-    return { total, active, inactive, revenue, pending }
-  }, [franchises])
-
   // Advanced filters, search, and sorting mapping
   const filteredFranchises = useMemo(() => {
     return franchises.filter((fran) => {
       // Search Box Filter
       const query = searchQuery.toLowerCase()
       const matchesSearch =
-        fran.name.toLowerCase().includes(query) ||
-        fran.email.toLowerCase().includes(query) ||
-        fran.phone.includes(query) ||
-        fran.franchiseName.toLowerCase().includes(query) ||
-        fran.id.toLowerCase().includes(query)
+        fran.name?.toLowerCase().includes(query) ||
+        fran.email?.toLowerCase().includes(query) ||
+        fran.phone?.includes(query) ||
+        fran.franchiseName?.toLowerCase().includes(query) ||
+        fran.id?.toLowerCase().includes(query)
 
       // Dropdown Status Filter
       const matchesStatus =
@@ -183,7 +141,7 @@ export default function FranchiseList() {
 
       // Input City Filter
       const matchesCity =
-        !cityFilter.trim() || fran.city.toLowerCase().includes(cityFilter.toLowerCase())
+        !cityFilter.trim() || fran.city?.toLowerCase().includes(cityFilter.toLowerCase())
 
       return matchesSearch && matchesStatus && matchesType && matchesCity
     })
@@ -270,9 +228,6 @@ export default function FranchiseList() {
         </div>
       </div>
 
-      {/* Reusable KPI statistics block */}
-      <FranchiseKPIs stats={dashboardStats} />
-
       {/* Reusable Filters row */}
       <FranchiseFilters
         searchQuery={searchQuery}
@@ -298,25 +253,25 @@ export default function FranchiseList() {
             <thead>
               <tr className="bg-zinc-50 dark:bg-zinc-900/50 border-b border-zinc-150 dark:border-zinc-800">
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
-                  Operator Info
+                  Franchise Code
                 </th>
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
-                  Franchise Brand
+                  Franchise Admin
+                </th>
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
+                  Mobile Number
                 </th>
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   HQ Region
                 </th>
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
-                  Capacity
+                  Store
                 </th>
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
-                  Total Revenue
+                  Franchise Duration
                 </th>
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
-                  Joined Date
+                  Create Date
                 </th>
                 <th className="px-3 py-2.5 text-right"></th>
               </tr>
@@ -328,6 +283,13 @@ export default function FranchiseList() {
                     key={fran.id}
                     className="hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 transition-colors group"
                   >
+                    {/* Franchise Code */}
+                    <td className="px-3 py-2.5">
+                      <span className="text-[9px] font-mono bg-zinc-100 dark:bg-zinc-850 px-1 py-0.2 rounded text-black dark:text-white opacity-80 inline-block font-bold">
+                        {fran.id}
+                      </span>
+                    </td>
+
                     {/* Operator Profile */}
                     <td className="px-3 py-2.5">
                       <div className="flex items-center gap-2">
@@ -346,19 +308,9 @@ export default function FranchiseList() {
                       </div>
                     </td>
 
-                    {/* Franchise Brand */}
-                    <td className="px-3 py-2.5">
-                      <div className="flex items-center gap-1.5">
-                        <Building size={12} className="text-black dark:text-white opacity-60" />
-                        <div>
-                          <p className="text-xs font-bold text-black dark:text-white">
-                            {fran.franchiseName}
-                          </p>
-                          <span className="text-[9px] font-mono bg-zinc-100 dark:bg-zinc-850 px-1 py-0.2 rounded text-black dark:text-white opacity-60">
-                            {fran.id}
-                          </span>
-                        </div>
-                      </div>
+                    {/* Mobile Number */}
+                    <td className="px-3 py-2.5 text-xs font-semibold text-black dark:text-white opacity-75">
+                      {fran.phone}
                     </td>
 
                     {/* HQ Region */}
@@ -366,90 +318,98 @@ export default function FranchiseList() {
                       <div className="flex items-center gap-1">
                         <MapPin size={11} className="text-black dark:text-white opacity-60" />
                         <span>
-                          {fran.city}, {fran.state}
+                          {fran.zoneName}, {fran.regionName}
                         </span>
                       </div>
                     </td>
 
-                    {/* Stores & Managers */}
+                    {/* Stores */}
                     <td className="px-3 py-2.5">
-                      <div>
-                        <p className="text-xs font-bold text-black dark:text-white">
-                          {fran.totalStores} {fran.totalStores === 1 ? "Store" : "Stores"}
-                        </p>
-                        <p className="text-[9px] text-black dark:text-white opacity-60 font-bold mt-0.5">
-                          {fran.totalManagers} Staff Managers
-                        </p>
-                      </div>
+                      <p className="text-xs font-bold text-black dark:text-white">
+                        {fran.totalStores} {fran.totalStores === 1 ? "Store" : "Stores"}
+                      </p>
                     </td>
 
-                    {/* Revenue */}
-                    <td className="px-3 py-2.5 text-xs font-black text-black dark:text-white">
-                      ₹{fran.revenue.toLocaleString()}
+                    {/* Franchise Duration */}
+                    <td className="px-3 py-2.5 text-xs font-semibold text-black dark:text-white opacity-70">
+                      {fran.franchiseDuration} {fran.franchiseDuration === 1 ? "Year" : "Years"}
                     </td>
 
-                    {/* Status Badge */}
-                    <td className="px-3 py-2.5">
-                      <span
-                        className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full ${fran.status === "ACTIVE"
-                          ? "bg-green-50 dark:bg-green-950/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/30"
-                          : fran.status === "INACTIVE"
-                            ? "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30"
-                            : "bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30"
-                          }`}
-                      >
-                        {fran.status}
-                      </span>
-                    </td>
-
-                    {/* Joined Date */}
+                    {/* Create Date */}
                     <td className="px-3 py-2.5 text-xs font-semibold text-black dark:text-white opacity-70">
                       {fran.joinedDate}
                     </td>
 
-                    {/* Inline Actions */}
+                    {/* Actions and Toggle */}
                     <td className="px-3 py-2.5 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <button
-                          onClick={() => {
-                            setSelectedAdmin(fran)
-                            setIsDrawerOpen(true)
-                          }}
-                          className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
-                          title="View Profile"
-                        >
-                          <Eye size={14} />
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedAdmin(fran)
-                            setIsEditModalOpen(true)
-                          }}
-                          className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
-                          title="Edit Profile"
-                        >
-                          <Edit size={14} />
-                        </button>
-                        {fran.status === "SUSPENDED" ? (
-                          <button
-                            onClick={() => handleActivateAdmin(fran.id)}
-                            className="p-1 rounded-md bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
-                            title="Re-Activate"
-                          >
-                            <UserCheck size={14} />
-                          </button>
-                        ) : (
+                      <div className="flex items-center justify-end gap-3">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            className="sr-only peer"
+                            checked={fran.status === "ACTIVE"}
+                            onChange={async () => {
+                              try {
+                                const newStatus = fran.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
+                                // Mock API update logic could go here
+                                // await apiClient.put(`/food/admin/franchises/${fran._id}/status`, { status: newStatus })
+                                const updatedFranchises = franchises.map(f => {
+                                  if (f.id === fran.id) {
+                                    return { ...f, status: newStatus }
+                                  }
+                                  return f
+                                })
+                                setFranchises(updatedFranchises)
+                                showToast(`Franchise ${newStatus === "ACTIVE" ? "Activated" : "Deactivated"}`, "success")
+                              } catch (err) {
+                                showToast("Failed to update status", "error")
+                              }
+                            }}
+                          />
+                          <div className="w-7 h-4 bg-zinc-200 dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[var(--primary)]"></div>
+                        </label>
+                        <div className="flex items-center gap-1.5">
                           <button
                             onClick={() => {
                               setSelectedAdmin(fran)
-                              setIsSuspendModalOpen(true)
+                              setIsDrawerOpen(true)
                             }}
-                            className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
-                            title="Suspend"
+                            className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
+                            title="View Profile"
                           >
-                            <Ban size={14} />
+                            <Eye size={14} />
                           </button>
-                        )}
+                          <button
+                            onClick={() => {
+                              setSelectedAdmin(fran)
+                              setIsEditModalOpen(true)
+                            }}
+                            className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-blue-500 transition-colors cursor-pointer"
+                            title="Edit Profile"
+                          >
+                            <Edit size={14} />
+                          </button>
+                          {fran.status === "SUSPENDED" ? (
+                            <button
+                              onClick={() => {}}
+                              className="p-1 rounded-md bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
+                              title="Re-Activate"
+                            >
+                              <UserCheck size={14} />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setSelectedAdmin(fran)
+                                setIsSuspendModalOpen(true)
+                              }}
+                              className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
+                              title="Suspend"
+                            >
+                              <Ban size={14} />
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </td>
                   </tr>

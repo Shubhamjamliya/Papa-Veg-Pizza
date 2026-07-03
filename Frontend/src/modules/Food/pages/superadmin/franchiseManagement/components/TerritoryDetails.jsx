@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   MapPin,
@@ -16,8 +16,10 @@ import {
   Sliders,
   Calendar,
   ExternalLink,
-  Map
+  Map,
+  Loader2
 } from "lucide-react";
+import apiClient from "../../../../../../services/api/axios";
 
 export default function TerritoryDetails({
   isOpen,
@@ -25,26 +27,38 @@ export default function TerritoryDetails({
   territory,
   franchises,
   onEdit,
-  onReassign,
-  onAnalytics,
   onStatusToggle
 }) {
   if (!isOpen || !territory) return null;
 
   // Search inside postal code chips
   const [postalSearch, setPostalSearch] = useState("");
+  
+  const [detailedTerritory, setDetailedTerritory] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const assignedFranchise = franchises.find((f) => f.id === territory.assignedFranchiseId);
+  useEffect(() => {
+    if (isOpen && territory?.id) {
+      const fetchDetails = async () => {
+        setIsLoading(true);
+        try {
+          const response = await apiClient.get(`/food/admin/territories/${territory.id}`);
+          setDetailedTerritory(response.data.data);
+        } catch (error) {
+          console.error("Failed to fetch territory details", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchDetails();
+    }
+  }, [isOpen, territory?.id]);
 
-  // Mock stores mapping under this territory
-  const mockStores = [
-    { code: "ST-MUM-01", name: "Bandra Carter Road Pizza Hub", manager: "Rohan Sharma", status: "Active" },
-    { code: "ST-MUM-02", name: "Bandra Pali Hill Express", manager: "Nisha Varma", status: "Active" },
-    { code: "ST-MUM-03", name: "Bandra Linking Road Diner", manager: "Rahul Sen", status: "Inactive" }
-  ].slice(0, territory.storesCount || 3);
+  const displayTerritory = detailedTerritory || territory;
+  const assignedFranchise = franchises.find((f) => f.id === displayTerritory.assignedFranchiseId);
 
   // Filter postal codes based on search input
-  const filteredPostalCodes = (territory.postalCodes || []).filter((code) =>
+  const filteredPostalCodes = (displayTerritory.postalCodes || []).filter((code) =>
     code.includes(postalSearch)
   );
 
@@ -78,30 +92,36 @@ export default function TerritoryDetails({
         </div>
 
         {/* Scrollable details wrapper */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-5 scrollbar-thin">
+        <div className="flex-1 overflow-y-auto p-4 space-y-5 scrollbar-thin relative">
+          {isLoading && (
+            <div className="absolute inset-0 z-10 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm flex items-center justify-center">
+              <Loader2 className="w-6 h-6 animate-spin text-[var(--primary)]" />
+            </div>
+          )}
+          
           {/* Section 1 – Basic Information */}
           <div className="space-y-2.5">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-black text-black dark:text-zinc-100 leading-tight">
-                {territory.name}
+                {displayTerritory.name}
               </h3>
               <span
                 className={`px-2 py-0.5 text-[8px] font-black uppercase rounded ${
-                  territory.status === "Active"
+                  displayTerritory.status === "Active"
                     ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400"
                     : "bg-rose-50 text-rose-600 dark:bg-rose-950/20 dark:text-rose-450"
                 }`}
               >
-                {territory.status}
+                {displayTerritory.status}
               </span>
             </div>
             <p className="text-[10px] font-semibold text-zinc-500 leading-relaxed">
-              {territory.description || "No description provided for this operational boundary."}
+              {displayTerritory.description || "No description provided for this operational boundary."}
             </p>
             <div className="grid grid-cols-2 gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 font-bold border-t border-zinc-100 dark:border-zinc-900 pt-2 bg-zinc-50/50 dark:bg-zinc-900/20 p-2 rounded-lg">
               <div className="flex items-center gap-1">
                 <Calendar size={12} />
-                <span>Created: {territory.createdAt}</span>
+                <span>Created: {displayTerritory.createdAt || displayTerritory.createdDate}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Activity size={12} />
@@ -122,7 +142,7 @@ export default function TerritoryDetails({
               <ArrowRight size={10} className="text-zinc-400" />
               <span className="text-zinc-500 dark:text-zinc-400">{territory.zoneName}</span>
               <ArrowRight size={10} className="text-zinc-400" />
-              <span className="font-bold text-[var(--primary)]">{territory.name}</span>
+              <span className="font-bold text-[var(--primary)]">{displayTerritory.name}</span>
             </div>
           </div>
 
@@ -166,7 +186,7 @@ export default function TerritoryDetails({
           <div className="border-t border-zinc-150 dark:border-zinc-900 pt-3 space-y-2">
             <div className="flex justify-between items-center">
               <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
-                Covered Postal Codes ({territory.postalCodes.length})
+                Covered Postal Codes ({(territory.postalCodes || []).length})
               </h4>
               <input
                 type="text"
@@ -192,73 +212,7 @@ export default function TerritoryDetails({
             </div>
           </div>
 
-          {/* Section 5 – Store Mapping */}
-          <div className="border-t border-zinc-150 dark:border-zinc-900 pt-3 space-y-2">
-            <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
-              Mapped Stores ({mockStores.length})
-            </h4>
-            <div className="space-y-1.5">
-              {mockStores.length > 0 ? (
-                mockStores.map((store) => (
-                  <div
-                    key={store.code}
-                    className="p-2.5 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-150 dark:border-zinc-850 rounded-lg flex items-center justify-between"
-                  >
-                    <div>
-                      <p className="text-[10px] font-bold text-black dark:text-zinc-100">
-                        {store.name}
-                      </p>
-                      <p className="text-[8px] font-bold text-zinc-500">{store.code} • Mgr: {store.manager}</p>
-                    </div>
-                    <span
-                      className={`px-1.5 py-0.2 text-[8px] font-bold rounded ${
-                        store.status === "Active"
-                          ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20"
-                          : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800"
-                      }`}
-                    >
-                      {store.status}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-[9px] text-zinc-500 font-bold">No active stores mapped to this territory yet.</p>
-              )}
-            </div>
-          </div>
 
-          {/* Section 6 – Operational Metrics */}
-          <div className="border-t border-zinc-150 dark:border-zinc-900 pt-3 space-y-2">
-            <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
-              Operational Metrics
-            </h4>
-            <div className="grid grid-cols-3 gap-2.5 select-none">
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-2.5 rounded-lg text-center border border-zinc-150 dark:border-zinc-850">
-                <span className="text-[8px] font-bold text-zinc-500 block">Orders Today</span>
-                <span className="text-xs font-black text-black dark:text-zinc-100">{territory.ordersToday}</span>
-              </div>
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-2.5 rounded-lg text-center border border-zinc-150 dark:border-zinc-850">
-                <span className="text-[8px] font-bold text-zinc-500 block">Rev Today</span>
-                <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">₹{territory.revenueToday.toLocaleString()}</span>
-              </div>
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-2.5 rounded-lg text-center border border-zinc-150 dark:border-zinc-850">
-                <span className="text-[8px] font-bold text-zinc-500 block">SLA Compliance</span>
-                <span className="text-xs font-black text-blue-600 dark:text-blue-400">96.5%</span>
-              </div>
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-2.5 rounded-lg text-center border border-zinc-150 dark:border-zinc-850">
-                <span className="text-[8px] font-bold text-zinc-500 block">Avg Delivery</span>
-                <span className="text-xs font-black text-zinc-700 dark:text-zinc-300">22 Mins</span>
-              </div>
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-2.5 rounded-lg text-center border border-zinc-150 dark:border-zinc-850">
-                <span className="text-[8px] font-bold text-zinc-500 block">Orders Month</span>
-                <span className="text-xs font-black text-black dark:text-zinc-100">1,240</span>
-              </div>
-              <div className="bg-zinc-50 dark:bg-zinc-900 p-2.5 rounded-lg text-center border border-zinc-150 dark:border-zinc-850">
-                <span className="text-[8px] font-bold text-zinc-500 block">Rev Month</span>
-                <span className="text-xs font-black text-emerald-650 dark:text-emerald-400">₹5.4L</span>
-              </div>
-            </div>
-          </div>
 
           {/* Section 7 – Delivery Coverage */}
           <div className="border-t border-zinc-150 dark:border-zinc-900 pt-3 space-y-2">
@@ -267,7 +221,7 @@ export default function TerritoryDetails({
             </h4>
             <div className="space-y-1">
               <div className="flex justify-between items-center text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900 p-2 rounded-lg">
-                <span>Radius: {territory.deliveryRadiusKm} km</span>
+                <span>Radius: {displayTerritory.deliveryRadiusKm || 5} km</span>
                 <span>Exclusive Geofence Boundary</span>
               </div>
 
@@ -300,7 +254,7 @@ export default function TerritoryDetails({
                   <circle cx="70" cy="55" r="1.5" fill="blue" />
                 </svg>
                 <div className="absolute bottom-1 right-1 bg-white/90 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 rounded px-1 text-[8px] font-bold text-zinc-500 z-10">
-                  {territory.name} Bounds
+                  {displayTerritory.name} Bounds
                 </div>
               </div>
             </div>
@@ -310,35 +264,22 @@ export default function TerritoryDetails({
         {/* Footer actions */}
         <div className="p-3 border-t border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-900/40 flex flex-wrap gap-2 justify-end select-none">
           <button
-            onClick={() => onEdit(territory)}
+            onClick={() => onEdit(displayTerritory)}
             className="flex-1 bg-white hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-250 dark:border-zinc-800 text-black dark:text-zinc-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer inline-flex items-center justify-center gap-1 shadow-sm"
           >
             <Sliders size={12} />
             <span>EDIT</span>
           </button>
+
           <button
-            onClick={() => onReassign(territory)}
-            className="flex-1 bg-white hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-250 dark:border-zinc-800 text-black dark:text-zinc-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer inline-flex items-center justify-center gap-1 shadow-sm"
-          >
-            <Building size={12} />
-            <span>REASSIGN</span>
-          </button>
-          <button
-            onClick={() => onAnalytics(territory)}
-            className="flex-1 bg-white hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-250 dark:border-zinc-800 text-black dark:text-zinc-200 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer inline-flex items-center justify-center gap-1 shadow-sm"
-          >
-            <TrendingUp size={12} />
-            <span>ANALYTICS</span>
-          </button>
-          <button
-            onClick={() => onStatusToggle(territory)}
+            onClick={() => onStatusToggle(displayTerritory)}
             className={`px-4 py-1.5 rounded-lg text-[10px] font-bold text-white transition-all cursor-pointer shadow-sm ${
-              territory.status === "Active"
+              displayTerritory.status === "Active"
                 ? "bg-rose-600 hover:bg-rose-700"
                 : "bg-emerald-600 hover:bg-emerald-700"
             }`}
           >
-            {territory.status === "Active" ? "DEACTIVATE" : "ACTIVATE"}
+            {displayTerritory.status === "Active" ? "DEACTIVATE" : "ACTIVATE"}
           </button>
         </div>
       </aside>

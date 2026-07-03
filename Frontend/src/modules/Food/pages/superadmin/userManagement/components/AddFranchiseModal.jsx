@@ -1,30 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Lock, Clock } from "lucide-react"
-
-// Mock geography data (as requested, representing data from franchiseManagement folder)
-const MOCK_REGIONS = [
-  { id: "reg-1", name: "North India" },
-  { id: "reg-2", name: "West India" },
-  { id: "reg-3", name: "South India" },
-  { id: "reg-4", name: "Central India" }
-];
-
-const MOCK_ZONES = [
-  { id: "zn-1", name: "Delhi NCR Zone", regionId: "reg-1" },
-  { id: "zn-2", name: "Mumbai Zone", regionId: "reg-2" },
-  { id: "zn-3", name: "Pune Zone", regionId: "reg-2" },
-  { id: "zn-4", name: "Bengaluru Zone", regionId: "reg-3" },
-  { id: "zn-5", name: "Indore Zone", regionId: "reg-4" },
-  { id: "zn-6", name: "Bhopal Zone", regionId: "reg-4" }
-];
-
-const MOCK_TERRITORIES = [
-  { id: "ter-1", name: "CP & Connaught Place", zoneId: "zn-1" },
-  { id: "ter-2", name: "Bandra West Cluster", zoneId: "zn-2" },
-  { id: "ter-3", name: "Koramangala", zoneId: "zn-4" },
-  { id: "ter-4", name: "Vijay Nagar", zoneId: "zn-5" }
-];
+import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Lock, Clock, Hash, Loader2 } from "lucide-react"
+import apiClient from "../../../../../../services/api/axios"
+// Fetch dynamic data from API
 
 export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -33,6 +11,7 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
     phone: "",
     password: "",
     franchiseName: "",
+    franchiseCode: "",
     regionId: "",
     zoneId: "",
     territoryId: "",
@@ -42,14 +21,40 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
     franchiseDuration: 3,
     franchiseCost: "",
     paidAmount: "",
-    dueAmount: ""
+    dueAmount: "",
+    gstNumber: "",
+    address: ""
   })
 
   const [errors, setErrors] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+  
+  // Geography Data State
+  const [regions, setRegions] = useState([]);
+  const [zones, setZones] = useState([]);
+  const [territories, setTerritories] = useState([]);
+
+  useEffect(() => {
+    const fetchGeography = async () => {
+      try {
+        const [regRes, zonRes, terRes] = await Promise.all([
+          apiClient.get('/food/admin/regions'),
+          apiClient.get('/food/admin/zones'),
+          apiClient.get('/food/admin/territories')
+        ]);
+        setRegions(regRes.data.data || []);
+        setZones(zonRes.data.data || []);
+        setTerritories(terRes.data.data || []);
+      } catch (err) {
+        console.error("Failed to load geography data", err);
+      }
+    };
+    fetchGeography();
+  }, []);
 
   // Derived dependent dropdowns
-  const availableZones = MOCK_ZONES.filter(z => z.regionId === formData.regionId);
-  const availableTerritories = MOCK_TERRITORIES.filter(t => t.zoneId === formData.zoneId);
+  const availableZones = zones.filter(z => z.regionId === formData.regionId);
+  const availableTerritories = territories.filter(t => t.zoneId === formData.zoneId);
 
   useEffect(() => {
     if (isOpen) {
@@ -59,6 +64,7 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
         phone: "",
         password: "",
         franchiseName: "",
+        franchiseCode: "",
         regionId: "",
         zoneId: "",
         territoryId: "",
@@ -68,7 +74,9 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
         franchiseDuration: 3,
         franchiseCost: "",
         paidAmount: "",
-        dueAmount: ""
+        dueAmount: "",
+        gstNumber: "",
+        address: ""
       })
       setErrors({})
     }
@@ -85,6 +93,7 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
     if (!formData.phone.trim()) newErrors.phone = "Phone is required"
     if (!formData.password.trim()) newErrors.password = "Password is required"
     if (!formData.franchiseName.trim()) newErrors.franchiseName = "Franchise name is required"
+    if (!formData.franchiseCode.trim()) newErrors.franchiseCode = "Franchise code is required"
     if (!formData.regionId) newErrors.regionId = "Region is required"
     if (!formData.zoneId) newErrors.zoneId = "Zone is required"
     if (!formData.territoryId) newErrors.territoryId = "Territory is required"
@@ -106,29 +115,42 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) return
 
-    // Resolve names for the table display if needed
-    const regionName = MOCK_REGIONS.find(r => r.id === formData.regionId)?.name || ""
-    const zoneName = MOCK_ZONES.find(z => z.id === formData.zoneId)?.name || ""
-    const territoryName = MOCK_TERRITORIES.find(t => t.id === formData.territoryId)?.name || ""
+    try {
+      setIsLoading(true)
+      const response = await apiClient.post('/food/admin/franchises', formData)
+      
+      const newFranchise = response.data.data.franchise
+      
+      // Resolve names for the table display if needed for local state update
+      const regionName = MOCK_REGIONS.find(r => r.id === formData.regionId)?.name || ""
+      const zoneName = MOCK_ZONES.find(z => z.id === formData.zoneId)?.name || ""
+      const territoryName = MOCK_TERRITORIES.find(t => t.id === formData.territoryId)?.name || ""
 
-    onSave({
-      ...formData,
-      city: territoryName, // Temporarily map territory to city for backwards compatibility in table
-      state: regionName, // Temporarily map region to state for backwards compatibility in table
-      id: `FRAN-${Math.floor(1000 + Math.random() * 9000)}`,
-      joinedDate: new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric"
-      }),
-      revenue: 0,
-      totalManagers: 0
-    })
-    onClose()
+      onSave({
+        ...formData,
+        id: newFranchise.franchiseCode || newFranchise._id,
+        city: territoryName,
+        state: regionName,
+        joinedDate: new Date(newFranchise.createdAt || new Date()).toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric"
+        }),
+        revenue: 0,
+        totalManagers: 0
+      })
+      onClose()
+    } catch (error) {
+      console.error("Error creating franchise:", error)
+      const errorMessage = error.response?.data?.message || "Failed to create franchise"
+      setErrors({ ...errors, submit: errorMessage })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -169,6 +191,11 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
               </div>
 
               <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto pr-1 py-2.5 space-y-3 scrollbar-thin">
+                {errors.submit && (
+                  <div className="bg-rose-50 text-rose-500 text-xs p-2 rounded-lg mb-2">
+                    {errors.submit}
+                  </div>
+                )}
                 <div className="space-y-3">
                   <span className="text-[9px] font-extrabold text-[var(--primary)] uppercase tracking-wider">
                     Personal Details
@@ -227,6 +254,42 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     </div>
                   </div>
 
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">GST Number</label>
+                      <div className="relative">
+                        <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="text"
+                          value={formData.gstNumber}
+                          onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
+                          placeholder="e.g. 22AAAAA0000A1Z5"
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.gstNumber ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.gstNumber && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.gstNumber}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Full Address</label>
+                      <div className="relative">
+                        <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="text"
+                          value={formData.address}
+                          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                          placeholder="e.g. 123 Main St, City"
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.address ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.address && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.address}</p>}
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Password</label>
                     <div className="relative">
@@ -250,21 +313,40 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     Franchise Configuration
                   </span>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise / Brand Name</label>
-                    <div className="relative">
-                      <Store size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                      <input
-                        type="text"
-                        value={formData.franchiseName}
-                        onChange={(e) => setFormData({ ...formData, franchiseName: e.target.value })}
-                        placeholder="e.g. Papa Veg Centro"
-                        className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
-                          errors.franchiseName ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
-                        }`}
-                      />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise / Brand Name</label>
+                      <div className="relative">
+                        <Store size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="text"
+                          value={formData.franchiseName}
+                          onChange={(e) => setFormData({ ...formData, franchiseName: e.target.value })}
+                          placeholder="e.g. Papa Veg Centro"
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.franchiseName ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.franchiseName && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseName}</p>}
                     </div>
-                    {errors.franchiseName && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseName}</p>}
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Code</label>
+                      <div className="relative">
+                        <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="text"
+                          value={formData.franchiseCode}
+                          onChange={(e) => setFormData({ ...formData, franchiseCode: e.target.value })}
+                          placeholder="e.g. FRAN-123"
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.franchiseCode ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.franchiseCode && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseCode}</p>}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 gap-3">
@@ -280,7 +362,7 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                           }`}
                         >
                           <option value="">Select Region...</option>
-                          {MOCK_REGIONS.map((r) => (
+                          {regions.map((r) => (
                             <option key={r.id} value={r.id}>{r.name}</option>
                           ))}
                         </select>
@@ -484,10 +566,15 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-xs font-bold shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.02] cursor-pointer"
+                  disabled={isLoading}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 disabled:bg-[var(--primary)]/60 text-white rounded-lg text-xs font-bold shadow-md shadow-[var(--primary)]/20 transition-all hover:scale-[1.02] cursor-pointer disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  <Save size={12} className="stroke-[2.5]" />
-                  <span>Create Franchise Admin</span>
+                  {isLoading ? (
+                    <Loader2 size={12} className="animate-spin stroke-[2.5]" />
+                  ) : (
+                    <Save size={12} className="stroke-[2.5]" />
+                  )}
+                  <span>{isLoading ? 'Creating...' : 'Create Franchise Admin'}</span>
                 </button>
               </div>
             </motion.div>
