@@ -12,158 +12,71 @@ import autoTable from "jspdf-autotable";
 
 // Sub-components
 import TerritoryManagementData from "./TerritoryManagementData";
-import TerritoryDetails from "./TerritoryDetails";
-import AddEditTerritoryModal from "./AddEditTerritoryModal";
-import ReassignFranchiseModal from "./ReassignFranchiseModal";
-import TerritoryAnalyticsModal from "./TerritoryAnalyticsModal";
+import TerritoryDetails from "./components/TerritoryDetails";
+import AddTerritoryModal from "./components/AddTerritoryModal";
+import EditTerritoryModal from "./components/EditTerritoryModal";
+import apiClient from "../../../../../services/api/axios";
 
 export default function TerritoryManagement() {
-  // Mock Regions & Zones for dropdown mapping
-  const [regions] = useState([
-    { id: "reg-1", name: "North India" },
-    { id: "reg-2", name: "West India" },
-    { id: "reg-3", name: "South India" },
-    { id: "reg-4", name: "Central India" }
-  ]);
+  // Data states
+  const [regions, setRegions] = useState([]);
+  const [zones, setZones] = useState([]);
+  const [franchises, setFranchises] = useState([]);
 
-  const [zones] = useState([
-    { id: "zn-1", name: "Delhi NCR Zone", regionId: "reg-1" },
-    { id: "zn-2", name: "Mumbai Zone", regionId: "reg-2" },
-    { id: "zn-3", name: "Pune Zone", regionId: "reg-2" },
-    { id: "zn-4", name: "Bengaluru Zone", regionId: "reg-3" },
-    { id: "zn-5", name: "Indore Zone", regionId: "reg-4" },
-    { id: "zn-6", name: "Bhopal Zone", regionId: "reg-4" }
-  ]);
+  const [territories, setTerritories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [franchises] = useState([
-    { id: "fran-1", name: "Northern Crust Co.", code: "PVP-FRAN-NORTH", contact: "Rajesh Kumar", storesCount: 8, regionId: "reg-1" },
-    { id: "fran-2", name: "Western Spice Pizza", code: "PVP-FRAN-WEST", contact: "Amit Patel", storesCount: 12, regionId: "reg-2" },
-    { id: "fran-3", name: "Southern Slice Foods", code: "PVP-FRAN-SOUTH", contact: "Karthik Raja", storesCount: 15, regionId: "reg-3" },
-    { id: "fran-4", name: "Central Herb Bakers", code: "PVP-FRAN-CENTRAL", contact: "Vikram Singh", storesCount: 6, regionId: "reg-4" }
-  ]);
+  const fetchTerritories = async () => {
+    try {
+      setIsLoading(true);
+      const [terRes, regRes, zonRes, franRes] = await Promise.all([
+        apiClient.get('/food/admin/territories'),
+        apiClient.get('/food/admin/regions'),
+        apiClient.get('/food/admin/zones'),
+        apiClient.get('/food/admin/franchises')
+      ]);
+      const extractArray = (res) => {
+        if (Array.isArray(res?.data?.data)) return res.data.data;
+        if (Array.isArray(res?.data)) return res.data;
+        return [];
+      };
+      const regionsData = extractArray(regRes);
+      const zonesData = extractArray(zonRes);
+      const franchisesData = extractArray(franRes);
+      
+      const mappedTerritories = extractArray(terRes).map(t => {
+        const zone = zonesData.find(z => z.id === t.zoneId);
+        const region = zone ? regionsData.find(r => r.id === zone.regionId) : null;
+        return {
+          ...t,
+          zoneName: zone ? zone.name : 'Unknown',
+          regionName: region ? region.name : 'Unknown',
+        };
+      });
 
-  // Mock initial dataset for Indian territories
-  const [territories, setTerritories] = useState([
-    {
-      id: "ter-1",
-      name: "CP & Connaught Place",
-      regionId: "reg-1",
-      regionName: "North India",
-      zoneId: "zn-1",
-      zoneName: "Delhi NCR Zone",
-      postalCodes: ["110001", "110002", "110003"],
-      assignedFranchiseId: "fran-1",
-      assignedFranchiseName: "Northern Crust Co.",
-      storesCount: 3,
-      deliveryRadiusKm: 6,
-      ordersToday: 42,
-      revenueToday: 18500,
-      status: "Active",
-      createdAt: "2026-01-15",
-      description: "Covers Connaught Place inner/outer circles and adjacent central Delhi offices.",
-      notes: "High corporate demand during weekdays."
-    },
-    {
-      id: "ter-2",
-      name: "Bandra West Cluster",
-      regionId: "reg-2",
-      regionName: "West India",
-      zoneId: "zn-2",
-      zoneName: "Mumbai Zone",
-      postalCodes: ["400050", "400051", "400052"],
-      assignedFranchiseId: "fran-2",
-      assignedFranchiseName: "Western Spice Pizza",
-      storesCount: 4,
-      deliveryRadiusKm: 8,
-      ordersToday: 55,
-      revenueToday: 24000,
-      status: "Active",
-      createdAt: "2026-02-10",
-      description: "Bandra West, Carter Road, and Pali Hill dense residential cluster.",
-      notes: "Heavy weekend rush. Exclusivity enabled."
-    },
-    {
-      id: "ter-3",
-      name: "Koregaon Park",
-      regionId: "reg-2",
-      regionName: "West India",
-      zoneId: "zn-3",
-      zoneName: "Pune Zone",
-      postalCodes: ["411001", "411002"],
-      assignedFranchiseId: "fran-2",
-      assignedFranchiseName: "Western Spice Pizza",
-      storesCount: 2,
-      deliveryRadiusKm: 5,
-      ordersToday: 28,
-      revenueToday: 12200,
-      status: "Active",
-      createdAt: "2026-02-18",
-      description: "Koregaon Park lanes 1-7 and Kalyani Nagar IT boundaries.",
-      notes: "Premium demographics. High average order value."
-    },
-    {
-      id: "ter-4",
-      name: "Indiranagar Hub",
-      regionId: "reg-3",
-      regionName: "South India",
-      zoneId: "zn-4",
-      zoneName: "Bengaluru Zone",
-      postalCodes: ["560038", "560008"],
-      assignedFranchiseId: "fran-3",
-      assignedFranchiseName: "Southern Slice Foods",
-      storesCount: 5,
-      deliveryRadiusKm: 7,
-      ordersToday: 62,
-      revenueToday: 29800,
-      status: "Active",
-      createdAt: "2026-01-20",
-      description: "Indiranagar 100ft road, 12th main, and parts of Domlur.",
-      notes: "Top performing territory. Highest store density."
-    },
-    {
-      id: "ter-5",
-      name: "Arera Colony",
-      regionId: "reg-4",
-      regionName: "Central India",
-      zoneId: "zn-6",
-      zoneName: "Bhopal Zone",
-      postalCodes: ["462016", "462039"],
-      assignedFranchiseId: "fran-4",
-      assignedFranchiseName: "Central Herb Bakers",
-      storesCount: 2,
-      deliveryRadiusKm: 6,
-      ordersToday: 18,
-      revenueToday: 7500,
-      status: "Active",
-      createdAt: "2026-03-01",
-      description: "Arera Colony sectors E-1 to E-7 and Bittan Market.",
-      notes: "Family-centric residential pizza orders."
-    },
-    {
-      id: "ter-6",
-      name: "Vijay Nagar Zone",
-      regionId: "reg-4",
-      regionName: "Central India",
-      zoneId: "zn-5",
-      zoneName: "Indore Zone",
-      postalCodes: ["452010", "452011"],
-      assignedFranchiseId: "fran-4",
-      assignedFranchiseName: "Central Herb Bakers",
-      storesCount: 3,
-      deliveryRadiusKm: 8,
-      ordersToday: 34,
-      revenueToday: 14800,
-      status: "Inactive",
-      createdAt: "2026-03-12",
-      description: "Vijay Nagar commercial district and C-21 Mall perimeter.",
-      notes: "Temporarily suspended due to franchise shift. Reactivation pending."
+      setTerritories(mappedTerritories);
+      setRegions(regionsData);
+      setZones(zonesData);
+      setFranchises(franchisesData);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    fetchTerritories();
+  }, []);
 
   // Search, Debouncing and Filter State sync
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [filteredTerritories, setFilteredTerritories] = useState(territories);
+
+  useEffect(() => {
+    setFilteredTerritories(territories);
+  }, [territories]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -177,22 +90,19 @@ export default function TerritoryManagement() {
   const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
   const [isAddEditModalOpen, setIsAddEditModalOpen] = useState(false);
   const [editTerritoryData, setEditTerritoryData] = useState(null);
-  const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
-  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState(false);
 
   // Status Change Confirmation Modals
   const [statusChangeTarget, setStatusChangeTarget] = useState(null); // { data: territory, targetStatus: "Active" | "Inactive" }
   const [isStatusConfirmOpen, setIsStatusConfirmOpen] = useState(false);
 
   // Calculated KPI aggregates
-  const totalTerritories = territories.length;
-  const activeTerritories = territories.filter((t) => t.status === "Active").length;
-  const inactiveTerritories = territories.filter((t) => t.status === "Inactive").length;
-  const assignedFranchisesCount = new Set(territories.map((t) => t.assignedFranchiseId).filter(Boolean)).size;
-  const totalStoresMapped = territories.reduce((acc, curr) => acc + (curr.storesCount || 0), 0);
-  const totalPostalCodesCovered = new Set(territories.flatMap((t) => t.postalCodes || [])).size;
-  const totalOrdersToday = territories.reduce((acc, curr) => acc + (curr.ordersToday || 0), 0);
-  const totalRevenueToday = territories.reduce((acc, curr) => acc + (curr.revenueToday || 0), 0);
+  const safeTerritories = Array.isArray(territories) ? territories : [];
+  const totalTerritories = safeTerritories.length;
+  const activeTerritories = safeTerritories.filter((t) => t.status === "Active").length;
+  const inactiveTerritories = safeTerritories.filter((t) => t.status === "Inactive").length;
+  const assignedFranchisesCount = new Set(safeTerritories.map((t) => t.assignedFranchiseId).filter(Boolean)).size;
+  const totalStoresMapped = safeTerritories.reduce((acc, curr) => acc + (curr.storesCount || 0), 0);
+  const totalPostalCodesCovered = new Set(safeTerritories.flatMap((t) => t.postalCodes || [])).size;
 
   // Format currency
   const formatCurrency = (val) => {
@@ -292,31 +202,54 @@ export default function TerritoryManagement() {
   };
 
   // Submit new or updated Territory
-  const handleTerritorySubmit = (payload) => {
-    const targetReg = regions.find((r) => r.id === payload.regionId);
-    const targetZone = zones.find((z) => z.id === payload.zoneId);
-    const targetFran = franchises.find((f) => f.id === payload.assignedFranchiseId);
-
-    const completePayload = {
-      ...payload,
-      id: payload.id || `ter-${Date.now().toString().slice(-4)}`,
-      regionName: targetReg ? targetReg.name : "",
-      zoneName: targetZone ? targetZone.name : "",
-      assignedFranchiseName: targetFran ? targetFran.name : "Unassigned",
-      storesCount: payload.id ? (territories.find((t) => t.id === payload.id)?.storesCount || 0) : 0,
-      ordersToday: payload.id ? (territories.find((t) => t.id === payload.id)?.ordersToday || 0) : 0,
-      revenueToday: payload.id ? (territories.find((t) => t.id === payload.id)?.revenueToday || 0) : 0,
-      createdAt: payload.id ? (territories.find((t) => t.id === payload.id)?.createdAt || new Date().toISOString().slice(0, 10)) : new Date().toISOString().slice(0, 10)
-    };
-
-    if (editTerritoryData) {
-      setTerritories((prev) => prev.map((t) => (t.id === payload.id ? completePayload : t)));
-    } else {
-      setTerritories((prev) => [...prev, completePayload]);
+  const handleTerritorySubmit = async (territoryData) => {
+    try {
+      if (editTerritoryData) {
+        // Edit flow
+        const response = await apiClient.patch(`/food/admin/territories/${editTerritoryData.id}`, territoryData);
+        const updatedT = response.data.data;
+        const zone = zones.find(z => z.id === updatedT.zoneId);
+        const region = zone ? regions.find(r => r.id === zone.regionId) : null;
+        
+        setTerritories((prev) => prev.map(t => t.id === updatedT.id ? {
+            ...t,
+            ...updatedT,
+            zoneName: zone ? zone.name : 'Unknown',
+            regionName: region ? region.name : 'Unknown'
+        } : t));
+      } else {
+        // Create flow
+        const response = await apiClient.post('/food/admin/territories', territoryData);
+        const newT = response.data.data;
+        const zone = zones.find(z => z.id === newT.zoneId);
+        const region = zone ? regions.find(r => r.id === zone.regionId) : null;
+        
+        setTerritories((prev) => [...prev, {
+            ...newT,
+            id: newT._id,
+            zoneName: zone ? zone.name : 'Unknown',
+            regionName: region ? region.name : 'Unknown',
+            franchisesCount: 0,
+            storesCount: 0,
+            status: newT.isActive ? 'Active' : 'Inactive',
+            createdDate: new Date(newT.createdAt).toISOString().slice(0,10)
+        }]);
+      }
+      setIsAddEditModalOpen(false);
+      setEditTerritoryData(null);
+    } catch(err) {
+      console.error(err);
     }
+  };
 
-    setIsAddEditModalOpen(false);
-    setEditTerritoryData(null);
+  const handleDeleteTerritory = async (territory) => {
+    if (!window.confirm("Are you sure you want to delete this territory?")) return;
+    try {
+      await apiClient.delete(`/food/admin/territories/${territory.id}`);
+      setTerritories(prev => prev.filter(t => t.id !== territory.id));
+    } catch (err) {
+      console.error("Error deleting territory:", err);
+    }
   };
 
   // Status Change Confirmation Trigger
@@ -412,8 +345,8 @@ export default function TerritoryManagement() {
         </div>
       </div>
 
-      {/* 8 Dynamic KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 select-none">
+      {/* 6 Dynamic KPI Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 select-none">
         {/* Total Territories */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-250/50 dark:border-zinc-900 rounded-xl p-3 flex flex-col justify-between shadow-sm">
           <span className="text-[9px] font-bold text-black/60 dark:text-zinc-400 uppercase tracking-wider block truncate">Total Territories</span>
@@ -467,24 +400,6 @@ export default function TerritoryManagement() {
             <span className="text-[8px] font-bold text-zinc-500">PINs Cover</span>
           </div>
         </div>
-
-        {/* Orders Today */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-250/50 dark:border-zinc-900 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-          <span className="text-[9px] font-bold text-black/60 dark:text-zinc-400 uppercase tracking-wider block truncate">Orders Today</span>
-          <div className="mt-2 flex items-baseline justify-between">
-            <h3 className="text-base font-black text-black dark:text-zinc-100">{totalOrdersToday}</h3>
-            <span className="text-[8px] font-bold text-zinc-500">Sales qty</span>
-          </div>
-        </div>
-
-        {/* Revenue Today */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-250/50 dark:border-zinc-900 rounded-xl p-3 flex flex-col justify-between shadow-sm">
-          <span className="text-[9px] font-bold text-black/60 dark:text-zinc-400 uppercase tracking-wider block truncate">Revenue Today</span>
-          <div className="mt-2 flex flex-col">
-            <h3 className="text-xs font-black text-[var(--primary)]">{formatCurrency(totalRevenueToday)}</h3>
-            <span className="text-[7px] font-bold text-emerald-600">INR flow</span>
-          </div>
-        </div>
       </div>
 
       {/* Main Grid, Search & Filters component */}
@@ -502,9 +417,8 @@ export default function TerritoryManagement() {
         setIsDetailsDrawerOpen={setIsDetailsDrawerOpen}
         setEditTerritoryData={setEditTerritoryData}
         setIsAddEditModalOpen={setIsAddEditModalOpen}
-        setIsReassignModalOpen={setIsReassignModalOpen}
-        setIsAnalyticsModalOpen={setIsAnalyticsModalOpen}
         triggerStatusChange={triggerStatusChange}
+        handleDeleteTerritory={handleDeleteTerritory}
       />
 
       {/* View Details Drawer */}
@@ -518,49 +432,34 @@ export default function TerritoryManagement() {
           setEditTerritoryData(t);
           setIsAddEditModalOpen(true);
         }}
-        onReassign={(t) => {
-          setIsDetailsDrawerOpen(false);
-          setSelectedTerritory(t);
-          setIsReassignModalOpen(true);
-        }}
-        onAnalytics={(t) => {
-          setIsDetailsDrawerOpen(false);
-          setSelectedTerritory(t);
-          setIsAnalyticsModalOpen(true);
-        }}
         onStatusToggle={(t) => {
           const nextStatus = t.status === "Active" ? "Inactive" : "Active";
           triggerStatusChange(t, nextStatus);
         }}
       />
 
-      {/* Add / Edit Territory Wizard Modal */}
-      <AddEditTerritoryModal
-        isOpen={isAddEditModalOpen}
+      {/* Add Territory Wizard Modal */}
+      <AddTerritoryModal
+        isOpen={isAddEditModalOpen && !editTerritoryData}
         onClose={() => setIsAddEditModalOpen(false)}
         onSubmit={handleTerritorySubmit}
         regions={regions}
         zones={zones}
-        franchises={franchises}
+        existingTerritories={territories}
+      />
+
+      {/* Edit Territory Wizard Modal */}
+      <EditTerritoryModal
+        isOpen={isAddEditModalOpen && !!editTerritoryData}
+        onClose={() => setIsAddEditModalOpen(false)}
+        onSubmit={handleTerritorySubmit}
+        regions={regions}
+        zones={zones}
         existingTerritories={territories}
         editTerritory={editTerritoryData}
       />
 
-      {/* Reassign Franchise Modal */}
-      <ReassignFrassignModal
-        isOpen={isReassignModalOpen}
-        onClose={() => setIsReassignModalOpen(false)}
-        onSubmit={handleReassignFranchise}
-        territory={selectedTerritory}
-        franchises={franchises}
-      />
 
-      {/* Analytics Modal */}
-      <TerritoryAnalyticsModal
-        isOpen={isAnalyticsModalOpen}
-        onClose={() => setIsAnalyticsModalOpen(false)}
-        territory={selectedTerritory}
-      />
 
       {/* Activate / Deactivate Confirmation dialog */}
       {isStatusConfirmOpen && statusChangeTarget && (
@@ -613,5 +512,3 @@ export default function TerritoryManagement() {
   );
 }
 
-// Inline fallback renaming for spelling sanity
-const ReassignFrassignModal = ReassignFranchiseModal;

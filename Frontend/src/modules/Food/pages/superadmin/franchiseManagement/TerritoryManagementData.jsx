@@ -29,9 +29,8 @@ export default function TerritoryManagementData({
   setIsDetailsDrawerOpen,
   setEditTerritoryData,
   setIsAddEditModalOpen,
-  setIsReassignModalOpen,
-  setIsAnalyticsModalOpen,
-  triggerStatusChange
+  triggerStatusChange,
+  handleDeleteTerritory
 }) {
   // Advanced Filter toggle
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -49,15 +48,12 @@ export default function TerritoryManagementData({
 
   // Column visibility
   const [visibleColumns, setVisibleColumns] = useState({
+    pincode: true,
     name: true,
     zone: true,
     region: true,
-    postalCodes: true,
     franchise: true,
     stores: true,
-    radius: true,
-    orders: true,
-    revenue: true,
     status: true,
     created: true
   });
@@ -98,8 +94,8 @@ export default function TerritoryManagementData({
         t.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
         t.regionName.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
         t.zoneName.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        t.assignedFranchiseName.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
-        t.postalCodes.some((code) => code.includes(debouncedSearchQuery));
+        t.assignedFranchiseName?.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+        (t.postalCodes || []).some((code) => code.includes(debouncedSearchQuery));
 
       // 2. Advanced Filters
       const matchesName = !filterName || t.name.toLowerCase().includes(filterName.toLowerCase());
@@ -109,10 +105,7 @@ export default function TerritoryManagementData({
       const matchesPostalCode =
         !filterPostalCode || t.postalCodes.some((code) => code.includes(filterPostalCode));
       const matchesStatus = !filterStatus || t.status === filterStatus;
-      const matchesMinRadius =
-        !filterMinRadius || t.deliveryRadiusKm >= parseFloat(filterMinRadius);
-      const matchesMaxRadius =
-        !filterMaxRadius || t.deliveryRadiusKm <= parseFloat(filterMaxRadius);
+
       const matchesDate = !filterDate || t.createdAt === filterDate;
 
       return (
@@ -123,8 +116,6 @@ export default function TerritoryManagementData({
         matchesFranchise &&
         matchesPostalCode &&
         matchesStatus &&
-        matchesMinRadius &&
-        matchesMaxRadius &&
         matchesDate
       );
     })
@@ -162,8 +153,6 @@ export default function TerritoryManagementData({
     filterFranchise,
     filterPostalCode,
     filterStatus,
-    filterMinRadius,
-    filterMaxRadius,
     filterDate,
     sortField,
     sortDirection
@@ -323,28 +312,7 @@ export default function TerritoryManagementData({
               </select>
             </div>
 
-            {/* Delivery Radius Range */}
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
-                Radius Range (km)
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  value={filterMinRadius}
-                  onChange={(e) => setFilterMinRadius(e.target.value)}
-                  className="w-full p-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none"
-                />
-                <input
-                  type="number"
-                  placeholder="Max"
-                  value={filterMaxRadius}
-                  onChange={(e) => setFilterMaxRadius(e.target.value)}
-                  className="w-full p-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none"
-                />
-              </div>
-            </div>
+
 
             {/* Date Created */}
             <div className="space-y-1">
@@ -369,8 +337,6 @@ export default function TerritoryManagementData({
                   setFilterFranchise("");
                   setFilterPostalCode("");
                   setFilterStatus("");
-                  setFilterMinRadius("");
-                  setFilterMaxRadius("");
                   setFilterDate("");
                   setSearchQuery("");
                 }}
@@ -457,6 +423,14 @@ export default function TerritoryManagementData({
                     className="rounded text-[var(--primary)] focus:ring-0 cursor-pointer"
                   />
                 </th>
+                {visibleColumns.pincode && (
+                  <th
+                    onClick={() => handleSort("postalCodes")}
+                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100"
+                  >
+                    Pincode
+                  </th>
+                )}
                 {visibleColumns.name && (
                   <th
                     onClick={() => handleSort("name")}
@@ -481,20 +455,13 @@ export default function TerritoryManagementData({
                     Region
                   </th>
                 )}
-                {visibleColumns.postalCodes && (
-                  <th
-                    onClick={() => handleSort("postalCodes")}
-                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100"
-                  >
-                    Postal Codes
-                  </th>
-                )}
+
                 {visibleColumns.franchise && (
                   <th
-                    onClick={() => handleSort("assignedFranchiseName")}
-                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100"
+                    onClick={() => handleSort("franchisesCount")}
+                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100 text-center"
                   >
-                    Assigned Franchise
+                    Franchise
                   </th>
                 )}
                 {visibleColumns.stores && (
@@ -505,30 +472,7 @@ export default function TerritoryManagementData({
                     Stores
                   </th>
                 )}
-                {visibleColumns.radius && (
-                  <th
-                    onClick={() => handleSort("deliveryRadiusKm")}
-                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100 text-center"
-                  >
-                    Radius
-                  </th>
-                )}
-                {visibleColumns.orders && (
-                  <th
-                    onClick={() => handleSort("ordersToday")}
-                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100 text-center"
-                  >
-                    Orders Today
-                  </th>
-                )}
-                {visibleColumns.revenue && (
-                  <th
-                    onClick={() => handleSort("revenueToday")}
-                    className="p-3 cursor-pointer hover:bg-zinc-150 dark:hover:bg-zinc-800 text-black dark:text-zinc-100 text-right"
-                  >
-                    Revenue Today
-                  </th>
-                )}
+
                 {visibleColumns.status && (
                   <th
                     onClick={() => handleSort("status")}
@@ -565,6 +509,18 @@ export default function TerritoryManagementData({
                           className="rounded text-[var(--primary)] focus:ring-0 cursor-pointer"
                         />
                       </td>
+                      {visibleColumns.pincode && (
+                        <td className="p-3 text-zinc-700 dark:text-zinc-300 font-medium">
+                          {(t.postalCodes && t.postalCodes.length > 0) ? (
+                            <>
+                              {t.postalCodes.slice(0, 2).join(", ")}
+                              {t.postalCodes.length > 2 && "..."}
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                      )}
                       {visibleColumns.name && (
                         <td
                           className="p-3 font-bold text-black dark:text-zinc-100 hover:text-[var(--primary)] cursor-pointer"
@@ -582,28 +538,10 @@ export default function TerritoryManagementData({
                       {visibleColumns.region && (
                         <td className="p-3 text-zinc-500 dark:text-zinc-400">{t.regionName}</td>
                       )}
-                      {visibleColumns.postalCodes && (
-                        <td className="p-3 text-zinc-650 dark:text-zinc-350">
-                          <div className="flex flex-wrap gap-1">
-                            {t.postalCodes.slice(0, 3).map((code) => (
-                              <span
-                                key={code}
-                                className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-850 rounded text-[10px] font-bold"
-                              >
-                                {code}
-                              </span>
-                            ))}
-                            {t.postalCodes.length > 3 && (
-                              <span className="text-[9px] font-black text-zinc-400">
-                                +{t.postalCodes.length - 3}
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                      )}
+
                       {visibleColumns.franchise && (
-                        <td className="p-3 font-bold text-zinc-700 dark:text-zinc-300">
-                          {t.assignedFranchiseName || "Unassigned"}
+                        <td className="p-3 text-center font-bold text-zinc-750 dark:text-zinc-250">
+                          {t.franchisesCount}
                         </td>
                       )}
                       {visibleColumns.stores && (
@@ -611,37 +549,26 @@ export default function TerritoryManagementData({
                           {t.storesCount}
                         </td>
                       )}
-                      {visibleColumns.radius && (
-                        <td className="p-3 text-center text-zinc-500 dark:text-zinc-400">
-                          {t.deliveryRadiusKm} km
-                        </td>
-                      )}
-                      {visibleColumns.orders && (
-                        <td className="p-3 text-center font-black text-black dark:text-zinc-200">
-                          {t.ordersToday}
-                        </td>
-                      )}
-                      {visibleColumns.revenue && (
-                        <td className="p-3 text-right font-black text-emerald-600 dark:text-emerald-450">
-                          ₹{t.revenueToday.toLocaleString()}
-                        </td>
-                      )}
                       {visibleColumns.status && (
                         <td className="p-3 text-center">
-                          <span
-                            className={`px-2 py-0.5 text-[8px] font-black uppercase rounded ${
-                              t.status === "Active"
-                                ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400"
-                                : "bg-rose-50 text-rose-600 dark:bg-rose-950/20 dark:text-rose-450"
+                          <button
+                            onClick={() => triggerStatusChange(t, t.status === "Active" ? "Inactive" : "Active")}
+                            className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors cursor-pointer ${
+                              t.status === "Active" ? "bg-emerald-500" : "bg-zinc-300 dark:bg-zinc-700"
                             }`}
+                            title={t.status === "Active" ? "Deactivate Territory" : "Activate Territory"}
                           >
-                            {t.status}
-                          </span>
+                            <span
+                              className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                                t.status === "Active" ? "translate-x-4" : "translate-x-1"
+                              }`}
+                            />
+                          </button>
                         </td>
                       )}
                       {visibleColumns.created && (
                         <td className="p-3 text-center text-zinc-500 dark:text-zinc-400 font-bold">
-                          {t.createdAt}
+                          {t.createdAt ? new Date(t.createdAt).toLocaleDateString("en-GB") : "-"}
                         </td>
                       )}
                       <td className="p-3 text-right space-x-1.5 select-none whitespace-nowrap">
@@ -665,43 +592,15 @@ export default function TerritoryManagementData({
                         >
                           <Edit2 size={13} />
                         </button>
+
+
                         <button
-                          onClick={() => {
-                            setSelectedTerritory(t);
-                            setIsReassignModalOpen(true);
-                          }}
-                          className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-orange-600 dark:text-orange-450 cursor-pointer inline-flex"
-                          title="Reassign Franchise"
+                          onClick={() => handleDeleteTerritory(t)}
+                          className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-red-600 dark:text-red-500 cursor-pointer inline-flex ml-2"
+                          title="Delete Territory"
                         >
-                          <RefreshCw size={13} />
+                          <Trash2 size={13} />
                         </button>
-                        <button
-                          onClick={() => {
-                            setSelectedTerritory(t);
-                            setIsAnalyticsModalOpen(true);
-                          }}
-                          className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-purple-650 dark:text-purple-400 cursor-pointer inline-flex"
-                          title="View Analytics"
-                        >
-                          <TrendingUp size={13} />
-                        </button>
-                        {t.status === "Active" ? (
-                          <button
-                            onClick={() => triggerStatusChange(t, "Inactive")}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-rose-600 dark:text-rose-400 cursor-pointer inline-flex"
-                            title="Deactivate Territory"
-                          >
-                            <Trash2 size={13} />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => triggerStatusChange(t, "Active")}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-emerald-600 dark:text-emerald-450 cursor-pointer inline-flex"
-                            title="Activate Territory"
-                          >
-                            <CheckCircle size={13} />
-                          </button>
-                        )}
                       </td>
                     </tr>
                   );

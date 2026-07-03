@@ -16,6 +16,16 @@ const zoneSchema = new mongoose.Schema(
             trim: true,
             index: true
         },
+        regionId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FoodRegion',
+            required: true,
+            index: true
+        },
+        description: {
+            type: String,
+            trim: true
+        },
         zoneName: {
             type: String,
             trim: true

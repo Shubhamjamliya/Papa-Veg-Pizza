@@ -7,7 +7,7 @@ const franchiseSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
-        managerName: {
+        ownerName: {
             type: String,
             required: true,
             trim: true
@@ -32,8 +32,44 @@ const franchiseSchema = new mongoose.Schema(
         },
         address: {
             type: String,
+            trim: true,
+            default: ''
+        },
+        franchiseCode: {
+            type: String,
             required: true,
+            unique: true,
             trim: true
+        },
+        regionId: { type: String, trim: true, default: '' },
+        zoneId: { type: String, trim: true, default: '' },
+        territoryId: { type: String, trim: true, default: '' },
+        city: { type: String, trim: true, default: '' },
+        state: { type: String, trim: true, default: '' },
+        type: {
+            type: String,
+            enum: ['Single Store', 'Multi Store'],
+            default: 'Single Store'
+        },
+        totalStores: {
+            type: Number,
+            default: 1
+        },
+        franchiseDuration: {
+            type: Number,
+            default: 3
+        },
+        franchiseCost: {
+            type: Number,
+            default: 0
+        },
+        paidAmount: {
+            type: Number,
+            default: 0
+        },
+        dueAmount: {
+            type: Number,
+            default: 0
         },
         isActive: {
             type: Boolean,

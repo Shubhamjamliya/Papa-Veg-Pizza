@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Info } from "lucide-react";
 
-export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegions = [], editRegion = null }) {
+export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegions = [] }) {
   const [regionName, setRegionName] = useState("");
   const [country, setCountry] = useState("India");
   const [description, setDescription] = useState("");
@@ -9,19 +9,14 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (editRegion) {
-      setRegionName(editRegion.name || "");
-      setCountry(editRegion.country || "India");
-      setDescription(editRegion.description || "");
-      setStatus(editRegion.status || "Active");
-    } else {
+    if (isOpen) {
       setRegionName("");
       setCountry("India");
       setDescription("");
       setStatus("Active");
+      setError("");
     }
-    setError("");
-  }, [editRegion, isOpen]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -43,8 +38,7 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
     const isDuplicate = existingRegions.some(
       (r) =>
         r.name.toLowerCase() === trimmedName.toLowerCase() &&
-        r.country.toLowerCase() === trimmedCountry.toLowerCase() &&
-        (!editRegion || r.id !== editRegion.id)
+        r.country.toLowerCase() === trimmedCountry.toLowerCase()
     );
 
     if (isDuplicate) {
@@ -53,17 +47,11 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
     }
 
     onSubmit({
-      id: editRegion ? editRegion.id : `REG-${Date.now()}`,
       name: trimmedName,
       country: trimmedCountry,
       description,
-      status: isDraft ? "Archived" : status,
-      isDraft,
-      zonesCount: editRegion ? editRegion.zonesCount : 0,
-      franchisesCount: editRegion ? editRegion.franchisesCount : 0,
-      storesCount: editRegion ? editRegion.storesCount : 0,
-      revenue: editRegion ? editRegion.revenue : 0,
-      createdDate: editRegion ? editRegion.createdDate : new Date().toISOString().slice(0, 10),
+      status: isDraft ? "Inactive" : status,
+      isDraft
     });
   };
 
@@ -74,10 +62,10 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
         <div className="p-4 border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-900/40 flex justify-between items-center">
           <div>
             <h3 className="text-xs font-black uppercase tracking-wider text-black dark:text-zinc-100">
-              {editRegion ? "Edit Region" : "Add Region"}
+              Add Region
             </h3>
             <p className="text-[10px] font-bold text-[var(--primary)] mt-0.5">
-              {editRegion ? `Modifying ${editRegion.name}` : "Establish a new regional operational boundary"}
+              Establish a new regional operational boundary
             </p>
           </div>
           <button
@@ -96,14 +84,7 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
             </div>
           )}
 
-          {editRegion && editRegion.zonesCount > 0 && status === "Archived" && (
-            <div className="p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 rounded-lg flex gap-2">
-              <Info className="text-amber-600 shrink-0 mt-0.5" size={14} />
-              <p className="text-[10px] font-bold text-amber-800 dark:text-amber-400">
-                Warning: This region contains {editRegion.zonesCount} linked zone(s) and associated stores. Archiving will disable future assignments.
-              </p>
-            </div>
-          )}
+
 
           <div className="space-y-1">
             <label className="text-[10px] font-bold text-black dark:text-zinc-400 uppercase">Region Name *</label>
@@ -146,7 +127,7 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
               className="w-full p-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)]"
             >
               <option value="Active">Active</option>
-              <option value="Archived">Archived</option>
+              <option value="Inactive">Inactive</option>
             </select>
           </div>
         </div>
@@ -160,19 +141,11 @@ export default function AddRegionModal({ isOpen, onClose, onSubmit, existingRegi
             Cancel
           </button>
           <div className="flex gap-2">
-            {!editRegion && (
-              <button
-                onClick={() => handleSave(true)}
-                className="px-4 py-1.5 bg-zinc-200 dark:bg-zinc-800 text-black dark:text-zinc-200 rounded-lg text-xs font-bold hover:bg-zinc-300 transition-all cursor-pointer"
-              >
-                Save Draft
-              </button>
-            )}
             <button
               onClick={() => handleSave(false)}
               className="px-5 py-1.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-xs font-bold hover:scale-[1.01] active:scale-95 transition-all cursor-pointer"
             >
-              {editRegion ? "Save Changes" : "Create Region"}
+              Create Region
             </button>
           </div>
         </div>

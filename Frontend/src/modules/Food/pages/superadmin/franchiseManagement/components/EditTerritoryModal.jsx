@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { X, Check, ArrowLeft, ArrowRight, Save, Landmark, AlertTriangle } from "lucide-react";
 
-export default function AddEditTerritoryModal({
+export default function EditTerritoryModal({
   isOpen,
   onClose,
   onSubmit,
   regions,
   zones,
-  franchises,
   existingTerritories,
   editTerritory
 }) {
@@ -40,25 +39,9 @@ export default function AddEditTerritoryModal({
         status: editTerritory.status || "Active",
         regionId: editTerritory.regionId || "",
         zoneId: editTerritory.zoneId || "",
-        assignedFranchiseId: editTerritory.assignedFranchiseId || "",
         postalCodes: [...(editTerritory.postalCodes || [])],
         deliveryRadiusKm: editTerritory.deliveryRadiusKm || 5,
         notes: editTerritory.notes || ""
-      });
-      setStep(1);
-      setErrors({});
-    } else {
-      setFormData({
-        id: "",
-        name: "",
-        description: "",
-        status: "Active",
-        regionId: "",
-        zoneId: "",
-        assignedFranchiseId: "",
-        postalCodes: [],
-        deliveryRadiusKm: 5,
-        notes: ""
       });
       setStep(1);
       setErrors({});
@@ -95,7 +78,7 @@ export default function AddEditTerritoryModal({
       }
     }
 
-    if (currentStep === 4) {
+    if (currentStep === 3) {
       if (formData.postalCodes.length === 0) {
         newErrors.postalCodes = "At least one postal code PIN is required.";
       }
@@ -165,11 +148,7 @@ export default function AddEditTerritoryModal({
     setErrors({ ...errors, postalCodes: null });
   };
 
-  const handleSaveDraft = () => {
-    console.log("Saving territory draft...", formData);
-    alert("Draft saved successfully!");
-    onClose();
-  };
+
 
   const handleFinalSubmit = () => {
     if (validateStep(step)) {
@@ -182,9 +161,7 @@ export default function AddEditTerritoryModal({
     ? zones.filter((z) => z.regionId === formData.regionId)
     : [];
 
-  const availableFranchises = formData.regionId
-    ? franchises.filter((f) => f.regionId === formData.regionId)
-    : franchises;
+
 
   return (
     <div className="fixed inset-0 bg-black/55 backdrop-blur-sm z-[70] flex items-center justify-center p-3 sm:p-4 lg:pl-[280px] select-none">
@@ -193,9 +170,9 @@ export default function AddEditTerritoryModal({
         <div className="p-4 border-b border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-900/40 flex justify-between items-center">
           <div className="space-y-0.5">
             <h3 className="text-sm font-black text-black dark:text-zinc-100 uppercase tracking-wider">
-              {editTerritory ? "Edit Territory" : "Add Territory"}
+              Edit Territory
             </h3>
-            <p className="text-[10px] text-zinc-500 font-bold">Step {step} of 5</p>
+            <p className="text-[10px] text-zinc-500 font-bold">Step {step} of 3</p>
           </div>
           <button
             onClick={onClose}
@@ -209,7 +186,7 @@ export default function AddEditTerritoryModal({
         <div className="flex w-full h-1 bg-zinc-100 dark:bg-zinc-900">
           <div
             className="h-full bg-[var(--primary)] transition-all duration-300"
-            style={{ width: `${(step / 5) * 100}%` }}
+            style={{ width: `${(step / 3) * 100}%` }}
           />
         </div>
 
@@ -264,14 +241,7 @@ export default function AddEditTerritoryModal({
           {/* STEP 2: Geographic Assignment */}
           {step === 2 && (
             <div className="space-y-4">
-              {editTerritory && (
-                <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg flex gap-2 text-amber-700 dark:text-amber-400 font-bold leading-normal">
-                  <AlertTriangle size={16} className="shrink-0 mt-0.5" />
-                  <p className="text-[9px]">
-                    WARNING: Changing Region or Zone downstream mappings affects stores currently tied to this territory code. Check existing stores list prior to committing changes.
-                  </p>
-                </div>
-              )}
+
 
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
@@ -285,7 +255,7 @@ export default function AddEditTerritoryModal({
                   className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)] font-semibold"
                 >
                   <option value="">Choose Region...</option>
-                  {regions.map((r) => (
+                  {regions.filter(r => r.status === "Active" || r.id === formData.regionId).map((r) => (
                     <option key={r.id} value={r.id}>
                       {r.name}
                     </option>
@@ -307,7 +277,7 @@ export default function AddEditTerritoryModal({
                   className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)] disabled:opacity-50 font-semibold"
                 >
                   <option value="">Choose Zone...</option>
-                  {availableZones.map((z) => (
+                  {availableZones.filter(z => z.status === "Active" || z.id === formData.zoneId).map((z) => (
                     <option key={z.id} value={z.id}>
                       {z.name}
                     </option>
@@ -320,35 +290,8 @@ export default function AddEditTerritoryModal({
             </div>
           )}
 
-          {/* STEP 3: Franchise Assignment */}
+          {/* STEP 3: Coverage Area */}
           {step === 3 && (
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase flex items-center gap-1">
-                  <Landmark size={12} />
-                  <span>Assign Franchise (Optional)</span>
-                </label>
-                <select
-                  value={formData.assignedFranchiseId}
-                  onChange={(e) => setFormData({ ...formData, assignedFranchiseId: e.target.value })}
-                  className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)] font-semibold"
-                >
-                  <option value="">No Franchise Assignment (Unassigned)</option>
-                  {availableFranchises.map((f) => (
-                    <option key={f.id} value={f.id}>
-                      {f.name} ({f.code})
-                    </option>
-                  ))}
-                </select>
-                <p className="text-[9px] text-zinc-500 mt-1 leading-relaxed">
-                  Only franchises operating in the selected Region / Zone are listable. Leaving this unassigned will flag the territory in dashboard audits.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 4: Coverage Area */}
-          {step === 4 && (
             <div className="space-y-4">
               <div className="space-y-1">
                 <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase flex justify-between items-center">
@@ -431,56 +374,12 @@ export default function AddEditTerritoryModal({
             </div>
           )}
 
-          {/* STEP 5: Additional Notes */}
-          {step === 5 && (
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
-                  Internal Operations Notes
-                </label>
-                <textarea
-                  rows={4}
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="confidential remarks, log modifications, or scheduling constraints."
-                  className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)] font-semibold"
-                />
-              </div>
-
-              <div className="p-3 bg-zinc-50 dark:bg-zinc-900/60 rounded-xl space-y-1.5 border border-zinc-150 dark:border-zinc-850">
-                <h4 className="font-bold text-[9px] text-zinc-450 uppercase">Submission Checklist</h4>
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-zinc-650 dark:text-zinc-350">
-                  <Check size={12} className="text-emerald-500" />
-                  <span>Territory Name: "{formData.name || "Untitled"}"</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-zinc-650 dark:text-zinc-350">
-                  <Check size={12} className="text-emerald-500" />
-                  <span>Radius: {formData.deliveryRadiusKm} km</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-[10px] font-bold text-zinc-650 dark:text-zinc-350">
-                  <Check size={12} className="text-emerald-500" />
-                  <span>PIN Codes: {formData.postalCodes.length} covered</span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Footer controls */}
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-900/40 flex justify-between select-none">
           <div className="flex gap-2">
             <button
               onClick={onClose}
               className="px-4 py-1.5 bg-zinc-200 dark:bg-zinc-800 text-black dark:text-zinc-200 rounded-lg text-xs font-bold hover:bg-zinc-300 transition-colors cursor-pointer"
             >
               Cancel
-            </button>
-            <button
-              onClick={handleSaveDraft}
-              className="px-4 py-1.5 bg-zinc-150 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-zinc-100 rounded-lg text-xs font-bold hover:bg-zinc-200 transition-colors cursor-pointer flex items-center gap-1"
-            >
-              <Save size={12} />
-              <span>Save Draft</span>
             </button>
           </div>
 
@@ -495,7 +394,7 @@ export default function AddEditTerritoryModal({
               </button>
             )}
 
-            {step < 5 ? (
+            {step < 3 ? (
               <button
                 onClick={handleNext}
                 className="px-4 py-1.5 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-xs font-bold hover:scale-[1.01] active:scale-95 transition-all cursor-pointer flex items-center gap-1"
@@ -508,7 +407,7 @@ export default function AddEditTerritoryModal({
                 onClick={handleFinalSubmit}
                 className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold hover:scale-[1.01] active:scale-95 transition-all cursor-pointer flex items-center gap-1"
               >
-                <span>{editTerritory ? "Update Territory" : "Create Territory"}</span>
+                <span>Update Territory</span>
                 <Check size={12} />
               </button>
             )}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Lock, Clock } from "lucide-react"
+import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Lock, Clock, Hash } from "lucide-react"
 
 // Mock geography data (as requested, representing data from franchiseManagement folder)
 const MOCK_REGIONS = [
@@ -33,6 +33,7 @@ export default function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
     phone: "",
     password: "",
     franchiseName: "",
+    franchiseCode: "",
     regionId: "",
     zoneId: "",
     territoryId: "",
@@ -65,6 +66,7 @@ export default function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
         phone: admin.phone || "",
         password: "",
         franchiseName: admin.franchiseName || "",
+        franchiseCode: admin.franchiseCode || "",
         regionId: rId,
         zoneId: zId,
         territoryId: tId,
@@ -90,6 +92,7 @@ export default function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
     }
     if (!formData.phone.trim()) newErrors.phone = "Phone is required"
     if (!formData.franchiseName.trim()) newErrors.franchiseName = "Franchise name is required"
+    if (!formData.franchiseCode.trim()) newErrors.franchiseCode = "Franchise code is required"
     if (!formData.regionId) newErrors.regionId = "Region is required"
     if (!formData.zoneId) newErrors.zoneId = "Zone is required"
     if (!formData.territoryId) newErrors.territoryId = "Territory is required"
@@ -248,21 +251,40 @@ export default function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
                     Franchise Configuration
                   </span>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise / Brand Name</label>
-                    <div className="relative">
-                      <Store size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                      <input
-                        type="text"
-                        value={formData.franchiseName}
-                        onChange={(e) => setFormData({ ...formData, franchiseName: e.target.value })}
-                        placeholder="e.g. Papa Veg Centro"
-                        className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
-                          errors.franchiseName ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
-                        }`}
-                      />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise / Brand Name</label>
+                      <div className="relative">
+                        <Store size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="text"
+                          value={formData.franchiseName}
+                          onChange={(e) => setFormData({ ...formData, franchiseName: e.target.value })}
+                          placeholder="e.g. Papa Veg Centro"
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.franchiseName ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.franchiseName && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseName}</p>}
                     </div>
-                    {errors.franchiseName && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseName}</p>}
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Code</label>
+                      <div className="relative">
+                        <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                        <input
+                          type="text"
+                          value={formData.franchiseCode}
+                          onChange={(e) => setFormData({ ...formData, franchiseCode: e.target.value })}
+                          placeholder="e.g. FRAN-123"
+                          className={`w-full text-xs pl-8.5 pr-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all ${
+                            errors.franchiseCode ? "border-rose-500" : "border-zinc-200 dark:border-zinc-800"
+                          }`}
+                        />
+                      </div>
+                      {errors.franchiseCode && <p className="text-[9px] text-rose-500 font-bold mt-1">{errors.franchiseCode}</p>}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 gap-3">
