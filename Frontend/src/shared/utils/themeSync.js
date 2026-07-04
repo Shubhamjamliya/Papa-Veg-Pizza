@@ -35,13 +35,26 @@ export const applySystemTheme = () => {
     const existingFavicons = document.querySelectorAll("link[rel*='icon']");
     existingFavicons.forEach(el => el.remove());
 
-    // Add new favicon
-    const link = document.createElement("link");
-    link.rel = "icon";
-    link.type = favicon.startsWith("data:image/x-icon") || favicon.endsWith(".ico") ? "image/x-icon" : "image/png";
-    link.href = favicon;
-    link.crossOrigin = "anonymous";
-    document.head.appendChild(link);
+    fetch(favicon)
+      .then(res => res.blob())
+      .then(blob => {
+        const objectUrl = URL.createObjectURL(blob);
+        const link = document.createElement("link");
+        link.rel = "icon";
+        link.type = favicon.startsWith("data:image/x-icon") || favicon.endsWith(".ico") ? "image/x-icon" : "image/png";
+        link.href = objectUrl;
+        document.head.appendChild(link);
+      })
+      .catch(err => {
+        // Fallback to normal if fetch fails (CORS etc)
+        const link = document.createElement("link");
+        link.rel = "icon";
+        link.type = favicon.startsWith("data:image/x-icon") || favicon.endsWith(".ico") ? "image/x-icon" : "image/png";
+        link.href = favicon;
+        link.crossOrigin = "anonymous";
+        link.referrerPolicy = "no-referrer";
+        document.head.appendChild(link);
+      });
   }
 
   // Apply Title

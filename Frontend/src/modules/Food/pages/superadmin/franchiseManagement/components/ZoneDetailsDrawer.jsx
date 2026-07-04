@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { X, Layers, Map, Compass, Activity, ShieldCheck, Milestone, Loader2 } from "lucide-react";
+import { GoogleMap, Polygon, useJsApiLoader } from "@react-google-maps/api";
 import apiClient from "../../../../../../services/api/axios";
+
+const LIBRARIES = Object.freeze(['geometry', 'places']);
 
 export default function ZoneDetailsDrawer({ isOpen, onClose, zone, onEdit, onAssignTerritory }) {
   const [fetchedZone, setFetchedZone] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+    libraries: LIBRARIES,
+    version: "3.64"
+  });
 
   useEffect(() => {
     if (isOpen && zone?.id) {
@@ -129,6 +139,37 @@ export default function ZoneDetailsDrawer({ isOpen, onClose, zone, onEdit, onAss
               </div>
             </div>
           </div>
+
+          {/* Geographic Boundary */}
+          {displayData.coordinates && displayData.coordinates.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-[10px] font-black text-black/55 dark:text-zinc-400 uppercase tracking-wider">Geographic Boundary</h4>
+              <div className="h-[200px] w-full rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-900 relative">
+                {isLoaded ? (
+                  <GoogleMap
+                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                    center={{ lat: displayData.coordinates[0].latitude, lng: displayData.coordinates[0].longitude }}
+                    zoom={11}
+                    options={{ disableDefaultUI: true, gestureHandling: 'greedy', zoomControl: true }}
+                  >
+                    <Polygon
+                      path={displayData.coordinates.map(c => ({ lat: c.latitude, lng: c.longitude }))}
+                      options={{
+                        fillColor: "var(--primary)",
+                        fillOpacity: 0.2,
+                        strokeWeight: 2,
+                        strokeColor: "var(--primary)",
+                      }}
+                    />
+                  </GoogleMap>
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full bg-zinc-100 dark:bg-zinc-900 text-[10px] text-zinc-500 font-bold">
+                    Loading Map...
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer Actions */}

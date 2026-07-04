@@ -210,10 +210,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                   </span>
                   
                   <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Full Name</label>
+                    <label htmlFor="fullName" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Full Name</label>
                     <div className="relative">
                       <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                       <input
+                        id="fullName"
+                        name="fullName"
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -228,10 +230,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Email Address</label>
+                      <label htmlFor="emailAddress" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Email Address</label>
                       <div className="relative">
                         <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                         <input
+                          id="emailAddress"
+                          name="emailAddress"
                           type="email"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -245,10 +249,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Phone Number</label>
+                      <label htmlFor="phoneNumber" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Phone Number</label>
                       <div className="relative">
                         <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                         <input
+                          id="phoneNumber"
+                          name="phoneNumber"
                           type="text"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -281,10 +287,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Full Address</label>
+                      <label htmlFor="fullAddress" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Full Address</label>
                       <div className="relative">
                         <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                         <input
+                          id="fullAddress"
+                          name="fullAddress"
                           type="text"
                           value={formData.address}
                           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
@@ -299,10 +307,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Password</label>
+                    <label htmlFor="password" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Password</label>
                     <div className="relative">
                       <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                       <input
+                        id="password"
+                        name="password"
                         type="password"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -340,10 +350,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Code</label>
+                      <label htmlFor="franchiseCode" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Code</label>
                       <div className="relative">
                         <Hash size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                         <input
+                          id="franchiseCode"
+                          name="franchiseCode"
                           type="text"
                           value={formData.franchiseCode}
                           onChange={(e) => setFormData({ ...formData, franchiseCode: e.target.value })}
@@ -361,8 +373,10 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     {/* Region, Zone, and Territory */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Region</label>
+                        <label htmlFor="region" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Region</label>
                         <select
+                          id="region"
+                          name="region"
                           value={formData.regionId}
                           onChange={(e) => setFormData({ ...formData, regionId: e.target.value, zoneId: "", territoryId: "" })}
                           className={`w-full text-xs px-3 py-1.5 border rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all cursor-pointer ${
@@ -378,8 +392,10 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                       </div>
 
                       <div>
-                        <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Zone</label>
+                        <label htmlFor="zone" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Zone</label>
                         <select
+                          id="zone"
+                          name="zone"
                           value={formData.zoneId}
                           disabled={!formData.regionId}
                           onChange={(e) => setFormData({ ...formData, zoneId: e.target.value, territoryId: "" })}
@@ -396,8 +412,10 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                       </div>
 
                       <div>
-                        <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Territory</label>
+                        <label htmlFor="territory" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Territory</label>
                         <select
+                          id="territory"
+                          name="territory"
                           value={formData.territoryId}
                           disabled={!formData.zoneId}
                           onChange={(e) => setFormData({ ...formData, territoryId: e.target.value })}
@@ -417,8 +435,10 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Type</label>
+                      <label htmlFor="franchiseType" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Type</label>
                       <select
+                        id="franchiseType"
+                        name="franchiseType"
                         value={formData.type}
                         onChange={(e) => {
                           const val = e.target.value
@@ -455,8 +475,10 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Account Status</label>
+                      <label htmlFor="accountStatus" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Account Status</label>
                       <select
+                        id="accountStatus"
+                        name="accountStatus"
                         value={formData.status}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                         className="w-full text-xs px-3 py-1.5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:bg-white transition-all cursor-pointer"
@@ -469,10 +491,12 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Duration (Years)</label>
+                      <label htmlFor="franchiseDuration" className="block text-[10px] font-bold text-zinc-500 dark:text-zinc-400 mb-1">Franchise Duration (Years)</label>
                       <div className="relative">
                         <Clock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                         <input
+                          id="franchiseDuration"
+                          name="franchiseDuration"
                           type="number"
                           min="1"
                           placeholder="e.g. 3"

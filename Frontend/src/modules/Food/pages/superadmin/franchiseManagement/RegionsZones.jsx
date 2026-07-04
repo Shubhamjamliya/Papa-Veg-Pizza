@@ -457,6 +457,8 @@ export default function RegionsZones() {
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400" size={13} />
           {activeTab === "regions" ? (
             <input
+              id="regionsSearch"
+              name="regionsSearch"
               type="text"
               placeholder="Search regions..."
               value={regionsSearch}
@@ -465,6 +467,8 @@ export default function RegionsZones() {
             />
           ) : (
             <input
+              id="zonesSearch"
+              name="zonesSearch"
               type="text"
               placeholder="Search zones..."
               value={zonesSearch}

@@ -83,14 +83,25 @@ export const updateFavicon = (url) => {
   const existingFavicons = document.querySelectorAll("link[rel*='icon']");
   existingFavicons.forEach(el => el.remove());
 
-  // Add new favicon
-  const link = document.createElement("link");
-  link.rel = "icon";
-  link.type = "image/png";
-  link.href = url;
-  // Prevent third-party cookie warning (Cloudinary)
-  link.crossOrigin = "anonymous";
-  document.head.appendChild(link);
+  fetch(url)
+    .then(res => res.blob())
+    .then(blob => {
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("link");
+      link.rel = "icon";
+      link.type = "image/png";
+      link.href = objectUrl;
+      document.head.appendChild(link);
+    })
+    .catch(err => {
+      const link = document.createElement("link");
+      link.rel = "icon";
+      link.type = "image/png";
+      link.href = url;
+      link.crossOrigin = "anonymous";
+      link.referrerPolicy = "no-referrer";
+      document.head.appendChild(link);
+    });
 };
 
 /**

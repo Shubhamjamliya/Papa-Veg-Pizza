@@ -214,6 +214,8 @@ export default function TerritoryManagementData({
                 Territory Name
               </label>
               <input
+                id="filterName"
+                name="filterName"
                 type="text"
                 value={filterName}
                 onChange={(e) => setFilterName(e.target.value)}
@@ -228,6 +230,8 @@ export default function TerritoryManagementData({
                 Region
               </label>
               <select
+                id="filterRegion"
+                name="filterRegion"
                 value={filterRegion}
                 onChange={(e) => {
                   setFilterRegion(e.target.value);
@@ -250,6 +254,8 @@ export default function TerritoryManagementData({
                 Zone
               </label>
               <select
+                id="filterZone"
+                name="filterZone"
                 value={filterZone}
                 onChange={(e) => setFilterZone(e.target.value)}
                 className="w-full p-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)]"
@@ -269,6 +275,8 @@ export default function TerritoryManagementData({
                 Assigned Franchise
               </label>
               <select
+                id="filterFranchise"
+                name="filterFranchise"
                 value={filterFranchise}
                 onChange={(e) => setFilterFranchise(e.target.value)}
                 className="w-full p-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)]"
@@ -288,6 +296,8 @@ export default function TerritoryManagementData({
                 Postal PIN Code
               </label>
               <input
+                id="filterPostalCode"
+                name="filterPostalCode"
                 type="text"
                 value={filterPostalCode}
                 onChange={(e) => setFilterPostalCode(e.target.value)}
@@ -302,6 +312,8 @@ export default function TerritoryManagementData({
                 Status
               </label>
               <select
+                id="filterStatus"
+                name="filterStatus"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="w-full p-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)]"
@@ -320,6 +332,8 @@ export default function TerritoryManagementData({
                 Date Created
               </label>
               <input
+                id="filterDate"
+                name="filterDate"
                 type="date"
                 value={filterDate}
                 onChange={(e) => setFilterDate(e.target.value)}
@@ -414,6 +428,9 @@ export default function TerritoryManagementData({
               <tr className="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 select-none">
                 <th className="p-3 w-8">
                   <input
+                    id="selectAllTerritories"
+                    name="selectAllTerritories"
+                    aria-label="Select all territories"
                     type="checkbox"
                     checked={
                       selectedIds.length === filteredTerritories.length &&
@@ -503,6 +520,9 @@ export default function TerritoryManagementData({
                     >
                       <td className="p-3">
                         <input
+                          id={`selectRow-${t.id}`}
+                          name={`selectRow-${t.id}`}
+                          aria-label={`Select territory ${t.name}`}
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleToggleSelectRow(t.id)}

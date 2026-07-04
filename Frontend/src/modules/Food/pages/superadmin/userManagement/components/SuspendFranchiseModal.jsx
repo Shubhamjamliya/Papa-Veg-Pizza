@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Ban } from "lucide-react"
+import { Trash2 } from "lucide-react"
 
 export default function SuspendFranchiseModal({ isOpen, onClose, admin, onConfirm }) {
   const [reason, setReason] = useState("Violation of terms")
@@ -8,9 +8,9 @@ export default function SuspendFranchiseModal({ isOpen, onClose, admin, onConfir
 
   const reasons = [
     "Violation of terms",
-    "Late payouts",
-    "Repeated low customer ratings",
-    "Operational issues / closure",
+    "Closed permanently",
+    "Contract terminated",
+    "Data cleanup",
     "Other"
   ]
 
@@ -40,15 +40,15 @@ export default function SuspendFranchiseModal({ isOpen, onClose, admin, onConfir
               className="w-full max-w-sm bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl p-3.5 pointer-events-auto relative"
             >
               <div className="w-9 h-9 bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 rounded-full flex items-center justify-center mb-3">
-                <Ban size={16} className="stroke-[2.5]" />
+                <Trash2 size={16} className="stroke-[2.5]" />
               </div>
 
               <div className="mb-4">
                 <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-50 leading-tight">
-                  Suspend Franchise Account
+                  Delete Franchise Account
                 </h3>
                 <p className="text-zinc-400 dark:text-zinc-500 font-semibold text-[10px] mt-1 leading-normal">
-                  Are you sure you want to suspend <strong className="text-zinc-800 dark:text-zinc-200">{admin.name}</strong> ({admin.franchiseName})? This operation will revoke administrative panel access and hide all active store listings from consumers.
+                  Are you sure you want to permanently delete <strong className="text-zinc-800 dark:text-zinc-200">{admin.name}</strong> ({admin.franchiseName})? This operation will remove all data associated with this franchise and cannot be undone.
                 </p>
               </div>
 
@@ -74,7 +74,7 @@ export default function SuspendFranchiseModal({ isOpen, onClose, admin, onConfir
                     rows="2"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Provide specific notes regarding why the account is suspended..."
+                    placeholder="Provide specific notes regarding why the account is deleted..."
                     className="w-full text-xs p-2.5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-all resize-none"
                   />
                 </div>
@@ -91,8 +91,8 @@ export default function SuspendFranchiseModal({ isOpen, onClose, admin, onConfir
                   onClick={handleConfirm}
                   className="flex items-center gap-2 px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow-md shadow-rose-600/20 transition-all hover:scale-[1.02] cursor-pointer"
                 >
-                  <Ban size={12} className="stroke-[2.5]" />
-                  <span>Suspend Account</span>
+                  <Trash2 size={12} className="stroke-[2.5]" />
+                  <span>Delete Account</span>
                 </button>
               </div>
             </motion.div>
