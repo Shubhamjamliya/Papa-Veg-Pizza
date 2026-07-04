@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, User, Mail, Phone, Store, MapPin, Layers, Save, Lock, Clock, Hash } from "lucide-react"
+import apiClient from "../../../../../../services/api/axios"
 
 // Mock geography data (as requested, representing data from franchiseManagement folder)
 const MOCK_REGIONS = [
@@ -114,7 +115,7 @@ export default function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validate()) return
 
@@ -123,13 +124,20 @@ export default function EditFranchiseModal({ isOpen, onClose, admin, onSave }) {
     const zoneName = MOCK_ZONES.find(z => z.id === formData.zoneId)?.name || ""
     const territoryName = MOCK_TERRITORIES.find(t => t.id === formData.territoryId)?.name || ""
 
-    onSave({
-      ...admin,
-      ...formData,
-      city: territoryName,
-      state: regionName
-    })
-    onClose()
+    try {
+      const response = await apiClient.patch(`/food/admin/franchises/${admin._id}`, formData);
+      onSave({
+        ...admin,
+        ...response.data.data,
+        city: territoryName,
+        state: regionName,
+        name: formData.name, // Since the backend stores ownerName, make sure frontend displays correctly
+      })
+      onClose()
+    } catch (err) {
+      console.error(err);
+      // Ideally show toast error
+    }
   }
 
   return (

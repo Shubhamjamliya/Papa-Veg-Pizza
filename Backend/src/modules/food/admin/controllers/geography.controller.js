@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { FoodRegion } from '../models/region.model.js';
 import { FoodZone } from '../models/zone.model.js';
 import { FoodTerritory } from '../models/territory.model.js';
@@ -232,28 +233,42 @@ export const deleteZone = async (req, res) => {
 // ===================== TERRITORIES =====================
 export const getTerritories = async (req, res) => {
     try {
-        const territories = await FoodTerritory.find().lean();
-        
-        const enrichedTerritories = await Promise.all(territories.map(async (territory) => {
-            const franchisesCount = await FoodFranchise.countDocuments({ territoryId: territory._id.toString() });
-            
-            const franchises = await FoodFranchise.find({ territoryId: territory._id.toString() }, '_id');
-            const franchiseIds = franchises.map(f => f._id);
-            const storesCount = await FoodStore.countDocuments({ franchiseId: { $in: franchiseIds } });
+        const territories = await FoodTerritory.aggregate([
+            {
+                $addFields: { idString: { $toString: "$_id" } }
+            },
+            {
+                $lookup: {
+                    from: "food_franchises",
+                    localField: "idString",
+                    foreignField: "territoryId",
+                    as: "franchisesData",
+                    pipeline: [
+                        { $project: { _id: 1, name: 1, ownerName: 1, franchiseCode: 1, totalStores: 1 } }
+                    ]
+                }
+            },
+            {
+                $addFields: {
+                    franchisesCount: { $size: "$franchisesData" },
+                    storesCount: { $sum: "$franchisesData.totalStores" }
+                }
+            }
+        ]);
 
-            return {
-                id: territory._id,
-                name: territory.name,
-                zoneId: territory.zoneId,
-                description: territory.description,
-                isActive: territory.isActive,
-                postalCodes: territory.postalCodes,
-                franchisesCount,
-                storesCount,
-                status: territory.isActive ? 'Active' : 'Archived',
-                createdDate: new Date(territory.createdAt).toISOString().slice(0,10),
-                createdAt: new Date(territory.createdAt).toISOString().slice(0,10)
-            };
+        const enrichedTerritories = territories.map(territory => ({
+            id: territory._id,
+            name: territory.name,
+            zoneId: territory.zoneId,
+            description: territory.description,
+            isActive: territory.isActive,
+            postalCodes: territory.postalCodes,
+            franchisesCount: territory.franchisesCount,
+            storesCount: territory.storesCount,
+            franchisesData: territory.franchisesData,
+            status: territory.isActive ? 'Active' : 'Archived',
+            createdDate: new Date(territory.createdAt).toISOString().slice(0,10),
+            createdAt: new Date(territory.createdAt).toISOString().slice(0,10)
         }));
 
         return sendResponse(res, 200, 'Territories fetched successfully', enrichedTerritories);
@@ -286,14 +301,35 @@ export const createTerritory = async (req, res) => {
 // ===================== TERRITORIES (CRUD) =====================
 export const getTerritoryById = async (req, res) => {
     try {
-        const territory = await FoodTerritory.findById(req.params.id).lean();
-        if (!territory) return sendError(res, 404, 'Territory not found');
-        
-        const franchisesCount = await FoodFranchise.countDocuments({ territoryId: territory._id.toString() });
-        const franchises = await FoodFranchise.find({ territoryId: territory._id.toString() }, '_id');
-        const franchiseIds = franchises.map(f => f._id);
-        const storesCount = await FoodStore.countDocuments({ franchiseId: { $in: franchiseIds } });
+        const territories = await FoodTerritory.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(req.params.id) } },
+            {
+                $addFields: { idString: { $toString: "$_id" } }
+            },
+            {
+                $lookup: {
+                    from: "food_franchises",
+                    localField: "idString",
+                    foreignField: "territoryId",
+                    as: "franchisesData",
+                    pipeline: [
+                        { $project: { _id: 1, name: 1, ownerName: 1, franchiseCode: 1, totalStores: 1 } }
+                    ]
+                }
+            },
+            {
+                $addFields: {
+                    franchisesCount: { $size: "$franchisesData" },
+                    storesCount: { $sum: "$franchisesData.totalStores" }
+                }
+            }
+        ]);
 
+        if (!territories || territories.length === 0) {
+            return sendError(res, 404, 'Territory not found');
+        }
+
+        const territory = territories[0];
         const enrichedTerritory = {
             id: territory._id,
             name: territory.name,
@@ -301,8 +337,9 @@ export const getTerritoryById = async (req, res) => {
             description: territory.description,
             isActive: territory.isActive,
             postalCodes: territory.postalCodes,
-            franchisesCount,
-            storesCount,
+            franchisesCount: territory.franchisesCount,
+            storesCount: territory.storesCount,
+            franchisesData: territory.franchisesData,
             status: territory.isActive ? 'Active' : 'Archived',
             createdDate: new Date(territory.createdAt).toISOString().slice(0,10),
             createdAt: new Date(territory.createdAt).toISOString().slice(0,10)

@@ -29,6 +29,9 @@ router.delete('/notifications/broadcast/:id', notificationBroadcastController.de
 // ----- Franchises -----
 router.post('/franchises', franchiseController.createFranchise);
 router.get('/franchises', franchiseController.getFranchises);
+router.get('/franchises/:id', franchiseController.getFranchiseById);
+router.patch('/franchises/:id', franchiseController.updateFranchise);
+router.delete('/franchises/:id', franchiseController.deleteFranchise);
 
 // ----- Customers -----
 router.get('/customers', adminController.getCustomers);

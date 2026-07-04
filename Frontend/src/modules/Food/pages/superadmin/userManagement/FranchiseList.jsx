@@ -24,21 +24,7 @@ import AddFranchiseModal from "./components/AddFranchiseModal"
 import EditFranchiseModal from "./components/EditFranchiseModal"
 import SuspendFranchiseModal from "./components/SuspendFranchiseModal"
 
-const MOCK_REGIONS = [
-  { id: "reg-1", name: "North India" },
-  { id: "reg-2", name: "West India" },
-  { id: "reg-3", name: "South India" },
-  { id: "reg-4", name: "Central India" }
-];
 
-const MOCK_ZONES = [
-  { id: "zn-1", name: "Delhi NCR Zone", regionId: "reg-1" },
-  { id: "zn-2", name: "Mumbai Zone", regionId: "reg-2" },
-  { id: "zn-3", name: "Pune Zone", regionId: "reg-2" },
-  { id: "zn-4", name: "Bengaluru Zone", regionId: "reg-3" },
-  { id: "zn-5", name: "Indore Zone", regionId: "reg-4" },
-  { id: "zn-6", name: "Bhopal Zone", regionId: "reg-4" }
-];
 
 export default function FranchiseList() {
   const [franchises, setFranchises] = useState([])
@@ -48,10 +34,18 @@ export default function FranchiseList() {
     const fetchFranchises = async () => {
       try {
         setIsLoading(true)
-        const response = await apiClient.get('/food/admin/franchises')
-        const data = response.data.data.map(f => {
-          const regionName = MOCK_REGIONS.find(r => r.id === f.regionId)?.name || f.regionId;
-          const zoneName = MOCK_ZONES.find(z => z.id === f.zoneId)?.name || f.zoneId;
+        const [franRes, regRes, zonRes] = await Promise.all([
+          apiClient.get('/food/admin/franchises'),
+          apiClient.get('/food/admin/regions'),
+          apiClient.get('/food/admin/zones')
+        ]);
+        
+        const regions = regRes.data.data || [];
+        const zones = zonRes.data.data || [];
+
+        const data = franRes.data.data.map(f => {
+          const regionName = regions.find(r => r.id === f.regionId || r._id === f.regionId)?.name || f.regionId;
+          const zoneName = zones.find(z => z.id === f.zoneId || z._id === f.zoneId)?.name || f.zoneId;
 
           return {
             id: f.franchiseCode,
@@ -164,23 +158,37 @@ export default function FranchiseList() {
     setSelectedAdmin(null)
   }
 
-  const handleSuspendAdmin = (id, details) => {
-    setFranchises((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, status: "SUSPENDED" } : f))
-    )
+  const handleSuspendAdmin = async (id, details) => {
     const adminRef = franchises.find((f) => f.id === id)
-    showToast(`${adminRef?.name}'s franchise is now Suspended!`, "warning")
-    setIsSuspendModalOpen(false)
-    setSelectedAdmin(null)
+    if (!adminRef) return;
+    
+    try {
+      await apiClient.delete(`/food/admin/franchises/${adminRef._id}`)
+      setFranchises((prev) =>
+        prev.map((f) => (f.id === id ? { ...f, status: "SUSPENDED" } : f))
+      )
+      showToast(`${adminRef.name}'s franchise is now Suspended!`, "warning")
+      setIsSuspendModalOpen(false)
+      setSelectedAdmin(null)
+    } catch (err) {
+      showToast("Failed to suspend franchise", "error")
+    }
   }
 
-  const handleActivateAdmin = (id) => {
-    setFranchises((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, status: "ACTIVE" } : f))
-    )
+  const handleActivateAdmin = async (id) => {
     const adminRef = franchises.find((f) => f.id === id)
-    showToast(`${adminRef?.name}'s franchise has been Activated!`, "success")
-    setActiveMenuId(null)
+    if (!adminRef) return;
+
+    try {
+      await apiClient.patch(`/food/admin/franchises/${adminRef._id}`, { status: "ACTIVE" })
+      setFranchises((prev) =>
+        prev.map((f) => (f.id === id ? { ...f, status: "ACTIVE" } : f))
+      )
+      showToast(`${adminRef.name}'s franchise has been Activated!`, "success")
+      setActiveMenuId(null)
+    } catch (err) {
+      showToast("Failed to activate franchise", "error")
+    }
   }
 
   const handleResetFilters = () => {
@@ -273,6 +281,9 @@ export default function FranchiseList() {
                 <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider">
                   Create Date
                 </th>
+                <th className="px-3 py-2.5 text-[9px] font-extrabold text-black dark:text-white opacity-75 uppercase tracking-wider text-center">
+                  Status
+                </th>
                 <th className="px-3 py-2.5 text-right"></th>
               </tr>
             </thead>
@@ -340,9 +351,16 @@ export default function FranchiseList() {
                       {fran.joinedDate}
                     </td>
 
-                    {/* Actions and Toggle */}
-                    <td className="px-3 py-2.5 text-right">
-                      <div className="flex items-center justify-end gap-3">
+                    {/* Status */}
+                    <td className="px-3 py-2.5">
+                      <div className="flex flex-col items-center gap-1.5">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          fran.status === 'ACTIVE' 
+                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' 
+                            : 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400'
+                        }`}>
+                          {fran.status}
+                        </span>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
                             type="checkbox" 
@@ -351,8 +369,7 @@ export default function FranchiseList() {
                             onChange={async () => {
                               try {
                                 const newStatus = fran.status === "ACTIVE" ? "INACTIVE" : "ACTIVE"
-                                // Mock API update logic could go here
-                                // await apiClient.put(`/food/admin/franchises/${fran._id}/status`, { status: newStatus })
+                                await apiClient.patch(`/food/admin/franchises/${fran._id}`, { status: newStatus })
                                 const updatedFranchises = franchises.map(f => {
                                   if (f.id === fran.id) {
                                     return { ...f, status: newStatus }
@@ -368,48 +385,52 @@ export default function FranchiseList() {
                           />
                           <div className="w-7 h-4 bg-zinc-200 dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[var(--primary)]"></div>
                         </label>
-                        <div className="flex items-center gap-1.5">
+                      </div>
+                    </td>
+
+                    {/* Actions */}
+                    <td className="px-3 py-2.5 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={() => {
+                            setSelectedAdmin(fran)
+                            setIsDrawerOpen(true)
+                          }}
+                          className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
+                          title="View Profile"
+                        >
+                          <Eye size={14} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedAdmin(fran)
+                            setIsEditModalOpen(true)
+                          }}
+                          className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-blue-500 transition-colors cursor-pointer"
+                          title="Edit Profile"
+                        >
+                          <Edit size={14} />
+                        </button>
+                        {fran.status === "SUSPENDED" ? (
+                          <button
+                            onClick={() => {}}
+                            className="p-1 rounded-md bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
+                            title="Re-Activate"
+                          >
+                            <UserCheck size={14} />
+                          </button>
+                        ) : (
                           <button
                             onClick={() => {
                               setSelectedAdmin(fran)
-                              setIsDrawerOpen(true)
+                              setIsSuspendModalOpen(true)
                             }}
-                            className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-[var(--primary)] transition-colors cursor-pointer"
-                            title="View Profile"
+                            className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
+                            title="Suspend"
                           >
-                            <Eye size={14} />
+                            <Ban size={14} />
                           </button>
-                          <button
-                            onClick={() => {
-                              setSelectedAdmin(fran)
-                              setIsEditModalOpen(true)
-                            }}
-                            className="p-1 rounded-md bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 text-black dark:text-white opacity-70 hover:opacity-100 hover:text-blue-500 transition-colors cursor-pointer"
-                            title="Edit Profile"
-                          >
-                            <Edit size={14} />
-                          </button>
-                          {fran.status === "SUSPENDED" ? (
-                            <button
-                              onClick={() => {}}
-                              className="p-1 rounded-md bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/20 dark:hover:bg-emerald-900/30 text-emerald-600 transition-colors cursor-pointer"
-                              title="Re-Activate"
-                            >
-                              <UserCheck size={14} />
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => {
-                                setSelectedAdmin(fran)
-                                setIsSuspendModalOpen(true)
-                              }}
-                              className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
-                              title="Suspend"
-                            >
-                              <Ban size={14} />
-                            </button>
-                          )}
-                        </div>
+                        )}
                       </div>
                     </td>
                   </tr>

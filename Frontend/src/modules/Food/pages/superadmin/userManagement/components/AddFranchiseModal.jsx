@@ -42,9 +42,9 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
           apiClient.get('/food/admin/zones'),
           apiClient.get('/food/admin/territories')
         ]);
-        setRegions(regRes.data.data || []);
-        setZones(zonRes.data.data || []);
-        setTerritories(terRes.data.data || []);
+        setRegions((regRes.data.data || []).filter(region => region.isActive));
+        setZones((zonRes.data.data || []).filter(zone => zone.isActive));
+        setTerritories((terRes.data.data || []).filter(territory => territory.isActive));
       } catch (err) {
         console.error("Failed to load geography data", err);
       }
@@ -126,15 +126,23 @@ export default function AddFranchiseModal({ isOpen, onClose, onSave }) {
       const newFranchise = response.data.data.franchise
       
       // Resolve names for the table display if needed for local state update
-      const regionName = MOCK_REGIONS.find(r => r.id === formData.regionId)?.name || ""
-      const zoneName = MOCK_ZONES.find(z => z.id === formData.zoneId)?.name || ""
-      const territoryName = MOCK_TERRITORIES.find(t => t.id === formData.territoryId)?.name || ""
+      const region = regions.find(r => r.id === formData.regionId || r._id === formData.regionId)
+      const regionName = region?.name || ""
+      
+      const zone = zones.find(z => z.id === formData.zoneId || z._id === formData.zoneId)
+      const zoneName = zone?.name || ""
+      
+      const territory = territories.find(t => t.id === formData.territoryId || t._id === formData.territoryId)
+      const territoryName = territory?.name || ""
 
       onSave({
         ...formData,
         id: newFranchise.franchiseCode || newFranchise._id,
+        _id: newFranchise._id,
         city: territoryName,
         state: regionName,
+        regionName: regionName,
+        zoneName: zoneName,
         joinedDate: new Date(newFranchise.createdAt || new Date()).toLocaleDateString("en-US", {
           month: "short",
           day: "2-digit",
