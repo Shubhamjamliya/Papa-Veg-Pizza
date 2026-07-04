@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { X, Check, ArrowLeft, ArrowRight, Save, Landmark, AlertTriangle } from "lucide-react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { X, Check, ArrowLeft, ArrowRight, Save, Landmark, AlertTriangle, Trash2 } from "lucide-react";
+import { GoogleMap, useJsApiLoader, Polygon } from "@react-google-maps/api";
+
+const LIBRARIES = Object.freeze(['geometry', 'places']);
 
 export default function EditTerritoryModal({
   isOpen,
@@ -10,8 +13,6 @@ export default function EditTerritoryModal({
   existingTerritories,
   editTerritory
 }) {
-  if (!isOpen) return null;
-
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     id: "",
@@ -23,11 +24,14 @@ export default function EditTerritoryModal({
     assignedFranchiseId: "",
     postalCodes: [],
     deliveryRadiusKm: 5,
+    coordinates: [],
     notes: ""
   });
 
   const [errors, setErrors] = useState({});
   const [postalInput, setPostalInput] = useState("");
+  const [mapCenter, setMapCenter] = useState(null);
+  const [mapZoom, setMapZoom] = useState(null);
 
   // Pre-fill if editing
   useEffect(() => {
@@ -41,12 +45,70 @@ export default function EditTerritoryModal({
         zoneId: editTerritory.zoneId || "",
         postalCodes: [...(editTerritory.postalCodes || [])],
         deliveryRadiusKm: editTerritory.deliveryRadiusKm || 5,
+        coordinates: [...(editTerritory.coordinates || [])],
         notes: editTerritory.notes || ""
       });
       setStep(1);
       setErrors({});
     }
   }, [editTerritory, isOpen]);
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+    libraries: LIBRARIES,
+    version: "3.64"
+  });
+
+  useEffect(() => {
+    if (!isLoaded || !formData.name.trim() || formData.coordinates.length > 0) return;
+    const timeoutId = setTimeout(() => {
+      const geocoder = new window.google.maps.Geocoder();
+      // Appending India context to get better results
+      geocoder.geocode({ address: formData.name.trim() + ", India" }, (results, status) => {
+        if (status === "OK" && results && results[0]) {
+          const loc = results[0].geometry.location;
+          setMapCenter({ lat: loc.lat(), lng: loc.lng() });
+          setMapZoom(12);
+        }
+      });
+    }, 1200);
+    return () => clearTimeout(timeoutId);
+  }, [formData.name, isLoaded, formData.coordinates.length]);
+
+  const polygonRef = useRef(null);
+
+  const onMapClick = useCallback((e) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    setFormData(prev => ({
+      ...prev,
+      coordinates: [...prev.coordinates, { latitude: lat, longitude: lng }]
+    }));
+  }, []);
+
+  const onPolygonLoad = useCallback((polygon) => {
+    polygonRef.current = polygon;
+  }, []);
+
+  const onPolygonEdit = useCallback(() => {
+    if (polygonRef.current) {
+      const path = polygonRef.current.getPath();
+      const newCoords = [];
+      for (let i = 0; i < path.getLength(); i++) {
+        const latLng = path.getAt(i);
+        newCoords.push({ latitude: latLng.lat(), longitude: latLng.lng() });
+      }
+      setFormData(prev => ({ ...prev, coordinates: newCoords }));
+    }
+  }, []);
+
+  const clearPolygon = () => {
+    if (polygonRef.current) {
+      polygonRef.current = null;
+    }
+    setFormData(prev => ({ ...prev, coordinates: [] }));
+  };
 
   // Validation routines per step
   const validateStep = (currentStep) => {
@@ -85,11 +147,15 @@ export default function EditTerritoryModal({
       if (!formData.deliveryRadiusKm || formData.deliveryRadiusKm <= 0) {
         newErrors.deliveryRadiusKm = "Delivery radius must be greater than 0 km.";
       }
+      if (formData.coordinates.length < 3) {
+        newErrors.coordinates = "Please draw a valid territory boundary (polygon) on the map.";
+      }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
 
   const handleNext = () => {
     if (validateStep(step)) {
@@ -123,6 +189,20 @@ export default function EditTerritoryModal({
     });
     setPostalInput("");
     setErrors({ ...errors, postalInput: null, postalCodes: null });
+
+    // Geocode and navigate map
+    if (window.google && window.google.maps) {
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ address: `${trimmed}, India` }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          setMapCenter({
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+          });
+          setMapZoom(13);
+        }
+      });
+    }
   };
 
   // Remove postal PIN chip
@@ -163,6 +243,8 @@ export default function EditTerritoryModal({
 
 
 
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 bg-black/55 backdrop-blur-sm z-[70] flex items-center justify-center p-3 sm:p-4 lg:pl-[280px] select-none">
       <div className="bg-white dark:bg-zinc-950 w-full max-w-lg rounded-xl shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-900 flex flex-col max-h-[90vh] animate-scaleUp">
@@ -196,10 +278,12 @@ export default function EditTerritoryModal({
           {step === 1 && (
             <div className="space-y-4">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                <label htmlFor="territoryName" className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
                   Territory Name *
                 </label>
                 <input
+                  id="territoryName"
+                  name="territoryName"
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -210,10 +294,12 @@ export default function EditTerritoryModal({
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                <label htmlFor="description" className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
                   Description
                 </label>
                 <textarea
+                  id="description"
+                  name="description"
                   rows={3}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -223,10 +309,12 @@ export default function EditTerritoryModal({
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                <label htmlFor="status" className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
                   Status
                 </label>
                 <select
+                  id="status"
+                  name="status"
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                   className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-black dark:text-zinc-100 outline-none focus:border-[var(--primary)] font-semibold"
@@ -370,6 +458,62 @@ export default function EditTerritoryModal({
                 <span className="text-[8px] text-zinc-500 leading-normal">
                   Defines the default delivery dispatch bounds mapped to stores in this territory.
                 </span>
+              </div>
+
+              {/* Map Bounds Drawing */}
+              <div className="space-y-1 pt-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">
+                    Territory Boundary *
+                  </span>
+                  {formData.coordinates.length > 0 && (
+                    <button 
+                      onClick={clearPolygon}
+                      className="text-[9px] font-bold text-rose-500 hover:text-rose-600 flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 size={10} />
+                      Clear Map
+                    </button>
+                  )}
+                </div>
+                
+                <div className="h-64 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 relative">
+                  {isLoaded ? (
+                    <GoogleMap
+                      mapContainerStyle={{ width: '100%', height: '100%' }}
+                      center={mapCenter || (formData.coordinates.length > 0 ? { lat: formData.coordinates[0].latitude, lng: formData.coordinates[0].longitude } : { lat: 20.5937, lng: 78.9629 })}
+                      zoom={mapZoom || (formData.coordinates.length > 0 ? 12 : 4)}
+                      options={{ disableDefaultUI: true, gestureHandling: 'greedy', zoomControl: true }}
+                      onClick={onMapClick}
+                    >
+                      {formData.coordinates.length > 0 && (
+                        <Polygon
+                          onLoad={onPolygonLoad}
+                          onMouseUp={onPolygonEdit}
+                          onDragEnd={onPolygonEdit}
+                          paths={formData.coordinates.map(c => ({ lat: c.latitude, lng: c.longitude }))}
+                          options={{
+                            fillColor: "var(--primary)",
+                            fillOpacity: 0.2,
+                            strokeWeight: 2,
+                            strokeColor: "var(--primary)",
+                            clickable: true,
+                            editable: true,
+                            draggable: false,
+                            zIndex: 1,
+                          }}
+                        />
+                      )}
+                    </GoogleMap>
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full text-[10px] text-zinc-500 font-bold">
+                      Loading Map...
+                    </div>
+                  )}
+                </div>
+                {errors.coordinates && (
+                  <p className="text-[9px] font-black text-rose-500">{errors.coordinates}</p>
+                )}
               </div>
             </div>
           )}

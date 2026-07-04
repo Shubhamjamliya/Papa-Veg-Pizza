@@ -13,7 +13,8 @@ import {
   MapPin,
   ChevronDown,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Trash2
 } from "lucide-react"
 
 // Reusable custom subcomponents
@@ -22,7 +23,7 @@ import FranchiseFilters from "./FranchiseFilters"
 import FranchiseDetailsDrawer from "./components/FranchiseDetailsDrawer"
 import AddFranchiseModal from "./components/AddFranchiseModal"
 import EditFranchiseModal from "./components/EditFranchiseModal"
-import SuspendFranchiseModal from "./components/SuspendFranchiseModal"
+import SuspendFranchiseModal from "./components/SuspendFranchiseModal" // Actually a Delete Modal now
 
 
 
@@ -96,7 +97,7 @@ export default function FranchiseList() {
   // Overlay Trigger States
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [isSuspendModalOpen, setIsSuspendModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   // Selected Admin Reference
@@ -158,20 +159,20 @@ export default function FranchiseList() {
     setSelectedAdmin(null)
   }
 
-  const handleSuspendAdmin = async (id, details) => {
+  const handleDeleteAdmin = async (id, details) => {
     const adminRef = franchises.find((f) => f.id === id)
     if (!adminRef) return;
     
     try {
       await apiClient.delete(`/food/admin/franchises/${adminRef._id}`)
       setFranchises((prev) =>
-        prev.map((f) => (f.id === id ? { ...f, status: "SUSPENDED" } : f))
+        prev.filter((f) => f.id !== id)
       )
-      showToast(`${adminRef.name}'s franchise is now Suspended!`, "warning")
-      setIsSuspendModalOpen(false)
+      showToast(`${adminRef.name}'s franchise is now Deleted!`, "success")
+      setIsDeleteModalOpen(false)
       setSelectedAdmin(null)
     } catch (err) {
-      showToast("Failed to suspend franchise", "error")
+      showToast("Failed to delete franchise", "error")
     }
   }
 
@@ -423,12 +424,12 @@ export default function FranchiseList() {
                           <button
                             onClick={() => {
                               setSelectedAdmin(fran)
-                              setIsSuspendModalOpen(true)
+                              setIsDeleteModalOpen(true)
                             }}
                             className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-600 transition-colors cursor-pointer"
-                            title="Suspend"
+                            title="Delete"
                           >
-                            <Ban size={14} />
+                            <Trash2 size={14} />
                           </button>
                         )}
                       </div>
@@ -495,15 +496,15 @@ export default function FranchiseList() {
         onSave={handleSaveAdmin}
       />
 
-      {/* Suspend confirmation Modal Popup */}
+      {/* Delete confirmation Modal Popup */}
       <SuspendFranchiseModal
-        isOpen={isSuspendModalOpen}
+        isOpen={isDeleteModalOpen}
         onClose={() => {
-          setIsSuspendModalOpen(false)
+          setIsDeleteModalOpen(false)
           setSelectedAdmin(null)
         }}
         admin={selectedAdmin}
-        onConfirm={handleSuspendAdmin}
+        onConfirm={handleDeleteAdmin}
       />
     </div>
   )

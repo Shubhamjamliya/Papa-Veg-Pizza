@@ -545,8 +545,8 @@ export default function SuperAdminDashboard() {
             </div>
 
             {/* Responsive Graph Canvas */}
-            <div className="h-[230px] w-full mt-1">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-[230px] w-full mt-1 min-w-0 min-h-0">
+              <ResponsiveContainer width="99%" height="100%" minWidth={1} minHeight={1}>
                 <AreaChart data={currentChartData} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">

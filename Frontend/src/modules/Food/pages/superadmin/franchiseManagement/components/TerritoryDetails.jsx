@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { GoogleMap, Polygon, useJsApiLoader } from "@react-google-maps/api";
 import {
   X,
   MapPin,
@@ -21,6 +22,8 @@ import {
 } from "lucide-react";
 import apiClient from "../../../../../../services/api/axios";
 
+const LIBRARIES = Object.freeze(['geometry', 'places']);
+
 export default function TerritoryDetails({
   isOpen,
   onClose,
@@ -33,9 +36,24 @@ export default function TerritoryDetails({
 
   // Search inside postal code chips
   const [postalSearch, setPostalSearch] = useState("");
-  
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+    libraries: LIBRARIES,
+    version: "3.64"
+  });
+
   const [detailedTerritory, setDetailedTerritory] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Calculate polygon paths and map center
+  const { polygonPaths, mapCenter } = useMemo(() => {
+    const coords = (detailedTerritory || territory)?.coordinates || [];
+    const paths = coords.map(c => ({ lat: c.latitude, lng: c.longitude }));
+    const center = paths.length > 0 ? paths[0] : { lat: 20.5937, lng: 78.9629 }; // Default India center
+    return { polygonPaths: paths, mapCenter: center };
+  }, [detailedTerritory, territory]);
 
   useEffect(() => {
     if (isOpen && territory?.id) {
@@ -190,6 +208,8 @@ export default function TerritoryDetails({
                 Covered Postal Codes ({(territory.postalCodes || []).length})
               </h4>
               <input
+                id="postalSearch"
+                name="postalSearch"
                 type="text"
                 value={postalSearch}
                 onChange={(e) => setPostalSearch(e.target.value)}
@@ -226,35 +246,35 @@ export default function TerritoryDetails({
                 <span>Exclusive Geofence Boundary</span>
               </div>
 
-              {/* Mock Map Polygon / Geofence Visualization */}
-              <div className="h-28 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center relative select-none">
-                <Map className="absolute text-zinc-200 dark:text-zinc-850 w-full h-full p-2" />
-                
-                {/* SVG mock map drawing */}
-                <svg className="w-full h-full z-10 opacity-70" viewBox="0 0 100 100">
-                  {/* Grid lines */}
-                  <line x1="20" y1="0" x2="20" y2="100" stroke="#cccccc22" strokeWidth="0.5" />
-                  <line x1="50" y1="0" x2="50" y2="100" stroke="#cccccc22" strokeWidth="0.5" />
-                  <line x1="80" y1="0" x2="80" y2="100" stroke="#cccccc22" strokeWidth="0.5" />
-                  <line x1="0" y1="30" x2="100" y2="30" stroke="#cccccc22" strokeWidth="0.5" />
-                  <line x1="0" y1="70" x2="100" y2="70" stroke="#cccccc22" strokeWidth="0.5" />
-                  
-                  {/* Service area polygon */}
-                  <polygon
-                    points="30,25 75,20 85,65 50,85 20,60"
-                    fill="var(--primary)"
-                    fillOpacity="0.12"
-                    stroke="var(--primary)"
-                    strokeWidth="1.5"
-                    strokeDasharray="2,2"
-                  />
-                  
-                  {/* Pin indicators */}
-                  <circle cx="50" cy="50" r="2.5" fill="red" />
-                  <circle cx="35" cy="40" r="1.5" fill="blue" />
-                  <circle cx="70" cy="55" r="1.5" fill="blue" />
-                </svg>
-                <div className="absolute bottom-1 right-1 bg-white/90 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 rounded px-1 text-[8px] font-bold text-zinc-500 z-10">
+              {/* Real Google Map Visualization */}
+              <div className="h-40 rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 relative">
+                {isLoaded ? (
+                  <GoogleMap
+                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                    center={mapCenter}
+                    zoom={polygonPaths.length > 0 ? 12 : 4}
+                    options={{ disableDefaultUI: true, gestureHandling: 'greedy' }}
+                  >
+                    {polygonPaths.length > 0 && (
+                      <Polygon
+                        paths={polygonPaths}
+                        options={{
+                          fillColor: "var(--primary)",
+                          fillOpacity: 0.12,
+                          strokeColor: "var(--primary)",
+                          strokeOpacity: 1,
+                          strokeWeight: 1.5,
+                          clickable: false,
+                        }}
+                      />
+                    )}
+                  </GoogleMap>
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full text-[10px] text-zinc-500 font-bold">
+                    Loading Map...
+                  </div>
+                )}
+                <div className="absolute bottom-1 right-1 bg-white/90 dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 rounded px-1 text-[8px] font-bold text-zinc-500 z-10 select-none">
                   {displayTerritory.name} Bounds
                 </div>
               </div>

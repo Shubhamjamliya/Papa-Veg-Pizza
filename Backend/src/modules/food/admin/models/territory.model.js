@@ -26,6 +26,13 @@ const territorySchema = new mongoose.Schema(
         postalCodes: {
             type: [String],
             default: []
+        },
+        coordinates: {
+            type: [{
+                latitude: { type: Number, required: true },
+                longitude: { type: Number, required: true }
+            }],
+            default: []
         }
     },
     {

@@ -649,6 +649,11 @@ export const useDeliveryNotifications = () => {
     }
 
     const fetchDeliveryPartnerId = async () => {
+      const dToken = localStorage.getItem('delivery_accessToken') || localStorage.getItem('accessToken');
+      if (!dToken || dToken === "dummy_access_token" || dToken === "null" || dToken === "undefined") {
+        debugLog('Skipping delivery partner fetch: no valid token found');
+        return;
+      }
       try {
         const response = await deliveryAPI.getMe();
         if (response.data?.success && response.data.data) {
@@ -659,18 +664,23 @@ export const useDeliveryNotifications = () => {
                       deliveryPartner.deliveryId;
             if (id) {
               setDeliveryPartnerId(id);
-              debugLog('? Delivery Partner ID fetched:', id);
+              debugLog('🔔 Delivery Partner ID fetched:', id);
             } else {
-              debugWarn('?? Could not extract delivery partner ID from response');
+              debugWarn('⚠️ Could not extract delivery partner ID from response');
             }
           } else {
-            debugWarn('?? No delivery partner data in API response');
+            debugWarn('⚠️ No delivery partner data in API response');
           }
         } else {
-          debugWarn('?? Could not fetch delivery partner ID from API');
+          debugWarn('⚠️ Could not fetch delivery partner ID from API');
         }
       } catch (error) {
-        debugError('Error fetching delivery partner:', error);
+        // Silently catch 401/403 as the user might just not be a delivery partner
+        if (error?.response?.status === 401 || error?.response?.status === 403 || error.message.includes('Not authenticated')) {
+           debugLog('Skipping delivery partner fetch: User is not authenticated as delivery partner.');
+        } else {
+           debugError('Error fetching delivery partner:', error);
+        }
       }
     };
     fetchDeliveryPartnerId();

@@ -9,31 +9,56 @@ import { sendError, sendResponse } from '../../../../utils/response.js';
 // ===================== REGIONS =====================
 export const getRegions = async (req, res) => {
     try {
-        const regions = await FoodRegion.find().lean();
-        
-        // Dynamic aggregation for stats
-        const enrichedRegions = await Promise.all(regions.map(async (region) => {
-            const zonesCount = await FoodZone.countDocuments({ regionId: region._id });
-            // Note: In Franchise, regionId is stored as a string currently. Convert _id to string for match.
-            const franchisesCount = await FoodFranchise.countDocuments({ regionId: region._id.toString() });
-            
-            // To get stores count, find all franchise IDs in this region
-            const franchises = await FoodFranchise.find({ regionId: region._id.toString() }, '_id');
-            const franchiseIds = franchises.map(f => f._id);
-            const storesCount = await FoodStore.countDocuments({ franchiseId: { $in: franchiseIds } });
+        const enrichedRegions = await FoodRegion.aggregate([
+            {
+                $addFields: {
+                    regionIdStr: { $toString: "$_id" }
+                }
+            },
+            {
+                $lookup: {
+                    from: "food_zones",
+                    let: { r_id: "$regionIdStr" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: [{ $toString: "$regionId" }, "$$r_id"] } } }
+                    ],
+                    as: "zones"
+                }
+            },
+            {
+                $lookup: {
+                    from: "food_franchises",
+                    let: { r_id: "$regionIdStr" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: [{ $toString: "$regionId" }, "$$r_id"] } } }
+                    ],
+                    as: "franchises"
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    country: 1,
+                    description: 1,
+                    isActive: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    zonesCount: { $size: "$zones" },
+                    franchisesCount: { $size: "$franchises" },
+                    storesCount: { $sum: "$franchises.totalStores" }
+                }
+            }
+        ]);
 
-            return {
-                ...region,
-                id: region._id,
-                zonesCount,
-                franchisesCount,
-                storesCount,
-                status: region.isActive ? 'Active' : 'Inactive',
-                createdDate: new Date(region.createdAt).toISOString().slice(0,10)
-            };
+        const mappedRegions = enrichedRegions.map(region => ({
+            ...region,
+            id: region._id,
+            status: region.isActive ? 'Active' : 'Inactive',
+            createdDate: new Date(region.createdAt).toISOString().slice(0, 10)
         }));
 
-        return sendResponse(res, 200, 'Regions fetched successfully', enrichedRegions);
+        return sendResponse(res, 200, 'Regions fetched successfully', mappedRegions);
     } catch (error) {
         console.error('Error fetching regions:', error);
         return sendError(res, 500, 'Failed to fetch regions', error.message);
@@ -120,30 +145,79 @@ export const deleteRegion = async (req, res) => {
 // ===================== ZONES =====================
 export const getZones = async (req, res) => {
     try {
-        const zones = await FoodZone.find().populate('regionId', 'name').lean();
-        
-        const enrichedZones = await Promise.all(zones.map(async (zone) => {
-            const territoriesCount = await FoodTerritory.countDocuments({ zoneId: zone._id });
-            const franchisesCount = await FoodFranchise.countDocuments({ zoneId: zone._id.toString() });
-            
-            const franchises = await FoodFranchise.find({ zoneId: zone._id.toString() }, '_id');
-            const franchiseIds = franchises.map(f => f._id);
-            const storesCount = await FoodStore.countDocuments({ franchiseId: { $in: franchiseIds } });
+        const enrichedZones = await FoodZone.aggregate([
+            {
+                $addFields: {
+                    zoneIdStr: { $toString: "$_id" }
+                }
+            },
+            {
+                $lookup: {
+                    from: "food_regions",
+                    let: { r_id: { $toString: "$regionId" } },
+                    pipeline: [
+                        { $match: { $expr: { $eq: [{ $toString: "$_id" }, "$$r_id"] } } }
+                    ],
+                    as: "regionDocs"
+                }
+            },
+            {
+                $lookup: {
+                    from: "food_territories",
+                    let: { z_id: "$zoneIdStr" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: [{ $toString: "$zoneId" }, "$$z_id"] } } }
+                    ],
+                    as: "territories"
+                }
+            },
+            {
+                $lookup: {
+                    from: "food_franchises",
+                    let: { z_id: "$zoneIdStr" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: [{ $toString: "$zoneId" }, "$$z_id"] } } }
+                    ],
+                    as: "franchises"
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    description: 1,
+                    zoneName: 1,
+                    country: 1,
+                    serviceLocation: 1,
+                    unit: 1,
+                    coordinates: 1,
+                    isActive: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    regionId: 1,
+                    regionDoc: { $arrayElemAt: ["$regionDocs", 0] },
+                    territoriesCount: { $size: "$territories" },
+                    franchisesCount: { $size: "$franchises" },
+                    storesCount: { $sum: "$franchises.totalStores" }
+                }
+            }
+        ]);
 
-            return {
+        const mappedZones = enrichedZones.map(zone => {
+            const result = {
                 ...zone,
                 id: zone._id,
-                regionName: zone.regionId ? zone.regionId.name : 'Unknown',
-                regionId: zone.regionId ? zone.regionId._id : null,
-                territoriesCount,
-                franchisesCount,
-                storesCount,
+                regionName: zone.regionDoc ? zone.regionDoc.name : 'Unknown',
+                regionId: zone.regionDoc ? zone.regionDoc._id : zone.regionId,
                 status: zone.isActive ? 'Active' : 'Inactive',
-                createdDate: new Date(zone.createdAt).toISOString().slice(0,10)
+                createdDate: new Date(zone.createdAt).toISOString().slice(0, 10)
             };
-        }));
+            delete result.regionDoc;
+            delete result.regionDocs;
+            return result;
+        });
 
-        return sendResponse(res, 200, 'Zones fetched successfully', enrichedZones);
+        return sendResponse(res, 200, 'Zones fetched successfully', mappedZones);
     } catch (error) {
         console.error('Error fetching zones:', error);
         return sendError(res, 500, 'Failed to fetch zones', error.message);
@@ -152,7 +226,7 @@ export const getZones = async (req, res) => {
 
 export const createZone = async (req, res) => {
     try {
-        const { name, regionId, description, status } = req.body;
+        const { name, regionId, description, status, coordinates } = req.body;
         if (!name || !regionId) return sendError(res, 400, 'Name and Region are required');
 
         const zone = await FoodZone.create({
@@ -160,8 +234,7 @@ export const createZone = async (req, res) => {
             regionId,
             description,
             isActive: status !== 'Inactive',
-            // provide minimal coordinates as they are required by existing model schema
-            coordinates: [{latitude: 0, longitude: 0}, {latitude: 1, longitude: 1}, {latitude: 2, longitude: 2}]
+            coordinates: coordinates && coordinates.length >= 3 ? coordinates : [{latitude: 0, longitude: 0}, {latitude: 1, longitude: 1}, {latitude: 2, longitude: 2}]
         });
 
         return sendResponse(res, 201, 'Zone created successfully', zone);
@@ -203,12 +276,13 @@ export const getZoneById = async (req, res) => {
 
 export const updateZone = async (req, res) => {
     try {
-        const { name, regionId, description, status } = req.body;
+        const { name, regionId, description, status, coordinates } = req.body;
         const updateData = {};
         if (name !== undefined) updateData.name = name;
         if (regionId !== undefined) updateData.regionId = regionId;
         if (description !== undefined) updateData.description = description;
         if (status !== undefined) updateData.isActive = status !== 'Inactive';
+        if (coordinates !== undefined) updateData.coordinates = coordinates;
 
         const zone = await FoodZone.findByIdAndUpdate(req.params.id, updateData, { new: true }).populate('regionId', 'name');
         if (!zone) return sendError(res, 404, 'Zone not found');
@@ -263,6 +337,7 @@ export const getTerritories = async (req, res) => {
             description: territory.description,
             isActive: territory.isActive,
             postalCodes: territory.postalCodes,
+            coordinates: territory.coordinates,
             franchisesCount: territory.franchisesCount,
             storesCount: territory.storesCount,
             franchisesData: territory.franchisesData,
@@ -280,7 +355,7 @@ export const getTerritories = async (req, res) => {
 
 export const createTerritory = async (req, res) => {
     try {
-        const { name, zoneId, description, status, postalCodes } = req.body;
+        const { name, zoneId, description, status, postalCodes, coordinates } = req.body;
         if (!name || !zoneId) return sendError(res, 400, 'Name and Zone are required');
 
         const territory = await FoodTerritory.create({
@@ -288,6 +363,7 @@ export const createTerritory = async (req, res) => {
             zoneId,
             description,
             postalCodes: postalCodes || [],
+            coordinates: coordinates || [],
             isActive: status !== 'Archived'
         });
 
@@ -337,6 +413,7 @@ export const getTerritoryById = async (req, res) => {
             description: territory.description,
             isActive: territory.isActive,
             postalCodes: territory.postalCodes,
+            coordinates: territory.coordinates,
             franchisesCount: territory.franchisesCount,
             storesCount: territory.storesCount,
             franchisesData: territory.franchisesData,
@@ -353,12 +430,13 @@ export const getTerritoryById = async (req, res) => {
 
 export const updateTerritory = async (req, res) => {
     try {
-        const { name, zoneId, description, status, postalCodes } = req.body;
+        const { name, zoneId, description, status, postalCodes, coordinates } = req.body;
         const updateData = {};
         if (name !== undefined) updateData.name = name;
         if (zoneId !== undefined) updateData.zoneId = zoneId;
         if (description !== undefined) updateData.description = description;
         if (postalCodes !== undefined) updateData.postalCodes = postalCodes;
+        if (coordinates !== undefined) updateData.coordinates = coordinates;
         if (status !== undefined) updateData.isActive = status !== 'Archived' && status !== 'Inactive' && status !== false;
 
         const territory = await FoodTerritory.findByIdAndUpdate(req.params.id, updateData, { new: true });
@@ -371,6 +449,7 @@ export const updateTerritory = async (req, res) => {
             description: territory.description,
             isActive: territory.isActive,
             postalCodes: territory.postalCodes,
+            coordinates: territory.coordinates,
             status: territory.isActive ? 'Active' : 'Archived',
             createdDate: new Date(territory.createdAt).toISOString().slice(0,10),
             createdAt: new Date(territory.createdAt).toISOString().slice(0,10)

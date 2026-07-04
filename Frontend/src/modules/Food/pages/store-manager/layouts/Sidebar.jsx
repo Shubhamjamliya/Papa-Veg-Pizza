@@ -138,6 +138,8 @@ export default function Sidebar({ isOpen, onClose, role, isCollapsed = false, on
             <Icons.Search size={15} className="text-zinc-400 shrink-0 mx-auto" />
             {!displayCollapsed ? (
               <input
+                id="searchMenus"
+                name="searchMenus"
                 type="text"
                 placeholder="Search menus..."
                 value={searchQuery}
