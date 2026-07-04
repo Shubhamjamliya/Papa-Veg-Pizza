@@ -100,7 +100,7 @@ export default function TerritoryManagement() {
   const totalTerritories = safeTerritories.length;
   const activeTerritories = safeTerritories.filter((t) => t.status === "Active").length;
   const inactiveTerritories = safeTerritories.filter((t) => t.status === "Inactive").length;
-  const assignedFranchisesCount = new Set(safeTerritories.map((t) => t.assignedFranchiseId).filter(Boolean)).size;
+  const assignedFranchisesCount = safeTerritories.reduce((acc, curr) => acc + (curr.franchisesCount || 0), 0);
   const totalStoresMapped = safeTerritories.reduce((acc, curr) => acc + (curr.storesCount || 0), 0);
   const totalPostalCodesCovered = new Set(safeTerritories.flatMap((t) => t.postalCodes || [])).size;
 

@@ -55,7 +55,6 @@ export default function TerritoryDetails({
   }, [isOpen, territory?.id]);
 
   const displayTerritory = detailedTerritory || territory;
-  const assignedFranchise = franchises.find((f) => f.id === displayTerritory.assignedFranchiseId);
 
   // Filter postal codes based on search input
   const filteredPostalCodes = (displayTerritory.postalCodes || []).filter((code) =>
@@ -151,26 +150,28 @@ export default function TerritoryDetails({
             <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
               Assigned Franchise
             </h4>
-            {assignedFranchise ? (
-              <div className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-between">
-                <div className="space-y-1">
-                  <p className="text-[11px] font-bold text-black dark:text-zinc-100">
-                    {assignedFranchise.name}
-                  </p>
-                  <p className="text-[9px] font-bold text-zinc-500">{assignedFranchise.code}</p>
-                  <div className="flex items-center gap-1 text-[9px] font-medium text-zinc-500">
-                    <User size={11} />
-                    <span>Mgr: {assignedFranchise.contact}</span>
+            {displayTerritory.franchisesData && displayTerritory.franchisesData.length > 0 ? (
+              <div className="space-y-2">
+                {displayTerritory.franchisesData.map((franchise) => (
+                  <div key={franchise._id} className="p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-between">
+                    <div className="space-y-1">
+                      <p className="text-[11px] font-bold text-black dark:text-zinc-100">
+                        {franchise.name}
+                      </p>
+                      <p className="text-[9px] font-bold text-zinc-500">{franchise.franchiseCode}</p>
+                      <div className="flex items-center gap-2 text-[9px] font-medium text-zinc-500">
+                        <div className="flex items-center gap-1">
+                          <User size={11} />
+                          <span>Mgr: {franchise.ownerName}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Store size={11} />
+                          <span>Stores: {franchise.totalStores || 0}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <button
-                  onClick={() => console.log(`Navigating to Franchise detail ${assignedFranchise.id}`)}
-                  className="p-1.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-black dark:text-zinc-250 rounded-lg text-[9px] font-bold inline-flex items-center gap-1 cursor-pointer"
-                  title="View Franchise Details"
-                >
-                  <span>VIEW</span>
-                  <ExternalLink size={10} />
-                </button>
+                ))}
               </div>
             ) : (
               <div className="p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl text-center">

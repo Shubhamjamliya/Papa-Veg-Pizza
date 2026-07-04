@@ -104,3 +104,72 @@ export const getFranchises = async (req, res) => {
         return sendError(res, 500, 'Failed to fetch franchises', error.message);
     }
 };
+
+export const getFranchiseById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const franchise = await FoodFranchise.findById(id);
+        if (!franchise) {
+            return sendError(res, 404, 'Franchise not found');
+        }
+        return sendResponse(res, 200, 'Franchise fetched successfully', franchise);
+    } catch (error) {
+        console.error('Error fetching franchise:', error);
+        return sendError(res, 500, 'Failed to fetch franchise', error.message);
+    }
+};
+
+export const updateFranchise = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
+        
+        // If status is toggled (from frontend it sends status: "ACTIVE" or "INACTIVE")
+        if (updates.status !== undefined) {
+            updates.isActive = updates.status === 'ACTIVE';
+            delete updates.status;
+        }
+
+        const updatedFranchise = await FoodFranchise.findByIdAndUpdate(
+            id,
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedFranchise) {
+            return sendError(res, 404, 'Franchise not found');
+        }
+
+        // Keep Admin account in sync if active status changes
+        if (updates.isActive !== undefined) {
+            await FoodAdmin.updateMany(
+                { franchiseId: id },
+                { $set: { isActive: updates.isActive } }
+            );
+        }
+
+        return sendResponse(res, 200, 'Franchise updated successfully', updatedFranchise);
+    } catch (error) {
+        console.error('Error updating franchise:', error);
+        return sendError(res, 500, 'Failed to update franchise', error.message);
+    }
+};
+
+export const deleteFranchise = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const deletedFranchise = await FoodFranchise.findByIdAndDelete(id);
+        if (!deletedFranchise) {
+            return sendError(res, 404, 'Franchise not found');
+        }
+
+        // Also delete associated admins
+        await FoodAdmin.deleteMany({ franchiseId: id });
+
+        return sendResponse(res, 200, 'Franchise deleted successfully');
+    } catch (error) {
+        console.error('Error deleting franchise:', error);
+        return sendError(res, 500, 'Failed to delete franchise', error.message);
+    }
+};
