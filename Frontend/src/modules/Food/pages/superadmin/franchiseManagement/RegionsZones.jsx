@@ -105,13 +105,16 @@ export default function RegionsZones() {
   const [isArchiveConfirmOpen, setIsArchiveConfirmOpen] = useState(false);
 
   // KPI calculations (Updates dynamically)
-  const totalRegions = regions.length;
-  const totalZones = zones.length;
-  const activeRegions = regions.filter((r) => r.status === "Active").length;
-  const activeZones = zones.filter((z) => z.status === "Active").length;
-  const totalTerritories = zones.reduce((acc, curr) => acc + (curr.territoriesCount || 0), 0);
-  const totalFranchises = regions.reduce((acc, curr) => acc + (curr.franchisesCount || 0), 0);
-  const totalStores = regions.reduce((acc, curr) => acc + (curr.storesCount || 0), 0);
+  const safeRegions = Array.isArray(regions) ? regions : [];
+  const safeZones = Array.isArray(zones) ? zones : [];
+
+  const totalRegions = safeRegions.length;
+  const totalZones = safeZones.length;
+  const activeRegions = safeRegions.filter((r) => r.status === "Active").length;
+  const activeZones = safeZones.filter((z) => z.status === "Active").length;
+  const totalTerritories = safeZones.reduce((acc, curr) => acc + (curr.territoriesCount || 0), 0);
+  const totalFranchises = safeRegions.reduce((acc, curr) => acc + (curr.franchisesCount || 0), 0);
+  const totalStores = safeRegions.reduce((acc, curr) => acc + (curr.storesCount || 0), 0);
 
   const formatCurrencyInCr = (val) => {
     const inCr = val / 10000000;

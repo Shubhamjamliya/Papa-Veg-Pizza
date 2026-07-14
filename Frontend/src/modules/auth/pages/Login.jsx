@@ -145,7 +145,7 @@ export default function UnifiedOTPFastLogin() {
       const user = data.user
 
       setAuthData("user", accessToken, user, refreshToken)
-      
+
       // If user has no name, show name modal instead of immediate navigation
       if (!user.name || user.name.trim() === "") {
         setTempAuth({ accessToken, user, refreshToken })
@@ -278,9 +278,9 @@ export default function UnifiedOTPFastLogin() {
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
               className="relative inline-block mb-4"
             >
-              <img 
-                src={logoNew} 
-                alt="Foodelo Logo" 
+              <img
+                src={logoNew}
+                alt="Papa Veg Pizza Logo"
                 className="w-40 h-40 md:w-48 md:h-48 object-contain mx-auto"
               />
             </motion.div>
@@ -469,7 +469,7 @@ export default function UnifiedOTPFastLogin() {
         >
           <div className="bg-[#7e3866] p-8 text-center relative">
             <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-            <motion.div 
+            <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30"
@@ -481,7 +481,7 @@ export default function UnifiedOTPFastLogin() {
               We'd love to know your name to personalize your experience.
             </DialogDescription>
           </div>
-          
+
           <form onSubmit={handleNameSubmit} className="p-8 pt-6 space-y-6">
             <div className="space-y-4">
               <Label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">
@@ -500,8 +500,8 @@ export default function UnifiedOTPFastLogin() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isUpdatingName}
                 className="w-full h-14 bg-[#7e3866] hover:bg-[#6b2f57] text-white rounded-2xl font-bold text-lg shadow-lg shadow-[#7e3866]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >

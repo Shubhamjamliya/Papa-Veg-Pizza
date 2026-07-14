@@ -1,5 +1,5 @@
 export const APP_CONFIG = {
-  NAME: 'Foodelo',
+  NAME: 'Papa Veg Pizza',
   VERSION: '1.0.0',
 };
 

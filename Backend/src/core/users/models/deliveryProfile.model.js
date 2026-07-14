@@ -6,21 +6,23 @@ const normalizeRatingValue = (value) => {
     return Math.max(0, Math.min(5, Number(numeric.toFixed(1))));
 };
 
-const deliveryPartnerSchema = new mongoose.Schema(
+const deliveryProfileSchema = new mongoose.Schema(
     {
-        name: {
-            type: String,
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
             required: true,
-            trim: true
-        },
-        phone: {
-            type: String,
-            required: true,
-            trim: true,
+            index: true,
             unique: true
         },
-        email: { type: String, trim: true },
-        password: { type: String },
+        name: {
+            type: String,
+            trim: true
+        },
+        profileImage: {
+            type: String,
+            default: ''
+        },
         franchiseId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'FoodFranchise',
@@ -33,65 +35,25 @@ const deliveryPartnerSchema = new mongoose.Schema(
             default: null,
             index: true
         },
-        countryCode: {
-            type: String,
-            default: '+91'
-        },
-        address: {
-            type: String
-        },
-        city: {
-            type: String
-        },
-        state: {
-            type: String
-        },
-        vehicleType: {
-            type: String
-        },
-        vehicleName: {
-            type: String
-        },
+        address: { type: String },
+        city: { type: String },
+        state: { type: String },
+        vehicleType: { type: String },
+        vehicleName: { type: String },
         vehicleNumber: {
             type: String,
             unique: true,
             sparse: true
         },
-        panNumber: {
-            type: String
-        },
-        aadharNumber: {
-            type: String
-        },
-        drivingLicenseNumber: {
-            type: String,
-            trim: true
-        },
-        profilePhoto: {
-            type: String
-        },
-        fcmTokens: {
-            type: [String],
-            default: []
-        },
-        fcmTokenMobile: {
-            type: [String],
-            default: []
-        },
-        aadharPhoto: {
-            type: String
-        },
-        panPhoto: {
-            type: String
-        },
-        drivingLicensePhoto: {
-            type: String
-        },
-        status: {
-            type: String,
-            enum: ['pending', 'approved', 'rejected', 'suspended'],
-            default: 'pending'
-        },
+        panNumber: { type: String },
+        aadharNumber: { type: String },
+        drivingLicenseNumber: { type: String, trim: true },
+        aadharPhotoUrl: { type: String },
+        aadharPhotoPublicId: { type: String },
+        panPhotoUrl: { type: String },
+        panPhotoPublicId: { type: String },
+        drivingLicensePhotoUrl: { type: String },
+        drivingLicensePhotoPublicId: { type: String },
         priorityRouting: {
             type: Boolean,
             default: false
@@ -99,15 +61,39 @@ const deliveryPartnerSchema = new mongoose.Schema(
         rejectionReason: { type: String },
         rejectedAt: { type: Date },
         approvedAt: { type: Date },
+        documentsVerifiedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            default: null
+        },
+        documentsVerifiedAt: { type: Date },
+        isVerified: {
+            type: Boolean,
+            default: false
+        },
+        joinedAt: {
+            type: Date,
+            default: Date.now
+        },
         bankAccountHolderName: { type: String },
         bankAccountNumber: { type: String },
         bankIfscCode: { type: String },
         bankName: { type: String },
         upiId: { type: String },
         upiQrCode: { type: String },
-        availabilityStatus: {
+        currentStatus: {
+            type: String,
+            enum: ['pending', 'approved', 'rejected', 'suspended'],
+            default: 'pending'
+        },
+        onlineStatus: {
             type: String,
             enum: ['online', 'offline'],
+            default: 'offline'
+        },
+        availabilityStatus: {
+            type: String,
+            enum: ['available', 'busy', 'offline'],
             default: 'offline'
         },
         lastLocation: {
@@ -117,14 +103,6 @@ const deliveryPartnerSchema = new mongoose.Schema(
         lastLat: { type: Number },
         lastLng: { type: Number },
         lastLocationAt: { type: Date },
-        referralCode: { type: String, index: true },
-        referredBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'FoodDeliveryPartner',
-            default: null,
-            index: true
-        },
-        referralCount: { type: Number, default: 0, min: 0 },
         rating: {
             type: Number,
             default: 0,
@@ -137,13 +115,11 @@ const deliveryPartnerSchema = new mongoose.Schema(
         totalDeliveries: { type: Number, default: 0 }
     },
     {
-        collection: 'food_delivery_partners',
+        collection: 'delivery_profiles',
         timestamps: true
     }
 );
 
-// Indices
-deliveryPartnerSchema.index({ lastLocation: '2dsphere' });
+deliveryProfileSchema.index({ lastLocation: '2dsphere' });
 
-export const FoodDeliveryPartner = mongoose.model('FoodDeliveryPartner', deliveryPartnerSchema);
-
+export const DeliveryProfile = mongoose.model('DeliveryProfile', deliveryProfileSchema);

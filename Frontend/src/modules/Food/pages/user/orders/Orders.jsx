@@ -5,9 +5,9 @@ import { orderAPI } from "@food/api"
 import { useCart } from "@food/context/CartContext"
 import { toast } from "sonner"
 import { getCompanyNameAsync } from "@food/utils/businessSettings"
-const debugLog = (...args) => {}
-const debugWarn = (...args) => {}
-const debugError = (...args) => {}
+const debugLog = (...args) => { }
+const debugWarn = (...args) => { }
+const debugError = (...args) => { }
 
 
 export default function Orders() {
@@ -47,9 +47,9 @@ export default function Orders() {
 
   // Calculate countdown for an order
   const calculateCountdown = (order) => {
-    if (!order || 
-        order.status === 'delivered' || 
-        String(order.status).toLowerCase().includes('cancel')) {
+    if (!order ||
+      order.status === 'delivered' ||
+      String(order.status).toLowerCase().includes('cancel')) {
       return null
     }
 
@@ -577,7 +577,7 @@ Order again from this restaurant in the ${companyName} app.`
     setActiveMenuOrderId(null)
     const status = String(order.status || '').toLowerCase()
     const isTerminal = ['delivered', 'cancelled', 'completed', 'failed'].includes(status) || status.includes('cancelled')
-    
+
     if (isTerminal) {
       navigate(`/user/orders/${order.id}/details`)
     } else {
@@ -938,9 +938,9 @@ Order again from this restaurant in the ${companyName} app.`
                         </span>
                         {order.payment.status && (
                           <span className={`ml-2 px-1.5 py-0.5 rounded text-[10px] font-medium ${(order.payment.status === 'completed' || (isDelivered && isCodOrWallet)) ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
-                              order.payment.status === 'failed' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
-                                (order.payment.status === 'pending' || order.payment.status === 'cod_pending') ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
-                                  'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                            order.payment.status === 'failed' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
+                              (order.payment.status === 'pending' || order.payment.status === 'cod_pending') ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
+                                'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
                             }`}>
                             {(isDelivered && isCodOrWallet) ? 'Paid' : order.payment.status}
                           </span>
@@ -1056,9 +1056,9 @@ Order again from this restaurant in the ${companyName} app.`
         )}
       </div>
 
-       {/* Footer Branding */}
+      {/* Footer Branding */}
       <div className="flex justify-center mt-8 mb-4">
-        <h1 className="text-4xl font-black text-gray-200 dark:text-gray-800 tracking-tighter italic uppercase">foodelo</h1>
+        <h1 className="text-4xl font-black text-gray-200 dark:text-gray-800 tracking-tighter italic uppercase">Papa Veg Pizza</h1>
       </div>
 
       {/* Rating & Feedback Modal */}
@@ -1100,8 +1100,8 @@ Order again from this restaurant in the ${companyName} app.`
                       >
                         <Star
                           className={`w-10 h-10 transition-all ${isActive
-                              ? "text-yellow-400 fill-yellow-400 drop-shadow-lg"
-                              : "text-gray-300 hover:text-yellow-200"
+                            ? "text-yellow-400 fill-yellow-400 drop-shadow-lg"
+                            : "text-gray-300 hover:text-yellow-200"
                             }`}
                         />
                       </button>
@@ -1134,8 +1134,8 @@ Order again from this restaurant in the ${companyName} app.`
                         >
                           <Star
                             className={`w-10 h-10 transition-all ${isActive
-                                ? "text-yellow-400 fill-yellow-400 drop-shadow-lg"
-                                : "text-gray-300 hover:text-yellow-200"
+                              ? "text-yellow-400 fill-yellow-400 drop-shadow-lg"
+                              : "text-gray-300 hover:text-yellow-200"
                               }`}
                           />
                         </button>

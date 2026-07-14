@@ -79,7 +79,8 @@ export default function RegionsData({
 
 
   // Filter Logic: Regions
-  const filteredRegions = regions
+  const safeRegions = Array.isArray(regions) ? regions : [];
+  const filteredRegions = safeRegions
     .filter((r) => {
       const matchesSearch =
         r.name.toLowerCase().includes(regionsDebouncedSearch.toLowerCase()) ||
@@ -409,31 +410,33 @@ export default function RegionsData({
                             </td>
                           )}
                           {regionsVisibleColumns.created && <td className="p-3 text-center text-zinc-500 dark:text-zinc-400 font-bold">{r.createdDate}</td>}
-                          <td className="p-3 text-right space-x-1.5 select-none">
-                            <button
-                              onClick={() => {
-                                setSelectedRegion(r);
-                                setIsRegionDrawerOpen(true);
-                              }}
-                              className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-blue-600 dark:text-blue-400 cursor-pointer inline-flex"
-                              title="View Details"
-                            >
-                              <Eye size={13} />
-                            </button>
-                            <button
-                              onClick={() => onEdit(r)}
-                              className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-black dark:text-zinc-300 cursor-pointer inline-flex"
-                              title="Edit Region"
-                            >
-                              <Sliders size={13} />
-                            </button>
-                            <button
-                              onClick={() => triggerArchiveConfirm("region", r)}
-                              className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-red-600 dark:text-red-500 cursor-pointer inline-flex ml-2"
-                              title="Delete Region"
-                            >
-                              <Trash2 size={13} />
-                            </button>
+                          <td className="p-3 select-none">
+                            <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
+                              <button
+                                onClick={() => {
+                                  setSelectedRegion(r);
+                                  setIsRegionDrawerOpen(true);
+                                }}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-blue-600 dark:text-blue-400 cursor-pointer inline-flex"
+                                title="View Details"
+                              >
+                                <Eye size={13} />
+                              </button>
+                              <button
+                                onClick={() => onEdit(r)}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-black dark:text-zinc-300 cursor-pointer inline-flex"
+                                title="Edit Region"
+                              >
+                                <Sliders size={13} />
+                              </button>
+                              <button
+                                onClick={() => triggerArchiveConfirm("region", r)}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-red-600 dark:text-red-500 cursor-pointer inline-flex"
+                                title="Delete Region"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );

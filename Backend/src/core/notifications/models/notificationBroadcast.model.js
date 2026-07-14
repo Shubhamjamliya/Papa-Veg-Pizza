@@ -58,7 +58,7 @@ const notificationBroadcastSchema = new mongoose.Schema(
         },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'FoodAdmin',
+            ref: 'User',
             required: true,
             index: true
         },

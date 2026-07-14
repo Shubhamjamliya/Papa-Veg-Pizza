@@ -81,7 +81,8 @@ export default function ZonesData({
 
 
   // Filter Logic: Zones
-  const filteredZones = zones
+  const safeZones = Array.isArray(zones) ? zones : [];
+  const filteredZones = safeZones
     .filter((z) => {
       const matchesSearch =
         z.name.toLowerCase().includes(zonesDebouncedSearch.toLowerCase()) ||
@@ -420,31 +421,33 @@ export default function ZonesData({
                             </td>
                           )}
                           {zonesVisibleColumns.created && <td className="p-3 text-center text-zinc-500 dark:text-zinc-400 font-bold">{z.createdDate}</td>}
-                          <td className="p-3 text-right space-x-1.5 select-none">
-                            <button
-                              onClick={() => {
-                                setSelectedZone(z);
-                                setIsZoneDrawerOpen(true);
-                              }}
-                              className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-blue-600 dark:text-blue-400 cursor-pointer inline-flex"
-                                title="View Details"
-                            >
-                              <Eye size={13} />
-                            </button>
-                            <button
-                              onClick={() => onEdit(z)}
-                              className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-black dark:text-zinc-300 cursor-pointer inline-flex"
-                              title="Edit Zone"
-                            >
-                              <Sliders size={13} />
-                            </button>
-                            <button
-                              onClick={() => triggerArchiveConfirm("zone", z)}
-                              className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-red-600 dark:text-red-500 cursor-pointer inline-flex ml-2"
-                              title="Delete Zone"
-                            >
-                              <Trash2 size={13} />
-                            </button>
+                          <td className="p-3 select-none">
+                            <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
+                              <button
+                                onClick={() => {
+                                  setSelectedZone(z);
+                                  setIsZoneDrawerOpen(true);
+                                }}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-blue-600 dark:text-blue-400 cursor-pointer inline-flex"
+                                  title="View Details"
+                              >
+                                <Eye size={13} />
+                              </button>
+                              <button
+                                onClick={() => onEdit(z)}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-black dark:text-zinc-300 cursor-pointer inline-flex"
+                                title="Edit Zone"
+                              >
+                                <Sliders size={13} />
+                              </button>
+                              <button
+                                onClick={() => triggerArchiveConfirm("zone", z)}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors text-red-600 dark:text-red-500 cursor-pointer inline-flex"
+                                title="Delete Zone"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
