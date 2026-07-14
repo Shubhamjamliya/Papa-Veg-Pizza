@@ -4,9 +4,9 @@ const foodTransactionSchema = new mongoose.Schema({
     // Identifiers
     orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodOrder', required: true, unique: true, index: true },
 
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodUser', required: true, index: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodStore', required: true, index: true },
-    deliveryPartnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodDeliveryPartner', index: true },
+    deliveryPartnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
 
     // Core Payment Info
     paymentMethod: { 
@@ -20,7 +20,6 @@ const foodTransactionSchema = new mongoose.Schema({
         default: 'pending',
         index: true 
     },
-    currency: { type: String, default: 'INR' },
 
     // Snapshot of order pricing at the time transaction was created
     pricing: {
@@ -29,30 +28,8 @@ const foodTransactionSchema = new mongoose.Schema({
         packagingFee: { type: Number, default: 0, min: 0 },
         deliveryFee: { type: Number, default: 0, min: 0 },
         platformFee: { type: Number, default: 0, min: 0 },
-        storeCommission: { type: Number, default: 0, min: 0 },
         discount: { type: Number, default: 0, min: 0 },
-        total: { type: Number, default: 0, min: 0 },
-        currency: { type: String, default: 'INR', trim: true },
-    },
-
-    // Snapshot of payment state at the time of transaction (source of truth for UI)
-    payment: {
-        method: { type: String, default: 'cash', trim: true },
-        status: { type: String, default: 'cod_pending', trim: true },
-        amountDue: { type: Number, default: 0, min: 0 },
-        razorpay: {
-            orderId: { type: String, default: '' },
-            paymentId: { type: String, default: '' },
-            signature: { type: String, default: '' }
-        },
-        qr: {
-            qrId: { type: String, default: '' },
-            imageUrl: { type: String, default: '' },
-            paymentLinkId: { type: String, default: '' },
-            shortUrl: { type: String, default: '' },
-            status: { type: String, default: '' },
-            expiresAt: { type: Date, default: null }
-        }
+        total: { type: Number, default: 0, min: 0 }
     },
 
     // Financial Breakdown (The Split)

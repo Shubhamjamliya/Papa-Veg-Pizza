@@ -18,10 +18,8 @@ const foodItemSchema = new mongoose.Schema(
             trim: true,
             default: ''
         },
-        image: {
-            type: String,
-            default: ''
-        },
+        imageUrl: { type: String, default: '' },
+        imagePublicId: { type: String, default: '' },
         basePrice: {
             type: Number,
             required: true,

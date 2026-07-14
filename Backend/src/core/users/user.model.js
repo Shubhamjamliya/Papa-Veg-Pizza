@@ -1,25 +1,68 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import { config } from '../../config/env.js';
 
 const userSchema = new mongoose.Schema(
     {
+        email: {
+            type: String,
+            unique: true,
+            sparse: true,
+            lowercase: true,
+            trim: true
+        },
         phone: {
             type: String,
-            required: true,
+            unique: true,
+            sparse: true,
             trim: true
         },
         countryCode: {
             type: String,
             default: '+91'
         },
-        name: {
+        password: {
             type: String
         },
-        email: {
-            type: String
+        roleId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Role',
+            default: null,
+            index: true
         },
-        profileImage: {
+        storeId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FoodStore',
+            default: null,
+            index: true
+        },
+        franchiseId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FoodFranchise',
+            default: null,
+            index: true
+        },
+        status: {
             type: String,
-            default: ''
+            enum: ['ACTIVE', 'INACTIVE', 'SUSPENDED', 'PENDING'],
+            default: 'ACTIVE'
+        },
+        isActive: {
+            type: Boolean,
+            default: true
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false,
+            index: true
+        },
+        emailVerified: {
+            type: Boolean,
+            default: false
+        },
+        phoneVerified: {
+            type: Boolean,
+            default: false
         },
         fcmTokens: {
             type: [String],
@@ -29,54 +72,38 @@ const userSchema = new mongoose.Schema(
             type: [String],
             default: []
         },
-        dateOfBirth: {
+        lastLogin: {
             type: Date,
             default: null
-        },
-        anniversary: {
-            type: Date,
-            default: null
-        },
-        gender: {
-            type: String,
-            enum: ['male', 'female', 'other', 'prefer-not-to-say', ''],
-            default: ''
-        },
-        referralCode: {
-            type: String
-        },
-        referredBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'FoodUser',
-            default: null,
-            index: true
-        },
-        referralCount: {
-            type: Number,
-            default: 0,
-            min: 0
-        },
-        isVerified: {
-            type: Boolean,
-            default: false
-        },
-        isActive: {
-            type: Boolean,
-            default: true,
-            index: true
-        },
-        role: {
-            type: String,
-            default: 'USER'
         }
     },
     {
-        collection: 'food_users',
+        collection: 'users',
         timestamps: true
     }
 );
 
-userSchema.index({ phone: 1 }, { unique: true });
+// ADDED FIELDS
+userSchema.add({
+    loginProvider: { type: String, enum: ['local', 'google', 'facebook', 'apple'], default: 'local' },
+    failedLoginAttempts: { type: Number, default: 0 },
+    accountLockedUntil: { type: Date, default: null },
+    passwordChangedAt: { type: Date, default: null }
+});
 
-export const FoodUser = mongoose.model('FoodUser', userSchema);
 
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password') || !this.password) {
+        return next();
+    }
+    const salt = await bcrypt.genSalt(config.bcryptSaltRounds);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+
+userSchema.methods.comparePassword = function (candidatePassword) {
+    if (!this.password) return false;
+    return bcrypt.compare(candidatePassword, this.password);
+};
+
+export const User = mongoose.model('User', userSchema);

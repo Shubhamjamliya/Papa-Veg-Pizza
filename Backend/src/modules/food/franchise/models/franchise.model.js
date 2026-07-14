@@ -2,15 +2,30 @@ import mongoose from 'mongoose';
 
 const franchiseSchema = new mongoose.Schema(
     {
-        name: {
+        franchiseName: {
             type: String,
             required: true,
             trim: true
         },
-        ownerName: {
+        legalBusinessName: {
             type: String,
-            required: true,
-            trim: true
+            trim: true,
+            default: ''
+        },
+        panNumber: {
+            type: String,
+            trim: true,
+            default: ''
+        },
+        logo: {
+            type: String,
+            trim: true,
+            default: ''
+        },
+        ownerAdminId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'FoodAdmin',
+            required: true
         },
         email: {
             type: String,
@@ -46,6 +61,12 @@ const franchiseSchema = new mongoose.Schema(
         territoryId: { type: String, trim: true, default: '' },
         city: { type: String, trim: true, default: '' },
         state: { type: String, trim: true, default: '' },
+        country: { type: String, trim: true, default: '' },
+        pincode: { type: String, trim: true, default: '' },
+        location: {
+            type: { type: String, enum: ['Point'], default: 'Point' },
+            coordinates: { type: [Number], default: [0, 0] }
+        },
         type: {
             type: String,
             enum: ['Single Store', 'Multi Store'],
@@ -76,6 +97,11 @@ const franchiseSchema = new mongoose.Schema(
             default: true,
             index: true
         },
+        status: {
+            type: String,
+            enum: ['PENDING', 'ACTIVE', 'SUSPENDED'],
+            default: 'ACTIVE'
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'FoodAdmin',
@@ -88,4 +114,9 @@ const franchiseSchema = new mongoose.Schema(
     }
 );
 
-export const FoodFranchise = mongoose.model('FoodFranchise', franchiseSchema);
+franchiseSchema.add({
+    isDeleted: { type: Boolean, default: false, index: true },
+    deletedAt: { type: Date, default: null },
+    deletedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }
+});
+

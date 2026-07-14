@@ -1968,7 +1968,16 @@ export const publicAPI = {
   getPrivacy: (key = "privacy") => userClient.get(`/food/pages/${key}`),
   getTerms: (key = "terms") => userClient.get(`/food/pages/${key}`),
 };
+export const storeAPI = {
+  getPublicDishes: (params = {}) =>
+    userClient.get("/food/restaurant/dishes/public", { params }),
+  getStores: (params = {}) =>
+    userClient.get("/food/restaurant/restaurants", { params }),
+  getStoreById: (id) =>
+    userClient.get(`/food/restaurant/restaurants/${String(id)}`),
+};
 
 export { profileApi } from "./profileApi.js";
 export { myTasksService } from "./myTasksService.js";
+
 

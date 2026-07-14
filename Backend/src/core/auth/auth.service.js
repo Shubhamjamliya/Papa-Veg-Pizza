@@ -88,10 +88,10 @@ const sanitizeDeliveryForAuthResponse = (deliveryDoc = {}) => {
 const sanitizeAdminForAuthResponse = (adminDoc = {}) => {
   const id = adminDoc?._id?.toString?.() || adminDoc?.id?.toString?.() || adminDoc?._id || adminDoc?.id || null;
   return {
-    id,
-    _id: id,
-    name: adminDoc?.name || "",
+    _id: adminDoc._id,
     email: adminDoc?.email || "",
+    name: ((adminDoc?.firstName || "") + " " + (adminDoc?.lastName || "")).trim(),
+    phone: adminDoc?.phone || "",
     role: adminDoc?.role || "superadmin",
     storeId: adminDoc?.storeId || null,
     franchiseId: adminDoc?.franchiseId || null,
@@ -325,6 +325,10 @@ export const adminLogin = async ({ email, mobile, password } = {}, allowedRoles 
     throw new AuthError("Access denied: Insufficient permissions for this portal");
   }
 
+  if (role === 'franchise-admin' && !admin.createdBy && !admin.franchiseId) {
+    throw new AuthError("Access denied: You must be registered by a Superadmin to access this portal");
+  }
+
   const isMatch = await admin.comparePassword(password);
   if (!isMatch) {
     throw new AuthError("Invalid credentials");
@@ -346,7 +350,11 @@ export const adminLogin = async ({ email, mobile, password } = {}, allowedRoles 
 
   admin.lastLogin = new Date();
   admin.refreshToken = refreshToken;
-  await admin.save();
+  
+  await FoodAdmin.updateOne(
+    { _id: admin._id },
+    { $set: { lastLogin: admin.lastLogin, refreshToken: admin.refreshToken } }
+  );
 
   return { accessToken, refreshToken, user: sanitizeAdminForAuthResponse(admin.toObject()) };
 };
@@ -586,16 +594,25 @@ export const getProfile = async (userId, role) => {
 
 const ADMIN_SERVICES_ALLOWED = ["food", "quickCommerce", "taxi"];
 
-/** Update admin profile (name, email, phone, profileImage). Only for ADMIN role. */
-export const updateAdminProfile = async (userId, body) => {
-  if (!userId) {
-    throw new AuthError("Invalid token payload");
+/** Update admin profile (firstName, lastName, email, phone, profileImage). Only for ADMIN role. */
+export async function updateAdminProfile(userId, body) {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new ValidationError("Invalid admin ID format.");
   }
+
   const admin = await FoodAdmin.findById(userId);
   if (!admin) {
-    throw new AuthError("Profile not found");
+    throw new NotFoundError("Admin not found.");
   }
-  if (body.name !== undefined) admin.name = String(body.name || "").trim();
+
+  // Basic update fields
+  if (body.firstName !== undefined) admin.firstName = String(body.firstName || "").trim();
+  if (body.lastName !== undefined) admin.lastName = String(body.lastName || "").trim();
+  if (body.name !== undefined) {
+      // Fallback for older frontend
+      admin.firstName = String(body.name || "").split(' ')[0];
+      admin.lastName = String(body.name || "").split(' ').slice(1).join(' ');
+  }
   if (body.email !== undefined) {
     const normalizedEmail = String(body.email || "")
       .trim()

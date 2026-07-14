@@ -354,6 +354,9 @@ function AppShellSkeleton({ className }) {
   )
 }
 
+const RestaurantGridSkeleton = StoreGridSkeleton;
+const RestaurantCardSkeleton = StoreCardSkeleton;
+
 export {
   AppShellSkeleton,
   CategoryChipRowSkeleton,
@@ -365,7 +368,10 @@ export {
   StoreCardSkeleton,
   StoreDetailSkeleton,
   StoreGridSkeleton,
+  RestaurantCardSkeleton,
+  RestaurantGridSkeleton,
   SkeletonLines,
   TableSkeleton,
   WalletSkeleton,
 }
+

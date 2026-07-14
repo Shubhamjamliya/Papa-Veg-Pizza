@@ -55,8 +55,8 @@ export const loadBusinessSettings = async () => {
         cachedSettings = settings;
         try {
           localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-        } catch (e) {}
-        
+        } catch (e) { }
+
         updateFavicon(settings.favicon?.url);
         updateTitle(settings.companyName);
         return settings;
@@ -121,8 +121,8 @@ export const setCachedSettings = (settings) => {
     cachedSettings = settings;
     try {
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-    } catch (e) {}
-    
+    } catch (e) { }
+
     updateFavicon(settings.favicon?.url);
     updateTitle(settings.companyName);
   }
@@ -135,7 +135,7 @@ export const clearCache = () => {
   cachedSettings = null;
   try {
     localStorage.removeItem(SETTINGS_KEY);
-  } catch (e) {}
+  } catch (e) { }
 };
 
 /**
@@ -147,22 +147,22 @@ export const getCachedSettings = () => {
 
 /**
  * Get company name from business settings with fallback
- * @returns {string} Company name or default "Foodelo Food"
+ * @returns {string} Company name or default "Papa Veg Pizza Food"
  */
 export const getCompanyName = () => {
   const settings = getCachedSettings();
-  return settings?.companyName || "Foodelo";
+  return settings?.companyName || "Papa Veg Pizza";
 };
 
 /**
  * Get company name asynchronously (loads if not cached)
- * @returns {Promise<string>} Company name or default "Foodelo Food"
+ * @returns {Promise<string>} Company name or default "Papa Veg Pizza"
  */
 export const getCompanyNameAsync = async () => {
   try {
     const settings = await loadBusinessSettings();
-    return settings?.companyName || "Foodelo";
+    return settings?.companyName || "Papa Veg Pizza";
   } catch (error) {
-    return "Foodelo";
+    return "Papa Veg Pizza";
   }
 };
