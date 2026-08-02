@@ -14,7 +14,7 @@ const paymentSchema = new mongoose.Schema(
         },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'FoodUser',
             required: true,
             index: true
         },

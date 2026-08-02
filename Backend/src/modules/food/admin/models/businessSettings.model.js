@@ -12,11 +12,15 @@ const businessSettingsSchema = new mongoose.Schema(
         state: { type: String, default: '' },
         pincode: { type: String, default: '' },
         region: { type: String, default: 'India' },
-        logoUrl: { type: String, default: '' },
-        logoPublicId: { type: String, default: '' },
-        faviconUrl: { type: String, default: '' },
-        faviconPublicId: { type: String, default: '' },
-        supportEmail: { type: String, default: 'support@papavegpizza.com' },
+        logo: {
+            url: { type: String, default: '' },
+            publicId: { type: String, default: '' }
+        },
+        favicon: {
+            url: { type: String, default: '' },
+            publicId: { type: String, default: '' }
+        },
+        supportEmail: { type: String, default: 'support@foodelo.com' },
         supportPhone: { type: String, default: '+91 1234567890' },
         supportHours: { type: String, default: '24/7 Availability' }
     },

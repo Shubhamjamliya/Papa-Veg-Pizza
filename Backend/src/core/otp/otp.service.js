@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import ms from 'ms';
-import { FoodOtp } from './otp.model.js';
+import { OTPVerification } from '../auth/models/otpVerification.model.js';
 import { config } from '../../config/env.js';
 import { logger } from '../../utils/logger.js';
 import { ValidationError } from '../auth/errors.js';
@@ -23,7 +23,7 @@ const sendSmsViaIndiaHub = async (phone, otp) => {
 
         // EXACT DLT TEMPLATE provided by user:
         // "Welcome to the ##var## powered by SMSINDIAHUB. Your OTP for registration is ##var##"
-        const message = `Welcome to the PapaVegPizza powered by SMSINDIAHUB. Your OTP for registration is ${otp}`;
+        const message = `Welcome to the Foodelo powered by SMSINDIAHUB. Your OTP for registration is ${otp}`;
 
         // SMS India Hub HTTP GET API — query param names are case-sensitive per SOP
         const url = new URL('http://cloud.smsindiahub.in/vendorsms/pushsms.aspx');
@@ -70,7 +70,7 @@ const sendSmsViaIndiaHub = async (phone, otp) => {
 };
 
 export const createOrUpdateOtp = async (phone) => {
-    const existing = await FoodOtp.findOne({ phone });
+    const existing = await OTPVerification.findOne({ mobile: phone });
     const now = new Date();
 
     // Rate Limiting Logic
@@ -116,8 +116,8 @@ export const createOrUpdateOtp = async (phone) => {
         existing.lastRequestAt = now;
         await existing.save();
     } else {
-        await FoodOtp.create({
-            phone,
+        await OTPVerification.create({
+            mobile: phone,
             otp,
             expiresAt,
             requestCount: 1,
@@ -134,7 +134,7 @@ export const createOrUpdateOtp = async (phone) => {
 };
 
 export const verifyOtp = async (phone, otp) => {
-    const record = await FoodOtp.findOne({ phone });
+    const record = await OTPVerification.findOne({ mobile: phone });
     if (!record) {
         return { valid: false, reason: 'OTP not found' };
     }

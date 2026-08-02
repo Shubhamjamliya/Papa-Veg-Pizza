@@ -309,30 +309,7 @@ export default function SuperAdminDashboard() {
               <span className="text-[10px] font-bold text-zinc-400">Dynamic Styles</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-              {/* Presets */}
-              <div className="space-y-3">
-                <label className="text-xs font-bold text-zinc-500">Theme Presets</label>
-                <div className="space-y-2">
-                  {colorPalettes.map((palette) => (
-                    <button
-                      key={palette.name}
-                      onClick={() => {
-                        setPrimaryColor(palette.primary)
-                        setSecondaryColor(palette.secondary)
-                      }}
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-[var(--primary)] bg-zinc-50/50 dark:bg-zinc-950/30 text-xs text-left transition-all"
-                    >
-                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">{palette.name}</span>
-                      <div className="flex gap-1">
-                        <span className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: palette.primary }} />
-                        <span className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: palette.secondary }} />
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
               {/* Advanced Color Pickers */}
               <div className="space-y-4">
@@ -341,12 +318,12 @@ export default function SuperAdminDashboard() {
                   <div className="flex items-center justify-between gap-4 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30">
                     <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Primary Color</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold">{primaryColor}</span>
+                      <span className="text-xs font-mono font-bold w-16 text-right">{primaryColor}</span>
                       <input
                         type="color"
                         value={primaryColor}
                         onChange={(e) => setPrimaryColor(e.target.value)}
-                        className="w-8 h-8 rounded-lg overflow-hidden border-0 cursor-pointer"
+                        className="w-8 h-8 rounded-lg overflow-hidden border-0 cursor-pointer shrink-0"
                       />
                     </div>
                   </div>
@@ -354,12 +331,12 @@ export default function SuperAdminDashboard() {
                   <div className="flex items-center justify-between gap-4 p-3 rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30">
                     <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Accent Color</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold">{secondaryColor}</span>
+                      <span className="text-xs font-mono font-bold w-16 text-right">{secondaryColor}</span>
                       <input
                         type="color"
                         value={secondaryColor}
                         onChange={(e) => setSecondaryColor(e.target.value)}
-                        className="w-8 h-8 rounded-lg overflow-hidden border-0 cursor-pointer"
+                        className="w-8 h-8 rounded-lg overflow-hidden border-0 cursor-pointer shrink-0"
                       />
                     </div>
                   </div>

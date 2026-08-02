@@ -10,7 +10,7 @@ import { expireExpiredOffers } from './src/modules/food/admin/services/admin.ser
 
 import { logger } from './src/utils/logger.js';
 import { initializeFirebaseRealtime } from './src/config/firebase.js';
-import { seedSuperAdmin } from './src/core/admin/admin.seed.js';
+import { cleanupLegacySuperAdmin } from './src/core/admin/admin.seed.js';
 
 const SHUTDOWN_TIMEOUT_MS = 10000;
 let server = null;
@@ -50,8 +50,12 @@ const startServer = async () => {
         // 1. Connect to Database (MongoDB)
         await connectDB();
 
-        // Seed Super Admin if not present
-        await seedSuperAdmin();
+        // Cleanup legacy Superadmin
+        await cleanupLegacySuperAdmin();
+
+        // Seed new RBAC roles and default Superadmin User
+        const { seedRolesData } = await import('./seed-roles.js');
+        await seedRolesData();
 
         // 2. Create HTTP server from Express app
         const httpServer = http.createServer(app);

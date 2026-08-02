@@ -12,8 +12,8 @@ import { toast } from "sonner"
 export default function AdminLogin() {
   const navigate = useNavigate()
   const { logo, themeMode } = useSystemTheme()
-  const [identifier, setIdentifier] = useState("")
-  const [password, setPassword] = useState("")
+  const [identifier, setIdentifier] = useState("admin@papavegpizza.com")
+  const [password, setPassword] = useState("12345678")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const submitting = useRef(false)

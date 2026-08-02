@@ -199,11 +199,26 @@ export default function StoreLogin() {
 
           {/* Quick Info / Role Map */}
           <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200/10 text-[10px] opacity-75">
-            <h4 className="font-semibold text-gray-500 dark:text-gray-400 mb-1">Simulated Credentials</h4>
+            <h4 className="font-semibold text-gray-500 dark:text-gray-400 mb-1">Simulated Credentials (Click to fill)</h4>
             <div className="space-y-0.5 text-xs">
-              <div className="flex justify-between"><span className="text-gray-400">Manager:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">manager@papavegpizza.com</code></div>
-              <div className="flex justify-between"><span className="text-gray-400">Supervisor:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">supervisor@papavegpizza.com</code></div>
-              <div className="flex justify-between"><span className="text-gray-400">Staff:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">staff@papavegpizza.com</code></div>
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-1 rounded transition-colors"
+                onClick={() => { setIdentifier("manager@papavegpizza.com"); setPassword("12345678"); }}
+              >
+                <span className="text-gray-400">Manager:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">manager@papavegpizza.com</code>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-1 rounded transition-colors"
+                onClick={() => { setIdentifier("supervisor@papavegpizza.com"); setPassword("12345678"); }}
+              >
+                <span className="text-gray-400">Supervisor:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">supervisor@papavegpizza.com</code>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 p-1 rounded transition-colors"
+                onClick={() => { setIdentifier("staff@papavegpizza.com"); setPassword("12345678"); }}
+              >
+                <span className="text-gray-400">Staff:</span> <code className="text-gray-600 dark:text-gray-300 font-semibold">staff@papavegpizza.com</code>
+              </div>
             </div>
           </div>
 
