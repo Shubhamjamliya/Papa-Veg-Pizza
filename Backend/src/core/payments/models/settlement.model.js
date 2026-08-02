@@ -7,10 +7,17 @@ import mongoose from 'mongoose';
  */
 const settlementSchema = new mongoose.Schema(
     {
-        
-        storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodStore', index: true },
-        deliveryPartnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
-        franchiseId: { type: mongoose.Schema.Types.ObjectId, ref: 'FoodFranchise', index: true },
+        entityType: {
+            type: String,
+            enum: ['store', 'deliveryBoy'],
+            required: true,
+            index: true
+        },
+        entityId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            index: true
+        },
 
         amount: { type: Number, required: true, min: 0 },
         currency: { type: String, default: 'INR', trim: true },

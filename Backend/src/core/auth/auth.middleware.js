@@ -36,7 +36,7 @@ export const authMiddleware = async (req, res, next) => {
             }
         }
         if (['ADMIN', 'SUPERADMIN', 'FRANCHISE-ADMIN', 'STORE-MANAGER', 'KITCHEN-SUPERVISOR', 'KITCHEN-STAFF'].includes(role)) {
-            const doc = await FoodAdmin.findById(decoded.userId).select('isActive isDeleted').lean();
+            const doc = await FoodUser.findById(decoded.userId).select('isActive isDeleted').lean();
             if (!doc || doc.isActive === false || doc.isDeleted === true) {
                 return sendError(res, 401, 'Account is inactive');
             }

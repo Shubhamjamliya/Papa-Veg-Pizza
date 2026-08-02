@@ -44,15 +44,10 @@ export const createFranchise = async (req, res) => {
             return sendError(res, 400, 'Franchise code already exists');
         }
 
-        // Generate IDs to resolve circular dependency
-        const adminId = new mongoose.Types.ObjectId();
-        const franchiseId = new mongoose.Types.ObjectId();
-
         // Create franchise
         const newFranchise = await FoodFranchise.create({
-            _id: franchiseId,
-            franchiseName,
-            ownerAdminId: adminId,
+            name: franchiseName,
+            ownerName: name,
             email: email.toLowerCase(),
             phone,
             gstNumber,
@@ -69,27 +64,20 @@ export const createFranchise = async (req, res) => {
             franchiseCost,
             paidAmount,
             dueAmount,
-            status: status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE',
             isActive: status === 'ACTIVE',
-            createdBy: req.user?.userId || null
+            createdBy: req.user?._id || null
         });
-
-        const firstName = name ? name.split(' ')[0] : 'Admin';
-        const lastName = name && name.includes(' ') ? name.split(' ').slice(1).join(' ') : '';
 
         // Create franchise admin
         const newAdmin = await FoodAdmin.create({
-            _id: adminId,
             email: email.toLowerCase(),
             password,
-            firstName,
-            lastName,
+            name,
             phone,
             role: 'franchise-admin',
-            franchiseId,
-            status: status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE',
+            franchiseId: newFranchise._id,
             isActive: status === 'ACTIVE',
-            createdBy: req.user?.userId || null
+            createdBy: req.user?._id || null
         });
 
         return sendResponse(res, 201, 'Franchise and admin created successfully', {
@@ -97,8 +85,7 @@ export const createFranchise = async (req, res) => {
             admin: {
                 _id: newAdmin._id,
                 email: newAdmin.email,
-                firstName: newAdmin.firstName,
-                lastName: newAdmin.lastName,
+                name: newAdmin.name,
                 role: newAdmin.role
             }
         });
@@ -157,10 +144,7 @@ export const updateFranchise = async (req, res) => {
         if (updates.isActive !== undefined) {
             await FoodAdmin.updateMany(
                 { franchiseId: id },
-                { $set: { 
-                    isActive: updates.isActive,
-                    status: updates.isActive ? 'ACTIVE' : 'INACTIVE'
-                } }
+                { $set: { isActive: updates.isActive } }
             );
         }
 

@@ -1,6 +1,8 @@
 import crypto from "crypto";
 import ms from "ms";
-import { FoodUser } from "../users/user.model.js";
+import { User } from "../users/models/user.model.js";
+import { Profile } from "../users/models/profile.model.js";
+import { Role } from "../roles/models/role.model.js";
 import { FoodAdmin } from "../admin/admin.model.js";
 import { AdminResetOtp } from "../admin/adminResetOtp.model.js";
 
@@ -9,7 +11,7 @@ import { FoodReferralSettings } from "../../modules/food/admin/models/referralSe
 import { FoodReferralLog } from "../../modules/food/admin/models/referralLog.model.js";
 import { createOrUpdateOtp, verifyOtp } from "../otp/otp.service.js";
 import { signAccessToken, signRefreshToken } from "./token.util.js";
-import { FoodRefreshToken } from "../refreshTokens/refreshToken.model.js";
+import { RefreshToken } from "./models/refreshToken.model.js";
 import { ValidationError, AuthError } from "./errors.js";
 import { config } from "../../config/env.js";
 import { logger } from "../../utils/logger.js";
@@ -88,10 +90,10 @@ const sanitizeDeliveryForAuthResponse = (deliveryDoc = {}) => {
 const sanitizeAdminForAuthResponse = (adminDoc = {}) => {
   const id = adminDoc?._id?.toString?.() || adminDoc?.id?.toString?.() || adminDoc?._id || adminDoc?.id || null;
   return {
-    _id: adminDoc._id,
+    id,
+    _id: id,
+    name: adminDoc?.name || "",
     email: adminDoc?.email || "",
-    name: ((adminDoc?.firstName || "") + " " + (adminDoc?.lastName || "")).trim(),
-    phone: adminDoc?.phone || "",
     role: adminDoc?.role || "superadmin",
     storeId: adminDoc?.storeId || null,
     franchiseId: adminDoc?.franchiseId || null,
@@ -120,7 +122,7 @@ export const verifyUserOtpAndLogin = async (
   name,
 ) => {
   const trimmedName = typeof name === "string" ? name.trim() : "";
-  const existingUser = await FoodUser.findOne({ phone });
+  const existingUser = await User.findOne({ phone });
 
   const result = await verifyOtp(phone, otp);
 
@@ -136,7 +138,7 @@ export const verifyUserOtpAndLogin = async (
   const isNewUser = needsNamePrompt;
 
   if (!userDoc) {
-    userDoc = await FoodUser.create({
+    userDoc = await User.create({
       phone,
       isVerified: true,
       name: trimmedName,
@@ -197,7 +199,7 @@ export const verifyUserOtpAndLogin = async (
         const referrerId = new mongoose.Types.ObjectId(refRaw);
         if (String(referrerId) !== String(userDoc._id)) {
           const [referrer, settingsDoc] = await Promise.all([
-            FoodUser.findById(referrerId).select("_id referralCount").lean(),
+            User.findById(referrerId).select("_id referralCount").lean(),
             FoodReferralSettings.findOne({ isActive: true })
               .sort({ createdAt: -1 })
               .lean(),
@@ -230,7 +232,7 @@ export const verifyUserOtpAndLogin = async (
               });
 
               await Promise.all([
-                FoodUser.updateOne(
+                User.updateOne(
                   { _id: referrerId },
                   { $inc: { referralCount: 1 } },
                 ),
@@ -273,7 +275,7 @@ export const verifyUserOtpAndLogin = async (
   const ttlMs = ms(config.jwtRefreshExpiresIn || "7d");
   const expiresAt = new Date(Date.now() + ttlMs);
 
-  await FoodRefreshToken.create({
+  await RefreshToken.create({
     userId: user._id,
     token: refreshToken,
     expiresAt,
@@ -298,26 +300,42 @@ export const adminLogin = async ({ email, mobile, password } = {}, allowedRoles 
   const filters = [];
   if (normalizedEmail) filters.push({ email: normalizedEmail });
   if (normalizedMobile) {
-    filters.push({ mobile: normalizedMobile }, { phone: normalizedMobile });
-    filters.push({ mobile: { $regex: new RegExp(`${normalizedMobile}$`) } });
-    filters.push({ phone: { $regex: new RegExp(`${normalizedMobile}$`) } });
+    filters.push({ mobile: normalizedMobile });
   }
 
-  const admin = await FoodAdmin.findOne(filters.length > 1 ? { $or: filters } : filters[0]);
-  if (!admin) {
+  const user = await User.findOne(filters.length > 1 ? { $or: filters } : filters[0]).populate('primaryRole');
+  console.log("DEBUG LOGIN: User found?", !!user);
+  if (!user) {
+    console.log("DEBUG LOGIN: Failed because user is null. Filters used:", filters);
     throw new AuthError("Invalid credentials");
   }
 
-  if (admin.isActive === false || admin.isDeleted === true) {
+  console.log("DEBUG LOGIN: User details:", { email: user.email, isActive: user.isActive, isBlocked: user.isBlocked, isDeleted: user.isDeleted });
+  if (user.isActive === false || user.isBlocked === true || user.isDeleted === true) {
     throw new AuthError("Your account is inactive. Please contact support.");
   }
 
-  if (admin.emailVerified === false) {
-    throw new AuthError("Please verify your email before logging in.");
+  const isMatch = await user.comparePassword(password);
+  console.log("DEBUG LOGIN: Password match?", isMatch);
+  if (!isMatch) {
+    console.log("DEBUG LOGIN: Failed because password did not match bcrypt hash");
+    throw new AuthError("Invalid credentials");
   }
 
-  const role = normalizeAdminRole(admin.role);
-  if (!ADMIN_PANEL_ROLES.has(role) && !ADMIN_PANEL_ROLES.has(String(admin.role || "").toUpperCase())) {
+  if (!user.primaryRole) {
+     console.log("DEBUG LOGIN: Failed because primaryRole is missing on user");
+     throw new AuthError("This account has no roles assigned");
+  }
+
+  let role = normalizeAdminRole(user.primaryRole.code);
+  console.log("DEBUG LOGIN: Normalized Role:", role);
+  if (role === 'super-admin') {
+      role = 'superadmin';
+      console.log("DEBUG LOGIN: Adjusted Role to:", role);
+  }
+  
+  if (!ADMIN_PANEL_ROLES.has(role) && !ADMIN_PANEL_ROLES.has(String(user.primaryRole.code || "").toUpperCase())) {
+    console.log("DEBUG LOGIN: Failed because role not in ADMIN_PANEL_ROLES. Expected one of:", Array.from(ADMIN_PANEL_ROLES));
     throw new AuthError("This account is not allowed to access admin panels");
   }
 
@@ -325,16 +343,7 @@ export const adminLogin = async ({ email, mobile, password } = {}, allowedRoles 
     throw new AuthError("Access denied: Insufficient permissions for this portal");
   }
 
-  if (role === 'franchise-admin' && !admin.createdBy && !admin.franchiseId) {
-    throw new AuthError("Access denied: You must be registered by a Superadmin to access this portal");
-  }
-
-  const isMatch = await admin.comparePassword(password);
-  if (!isMatch) {
-    throw new AuthError("Invalid credentials");
-  }
-
-  const payload = { userId: admin._id.toString(), role };
+  const payload = { userId: user._id.toString(), role };
 
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
@@ -342,21 +351,28 @@ export const adminLogin = async ({ email, mobile, password } = {}, allowedRoles 
   const ttlMs = ms(config.jwtRefreshExpiresIn || "7d");
   const expiresAt = new Date(Date.now() + ttlMs);
 
-  await FoodRefreshToken.create({
-    userId: admin._id,
+  await RefreshToken.create({
+    userId: user._id,
     token: refreshToken,
     expiresAt,
   });
 
-  admin.lastLogin = new Date();
-  admin.refreshToken = refreshToken;
-  
-  await FoodAdmin.updateOne(
-    { _id: admin._id },
-    { $set: { lastLogin: admin.lastLogin, refreshToken: admin.refreshToken } }
-  );
+  user.lastLoginAt = new Date();
+  await user.save();
 
-  return { accessToken, refreshToken, user: sanitizeAdminForAuthResponse(admin.toObject()) };
+  // Return formatted response
+  const profile = await Profile.findOne({ userId: user._id }).lean();
+  
+  const userResponse = {
+    id: user._id,
+    _id: user._id,
+    name: profile ? `${profile.firstName} ${profile.lastName}`.trim() : "",
+    email: user.email,
+    mobile: user.mobile,
+    role: role,
+  };
+
+  return { accessToken, refreshToken, user: userResponse };
 };
 
 
@@ -444,7 +460,7 @@ export const verifyDeliveryOtpAndLogin = async (phone, otp, fcmToken, platform) 
   const ttlMs = ms(config.jwtRefreshExpiresIn || "7d");
   const expiresAt = new Date(Date.now() + ttlMs);
 
-  await FoodRefreshToken.create({
+  await RefreshToken.create({
     userId: deliveryPartner._id,
     token: refreshToken,
     expiresAt,
@@ -473,7 +489,7 @@ export const logout = async (refreshToken, fcmToken, platform) => {
     // We try to remove the token from all 4 possible models regardless of the user ID, 
     // ensuring no stale connections are left across any role or app the user was logged into.
     const field = platform === "mobile" ? "fcmTokenMobile" : "fcmTokens";
-    const models = [FoodUser, FoodDeliveryPartner, FoodAdmin];
+    const models = [User, FoodDeliveryPartner, FoodAdmin];
     
     try {
       await Promise.all(
@@ -491,7 +507,7 @@ export const logout = async (refreshToken, fcmToken, platform) => {
   }
 
   // 2. Invalidate the refresh token (standard logout procedure)
-  const deleted = await FoodRefreshToken.deleteOne({ token: refreshToken });
+  const deleted = await RefreshToken.deleteOne({ token: refreshToken });
   return { invalidated: deleted.deletedCount > 0 };
 };
 
@@ -502,13 +518,25 @@ export const getProfile = async (userId, role) => {
   let profile = null;
   const id = userId;
 
-  switch (role) {
-    case ROLES.USER:
-      profile = await FoodUser.findById(id).lean();
-      break;
-    case ROLES.ADMIN:
-      profile = await FoodAdmin.findById(id).select("-password").lean();
-      break;
+  if (ADMIN_PANEL_ROLES.has(role) || role === ROLES.ADMIN) {
+    const user = await User.findById(id).populate('primaryRole').lean();
+    if (user) {
+      const userProfile = await Profile.findOne({ userId: id }).lean();
+      profile = {
+        id: user._id,
+        _id: user._id,
+        name: userProfile ? `${userProfile.firstName} ${userProfile.lastName}`.trim() : "",
+        email: user.email,
+        mobile: user.mobile,
+        role: role,
+        // Any extra fields expected by frontend for admins
+      };
+    }
+  } else {
+    switch (role) {
+      case ROLES.USER:
+        profile = await User.findById(id).lean();
+        break;
 
     case ROLES.DELIVERY_PARTNER: {
       const partner = await FoodDeliveryPartner.findById(id).lean();
@@ -585,6 +613,7 @@ export const getProfile = async (userId, role) => {
     default:
       throw new AuthError("Unknown role");
   }
+  } // End of else block
 
   if (!profile) {
     throw new AuthError("Profile not found");
@@ -594,25 +623,16 @@ export const getProfile = async (userId, role) => {
 
 const ADMIN_SERVICES_ALLOWED = ["food", "quickCommerce", "taxi"];
 
-/** Update admin profile (firstName, lastName, email, phone, profileImage). Only for ADMIN role. */
-export async function updateAdminProfile(userId, body) {
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new ValidationError("Invalid admin ID format.");
+/** Update admin profile (name, email, phone, profileImage). Only for ADMIN role. */
+export const updateAdminProfile = async (userId, body) => {
+  if (!userId) {
+    throw new AuthError("Invalid token payload");
   }
-
   const admin = await FoodAdmin.findById(userId);
   if (!admin) {
-    throw new NotFoundError("Admin not found.");
+    throw new AuthError("Profile not found");
   }
-
-  // Basic update fields
-  if (body.firstName !== undefined) admin.firstName = String(body.firstName || "").trim();
-  if (body.lastName !== undefined) admin.lastName = String(body.lastName || "").trim();
-  if (body.name !== undefined) {
-      // Fallback for older frontend
-      admin.firstName = String(body.name || "").split(' ')[0];
-      admin.lastName = String(body.name || "").split(' ').slice(1).join(' ');
-  }
+  if (body.name !== undefined) admin.name = String(body.name || "").trim();
   if (body.email !== undefined) {
     const normalizedEmail = String(body.email || "")
       .trim()
@@ -798,7 +818,7 @@ export const refreshAccessToken = async (token) => {
     throw new ValidationError("Refresh token is required");
   }
 
-  const stored = await FoodRefreshToken.findOne({ token }).lean();
+  const stored = await RefreshToken.findOne({ token }).lean();
   if (!stored) {
     throw new AuthError("Invalid refresh token");
   }
@@ -813,7 +833,7 @@ export const refreshAccessToken = async (token) => {
 
   // If deactivated user, do not issue fresh access tokens (forces logout on client)
   if (payload?.role === "USER") {
-    const u = await FoodUser.findById(payload.userId).select("isActive").lean();
+    const u = await User.findById(payload.userId).select("isActive").lean();
     if (!u || u.isActive === false) {
       throw new AuthError("User account is deactivated");
     }

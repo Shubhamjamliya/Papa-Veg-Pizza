@@ -1,23 +1,13 @@
 import { FoodAdmin } from "./admin.model.js";
 import { logger } from "../../utils/logger.js";
 
-export const seedSuperAdmin = async () => {
+export const cleanupLegacySuperAdmin = async () => {
     try {
-        const hasSuperAdmin = await FoodAdmin.findOne({ role: "superadmin" });
-        if (!hasSuperAdmin) {
-            await FoodAdmin.create({
-                email: "superadmin@store.com",
-                password: "123456",
-                name: "Super Admin",
-                role: "superadmin",
-                emailVerified: true,
-                isActive: true,
-                isDeleted: false,
-                permissions: ["*"]
-            });
-            logger.info(" seeded default superadmin account: superadmin@store.com / 123456");
+        const result = await FoodAdmin.deleteMany({ role: "superadmin" });
+        if (result.deletedCount > 0) {
+            logger.info(`Deleted ${result.deletedCount} legacy superadmin(s) from food_admins collection.`);
         }
     } catch (err) {
-        logger.error("Error seeding superadmin: " + err.message);
+        logger.error("Error cleaning up legacy superadmin: " + err.message);
     }
 };

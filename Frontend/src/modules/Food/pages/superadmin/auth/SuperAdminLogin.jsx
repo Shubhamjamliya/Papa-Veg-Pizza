@@ -49,11 +49,27 @@ export default function SuperAdminLogin() {
       const data = response?.data?.data || response?.data || {}
 
       const accessToken = data.accessToken
-      const adminUser = data.user || data.admin
+      let adminUser = data.user || data.admin
       const refreshToken = data.refreshToken ?? null
 
       if (!accessToken || !adminUser) {
         throw new Error("Invalid response from server")
+      }
+
+      // Temporarily set tokens so the /me API can use the access token
+      setAuthData("admin", accessToken, adminUser, refreshToken)
+
+      try {
+        // Fetch complete, canonical user profile from /me endpoint
+        const meResponse = await adminAPI.getAdminProfile()
+        const fullProfile = meResponse?.data?.admin || meResponse?.data?.data?.admin
+        if (fullProfile) {
+          adminUser = fullProfile
+          // Update local storage with the comprehensive profile
+          setAuthData("admin", accessToken, adminUser, refreshToken)
+        }
+      } catch (meError) {
+        console.warn("Failed to fetch full profile via /me, falling back to login payload", meError)
       }
 
       // Strict Super Admin RBAC Check
@@ -61,7 +77,6 @@ export default function SuperAdminLogin() {
         throw new Error("Access Denied: You do not have Super Admin privileges")
       }
 
-      setAuthData("admin", accessToken, adminUser, refreshToken)
       toast.success("Welcome, Super Administrator")
       navigate("/superadmin/dashboard", { replace: true })
     } catch (err) {

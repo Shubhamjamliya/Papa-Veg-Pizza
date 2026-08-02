@@ -16,13 +16,13 @@ const kitchenTaskSchema = new mongoose.Schema(
         },
         assignedTo: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'FoodAdmin',
             default: null,
             index: true
         },
         assignedBy: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'FoodAdmin',
             default: null
         },
         status: {

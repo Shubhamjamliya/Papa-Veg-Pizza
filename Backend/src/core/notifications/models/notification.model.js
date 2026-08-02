@@ -2,9 +2,14 @@ import mongoose from 'mongoose';
 
 const notificationSchema = new mongoose.Schema(
     {
-        userId: {
+        ownerType: {
+            type: String,
+            enum: ['USER', 'STORE', 'DELIVERY_PARTNER'],
+            required: true,
+            index: true
+        },
+        ownerId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
             required: true,
             index: true
         },
@@ -65,16 +70,8 @@ const notificationSchema = new mongoose.Schema(
     }
 );
 
-// ADDED FIELDS
-notificationSchema.add({
-    notificationType: { type: String, default: 'general' },
-    priority: { type: String, enum: ['low', 'normal', 'high'], default: 'normal' },
-    expiresAt: { type: Date, default: null, index: { expires: 0 } }
-});
-
-
-notificationSchema.index({ userId: 1, createdAt: -1 });
-notificationSchema.index({ userId: 1, isRead: 1, dismissedAt: 1 });
-notificationSchema.index({ broadcastId: 1, userId: 1 }, { unique: true, sparse: true });
+notificationSchema.index({ ownerType: 1, ownerId: 1, createdAt: -1 });
+notificationSchema.index({ ownerType: 1, ownerId: 1, isRead: 1, dismissedAt: 1 });
+notificationSchema.index({ broadcastId: 1, ownerType: 1, ownerId: 1 }, { unique: true, sparse: true });
 
 export const FoodNotification = mongoose.model('FoodNotification', notificationSchema);
